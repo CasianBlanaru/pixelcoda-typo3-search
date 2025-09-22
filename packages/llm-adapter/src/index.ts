@@ -254,8 +254,7 @@ async function embedOllama(text: string, config: ProviderConfig): Promise<number
     body: JSON.stringify({
       model: config.embeddingModel,
       prompt: text.substring(0, 8000)
-    }),
-    timeout: config.timeout
+    })
   });
   
   if (response.statusCode !== 200) {
@@ -278,8 +277,7 @@ async function generateOllama(prompt: string, config: ProviderConfig): Promise<s
         temperature: 0.7,
         num_predict: 1000
       }
-    }),
-    timeout: config.timeout
+    })
   });
   
   if (response.statusCode !== 200) {
@@ -306,8 +304,7 @@ Text: ${passage.text.substring(0, 500)}`;
           prompt,
           stream: false,
           options: { temperature: 0.1, num_predict: 10 }
-        }),
-        timeout: 10000
+        })
       });
       
       if (response.statusCode === 200) {
@@ -338,8 +335,7 @@ async function embedHuggingFace(text: string, config: ProviderConfig): Promise<n
     },
     body: JSON.stringify({
       inputs: text.substring(0, 8000)
-    }),
-    timeout: config.timeout
+    })
   });
   
   if (response.statusCode !== 200) {
@@ -372,8 +368,7 @@ async function generateHuggingFace(prompt: string, config: ProviderConfig): Prom
         temperature: 0.7,
         do_sample: true
       }
-    }),
-    timeout: config.timeout
+    })
   });
   
   if (response.statusCode !== 200) {
