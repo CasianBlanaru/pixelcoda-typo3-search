@@ -10,10 +10,25 @@ import { router as searchRouter } from './routes/search.js';
 import { router as askRouter } from './routes/ask.js';
 import { router as synonymsRouter } from './routes/synonyms.js';
 import { router as metricsRouter } from './routes/metrics.js';
+import { router as webhookRouter } from './routes/webhook.js';
+import { router as adminRouter } from './routes/admin.js';
+import { rateLimit, corsMiddleware, securityHeaders, requestLogger, inputSanitization } from './middleware/security.js';
 
 const app = new Hono();
 
-app.use('*', cors());
+// Security middleware
+app.use('*', corsMiddleware());
+app.use('*', securityHeaders());
+app.use('*', requestLogger());
+app.use('*', inputSanitization());
+
+// Rate limiting (configurable per environment)
+const rateLimitConfig = {
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
+  maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100')
+};
+app.use('*', rateLimit(rateLimitConfig));
+
 app.use('*', prettyJSON());
 
 // Health
@@ -25,6 +40,8 @@ app.route('/v1', searchRouter);
 app.route('/v1', askRouter);
 app.route('/v1', synonymsRouter);
 app.route('/v1', metricsRouter);
+app.route('/v1', webhookRouter);
+app.route('/v1', adminRouter);
 
 // 404
 app.notFound((c) => c.json({ error: 'Not Found' }, 404));
