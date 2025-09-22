@@ -26,8 +26,8 @@ class ComposerStaticInitcd0687926ae709b07970e3d73ff8ab67
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
-        '7e7b68ec2ddc3b2f0cf6db7c069bb1a9' => __DIR__ . '/..' . '/typo3/autoload-include.php',
         '1aba494424da180a2820e44cdb645b94' => __DIR__ . '/..' . '/typo3/alias-loader-include.php',
+        '7e7b68ec2ddc3b2f0cf6db7c069bb1a9' => __DIR__ . '/..' . '/typo3/autoload-include.php',
     );
 
     public static $prefixLengthsPsr4 = array (

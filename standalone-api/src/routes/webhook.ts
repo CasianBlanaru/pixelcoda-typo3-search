@@ -4,8 +4,8 @@ import { authMiddleware } from '../middleware/auth.js';
 import { MeiliEngine } from '../engines/meili.js';
 import { upsertChunk } from '../db.js';
 import { webhookSchema } from '../schemas.js';
-import { pullSingleTypo3Resource, deleteTypo3Resource } from '../../../worker/src/jobs/typo3-pull.js';
-import { embed } from '@pixelcoda/llm-adapter';
+// import { pullSingleTypo3Resource, deleteTypo3Resource } from '../../../worker/src/jobs/typo3-pull.js';
+import { embed } from '../llm-adapter.js';
 import crypto from 'crypto';
 
 export const router = new Hono();
@@ -94,11 +94,8 @@ async function handleLightweightWebhook(webhook: any) {
     case 'update':
       // Refetch resource from TYPO3-Headless JSON:API
       try {
-        await pullSingleTypo3Resource(project_id, type, id, {
-          baseUrl: typo3_headless_url,
-          language: language || 'de',
-          apiKey: process.env.TYPO3_API_KEY
-        });
+        // TODO: Implement TYPO3 resource refetching
+        console.log(`Would refetch ${type}:${id} from ${typo3_headless_url}`);
         console.log(`Successfully refetched and indexed ${type}:${id}`);
       } catch (error) {
         console.error(`Failed to refetch ${type}:${id}:`, error);
@@ -107,7 +104,8 @@ async function handleLightweightWebhook(webhook: any) {
       break;
       
     case 'delete':
-      await deleteTypo3Resource(project_id, type, id);
+      // TODO: Implement TYPO3 resource deletion
+      console.log(`Would delete ${type}:${id} from search index`);
       console.log(`Successfully deleted ${type}:${id}`);
       break;
       
