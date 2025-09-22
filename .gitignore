@@ -150,3 +150,29 @@ apps/typo3-connector/vendor/
 
 # Local development
 docker-compose.override.yml
+
+# TYPO3 Development Environment
+typo3-dev/public/
+typo3-dev/var/
+typo3-dev/vendor/
+typo3-dev/composer.lock
+typo3-dev/.env
+typo3-dev/config/
+typo3-dev/fileadmin/
+typo3-dev/uploads/
+
+# Keep only our extension in TYPO3
+typo3-dev/public/typo3conf/ext/*
+!typo3-dev/public/typo3conf/ext/pixelcoda_search/
+
+# TYPO3 Configuration (sensitive)
+typo3-dev/public/typo3conf/LocalConfiguration.php
+typo3-dev/public/typo3conf/AdditionalConfiguration.php
+typo3-dev/public/typo3conf/PackageStates.php
+typo3-dev/public/typo3conf/ENABLE_INSTALL_TOOL
+
+# DDEV generated files
+typo3-dev/.ddev/commands/
+typo3-dev/.ddev/homeadditions/
+typo3-dev/.ddev/.dbimageBuild/
+typo3-dev/.ddev/.webimageBuild/

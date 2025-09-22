@@ -21,9 +21,4 @@ web_environment:
   - PIXELCODA_PROJECT_ID=typo3-dev
 
 # Custom commands for pixelcoda setup
-hooks:
-  post-start:
-    - exec: composer install
-    - exec: vendor/bin/typo3 install:setup --no-interaction --database-user-name=db --database-user-password=db --database-host-name=db --database-port=3306 --database-name=db --admin-user-name=admin --admin-password=admin --site-name="pixelcoda TYPO3 Dev"
-    - exec: vendor/bin/typo3 extension:activate pixelcoda_search
-    - exec: vendor/bin/typo3 cache:flush
+# Hooks disabled for manual setup

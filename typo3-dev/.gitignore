@@ -1,0 +1,161 @@
+# TYPO3 Development Environment - Git Ignore
+
+# TYPO3 Core Files
+/public/
+/var/
+/vendor/
+composer.lock
+
+# TYPO3 Configuration (contains sensitive data)
+/config/
+/config.yaml
+.env
+.env.local
+
+# TYPO3 Runtime Files
+/var/log/
+/var/cache/
+/var/charset/
+/var/lock/
+/var/session/
+/var/transient/
+
+# TYPO3 Uploads and File Storage
+/fileadmin/
+/uploads/
+
+# TYPO3 Extensions (we only track our own)
+/public/typo3conf/ext/*
+!/public/typo3conf/ext/pixelcoda_search
+
+# TYPO3 Temporary Files
+/typo3temp/
+/public/typo3temp/
+
+# TYPO3 Configuration Files
+/public/typo3conf/LocalConfiguration.php
+/public/typo3conf/AdditionalConfiguration.php
+/public/typo3conf/PackageStates.php
+/public/typo3conf/deprecation_*.log
+/public/typo3conf/ENABLE_INSTALL_TOOL
+
+# Database Dumps
+*.sql
+!demo-content.sql
+
+# DDEV Files
+/.ddev/commands/
+/.ddev/homeadditions/
+/.ddev/providers/
+/.ddev/.dbimageBuild/
+/.ddev/.webimageBuild/
+/.ddev/.webimageExtra/
+/.ddev/nginx_full/
+/.ddev/apache/
+/.ddev/mysql/
+/.ddev/postgres/
+/.ddev/redis/
+/.ddev/solr/
+/.ddev/elasticsearch/
+
+# Keep DDEV config but ignore generated files
+!/.ddev/config.yaml
+!/.ddev/docker-compose.*.yaml
+
+# Node.js (if used in TYPO3 frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+/var/log/*
+
+# Temporary Files
+tmp/
+temp/
+.tmp/
+
+# PHP
+.phpunit.result.cache
+/phpunit.xml
+
+# Backup Files
+*.bak
+*.backup
+*.old
+
+# Development Tools
+.php_cs.cache
+.php-cs-fixer.cache
+phpstan.neon
+.phpstan.neon
+
+# TYPO3 Testing
+/typo3/sysext/core/Tests/
+/Build/
+
+# Local Development Overrides
+docker-compose.override.yml
+/config/sites/*/config.yaml.local
+
+# Extension Development
+/packages/*/Tests/Acceptance/Reports/
+/packages/*/Tests/Functional/Fixtures/Database/
+/packages/*/Tests/Unit/Fixtures/
+
+# Ignore everything in public except index.php and our extension
+/public/*
+!/public/index.php
+!/public/typo3conf/
+!/public/typo3conf/ext/
+!/public/typo3conf/ext/pixelcoda_search/
+
+# But ignore TYPO3 generated files in typo3conf
+/public/typo3conf/LocalConfiguration.php
+/public/typo3conf/AdditionalConfiguration.php
+/public/typo3conf/PackageStates.php
+/public/typo3conf/deprecation_*.log
+/public/typo3conf/ENABLE_INSTALL_TOOL
+/public/typo3conf/temp_*
+/public/typo3conf/realurl_*
+
+# TYPO3 File Mounts
+/public/_processed_/
+/public/fileadmin/_processed_/
+/public/fileadmin/_temp_/
+
+# Symfony Cache (used by TYPO3)
+/var/cache/
+/var/log/
+/var/sessions/
+
+# Composer
+/auth.json
+
+# Local configuration overrides
+.env.local
+.env.*.local

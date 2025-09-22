@@ -4,17 +4,9 @@
     "type": "project",
     "license": "MIT",
     "repositories": [{
-            "type": "composer",
-            "url": "https://composer.typo3.org/"
-        },
-        {
-            "type": "path",
-            "url": "../apps/typo3-connector",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
+        "type": "composer",
+        "url": "https://composer.typo3.org/"
+    }],
     "require": {
         "typo3/cms-core": "^12.4",
         "typo3/cms-backend": "^12.4",
@@ -42,8 +34,7 @@
         "typo3/cms-redirects": "^12.4",
         "typo3/cms-seo": "^12.4",
         "friendsoftypo3/headless": "^4.0",
-        "georgringer/news": "^11.0",
-        "pixelcoda/pixelcoda-search": "*"
+        "georgringer/news": "^11.0"
     },
     "require-dev": {
         "typo3/testing-framework": "^8.0",

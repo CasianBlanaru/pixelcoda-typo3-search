@@ -1,0 +1,111 @@
+<?php
+
+/*
+ * This file is part of the "headless" Extension for TYPO3 CMS.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+use FriendsOfTYPO3\Headless\Middleware\ElementBodyResponseMiddleware;
+use FriendsOfTYPO3\Headless\Middleware\HeadlessModeSetter;
+use FriendsOfTYPO3\Headless\Middleware\RedirectHandler;
+use FriendsOfTYPO3\Headless\Middleware\ShortcutAndMountPointRedirect;
+use FriendsOfTYPO3\Headless\Middleware\SiteBaseRedirectResolver;
+use FriendsOfTYPO3\Headless\Middleware\UserIntMiddleware;
+use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+return (static function (): array {
+    $features = GeneralUtility::makeInstance(Features::class);
+
+    $middlewares = [
+        'frontend' => [
+            'headless/cms-frontend/prepare-user-int' => [
+                'after' => [
+                    'typo3/cms-frontend/content-length-headers',
+                ],
+                'target' => UserIntMiddleware::class,
+            ],
+            'headless/mode-setter' => [
+                'before' => [
+                    'typo3/cms-frontend/base-redirect-resolver',
+                    'headless/cms-redirects/redirecthandler',
+                ],
+                'target' => HeadlessModeSetter::class,
+            ],
+        ],
+    ];
+
+    if ($features->isFeatureEnabled('headless.elementBodyResponse')) {
+        $middlewares['frontend']['headless/cms-frontend/element-body-response'] = [
+            'after' => [
+                'typo3/cms-frontend/content-length-headers',
+            ],
+            'target' => ElementBodyResponseMiddleware::class,
+        ];
+    }
+
+    if ($features->isFeatureEnabled('headless.cookieDomainPerSite')) {
+        $middlewares['backend']['headless/cms-backend/cookie-domain-middleware'] =  [
+            'before' => [
+                'typo3/cms-backend/authentication',
+            ],
+            'target' => \FriendsOfTYPO3\Headless\Middleware\CookieDomainPerSite::class,
+        ];
+
+        $middlewares['frontend']['headless/cms-backend/cookie-domain-middleware'] = [
+            'before' => [
+                'typo3/cms-frontend/backend-user-authentication',
+                'typo3/cms-frontend/authentication',
+            ],
+            'target' => \FriendsOfTYPO3\Headless\Middleware\CookieDomainPerSite::class,
+        ];
+    }
+
+    if (!$features->isFeatureEnabled('headless.redirectMiddlewares')) {
+        return $middlewares;
+    }
+
+    $middlewares = array_merge_recursive($middlewares, [
+        'frontend' => [
+            'typo3/cms-frontend/shortcut-and-mountpoint-redirect' => [
+                'disabled' => true,
+            ],
+            'typo3/cms-frontend/base-redirect-resolver' => [
+                'target' => SiteBaseRedirectResolver::class,
+            ],
+            'headless/cms-frontend/shortcut-and-mountpoint-redirect' => [
+                'target' => ShortcutAndMountPointRedirect::class,
+                'after' => [
+                    'typo3/cms-frontend/prepare-tsfe-rendering',
+                ],
+                'before' => [
+                    'typo3/cms-frontend/content-length-headers',
+                ],
+            ],
+        ],
+    ]);
+
+    if (!ExtensionManagementUtility::isLoaded('redirects')) {
+        return $middlewares;
+    }
+
+    return array_merge_recursive($middlewares, [
+        'frontend' => [
+            'typo3/cms-redirects/redirecthandler' => [
+                'disabled' => true,
+            ],
+            'headless/cms-redirects/redirecthandler' => [
+                'target' => RedirectHandler::class,
+                'before' => [
+                    'typo3/cms-frontend/base-redirect-resolver',
+                ],
+                'after' => [
+                    'typo3/cms-frontend/authentication',
+                ],
+            ],
+        ],
+    ]);
+})();
