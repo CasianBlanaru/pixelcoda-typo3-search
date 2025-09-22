@@ -1,21 +1,21 @@
 # pixelcoda Headless Search Platform
 
-Eine moderne, API-first Suchplattform mit KI-Agents, entwickelt für TYPO3 und andere CMS-Systeme.
+A modern, API-first search platform with AI agents, designed for TYPO3 and other CMS systems.
 
 ## 🚀 Features
 
-- **Headless API-First Architektur** mit REST-Endpoints
-- **Hybrid Search**: Keyword-Suche (Meilisearch) + Vektor-Suche (pgvector)
-- **KI-gestützte Antworten** mit RAG (Retrieval-Augmented Generation)
-- **Barrierefreie React Widgets** (BITV 2.0 konform)
-- **TYPO3 Connector** mit Webhook-Integration
-- **Flexible Ingest-Pipeline**: Crawl → Extract → Chunk → Embed → Upsert
-- **Multi-Provider LLM-Support** (OpenAI, Azure, Ollama, Hugging Face)
-- **Sicherheit**: API Keys, HMAC-Signaturen, Rate Limiting
-- **Analytics & Telemetrie** für Query/Click-Tracking
-- **Docker-ready** mit docker-compose Setup
+- **Headless API-First Architecture** with REST endpoints
+- **Hybrid Search**: Keyword search (Meilisearch) + Vector search (pgvector)
+- **AI-powered Answers** with RAG (Retrieval-Augmented Generation)
+- **Accessible React Widgets** (BITV 2.0 compliant)
+- **TYPO3 Connector** with webhook integration
+- **Flexible Ingest Pipeline**: Crawl → Extract → Chunk → Embed → Upsert
+- **Multi-Provider LLM Support** (OpenAI, Azure, Ollama, Hugging Face)
+- **Security**: API Keys, HMAC signatures, Rate limiting
+- **Analytics & Telemetry** for query/click tracking
+- **Docker-ready** with docker-compose setup
 
-## 🏗️ Architektur
+## 🏗️ Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -36,26 +36,29 @@ Eine moderne, API-first Suchplattform mit KI-Agents, entwickelt für TYPO3 und a
 └───────────────────┘                    └───────────────────┘
 ```
 
-## 📦 Komponenten
+## 📦 Components
 
 ### Apps
-- **`apps/api`** - Hono REST API mit TypeScript
-- **`apps/worker`** - Ingest Pipeline für Content Processing
-- **`apps/widgets`** - Barrierefreie React Komponenten
-- **`apps/typo3-connector`** - TYPO3 Extension für Webhook-Integration
+- **`apps/api`** - Hono REST API with TypeScript
+- **`apps/worker`** - Ingest pipeline for content processing
+- **`apps/widgets`** - Accessible React components
+- **`apps/typo3-connector`** - TYPO3 extension for webhook integration
 
 ### Packages
-- **`packages/llm-adapter`** - Provider-agnostischer LLM Client
+- **`packages/llm-adapter`** - Provider-agnostic LLM client
+
+### Development Environment
+- **`typo3-dev/`** - Complete DDEV TYPO3 setup for testing
 
 ## 🛠️ Quick Start
 
-### 1. Repository klonen
+### 1. Clone Repository
 ```bash
 git clone git@github.com:CasianBlanaru/typo3-search.git
 cd typo3-search
 ```
 
-### 2. Dependencies installieren
+### 2. Install Dependencies
 ```bash
 yarn install
 ```
@@ -63,132 +66,199 @@ yarn install
 ### 3. Environment Setup
 ```bash
 cp env.example .env
-# Bearbeite .env mit deinen Konfigurationen
+# Edit .env with your configurations
 ```
 
-### 4. Services starten
+### 4. Start Services
 ```bash
-# Alle Services (Postgres, Meilisearch, API)
+# All services (Postgres, Meilisearch, API)
 docker-compose up -d
 
-# Nur Datenbank-Services
+# Or just database services
 docker-compose up -d postgres meilisearch redis
 
-# API im Development-Modus
+# API in development mode
 yarn -w apps/api run dev
 ```
 
-### 5. Datenbank initialisieren
+### 5. Initialize Database
 ```bash
-# Mit Docker
+# With Docker
 docker-compose --profile migrate up migrate
 
-# Oder lokal
+# Or locally
 node scripts/migrate.js
 ```
 
-## 🔧 Entwicklung
+## 🔧 Development
 
-### API Server starten
+### API Server
 ```bash
 yarn -w apps/api run dev
-# Läuft auf http://localhost:8787
+# Runs on http://localhost:8787
 ```
 
-### Worker für Content-Ingest
+### Worker for Content Ingestion
 ```bash
-# Einzelne URL indexieren
-yarn -w apps/worker run dev -- https://example.com demo
+# Index single URL
+yarn -w apps/worker run dev -- crawl https://example.com demo
 
-# Mit erweiterten Optionen
-yarn -w apps/worker run dev -- https://docs.example.com docs \
+# Pull from TYPO3-Headless API
+yarn -w apps/worker run dev -- typo3-pull https://api.example.com typo3-site --language en --types pages,news
+
+# With advanced options
+yarn -w apps/worker run dev -- crawl https://docs.example.com docs \
   --collection documentation \
   --content-type documentation \
   --batch-size 5
 ```
 
-### Widgets entwickeln
+### Widgets Development
 ```bash
 yarn -w apps/widgets run build
 ```
 
-## 📚 API Dokumentation
+### TYPO3 Development Environment
+```bash
+cd typo3-dev
+./setup.sh
+# Complete TYPO3 installation with plugin
+```
+
+## 📚 API Documentation
 
 ### Core Endpoints
 
-#### Indexierung
+#### Indexing
 ```bash
-# Dokument hinzufügen
+# Add document
 POST /v1/index/:project/:collection
 {
   "documents": [{
     "id": "doc1",
-    "title": "Titel",
-    "content": "Inhalt...",
+    "title": "Title",
+    "content": "Content...",
     "url": "https://example.com/page",
-    "lang": "de"
+    "lang": "en"
   }]
 }
 
-# Dokumente löschen
+# Delete documents
 DELETE /v1/index/:project/:collection
 {
   "ids": ["doc1", "doc2"]
 }
 ```
 
-#### Suche
+#### Search (JSON:API 1.0 Compatible)
 ```bash
-# Keyword-Suche
+# Keyword search
 POST /v1/search/:project
 {
-  "q": "Suchbegriff",
+  "q": "search term",
   "limit": 10,
   "filters": {"collection": ["pages"]},
   "facets": ["collection", "lang"]
 }
 
-# KI-Antwort (RAG)
+# Response:
+{
+  "data": [{
+    "type": "searchResult",
+    "id": "doc1",
+    "attributes": {
+      "title": "Page Title",
+      "content": "Page content...",
+      "url": "/page",
+      "score": 0.95
+    }
+  }],
+  "meta": {
+    "pagination": {"page": 1, "total": 42},
+    "search": {"query": "search term", "response_time_ms": 120}
+  },
+  "links": {
+    "self": "/v1/search/project?page=1",
+    "next": "/v1/search/project?page=2"
+  }
+}
+```
+
+#### AI Answer (RAG)
+```bash
 POST /v1/ask/:project
 {
-  "q": "Wie funktioniert die Suche?",
+  "q": "How does the search work?",
   "maxPassages": 6,
   "collections": ["docs"],
   "includeDebug": true
 }
 
-# Suchvorschläge
+# Response:
+{
+  "data": {
+    "type": "answer",
+    "id": "answer-123",
+    "attributes": {
+      "text": "The search works by...",
+      "query": "How does the search work?",
+      "confidence": 0.89
+    },
+    "relationships": {
+      "citations": {
+        "data": [{"type": "citation", "id": "citation-0"}]
+      }
+    }
+  },
+  "included": [{
+    "type": "citation",
+    "id": "citation-0",
+    "attributes": {
+      "title": "Search Documentation",
+      "url": "/docs/search",
+      "snippet": "The search engine uses...",
+      "reference": "[1]"
+    }
+  }],
+  "meta": {
+    "generation": {"response_time_ms": 1500, "citations_count": 3}
+  }
+}
+```
+
+#### Suggestions
+```bash
 POST /v1/suggest/:project
 {
-  "q": "Such",
+  "q": "sear",
   "limit": 5
 }
 ```
 
-#### Synonyme
+#### Synonyms
 ```bash
-# Synonyme hinzufügen
+# Add synonyms
 POST /v1/synonyms/:project
 {
   "add": [{
-    "terms": ["Auto", "PKW", "Fahrzeug"],
-    "lang": "de",
+    "terms": ["car", "vehicle", "automobile"],
+    "lang": "en",
     "type": "synonym"
   }]
 }
 ```
 
-#### Metriken
+#### Metrics
 ```bash
-# Query-Metriken loggen
+# Log query metrics
 POST /v1/metrics/query/:project
 {
-  "query": "Suchbegriff",
+  "query": "search term",
   "results_count": 5,
   "response_time_ms": 120
 }
 
-# Analytics abrufen
+# Get analytics
 GET /v1/metrics/:project/queries?from=2024-01-01&to=2024-01-31
 ```
 
@@ -222,7 +292,7 @@ function MyApp() {
       apiBase="http://localhost:8787"
       project="demo"
       apiKey="pc_read_dev_key"
-      query="Wie funktioniert die Suche?"
+      query="How does the search work?"
       collections={["docs"]}
       showDebug={true}
     />
@@ -230,7 +300,7 @@ function MyApp() {
 }
 ```
 
-### Programmatischer Client
+### Programmatic Client
 ```typescript
 import { PixelcodaSearchClient } from '@pixelcoda/widgets';
 
@@ -240,31 +310,31 @@ const client = new PixelcodaSearchClient(
   'pc_read_dev_key'
 );
 
-// Suchen
+// Search
 const results = await client.search({
-  q: 'Suchbegriff',
+  q: 'search term',
   limit: 10,
   collections: ['pages']
 });
 
-// KI-Antwort
+// AI Answer
 const answer = await client.ask({
-  q: 'Wie funktioniert das?',
+  q: 'How does this work?',
   maxPassages: 6
 });
 
-// Metriken loggen
-await client.logQuery('Suchbegriff', results.hits.length, 150);
+// Log metrics
+await client.logQuery('search term', results.hits.length, 150);
 ```
 
 ## 🔌 TYPO3 Integration
 
-### Extension installieren
-1. Kopiere `apps/typo3-connector` nach `typo3conf/ext/pixelcoda_search`
-2. Aktiviere die Extension im Extension Manager
-3. Konfiguriere API-Endpunkt und Credentials
+### Extension Installation
+1. Copy `typo3-dev/packages/pixelcoda_search` to `typo3conf/ext/pixelcoda_search`
+2. Activate extension in Extension Manager
+3. Configure API endpoint and credentials
 
-### Webhook-Konfiguration
+### Webhook Configuration
 ```php
 // LocalConfiguration.php
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
@@ -275,41 +345,54 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
 ];
 ```
 
+### Classic Plugin Usage
+1. Create new page
+2. Add content element "pixelcoda Search"
+3. Configure settings via FlexForm
+4. Choose template variant
+5. Save and view in frontend
+
+### Headless Mode
+1. Set plugin mode to "headless"
+2. Use JSON:API endpoints directly
+3. Compatible with nuxt-typo3
+4. No server-side rendering
+
 ## 🐳 Production Deployment
 
-### Mit Docker Compose
+### With Docker Compose
 ```bash
-# Production Setup
+# Production setup
 NODE_ENV=production docker-compose up -d
 
-# Mit SSL (Traefik/nginx)
+# With SSL (Traefik/nginx)
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
 
 ### Environment Variables (Production)
 ```bash
-# Sichere API Keys generieren
+# Generate secure API keys
 API_READ_KEY=$(openssl rand -hex 32)
 API_WRITE_KEY=$(openssl rand -hex 32)
 MEILI_MASTER_KEY=$(openssl rand -hex 32)
 POSTGRES_PASSWORD=$(openssl rand -hex 16)
 
-# LLM Provider konfigurieren
+# Configure LLM provider
 OPENAI_API_KEY=your_production_key
 ENABLE_VECTOR_SEARCH=true
 ENABLE_RERANKING=true
 ```
 
-## 🔒 Sicherheit
+## 🔒 Security
 
 ### API Key Management
-- **Read Keys**: Für Suche und Analytics
-- **Write Keys**: Für Indexierung und Admin-Operationen
-- **Project Scoping**: Keys können auf Projekte beschränkt werden
+- **Read Keys**: For search and analytics
+- **Write Keys**: For indexing and admin operations
+- **Project Scoping**: Keys can be restricted to projects
 
 ### HMAC Webhook Verification
 ```typescript
-// Webhook-Signatur verifizieren
+// Verify webhook signature
 const signature = request.headers['x-pixelcoda-signature'];
 const payload = JSON.stringify(request.body);
 const expectedSignature = crypto
@@ -319,24 +402,24 @@ const expectedSignature = crypto
 ```
 
 ### Rate Limiting
-- Konfigurierbar per Projekt
-- Standard: 100 Requests/15min
-- Verschiedene Limits für Read/Write Operations
+- Configurable per project
+- Default: 100 requests/15min
+- Different limits for read/write operations
 
 ## 📊 Monitoring & Analytics
 
-### Metriken
-- **Query Metrics**: Suchbegriffe, Response Times, Result Counts
-- **Click Metrics**: Click-Through-Rates, Position Tracking
-- **Performance**: API Response Times, Error Rates
+### Metrics
+- **Query Metrics**: Search terms, response times, result counts
+- **Click Metrics**: Click-through rates, position tracking
+- **Performance**: API response times, error rates
 
 ### Logging
 ```bash
-# Logs anzeigen
+# Show logs
 docker-compose logs -f api
 docker-compose logs -f worker
 
-# Structured JSON Logging
+# Structured JSON logging
 LOG_FORMAT=json LOG_LEVEL=info
 ```
 
@@ -361,26 +444,29 @@ yarn test:integration
 
 # Load Tests
 yarn test:load
+
+# TYPO3 Plugin Tests
+cd typo3-dev && ddev exec composer test
 ```
 
 ## 🤝 Contributing
 
-1. Fork das Repository
-2. Feature Branch erstellen (`git checkout -b feature/amazing-feature`)
-3. Changes committen (`git commit -m 'Add amazing feature'`)
-4. Branch pushen (`git push origin feature/amazing-feature`)
-5. Pull Request erstellen
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push branch (`git push origin feature/amazing-feature`)
+5. Create Pull Request
 
-## 📝 Lizenz
+## 📝 License
 
-Dieses Projekt ist unter der MIT Lizenz veröffentlicht. Siehe [LICENSE](LICENSE) für Details.
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 🆘 Support
 
 - **Issues**: [GitHub Issues](https://github.com/CasianBlanaru/typo3-search/issues)
-- **Dokumentation**: [Wiki](https://github.com/CasianBlanaru/typo3-search/wiki)
-- **Diskussionen**: [GitHub Discussions](https://github.com/CasianBlanaru/typo3-search/discussions)
+- **Documentation**: [Wiki](https://github.com/CasianBlanaru/typo3-search/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/CasianBlanaru/typo3-search/discussions)
 
 ---
 
-Entwickelt mit ❤️ von [pixelcoda](https://pixelcoda.com) für die TYPO3 Community.
+Built with ❤️ by [pixelcoda](https://pixelcoda.com) for the TYPO3 community.

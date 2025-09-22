@@ -5,6 +5,12 @@ import { MeiliEngine } from '../engines/meili.js';
 import { generateAnswer, rerank, embed } from '@pixelcoda/llm-adapter';
 import { vectorSearch } from '../db.js';
 import { askSchema } from '../schemas.js';
+import { 
+  createJsonApiResponse, 
+  createJsonApiError, 
+  transformCitationToResource,
+  createHttpError 
+} from '../utils/jsonapi.js';
 
 export const router = new Hono();
 const engine = new MeiliEngine(process.env.MEILI_URL || 'http://localhost:7700', process.env.MEILI_KEY);
@@ -138,22 +144,60 @@ Antwort:`;
         console.log(`Ask: "${q}" in ${responseTime}ms, ${citations.length} citations`);
       }
 
-      const response: any = {
-        answer,
-        citations,
-        meta: {
+      // Create JSON:API answer resource
+      const answerResource = {
+        type: 'answer',
+        id: `answer-${Date.now()}`,
+        attributes: {
+          text: answer,
           query: q,
           language: lang,
+          generated_at: new Date().toISOString(),
+          confidence: calculateConfidence(topPassages),
+          search_method: useVectorSearch ? 'vector' : 'keyword'
+        },
+        relationships: {
+          citations: {
+            data: citations.map((_, index) => ({
+              type: 'citation',
+              id: `citation-${index}`
+            }))
+          }
+        },
+        meta: {
           passages_found: validPassages.length,
           passages_used: topPassages.length,
           response_time_ms: responseTime,
-          collections: collections || [],
-          search_method: useVectorSearch ? 'vector' : 'keyword'
+          collections: collections || []
         }
       };
 
+      // Transform citations to JSON:API resources for included section
+      const citationResources = citations.map((citation, index) => 
+        transformCitationToResource(citation, index)
+      );
+
+      // Create meta information
+      const meta = {
+        query: {
+          text: q,
+          language: lang,
+          collections: collections || [],
+          max_passages: maxPassages,
+          temperature
+        },
+        generation: {
+          response_time_ms: responseTime,
+          search_method: useVectorSearch ? 'vector' : 'keyword',
+          passages_found: validPassages.length,
+          passages_used: topPassages.length,
+          citations_count: citations.length
+        }
+      };
+
+      // Add debug information if requested
       if (includeDebug) {
-        response.debug = {
+        meta.debug = {
           search_method: useVectorSearch ? 'vector' : 'keyword',
           passages_extracted: validPassages.length,
           reranking_enabled: process.env.ENABLE_RERANKING === 'true',
@@ -168,13 +212,30 @@ Antwort:`;
         };
       }
 
-      return c.json(response);
+      // Return JSON:API 1.0 compliant response
+      return c.json(createJsonApiResponse(answerResource, {
+        included: citationResources,
+        meta
+      }));
     } catch (error) {
       console.error('Ask endpoint error:', error);
-      return c.json({ 
-        error: 'Failed to generate answer', 
-        details: error instanceof Error ? error.message : 'Unknown error' 
-      }, 500);
+      
+      const jsonApiError = createHttpError(500, 
+        error instanceof Error ? error.message : 'Failed to generate answer'
+      );
+      
+      return c.json(createJsonApiError(jsonApiError), 500);
     }
   }
 );
+
+// Helper function to calculate answer confidence
+function calculateConfidence(passages: any[]): number {
+  if (passages.length === 0) return 0;
+  
+  // Simple confidence calculation based on passage scores and count
+  const avgScore = passages.reduce((sum, p) => sum + (p.score || 0), 0) / passages.length;
+  const countFactor = Math.min(passages.length / 6, 1); // Normalize to max 6 passages
+  
+  return Math.round((avgScore * countFactor) * 100) / 100;
+}

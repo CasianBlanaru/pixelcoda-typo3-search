@@ -1,0 +1,125 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="Main">
+    <div class="pixelcoda-search-results-page {settings.cssClass}">
+
+        <!-- Search Query Display -->
+        <div class="search-query-info">
+            <h1>{f:translate(key: 'search.results.title', default: 'Suchergebnisse')}</h1>
+            <p class="search-query">
+                {f:translate(key: 'search.results.for', default: 'Suchergebnisse für')}:
+                <strong>"{query}"</strong>
+            </p>
+
+            <f:if condition="{totalResults}">
+                <p class="search-meta" aria-live="polite">
+                    {f:translate(key: 'search.results.count', default: '{0} Ergebnisse gefunden', arguments: {0: totalResults})}
+                    <f:if condition="{responseTime}">
+                        <span class="response-time">({responseTime}ms)</span>
+                    </f:if>
+                </p>
+            </f:if>
+        </div>
+
+        <!-- Search Results -->
+        <f:if condition="{results.data}">
+            <f:then>
+                <div class="search-results" role="main">
+                    <f:render partial="SearchResults" arguments="{
+                        results: results.data,
+                        included: results.included,
+                        meta: results.meta,
+                        query: query,
+                        settings: settings
+                    }" />
+                </div>
+
+                <!-- Pagination -->
+                <f:if condition="{pagination.total} > 1">
+                    <f:render partial="Pagination" arguments="{
+                        pagination: pagination,
+                        query: query,
+                        settings: settings
+                    }" />
+                </f:if>
+            </f:then>
+            <f:else>
+                <!-- No Results -->
+                <div class="search-no-results" role="main">
+                    <h2>{f:translate(key: 'search.noResults.title', default: 'Keine Ergebnisse gefunden')}</h2>
+                    <p>{f:translate(key: 'search.noResults.message', default: 'Ihre Suche nach "{0}" ergab keine Treffer.', arguments: {0: query})}</p>
+
+                    <div class="search-suggestions-help">
+                        <h3>{f:translate(key: 'search.noResults.suggestions.title', default: 'Versuchen Sie folgendes:')}</h3>
+                        <ul>
+                            <li>{f:translate(key: 'search.noResults.suggestions.spelling', default: 'Überprüfen Sie die Rechtschreibung')}</li>
+                            <li>{f:translate(key: 'search.noResults.suggestions.keywords', default: 'Verwenden Sie andere Suchbegriffe')}</li>
+                            <li>{f:translate(key: 'search.noResults.suggestions.general', default: 'Verwenden Sie allgemeinere Begriffe')}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Search again form -->
+                    <f:render partial="SearchForm" arguments="{
+                        query: '', 
+                        settings: settings, 
+                        placeholder: 'Neuen Suchbegriff eingeben...',
+                        collections: collections,
+                        languages: languages
+                    }" />
+                </div>
+            </f:else>
+        </f:if>
+
+        <!-- AI Ask Feature (if enabled and query present) -->
+        <f:if condition="{settings.enableAsk} && {query}">
+            <div class="pixelcoda-ask-section">
+                <h2>{f:translate(key: 'ask.title', default: 'KI-Antwort')}</h2>
+                <p class="ask-description">
+                    {f:translate(key: 'ask.description', default: 'Lassen Sie sich Ihre Frage von unserer KI beantworten:')}
+                </p>
+
+                <form action="{f:uri.action(action: 'ask')}" method="post" class="ask-form">
+                    <div class="ask-input-group">
+                        <label for="ask-input" class="ask-label">
+                            {f:translate(key: 'ask.input.label', default: 'Ihre Frage')}
+                        </label>
+
+                        <textarea id="ask-input" name="q" placeholder="{f:translate(key: 'ask.placeholder', default: 'Stellen Sie eine Frage zu Ihrer Suche...')}" class="ask-input" rows="3" required aria-describedby="ask-help">{query}</textarea>
+
+                        <div id="ask-help" class="ask-help">
+                            {f:translate(key: 'ask.help', default: 'Die KI wird basierend auf den Suchergebnissen antworten.')}
+                        </div>
+                    </div>
+
+                    <!-- Hidden fields -->
+                    <f:for each="{collections}" as="collection">
+                        <input type="hidden" name="collections[]" value="{collection.key}" />
+                    </f:for>
+
+                    <button type="submit" class="ask-submit-button">
+                        <f:image src="EXT:pixelcoda_search/Resources/Public/Icons/Ask.svg" alt="" width="20" height="20" />
+                        {f:translate(key: 'ask.submit', default: 'Frage stellen')}
+                    </button>
+
+                    <f:security.csrfToken />
+                </form>
+            </div>
+        </f:if>
+
+        <!-- Error Messages -->
+        <f:flashMessages as="flashMessages">
+            <f:for each="{flashMessages}" as="flashMessage">
+                <div class="alert alert-{flashMessage.severity}" role="alert">
+                    <f:if condition="{flashMessage.title}">
+                        <h4>{flashMessage.title}</h4>
+                    </f:if>
+                    <p>{flashMessage.message}</p>
+                </div>
+            </f:for>
+        </f:flashMessages>
+    </div>
+</f:section>
+
+</html>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2024-01-01T00:00:00Z" product-name="pixelcoda_search">
+        <header/>
+        <body>
+            <!-- Plugin Configuration -->
+            <trans-unit id="plugin.search.title">
+                <source>pixelcoda Search</source>
+                <target>pixelcoda Suche</target>
+            </trans-unit>
+            <trans-unit id="plugin.search.description">
+                <source>AI-powered search with vector search and RAG answers</source>
+                <target>KI-gestützte Suche mit Vektorsuche und RAG-Antworten</target>
+            </trans-unit>
+
+            <!-- FlexForm Labels -->
+            <trans-unit id="flexform.general">
+                <source>General Settings</source>
+                <target>Allgemeine Einstellungen</target>
+            </trans-unit>
+            <trans-unit id="flexform.display">
+                <source>Display Settings</source>
+                <target>Anzeige-Einstellungen</target>
+            </trans-unit>
+            <trans-unit id="flexform.advanced">
+                <source>Advanced Settings</source>
+                <target>Erweiterte Einstellungen</target>
+            </trans-unit>
+
+            <!-- Mode Selection -->
+            <trans-unit id="flexform.mode">
+                <source>Plugin Mode</source>
+                <target>Plugin-Modus</target>
+            </trans-unit>
+            <trans-unit id="flexform.mode.description">
+                <source>Choose between classic TYPO3 frontend rendering or headless JSON:API mode</source>
+                <target>Wählen Sie zwischen klassischem TYPO3-Frontend oder headless JSON:API-Modus</target>
+            </trans-unit>
+            <trans-unit id="flexform.mode.classic">
+                <source>Classic (Fluid Templates)</source>
+                <target>Klassisch (Fluid Templates)</target>
+            </trans-unit>
+            <trans-unit id="flexform.mode.headless">
+                <source>Headless (JSON:API)</source>
+                <target>Headless (JSON:API)</target>
+            </trans-unit>
+
+            <!-- Template Selection -->
+            <trans-unit id="flexform.template">
+                <source>Template Variant</source>
+                <target>Template-Variante</target>
+            </trans-unit>
+
+            <!-- Collections -->
+            <trans-unit id="flexform.collections">
+                <source>Search Collections</source>
+                <target>Suchbereiche</target>
+            </trans-unit>
+            <trans-unit id="flexform.collections.description">
+                <source>Select which content types to include in search</source>
+                <target>Wählen Sie, welche Inhaltstypen in die Suche einbezogen werden sollen</target>
+            </trans-unit>
+            <trans-unit id="collections.pages">
+                <source>Pages</source>
+                <target>Seiten</target>
+            </trans-unit>
+            <trans-unit id="collections.news">
+                <source>News</source>
+                <target>News</target>
+            </trans-unit>
+            <trans-unit id="collections.content">
+                <source>Content Elements</source>
+                <target>Inhaltselemente</target>
+            </trans-unit>
+
+            <!-- Display Settings -->
+            <trans-unit id="flexform.resultsPerPage">
+                <source>Results per page</source>
+                <target>Ergebnisse pro Seite</target>
+            </trans-unit>
+            <trans-unit id="flexform.placeholder">
+                <source>Search placeholder text</source>
+                <target>Platzhaltertext für Suche</target>
+            </trans-unit>
+            <trans-unit id="flexform.cssClass">
+                <source>CSS Class</source>
+                <target>CSS-Klasse</target>
+            </trans-unit>
+            <trans-unit id="flexform.enableSuggestions">
+                <source>Enable search suggestions</source>
+                <target>Suchvorschläge aktivieren</target>
+            </trans-unit>
+            <trans-unit id="flexform.enableAsk">
+                <source>Enable AI-powered ask feature</source>
+                <target>KI-gestützte Frage-Funktion aktivieren</target>
+            </trans-unit>
+            <trans-unit id="flexform.enableAsk.description">
+                <source>Allows users to ask natural language questions and get AI-generated answers</source>
+                <target>Ermöglicht es Benutzern, Fragen in natürlicher Sprache zu stellen und KI-generierte Antworten zu erhalten</target>
+            </trans-unit>
+
+            <!-- Advanced Settings -->
+            <trans-unit id="flexform.maxPassages">
+                <source>Max passages for AI answers</source>
+                <target>Max. Textpassagen für KI-Antworten</target>
+            </trans-unit>
+            <trans-unit id="flexform.maxPassages.description">
+                <source>Number of text passages to use for generating AI answers (1-20)</source>
+                <target>Anzahl der Textpassagen für die Generierung von KI-Antworten (1-20)</target>
+            </trans-unit>
+            <trans-unit id="flexform.showDebug">
+                <source>Show debug information</source>
+                <target>Debug-Informationen anzeigen</target>
+            </trans-unit>
+            <trans-unit id="flexform.showDebug.description">
+                <source>Show technical information about search and AI processing (for development)</source>
+                <target>Technische Informationen über Such- und KI-Verarbeitung anzeigen (für Entwicklung)</target>
+            </trans-unit>
+            <trans-unit id="flexform.enableMetrics">
+                <source>Enable usage metrics</source>
+                <target>Nutzungsmetriken aktivieren</target>
+            </trans-unit>
+            <trans-unit id="flexform.minQueryLength">
+                <source>Minimum query length</source>
+                <target>Minimale Suchlänge</target>
+            </trans-unit>
+            <trans-unit id="flexform.debounceMs">
+                <source>Debounce delay (ms)</source>
+                <target>Debounce-Verzögerung (ms)</target>
+            </trans-unit>
+            <trans-unit id="flexform.debounceMs.description">
+                <source>Delay before triggering suggestions (100-2000ms)</source>
+                <target>Verzögerung vor dem Auslösen von Vorschlägen (100-2000ms)</target>
+            </trans-unit>
+
+            <!-- Backend Module -->
+            <trans-unit id="module.title">
+                <source>pixelcoda Search</source>
+                <target>pixelcoda Suche</target>
+            </trans-unit>
+            <trans-unit id="module.description">
+                <source>Manage search configuration and view analytics</source>
+                <target>Suchkonfiguration verwalten und Analysen anzeigen</target>
+            </trans-unit>
+
+            <!-- Filter Labels -->
+            <trans-unit id="search.filters.legend">
+                <source>Narrow down search</source>
+                <target>Suchbereich einschränken</target>
+            </trans-unit>
+
+            <!-- Result Meta -->
+            <trans-unit id="search.result.collection">
+                <source>Collection</source>
+                <target>Bereich</target>
+            </trans-unit>
+            <trans-unit id="search.result.language">
+                <source>Language</source>
+                <target>Sprache</target>
+            </trans-unit>
+            <trans-unit id="search.result.relevance">
+                <source>Relevance</source>
+                <target>Relevanz</target>
+            </trans-unit>
+            <trans-unit id="search.result.open">
+                <source>Open</source>
+                <target>Öffnen</target>
+            </trans-unit>
+
+            <!-- Try Again -->
+            <trans-unit id="search.tryAgain.title">
+                <source>Start new search</source>
+                <target>Neue Suche starten</target>
+            </trans-unit>
+
+            <!-- Screen Reader Help -->
+            <trans-unit id="search.help.screenReader">
+                <source>Enter your search term and press Enter or click Search.</source>
+                <target>Geben Sie Ihren Suchbegriff ein und drücken Sie Enter oder klicken Sie auf Suchen.</target>
+            </trans-unit>
+            <trans-unit id="search.help.tip">
+                <source>Tip: Use specific terms for better results.</source>
+                <target>Tipp: Verwenden Sie spezifische Begriffe für bessere Ergebnisse.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -4,6 +4,7 @@ import { authMiddleware } from '../middleware/auth.js';
 import { MeiliEngine } from '../engines/meili.js';
 import { upsertChunk } from '../db.js';
 import { webhookSchema } from '../schemas.js';
+import { pullSingleTypo3Resource, deleteTypo3Resource } from '../../../worker/src/jobs/typo3-pull.js';
 import { embed } from '@pixelcoda/llm-adapter';
 import crypto from 'crypto';
 
@@ -44,35 +45,31 @@ const verifyHmacSignature = async (c: any, next: any) => {
   }
 };
 
-// TYPO3 webhook endpoint
+// TYPO3 webhook endpoint - handles lightweight webhooks
 router.post('/webhook/typo3',
   authMiddleware.requireKey('write'),
   verifyHmacSignature,
-  zValidator('json', webhookSchema),
   async (c) => {
     try {
       const webhook = c.req.bodyCache || await c.req.json();
       
-      console.log(`TYPO3 webhook received: ${webhook.action} ${webhook.table}:${webhook.uid}`);
+      console.log(`TYPO3 webhook received: ${webhook.action} ${webhook.type}:${webhook.id}`);
+      console.log(`Webhook version: ${webhook.webhook_version || '1.0'}`);
 
-      switch (webhook.action) {
-        case 'create':
-        case 'update':
-          await handleUpsertWebhook(webhook);
-          break;
-        case 'delete':
-          await handleDeleteWebhook(webhook);
-          break;
-        default:
-          console.warn(`Unknown webhook action: ${webhook.action}`);
+      // Handle both legacy (v1) and new lightweight (v2) webhooks
+      if (webhook.webhook_version === '2.0') {
+        await handleLightweightWebhook(webhook);
+      } else {
+        await handleLegacyWebhook(webhook);
       }
 
       return c.json({
         success: true,
         action: webhook.action,
-        table: webhook.table,
-        uid: webhook.uid,
-        processed_at: new Date().toISOString()
+        type: webhook.type || webhook.table,
+        id: webhook.id || webhook.uid,
+        processed_at: new Date().toISOString(),
+        webhook_version: webhook.webhook_version || '1.0'
       });
     } catch (error) {
       console.error('Webhook processing error:', error);
@@ -83,6 +80,62 @@ router.post('/webhook/typo3',
     }
   }
 );
+
+/**
+ * Handle lightweight webhook (v2.0) - refetch from TYPO3-Headless API
+ */
+async function handleLightweightWebhook(webhook: any) {
+  const { action, type, id, project_id, typo3_headless_url, language } = webhook;
+  
+  console.log(`Processing lightweight webhook: ${action} ${type}:${id}`);
+
+  switch (action) {
+    case 'create':
+    case 'update':
+      // Refetch resource from TYPO3-Headless JSON:API
+      try {
+        await pullSingleTypo3Resource(project_id, type, id, {
+          baseUrl: typo3_headless_url,
+          language: language || 'de',
+          apiKey: process.env.TYPO3_API_KEY
+        });
+        console.log(`Successfully refetched and indexed ${type}:${id}`);
+      } catch (error) {
+        console.error(`Failed to refetch ${type}:${id}:`, error);
+        throw error;
+      }
+      break;
+      
+    case 'delete':
+      await deleteTypo3Resource(project_id, type, id);
+      console.log(`Successfully deleted ${type}:${id}`);
+      break;
+      
+    default:
+      console.warn(`Unknown webhook action: ${action}`);
+  }
+}
+
+/**
+ * Handle legacy webhook (v1.0) - direct data processing
+ */
+async function handleLegacyWebhook(webhook: any) {
+  const { table, uid, data, project_id } = webhook;
+  
+  console.log(`Processing legacy webhook: ${webhook.action} ${table}:${uid}`);
+
+  switch (webhook.action) {
+    case 'create':
+    case 'update':
+      await handleUpsertWebhook(webhook);
+      break;
+    case 'delete':
+      await handleDeleteWebhook(webhook);
+      break;
+    default:
+      console.warn(`Unknown webhook action: ${webhook.action}`);
+  }
+}
 
 async function handleUpsertWebhook(webhook: any) {
   const { table, uid, data, project_id } = webhook;

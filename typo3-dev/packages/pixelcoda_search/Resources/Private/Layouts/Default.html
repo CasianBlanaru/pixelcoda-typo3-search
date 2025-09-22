@@ -1,0 +1,87 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<!DOCTYPE html>
+<html lang="{f:cObject(typoscriptObjectPath: 'lib.language')}" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <f:if condition="{query}">
+            <f:then>{f:translate(key: 'search.page.title', default: 'Suche: {0}', arguments: {0: query})} - {f:cObject(typoscriptObjectPath: 'lib.siteName')}</f:then>
+            <f:else>{f:translate(key: 'search.page.titleDefault', default: 'Suche')} - {f:cObject(typoscriptObjectPath: 'lib.siteName')}</f:else>
+        </f:if>
+    </title>
+
+    <!-- SEO Meta Tags -->
+    <f:if condition="{query}">
+        <meta name="description" content="{f:translate(key: 'search.meta.description', default: 'Suchergebnisse für {0}', arguments: {0: query})}" />
+        <meta name="robots" content="noindex, nofollow" />
+    </f:if>
+
+    <!-- Accessibility Enhancements -->
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Skip Links for Screen Readers -->
+    <a href="#main-content" class="skip-link">
+        {f:translate(key: 'accessibility.skipToContent', default: 'Zum Hauptinhalt springen')}
+    </a>
+    <a href="#search-form" class="skip-link">
+        {f:translate(key: 'accessibility.skipToSearch', default: 'Zur Suche springen')}
+    </a>
+</head>
+
+<body class="pixelcoda-search-page">
+    <!-- Screen Reader Announcements -->
+    <div aria-live="assertive" aria-atomic="true" class="sr-only" id="search-announcements">
+        <!-- Dynamic announcements via JavaScript -->
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main" tabindex="-1">
+        <f:render section="Main" />
+    </main>
+
+    <!-- Footer with Credits -->
+    <footer class="search-footer" role="contentinfo">
+        <p class="search-credits">
+            {f:translate(key: 'search.poweredBy', default: 'Powered by')}
+            <a href="https://pixelcoda.com" target="_blank" rel="noopener">
+                pixelcoda Search
+            </a>
+        </p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <f:render section="JavaScript" optional="true" />
+
+    <!-- Structured Data for SEO -->
+    <f:if condition="{query} && {results}">
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "SearchResultsPage",
+                "url": "{f:uri.action(action: 'search', arguments: {q: query}, absolute: true)}",
+                "mainEntity": {
+                    "@type": "SearchAction",
+                    "query": "{query}",
+                    "result": [ <
+                        f: for each = "{results}"
+                        as = "result"
+                        iteration = "iteration" > {
+                            "@type": "SearchResult",
+                            "url": "{result.attributes.url}",
+                            "name": "{result.attributes.title}",
+                            "description": "{result.attributes.summary -> f:format.stripTags() -> f:format.crop(maxCharacters: 200)}"
+                        } < f: if condition = "{iteration.isLast}" > < f:
+                        else >, < /f:else></f: if >
+                            <
+                            /f:for>
+                    ]
+                }
+            }
+        </script>
+    </f:if>
+</body>
+
+</html>

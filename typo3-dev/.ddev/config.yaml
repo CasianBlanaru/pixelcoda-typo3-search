@@ -1,0 +1,29 @@
+name: pixelcoda-typo3-dev
+type: typo3
+docroot: public
+php_version: "8.2"
+webserver_type: nginx-fpm
+router_http_port: "8080"
+router_https_port: "8443"
+xdebug_enabled: false
+additional_hostnames: []
+additional_fqdns: []
+database:
+  type: mariadb
+  version: "10.11"
+use_dns_when_possible: true
+composer_version: "2"
+web_environment:
+  - TYPO3_CONTEXT=Development
+  - PIXELCODA_API_URL=http://host.docker.internal:8787
+  - PIXELCODA_API_KEY=pc_write_dev_key
+  - PIXELCODA_HMAC_SECRET=dev_hmac_secret_key
+  - PIXELCODA_PROJECT_ID=typo3-dev
+
+# Custom commands for pixelcoda setup
+hooks:
+  post-start:
+    - exec: composer install
+    - exec: vendor/bin/typo3 install:setup --no-interaction --database-user-name=db --database-user-password=db --database-host-name=db --database-port=3306 --database-name=db --admin-user-name=admin --admin-password=admin --site-name="pixelcoda TYPO3 Dev"
+    - exec: vendor/bin/typo3 extension:activate pixelcoda_search
+    - exec: vendor/bin/typo3 cache:flush

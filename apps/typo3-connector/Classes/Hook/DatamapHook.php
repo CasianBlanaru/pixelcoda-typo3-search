@@ -119,12 +119,14 @@ class DatamapHook
     }
 
     /**
-     * Send webhook to pixelcoda API
+     * Send lightweight webhook to pixelcoda API (ID+Type only)
+     * The worker will refetch the actual content from TYPO3-Headless JSON:API
      */
     private function sendWebhook(string $action, string $table, int $uid, array $data): void
     {
         try {
-            $payload = $this->buildWebhookPayload($action, $table, $uid, $data);
+            // Lightweight payload - only essential info
+            $payload = $this->buildLightweightPayload($action, $table, $uid);
             $signature = $this->generateHmacSignature($payload);
             
             $url = rtrim($this->config['api_url'], '/') . '/v1/webhook/typo3';
@@ -134,10 +136,10 @@ class DatamapHook
                     'Content-Type' => 'application/json',
                     'X-API-Key' => $this->config['api_key'],
                     'X-Signature-SHA256' => $signature,
-                    'User-Agent' => 'TYPO3-pixelcoda-Connector/1.0'
+                    'User-Agent' => 'TYPO3-pixelcoda-Connector/2.0'
                 ],
                 'body' => json_encode($payload),
-                'timeout' => $this->config['timeout'] ?? 30
+                'timeout' => $this->config['timeout'] ?? 10 // Shorter timeout for lightweight payload
             ];
 
             $response = $this->requestFactory->request($url, 'POST', $options);
@@ -147,7 +149,8 @@ class DatamapHook
                     'action' => $action,
                     'table' => $table,
                     'uid' => $uid,
-                    'status' => $response->getStatusCode()
+                    'status' => $response->getStatusCode(),
+                    'payload_size' => strlen(json_encode($payload))
                 ]);
             } else {
                 $this->logger->warning('Webhook failed', [
@@ -170,20 +173,57 @@ class DatamapHook
     }
 
     /**
-     * Build webhook payload
+     * Build lightweight webhook payload (ID+Type only)
+     * Worker will refetch actual content from TYPO3-Headless JSON:API
      */
-    private function buildWebhookPayload(string $action, string $table, int $uid, array $data): array
+    private function buildLightweightPayload(string $action, string $table, int $uid): array
     {
         return [
             'action' => $action,
-            'table' => $table,
-            'uid' => $uid,
-            'data' => $this->sanitizeData($data),
+            'type' => $table,
+            'id' => (string)$uid,
             'project_id' => $this->config['project_id'] ?? 'typo3',
             'timestamp' => time(),
-            'typo3_version' => TYPO3_version,
-            'site_identifier' => $this->getCurrentSiteIdentifier()
+            'typo3_headless_url' => $this->getTypo3HeadlessUrl(),
+            'language' => $this->getCurrentLanguage(),
+            'site_identifier' => $this->getCurrentSiteIdentifier(),
+            'webhook_version' => '2.0'
         ];
+    }
+
+    /**
+     * Get TYPO3-Headless API URL for refetching
+     */
+    private function getTypo3HeadlessUrl(): string
+    {
+        // Try to get from site configuration or environment
+        return $this->config['typo3_headless_url'] ?? 
+               $_ENV['TYPO3_HEADLESS_URL'] ?? 
+               'http://localhost/api';
+    }
+
+    /**
+     * Get current language from context
+     */
+    private function getCurrentLanguage(): string
+    {
+        try {
+            $context = GeneralUtility::makeInstance(Context::class);
+            $languageAspect = $context->getAspect('language');
+            $languageId = $languageAspect->getId();
+            
+            // Simple language mapping
+            $languageMap = [
+                0 => 'de',
+                1 => 'en',
+                2 => 'fr',
+                3 => 'es'
+            ];
+            
+            return $languageMap[$languageId] ?? 'de';
+        } catch (\Exception $e) {
+            return 'de';
+        }
     }
 
     /**
