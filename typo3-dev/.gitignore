@@ -1,49 +1,45 @@
-# TYPO3 Development Environment - Git Ignore
+# TYPO3 12.4 Development Environment - Git Ignore
 
-# TYPO3 Core Files
-/public/
+# TYPO3 Core Files (ignore everything in public except essentials)
+/public/*
+!/public/index.php
+!/public/typo3conf/
+
+# TYPO3 Configuration Directory (selective)
+/public/typo3conf/*
+!/public/typo3conf/ext/
+!/public/typo3conf/PackageStates.php
+
+# Keep only our pixelcoda_search extension
+/public/typo3conf/ext/*
+!/public/typo3conf/ext/pixelcoda_search/
+
+# TYPO3 Sensitive Configuration Files
+/public/typo3conf/LocalConfiguration.php
+/public/typo3conf/AdditionalConfiguration.php
+/public/typo3conf/ENABLE_INSTALL_TOOL
+/public/typo3conf/deprecation_*.log
+/public/typo3conf/temp_*
+/public/typo3conf/realurl_*
+
+# TYPO3 Runtime Files
 /var/
 /vendor/
 composer.lock
-
-# TYPO3 Configuration (contains sensitive data)
 /config/
-/config.yaml
 .env
 .env.local
 
-# TYPO3 Runtime Files
-/var/log/
-/var/cache/
-/var/charset/
-/var/lock/
-/var/session/
-/var/transient/
-
-# TYPO3 Uploads and File Storage
+# TYPO3 File Storage
 /fileadmin/
 /uploads/
-
-# TYPO3 Extensions (we only track our own)
-/public/typo3conf/ext/*
-!/public/typo3conf/ext/pixelcoda_search
-
-# TYPO3 Temporary Files
 /typo3temp/
 /public/typo3temp/
+/public/_processed_/
+/public/fileadmin/_processed_/
+/public/fileadmin/_temp_/
 
-# TYPO3 Configuration Files
-/public/typo3conf/LocalConfiguration.php
-/public/typo3conf/AdditionalConfiguration.php
-/public/typo3conf/PackageStates.php
-/public/typo3conf/deprecation_*.log
-/public/typo3conf/ENABLE_INSTALL_TOOL
-
-# Database Dumps
-*.sql
-!demo-content.sql
-
-# DDEV Files
+# DDEV Files (keep config, ignore generated)
 /.ddev/commands/
 /.ddev/homeadditions/
 /.ddev/providers/
@@ -58,7 +54,7 @@ composer.lock
 /.ddev/solr/
 /.ddev/elasticsearch/
 
-# Keep DDEV config but ignore generated files
+# Keep DDEV config files
 !/.ddev/config.yaml
 !/.ddev/docker-compose.*.yaml
 
@@ -99,16 +95,9 @@ tmp/
 temp/
 .tmp/
 
-# PHP
+# PHP Development
 .phpunit.result.cache
 /phpunit.xml
-
-# Backup Files
-*.bak
-*.backup
-*.old
-
-# Development Tools
 .php_cs.cache
 .php-cs-fixer.cache
 phpstan.neon
@@ -127,31 +116,15 @@ docker-compose.override.yml
 /packages/*/Tests/Functional/Fixtures/Database/
 /packages/*/Tests/Unit/Fixtures/
 
-# Ignore everything in public except index.php and our extension
-/public/*
-!/public/index.php
-!/public/typo3conf/
-!/public/typo3conf/ext/
-!/public/typo3conf/ext/pixelcoda_search/
+# Backup Files
+*.bak
+*.backup
+*.old
 
-# But ignore TYPO3 generated files in typo3conf
-/public/typo3conf/LocalConfiguration.php
-/public/typo3conf/AdditionalConfiguration.php
-/public/typo3conf/PackageStates.php
-/public/typo3conf/deprecation_*.log
-/public/typo3conf/ENABLE_INSTALL_TOOL
-/public/typo3conf/temp_*
-/public/typo3conf/realurl_*
-
-# TYPO3 File Mounts
-/public/_processed_/
-/public/fileadmin/_processed_/
-/public/fileadmin/_temp_/
-
-# Symfony Cache (used by TYPO3)
-/var/cache/
-/var/log/
-/var/sessions/
+# Database Dumps (keep demo content)
+*.sql
+!demo-content.sql
+!setup-typoscript.sql
 
 # Composer
 /auth.json
@@ -159,3 +132,17 @@ docker-compose.override.yml
 # Local configuration overrides
 .env.local
 .env.*.local
+
+# TYPO3 12.4 Specific
+/public/typo3/sysext/
+/public/typo3/ext/
+/public/typo3/index.php
+/public/typo3/install.php
+
+# Cache and Session Files
+/var/cache/
+/var/log/
+/var/sessions/
+/var/transient/
+/var/charset/
+/var/lock/
