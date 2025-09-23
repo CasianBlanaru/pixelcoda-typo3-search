@@ -19,12 +19,143 @@ tt_content.list.20.pixelcodasearch_search {
     }
 }
 
-# Headless Integration: Add plugin data to JSON output
-tt_content.list.20.pixelcodasearch_search {
-    dataProcessing {
-        10 = PixelCoda\PixelcodaSearch\DataProcessing\SearchConfigProcessor
+# Content Element definition for Headless mode - correct structure
+tt_content.pixelcodasearch_search =< lib.contentElementWithHeader
+tt_content.pixelcodasearch_search {
+    dataProcessing >
+    fields {
+        content {
+            fields {
+                searchConfig = JSON
+                searchConfig {
+                    fields {
+                        mode = TEXT
+                        mode.value = headless
+                        
+                        collections = TEXT
+                        collections.value = pages,news
+                        
+                        resultsPerPage = INT
+                        resultsPerPage.value = 10
+                        
+                        maxPassages = INT
+                        maxPassages.value = 6
+                        
+                        enableSuggestions = BOOL
+                        enableSuggestions.value = 1
+                        
+                        enableAsk = BOOL
+                        enableAsk.value = 1
+                        
+                        enableMetrics = BOOL
+                        enableMetrics.value = 1
+                        
+                        showDebug = BOOL
+                        showDebug.value = 0
+                        
+                        placeholder = TEXT
+                        placeholder.value = Website durchsuchen...
+                        
+                        template = TEXT
+                        template.value = Default
+                        
+                        cssClass = TEXT
+                        cssClass.value = pixelcoda-search
+                        
+                        minQueryLength = INT
+                        minQueryLength.value = 2
+                        
+                        debounceMs = INT
+                        debounceMs.value = 300
+                    }
+                }
+                
+                endpoints = JSON
+                endpoints {
+                    fields {
+                        search = TEXT
+                        search.value = /api/search
+                        
+                        ask = TEXT
+                        ask.value = /api/ask
+                        
+                        suggest = TEXT
+                        suggest.value = /api/suggest
+                    }
+                }
+                
+                form = JSON
+                form {
+                    fields {
+                        method = TEXT
+                        method.value = POST
+                        
+                        action = TEXT
+                        action.value = /api/search
+                        
+                        fields = JSON
+                        fields {
+                            fields {
+                                query = JSON
+                                query {
+                                    fields {
+                                        type = TEXT
+                                        type.value = text
+                                        
+                                        name = TEXT
+                                        name.value = q
+                                        
+                                        placeholder = TEXT
+                                        placeholder.value = Website durchsuchen...
+                                        
+                                        required = BOOL
+                                        required.value = 1
+                                        
+                                        minLength = INT
+                                        minLength.value = 2
+                                    }
+                                }
+                                
+                                collections = JSON
+                                collections {
+                                    fields {
+                                        type = TEXT
+                                        type.value = hidden
+                                        
+                                        name = TEXT
+                                        name.value = collections
+                                        
+                                        value = TEXT
+                                        value.value = pages,news
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                ui = JSON
+                ui {
+                    fields {
+                        showSuggestions = BOOL
+                        showSuggestions.value = 1
+                        
+                        showAsk = BOOL
+                        showAsk.value = 1
+                        
+                        showDebug = BOOL
+                        showDebug.value = 0
+                        
+                        template = TEXT
+                        template.value = Default
+                    }
+                }
+            }
+        }
     }
 }
+
+# Clean configuration - using native Headless JSON structure
 
 plugin.tx_pixelcodasearch_search {
     view {

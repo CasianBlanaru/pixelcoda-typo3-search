@@ -95,7 +95,7 @@ return array(
     'Psr\\Clock\\' => array($vendorDir . '/psr/clock/src'),
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PixelCoda\\PixelcodaSearch\\Tests\\' => array($baseDir . '/packages/pixelcoda_search/Tests'),
-    'PixelCoda\\PixelcodaSearch\\' => array($baseDir . '/public/typo3conf/ext/pixelcoda_search/Classes', $vendorDir . '/pixelcoda/pixelcoda-search/Classes'),
+    'PixelCoda\\PixelcodaSearch\\' => array($baseDir . '/packages/pixelcoda_search/Classes', $vendorDir . '/pixelcoda/pixelcoda-search/Classes'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpCsFixer\\' => array($vendorDir . '/friendsofphp/php-cs-fixer/src'),
     'PHPStan\\PhpDocParser\\' => array($vendorDir . '/phpstan/phpdoc-parser/src'),

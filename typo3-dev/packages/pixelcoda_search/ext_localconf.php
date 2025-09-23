@@ -28,6 +28,10 @@ ExtensionUtility::configurePlugin(
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_suggest'] = 
     \PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';
 
+// Register API routes for plugin configuration
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_config'] = 
+    \PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController::class . '::getPluginConfig';
+
 // Register page type for JSON API (headless mode)
 $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 

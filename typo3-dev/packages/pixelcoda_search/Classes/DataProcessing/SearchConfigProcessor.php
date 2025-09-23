@@ -36,9 +36,8 @@ class SearchConfigProcessor implements DataProcessorInterface
         array $processedData
     ): array {
         
-        // Only process if this is a pixelcoda search plugin
-        if ($processedData['data']['CType'] !== 'list' || 
-            $processedData['data']['list_type'] !== 'pixelcodasearch_search') {
+        // Only process if this is a pixelcoda search content element
+        if ($processedData['data']['CType'] !== 'pixelcodasearch_search') {
             return $processedData;
         }
 
@@ -58,7 +57,7 @@ class SearchConfigProcessor implements DataProcessorInterface
             $settings = array_merge($settings, $flexFormData['settings']);
         }
 
-        // Add search configuration
+        // Add search configuration directly to processed data
         $processedData['searchConfig'] = [
             'pluginType' => 'pixelcodasearch_search',
             'pluginName' => 'pixelcoda Search',
@@ -67,14 +66,22 @@ class SearchConfigProcessor implements DataProcessorInterface
             'projectId' => $settings['project_id'] ?? 'typo3',
             'collections' => $this->parseCollections($settings['collections'] ?? 'pages,news'),
             'resultsPerPage' => (int)($settings['resultsPerPage'] ?? 10),
+            'maxPassages' => (int)($settings['maxPassages'] ?? 6),
             'enableSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
             'enableAsk' => (bool)($settings['enableAsk'] ?? true),
+            'enableMetrics' => (bool)($settings['enableMetrics'] ?? true),
+            'showDebug' => (bool)($settings['showDebug'] ?? false),
             'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
             'template' => $settings['template'] ?? 'Default',
             'cssClass' => $settings['cssClass'] ?? 'pixelcoda-search',
             'minQueryLength' => (int)($settings['minQueryLength'] ?? 2),
             'debounceMs' => (int)($settings['debounceMs'] ?? 300),
         ];
+        
+        // Also add individual fields for TypoScript access
+        foreach ($processedData['searchConfig'] as $key => $value) {
+            $processedData[$key] = $value;
+        }
 
         // Add API endpoints
         $processedData['endpoints'] = [

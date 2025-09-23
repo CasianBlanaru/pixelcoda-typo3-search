@@ -30,6 +30,7 @@ class PixelcodaSearchSerializer
 
     /**
      * Serialize the pixelcoda Search plugin for JSON output
+     * This method is called by the Headless extension for each content element
      */
     public function serialize(array $contentElement, array $context = []): array
     {
@@ -47,9 +48,16 @@ class PixelcodaSearchSerializer
             ]
         ];
 
-        // Add plugin-specific data
-        $data['content']['pluginType'] = 'pixelcodasearch_search';
-        $data['content']['pluginName'] = 'pixelcoda Search';
+        // Add standard content fields
+        $data['content'] = [
+            'header' => $contentElement['header'] ?? '',
+            'subheader' => $contentElement['subheader'] ?? '',
+            'headerLayout' => (int)($contentElement['header_layout'] ?? 0),
+            'headerPosition' => $contentElement['header_position'] ?? '',
+            'headerLink' => $contentElement['header_link'] ?? '',
+            'pluginType' => 'pixelcodasearch_search',
+            'pluginName' => 'pixelcoda Search'
+        ];
 
         // Parse FlexForm data
         $flexFormData = [];
@@ -65,6 +73,17 @@ class PixelcodaSearchSerializer
             $settings = array_merge($settings, $flexFormData['settings']);
         }
 
+        // Add debug information if enabled
+        $debugInfo = [];
+        if (($settings['showDebug'] ?? false) || ($_GET['debug'] ?? false)) {
+            $debugInfo = [
+                'contentElement' => array_keys($contentElement),
+                'flexFormData' => $flexFormData,
+                'mergedSettings' => $settings,
+                'hasFlexForm' => !empty($contentElement['pi_flexform'])
+            ];
+        }
+
         // Add search configuration to JSON
         $data['content']['searchConfig'] = [
             'mode' => $settings['mode'] ?? 'headless',
@@ -72,8 +91,11 @@ class PixelcodaSearchSerializer
             'projectId' => $settings['project_id'] ?? '',
             'collections' => $this->parseCollections($settings['collections'] ?? 'pages,news'),
             'resultsPerPage' => (int)($settings['resultsPerPage'] ?? 10),
+            'maxPassages' => (int)($settings['maxPassages'] ?? 6),
             'enableSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
             'enableAsk' => (bool)($settings['enableAsk'] ?? true),
+            'enableMetrics' => (bool)($settings['enableMetrics'] ?? true),
+            'showDebug' => (bool)($settings['showDebug'] ?? false),
             'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
             'template' => $settings['template'] ?? 'Default',
             'cssClass' => $settings['cssClass'] ?? 'pixelcoda-search',
@@ -115,6 +137,11 @@ class PixelcodaSearchSerializer
             'showDebug' => (bool)($settings['showDebug'] ?? false),
             'template' => $settings['template'] ?? 'Default'
         ];
+
+        // Add debug information if available
+        if (!empty($debugInfo)) {
+            $data['content']['debug'] = $debugInfo;
+        }
 
         return $data;
     }

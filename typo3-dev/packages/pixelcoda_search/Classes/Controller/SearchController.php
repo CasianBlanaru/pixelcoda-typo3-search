@@ -37,10 +37,8 @@ class SearchController extends ActionController
         // Get plugin configuration
         $this->settings = $this->configurationService->getPluginSettings($this->settings);
         
-        // Set response format based on mode
-        if ($this->isHeadlessMode()) {
-            $this->request->setFormat('json');
-        }
+        // Note: setFormat() is deprecated in TYPO3 v12
+        // Format is handled in individual actions
     }
 
     /**
@@ -62,7 +60,7 @@ class SearchController extends ActionController
         ]);
 
         if ($this->isHeadlessMode()) {
-            return $this->jsonResponse([
+            return $this->createJsonResponse([
                 'data' => [
                     'type' => 'searchForm',
                     'id' => 'search-form',
@@ -94,7 +92,7 @@ class SearchController extends ActionController
         
         if (empty($query)) {
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse([
+                return $this->createJsonResponse([
                     'errors' => [[
                         'status' => '400',
                         'title' => 'Bad Request',
@@ -121,7 +119,7 @@ class SearchController extends ActionController
             ]);
 
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse($searchResults);
+                return $this->createJsonResponse($searchResults);
             }
 
             // Classic mode - assign to Fluid template
@@ -138,7 +136,7 @@ class SearchController extends ActionController
 
         } catch (\Exception $e) {
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse([
+                return $this->createJsonResponse([
                     'errors' => [[
                         'status' => '500',
                         'title' => 'Search Error',
@@ -167,7 +165,7 @@ class SearchController extends ActionController
         
         if (empty($question)) {
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse([
+                return $this->createJsonResponse([
                     'errors' => [[
                         'status' => '400',
                         'title' => 'Bad Request',
@@ -194,7 +192,7 @@ class SearchController extends ActionController
             ]);
 
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse($askResults);
+                return $this->createJsonResponse($askResults);
             }
 
             // Classic mode - assign to Fluid template
@@ -208,7 +206,7 @@ class SearchController extends ActionController
 
         } catch (\Exception $e) {
             if ($this->isHeadlessMode()) {
-                return $this->jsonResponse([
+                return $this->createJsonResponse([
                     'errors' => [[
                         'status' => '500',
                         'title' => 'Ask Error',
@@ -365,7 +363,7 @@ class SearchController extends ActionController
     /**
      * Create JSON response for headless mode
      */
-    protected function jsonResponse(array $data, int $statusCode = 200): ResponseInterface
+    protected function createJsonResponse(array $data, int $statusCode = 200): ResponseInterface
     {
         return new JsonResponse($data, $statusCode, [
             'Content-Type' => 'application/vnd.api+json',

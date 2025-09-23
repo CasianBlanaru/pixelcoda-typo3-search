@@ -50,7 +50,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PixelCoda\\PixelcodaSearch\\": "public/typo3conf/ext/pixelcoda_search/Classes/"
+            "PixelCoda\\PixelcodaSearch\\": "packages/pixelcoda_search/Classes/"
         }
     },
     "autoload-dev": {

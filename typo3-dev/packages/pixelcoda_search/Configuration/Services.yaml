@@ -4,15 +4,24 @@ services:
     autoconfigure: true
     public: false
 
+  # Controllers
+  PixelCoda\PixelcodaSearch\Controller\:
+    resource: '../Classes/Controller/*'
+    public: true
+
   # Services
   PixelCoda\PixelcodaSearch\Service\:
     resource: '../Classes/Service/*'
 
-  # Headless Serializers
-  PixelCoda\PixelcodaSearch\Serializer\:
-    resource: '../Classes/Serializer/*'
+  # Headless Serializers - explicit registration for pixelcodasearch_search
+  PixelCoda\PixelcodaSearch\Serializer\PixelcodaSearchSerializer:
     tags:
       - name: 'headless.serializer'
+        identifier: 'pixelcodasearch_search'
+        
+  # Data Processing
+  PixelCoda\PixelcodaSearch\DataProcessing\:
+    resource: '../Classes/DataProcessing/*'
 
   # CLI Commands
   PixelCoda\PixelcodaSearch\Command\IndexCommand:
