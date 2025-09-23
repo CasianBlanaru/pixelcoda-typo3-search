@@ -53,12 +53,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
     'debug_mode' => true
 ];
 
-// Add static TypoScript for plugin configuration
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    'pixelcoda_search',
-    'Configuration/TypoScript',
-    'pixelcoda Search'
-);
+// Static TypoScript files are now added in ext_tables.php
 
 // Add page TSconfig
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(

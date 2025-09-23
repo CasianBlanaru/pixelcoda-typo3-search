@@ -4,6 +4,13 @@ defined('TYPO3') || die();
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
+// Add static TypoScript for plugin configuration
+ExtensionManagementUtility::addStaticFile(
+    'pixelcoda_search',
+    'Configuration/TypoScript',
+    'pixelcoda Search'
+);
+
 // Add plugin to content element wizard
 ExtensionManagementUtility::addPlugin(
     [
