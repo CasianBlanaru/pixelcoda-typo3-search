@@ -69,3 +69,16 @@ $iconRegistry->registerIcon(
     \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     ['source' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg']
 );
+
+// Register the search plugin for the search results page
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'PixelcodaSearch',
+    'SearchResults',
+    [
+        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search'
+    ],
+    // non-cacheable actions
+    [
+        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search'
+    ]
+);

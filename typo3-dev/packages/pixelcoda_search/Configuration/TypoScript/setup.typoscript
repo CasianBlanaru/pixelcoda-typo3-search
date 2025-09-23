@@ -20,6 +20,22 @@ tt_content.list.20.pixelcodasearch_search {
     }
 }
 
+# Search Results Plugin
+tt_content.list.20.pixelcodasearch_searchresults = USER
+tt_content.list.20.pixelcodasearch_searchresults {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = PixelcodaSearch
+    pluginName = SearchResults
+    vendorName = PixelCoda
+    controller = Search
+    action = search
+    switchableControllerActions {
+        Search {
+            1 = search
+        }
+    }
+}
+
 # Content Element Rendering - Standard Mode with Fluid Template
 tt_content.pixelcodasearch_search = FLUIDTEMPLATE
 tt_content.pixelcodasearch_search {

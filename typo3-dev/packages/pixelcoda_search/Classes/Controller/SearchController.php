@@ -4,387 +4,160 @@ declare(strict_types=1);
 namespace PixelCoda\PixelcodaSearch\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use PixelCoda\PixelcodaSearch\Service\SearchService;
-use PixelCoda\PixelcodaSearch\Service\ConfigurationService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * Search Controller for both Classic (Fluid) and Headless (JSON:API) modes
+ * Search Controller for handling search requests
  */
 class SearchController extends ActionController
 {
-    protected SearchService $searchService;
-    protected ConfigurationService $configurationService;
-
-    public function __construct(
-        SearchService $searchService,
-        ConfigurationService $configurationService
-    ) {
-        $this->searchService = $searchService;
-        $this->configurationService = $configurationService;
-    }
-
     /**
-     * Initialize action - setup common variables
-     */
-    public function initializeAction(): void
-    {
-        parent::initializeAction();
-        
-        // Get plugin configuration
-        $this->settings = $this->configurationService->getPluginSettings($this->settings);
-        
-        // Note: setFormat() is deprecated in TYPO3 v12
-        // Format is handled in individual actions
-    }
-
-    /**
-     * Main search form action
+     * Display search form
      */
     public function indexAction(): ResponseInterface
     {
-        $mode = $this->settings['mode'] ?? 'classic';
-        $query = $this->request->hasArgument('q') ? $this->request->getArgument('q') : '';
-        
-        // Prepare view variables
-        $this->view->assignMultiple([
-            'mode' => $mode,
-            'query' => $query,
-            'settings' => $this->settings,
-            'placeholder' => $this->getLocalizedPlaceholder(),
-            'languages' => $this->getAvailableLanguages(),
-            'collections' => $this->getAvailableCollections()
-        ]);
-
-        if ($this->isHeadlessMode()) {
-            return $this->createJsonResponse([
-                'data' => [
-                    'type' => 'searchForm',
-                    'id' => 'search-form',
-                    'attributes' => [
-                        'mode' => $mode,
-                        'query' => $query,
-                        'placeholder' => $this->getLocalizedPlaceholder(),
-                        'settings' => $this->settings
-                    ]
-                ],
-                'meta' => [
-                    'mode' => 'headless',
-                    'version' => '2.0.0'
-                ]
-            ]);
-        }
-
         return $this->htmlResponse();
     }
 
     /**
-     * Search action - performs actual search
+     * Handle search and display results
      */
     public function searchAction(): ResponseInterface
     {
-        $query = $this->request->hasArgument('q') ? trim($this->request->getArgument('q')) : '';
-        $page = max(1, (int)($this->request->hasArgument('page') ? $this->request->getArgument('page') : 1));
-        $collections = $this->request->hasArgument('collections') ? $this->request->getArgument('collections') : [];
+        $searchQuery = $this->request->getQueryParams()['q'] ?? '';
+        $searchQuery = trim($searchQuery);
         
-        if (empty($query)) {
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse([
-                    'errors' => [[
-                        'status' => '400',
-                        'title' => 'Bad Request',
-                        'detail' => 'Search query is required'
-                    ]]
-                ], 400);
-            }
-            
-            $this->addFlashMessage(
-                $this->translate('search.error.emptyQuery', 'Please enter a search term'),
-                '',
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
-            );
-            return $this->redirect('index');
-        }
-
-        try {
-            $searchResults = $this->searchService->search([
-                'q' => $query,
-                'page' => $page,
-                'limit' => (int)($this->settings['resultsPerPage'] ?? 10),
-                'collections' => is_array($collections) ? $collections : [],
-                'lang' => $this->getCurrentLanguage()
-            ]);
-
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse($searchResults);
-            }
-
-            // Classic mode - assign to Fluid template
-            $this->view->assignMultiple([
-                'query' => $query,
-                'results' => $searchResults,
-                'pagination' => $this->buildPagination($searchResults, $page),
-                'settings' => $this->settings,
-                'totalResults' => $searchResults['meta']['pagination']['total'] ?? 0,
-                'responseTime' => $searchResults['meta']['search']['response_time_ms'] ?? 0
-            ]);
-
-            return $this->htmlResponse();
-
-        } catch (\Exception $e) {
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse([
-                    'errors' => [[
-                        'status' => '500',
-                        'title' => 'Search Error',
-                        'detail' => $e->getMessage()
-                    ]]
-                ], 500);
-            }
-
-            $this->addFlashMessage(
-                $this->translate('search.error.general', 'Search failed. Please try again.'),
-                '',
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
-            );
-            
-            return $this->redirect('index');
-        }
-    }
-
-    /**
-     * Ask action - AI-powered answers
-     */
-    public function askAction(): ResponseInterface
-    {
-        $question = $this->request->hasArgument('q') ? trim($this->request->getArgument('q')) : '';
-        $collections = $this->request->hasArgument('collections') ? $this->request->getArgument('collections') : [];
+        $results = [];
+        $message = '';
         
-        if (empty($question)) {
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse([
-                    'errors' => [[
-                        'status' => '400',
-                        'title' => 'Bad Request',
-                        'detail' => 'Question is required'
-                    ]]
-                ], 400);
-            }
+        if (strlen($searchQuery) < 3) {
+            $message = 'Bitte geben Sie mindestens 3 Zeichen ein.';
+        } else {
+            // Search in pages
+            $results = $this->searchInPages($searchQuery);
             
-            $this->addFlashMessage(
-                $this->translate('ask.error.emptyQuestion', 'Please enter a question'),
-                '',
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
-            );
-            return $this->redirect('index');
-        }
-
-        try {
-            $askResults = $this->searchService->ask([
-                'q' => $question,
-                'collections' => is_array($collections) ? $collections : [],
-                'lang' => $this->getCurrentLanguage(),
-                'maxPassages' => (int)($this->settings['maxPassages'] ?? 6),
-                'includeDebug' => (bool)($this->settings['showDebug'] ?? false)
-            ]);
-
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse($askResults);
+            if (empty($results)) {
+                $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
+            } else {
+                $message = count($results) . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
             }
-
-            // Classic mode - assign to Fluid template
-            $this->view->assignMultiple([
-                'question' => $question,
-                'answer' => $askResults,
-                'settings' => $this->settings
-            ]);
-
-            return $this->htmlResponse();
-
-        } catch (\Exception $e) {
-            if ($this->isHeadlessMode()) {
-                return $this->createJsonResponse([
-                    'errors' => [[
-                        'status' => '500',
-                        'title' => 'Ask Error',
-                        'detail' => $e->getMessage()
-                    ]]
-                ], 500);
-            }
-
-            $this->addFlashMessage(
-                $this->translate('ask.error.general', 'Failed to generate answer. Please try again.'),
-                '',
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR
-            );
-            
-            return $this->redirect('index');
         }
-    }
-
-    /**
-     * Results action - display search results (classic mode only)
-     */
-    public function resultsAction(): ResponseInterface
-    {
-        // This action is used for AJAX result updates in classic mode
-        $query = $this->request->hasArgument('q') ? trim($this->request->getArgument('q')) : '';
-        $page = max(1, (int)($this->request->hasArgument('page') ? $this->request->getArgument('page') : 1));
         
-        if (empty($query)) {
-            $this->view->assign('error', $this->translate('search.error.emptyQuery', 'Please enter a search term'));
-            return $this->htmlResponse();
-        }
-
-        try {
-            $searchResults = $this->searchService->search([
-                'q' => $query,
-                'page' => $page,
-                'limit' => (int)($this->settings['resultsPerPage'] ?? 10),
-                'lang' => $this->getCurrentLanguage()
-            ]);
-
-            $this->view->assignMultiple([
-                'query' => $query,
-                'results' => $searchResults,
-                'pagination' => $this->buildPagination($searchResults, $page),
-                'totalResults' => $searchResults['meta']['pagination']['total'] ?? 0,
-                'responseTime' => $searchResults['meta']['search']['response_time_ms'] ?? 0
-            ]);
-
-        } catch (\Exception $e) {
-            $this->view->assign('error', $this->translate('search.error.general', 'Search failed. Please try again.'));
-        }
-
+        $this->view->assignMultiple([
+            'searchQuery' => htmlspecialchars($searchQuery),
+            'results' => $results,
+            'message' => $message
+        ]);
+        
         return $this->htmlResponse();
     }
-
+    
     /**
-     * Check if running in headless mode
+     * Search in pages table
      */
-    protected function isHeadlessMode(): bool
+    protected function searchInPages(string $query): array
     {
-        // Check FlexForm setting first
-        if (isset($this->settings['mode'])) {
-            return $this->settings['mode'] === 'headless';
-        }
-
-        // Check TypoScript setting
-        $mode = $this->settings['defaultMode'] ?? 'classic';
-        return $mode === 'headless';
-    }
-
-    /**
-     * Get current language
-     */
-    protected function getCurrentLanguage(): string
-    {
-        $languageAspect = $this->request->getAttribute('language');
-        $languageId = $languageAspect ? $languageAspect->getId() : 0;
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
         
-        // Simple language mapping
-        $languageMap = [
-            0 => 'de',
-            1 => 'en',
-            2 => 'fr',
-            3 => 'es'
-        ];
+        $searchTerms = '%' . $queryBuilder->escapeLikeWildcards($query) . '%';
         
-        return $languageMap[$languageId] ?? 'de';
-    }
-
-    /**
-     * Get available languages for frontend
-     */
-    protected function getAvailableLanguages(): array
-    {
-        // This would typically come from site configuration
-        return [
-            ['code' => 'de', 'title' => 'Deutsch'],
-            ['code' => 'en', 'title' => 'English']
-        ];
-    }
-
-    /**
-     * Get available collections
-     */
-    protected function getAvailableCollections(): array
-    {
-        return [
-            ['key' => 'pages', 'title' => $this->translate('collections.pages', 'Pages')],
-            ['key' => 'news', 'title' => $this->translate('collections.news', 'News')],
-            ['key' => 'tt_content', 'title' => $this->translate('collections.content', 'Content Elements')]
-        ];
-    }
-
-    /**
-     * Get localized placeholder text
-     */
-    protected function getLocalizedPlaceholder(): string
-    {
-        return $this->translate('search.placeholder', 'Website durchsuchen...');
-    }
-
-    /**
-     * Build pagination array for Fluid template
-     */
-    protected function buildPagination(array $searchResults, int $currentPage): array
-    {
-        $meta = $searchResults['meta']['pagination'] ?? [];
-        $totalPages = $meta['pages'] ?? 1;
+        $statement = $queryBuilder
+            ->select('uid', 'title', 'abstract', 'keywords')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like('title', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('abstract', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('keywords', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('description', $queryBuilder->createNamedParameter($searchTerms))
+                ),
+                $queryBuilder->expr()->eq('deleted', 0),
+                $queryBuilder->expr()->eq('hidden', 0)
+            )
+            ->setMaxResults(20)
+            ->execute();
         
-        $pagination = [
-            'current' => $currentPage,
-            'total' => $totalPages,
-            'hasNext' => $currentPage < $totalPages,
-            'hasPrev' => $currentPage > 1,
-            'next' => min($currentPage + 1, $totalPages),
-            'prev' => max($currentPage - 1, 1),
-            'pages' => []
-        ];
-
-        // Generate page numbers (show 5 pages around current)
-        $start = max(1, $currentPage - 2);
-        $end = min($totalPages, $currentPage + 2);
-        
-        for ($i = $start; $i <= $end; $i++) {
-            $pagination['pages'][] = [
-                'number' => $i,
-                'isCurrent' => $i === $currentPage
+        $results = [];
+        while ($row = $statement->fetchAssociative()) {
+            // Build URL for the page
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $conf = [
+                'parameter' => $row['uid'],
+                'returnLast' => 'url',
+                'forceAbsoluteUrl' => 0
+            ];
+            
+            $results[] = [
+                'title' => $row['title'],
+                'abstract' => $row['abstract'] ?: 'Keine Beschreibung verfügbar.',
+                'url' => $cObj->typoLink('', $conf)
             ];
         }
-
-        return $pagination;
+        
+        // Also search in tt_content
+        $contentResults = $this->searchInContent($query);
+        $results = array_merge($results, $contentResults);
+        
+        return $results;
     }
-
+    
     /**
-     * Create JSON response for headless mode
+     * Search in content elements
      */
-    protected function createJsonResponse(array $data, int $statusCode = 200): ResponseInterface
+    protected function searchInContent(string $query): array
     {
-        return new JsonResponse($data, $statusCode, [
-            'Content-Type' => 'application/vnd.api+json',
-            'X-Powered-By' => 'pixelcoda Search v2.0'
-        ]);
-    }
-
-    /**
-     * Translate label with fallback
-     */
-    protected function translate(string $key, string $fallback = ''): string
-    {
-        $translated = $this->getLanguageService()->sL('LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:' . $key);
-        return $translated ?: $fallback;
-    }
-
-    /**
-     * Get language service
-     */
-    protected function getLanguageService(): \TYPO3\CMS\Core\Localization\LanguageService
-    {
-        return $GLOBALS['LANG'] ?? GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        
+        $searchTerms = '%' . $queryBuilder->escapeLikeWildcards($query) . '%';
+        
+        $statement = $queryBuilder
+            ->select('tt_content.uid', 'tt_content.header', 'tt_content.bodytext', 'tt_content.pid', 'pages.title as page_title')
+            ->from('tt_content')
+            ->leftJoin(
+                'tt_content',
+                'pages',
+                'pages',
+                $queryBuilder->expr()->eq('tt_content.pid', $queryBuilder->quoteIdentifier('pages.uid'))
+            )
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like('tt_content.header', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('tt_content.bodytext', $queryBuilder->createNamedParameter($searchTerms))
+                ),
+                $queryBuilder->expr()->eq('tt_content.deleted', 0),
+                $queryBuilder->expr()->eq('tt_content.hidden', 0),
+                $queryBuilder->expr()->eq('pages.deleted', 0),
+                $queryBuilder->expr()->eq('pages.hidden', 0)
+            )
+            ->setMaxResults(10)
+            ->execute();
+        
+        $results = [];
+        while ($row = $statement->fetchAssociative()) {
+            // Build URL for the parent page
+            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+            $conf = [
+                'parameter' => $row['pid'],
+                'returnLast' => 'url',
+                'forceAbsoluteUrl' => 0
+            ];
+            
+            $abstract = strip_tags($row['bodytext'] ?? '');
+            $abstract = mb_substr($abstract, 0, 150) . (mb_strlen($abstract) > 150 ? '...' : '');
+            
+            $results[] = [
+                'title' => $row['header'] ?: $row['page_title'],
+                'abstract' => $abstract ?: 'Keine Beschreibung verfügbar.',
+                'url' => $cObj->typoLink('', $conf),
+                'page' => $row['page_title']
+            ];
+        }
+        
+        return $results;
     }
 }
