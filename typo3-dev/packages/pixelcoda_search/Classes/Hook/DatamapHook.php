@@ -85,53 +85,51 @@ class DatamapHook implements LoggerAwareInterface
     }
 
     /**
-     * Hook that is called after a command has been processed
+     * Hook that is called after all commands have been processed
      * 
-     * @param string $command The command (delete, copy, move, etc.)
-     * @param string $table The table name
-     * @param string|int $id The record ID
-     * @param mixed $value The command value
      * @param DataHandler $dataHandler
      */
-    public function processCmdmap_afterFinish(
-        string $command,
-        string $table,
-        $id,
-        $value,
-        DataHandler $dataHandler
-    ): void {
+    public function processCmdmap_afterFinish(DataHandler $dataHandler): void
+    {
         $enabledTables = $this->getEnabledTables();
         
-        if (!in_array($table, $enabledTables, true)) {
-            return;
-        }
-
-        try {
-            switch ($command) {
-                case 'delete':
-                    $this->deleteFromIndex($table, (int)$id);
-                    break;
-                
-                case 'copy':
-                    // Index the copied record
-                    if (isset($dataHandler->copyMappingArray[$table][$id])) {
-                        $newId = $dataHandler->copyMappingArray[$table][$id];
-                        $this->indexRecord($table, (int)$newId, 'create');
-                    }
-                    break;
-                
-                case 'move':
-                    // Re-index moved record (URL might have changed)
-                    $this->indexRecord($table, (int)$id, 'update');
-                    break;
+        // Process all commands that were executed
+        foreach ($dataHandler->cmdmap as $table => $commands) {
+            if (!in_array($table, $enabledTables, true)) {
+                continue;
             }
-        } catch (\Exception $e) {
-            $this->logger?->error('pixelcoda Search command processing failed', [
-                'table' => $table,
-                'id' => $id,
-                'command' => $command,
-                'error' => $e->getMessage()
-            ]);
+            
+            foreach ($commands as $id => $commandData) {
+                foreach ($commandData as $command => $value) {
+                    try {
+                        switch ($command) {
+                            case 'delete':
+                                $this->deleteFromIndex($table, (int)$id);
+                                break;
+                            
+                            case 'copy':
+                                // Index the copied record
+                                if (isset($dataHandler->copyMappingArray[$table][$id])) {
+                                    $newId = $dataHandler->copyMappingArray[$table][$id];
+                                    $this->indexRecord($table, (int)$newId, 'create');
+                                }
+                                break;
+                            
+                            case 'move':
+                                // Re-index moved record (URL might have changed)
+                                $this->indexRecord($table, (int)$id, 'update');
+                                break;
+                        }
+                    } catch (\Exception $e) {
+                        $this->logger?->error('pixelcoda Search command processing failed', [
+                            'table' => $table,
+                            'id' => $id,
+                            'command' => $command,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
+            }
         }
     }
 

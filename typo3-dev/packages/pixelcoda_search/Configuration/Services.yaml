@@ -1,0 +1,28 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  # Services
+  PixelCoda\PixelcodaSearch\Service\:
+    resource: '../Classes/Service/*'
+
+  # Headless Serializers
+  PixelCoda\PixelcodaSearch\Serializer\:
+    resource: '../Classes/Serializer/*'
+    tags:
+      - name: 'headless.serializer'
+
+  # CLI Commands
+  PixelCoda\PixelcodaSearch\Command\IndexCommand:
+    tags:
+      - name: 'console.command'
+        command: 'pixelcoda:search:index'
+        description: 'Index content to pixelcoda Search'
+
+  PixelCoda\PixelcodaSearch\Command\ReindexCommand:
+    tags:
+      - name: 'console.command'
+        command: 'pixelcoda:search:reindex'
+        description: 'Re-index all content to pixelcoda Search'

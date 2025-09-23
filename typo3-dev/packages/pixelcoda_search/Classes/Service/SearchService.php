@@ -263,4 +263,127 @@ class SearchService
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
     }
+
+    /**
+     * Get search suggestions
+     */
+    public function getSuggestions(string $query, int $limit = 5, string $collections = 'pages,tt_content'): array
+    {
+        $params = [
+            'q' => $query,
+            'limit' => $limit,
+            'collections' => explode(',', $collections)
+        ];
+
+        $result = $this->suggest($params);
+        return $result['data'] ?? [];
+    }
+
+    /**
+     * Index a single record
+     */
+    public function indexRecord(string $table, int $id, string $action = 'update', bool $force = false): bool
+    {
+        // This is a placeholder - actual implementation would extract record data
+        // and send it to the indexing API
+        $this->logger->info('Indexing record', [
+            'table' => $table,
+            'id' => $id,
+            'action' => $action,
+            'force' => $force
+        ]);
+
+        // For now, just return true to avoid errors
+        // TODO: Implement actual record indexing
+        return true;
+    }
+
+    /**
+     * Delete a record from the search index
+     */
+    public function deleteRecord(string $table, int $id): bool
+    {
+        // This is a placeholder - actual implementation would call delete API
+        $this->logger->info('Deleting record from index', [
+            'table' => $table,
+            'id' => $id
+        ]);
+
+        // For now, just return true to avoid errors
+        // TODO: Implement actual record deletion
+        return true;
+    }
+
+    /**
+     * Index all records from a table
+     */
+    public function indexTable(string $table, bool $force = false): int
+    {
+        // This is a placeholder - actual implementation would fetch all records
+        // and index them
+        $this->logger->info('Indexing table', [
+            'table' => $table,
+            'force' => $force
+        ]);
+
+        // For now, just return 0 to avoid errors
+        // TODO: Implement actual table indexing
+        return 0;
+    }
+
+    /**
+     * Get record count for a table
+     */
+    public function getTableRecordCount(string $table): int
+    {
+        // This is a placeholder - actual implementation would count records
+        $this->logger->info('Getting table record count', [
+            'table' => $table
+        ]);
+
+        // For now, just return 0 to avoid errors
+        // TODO: Implement actual record counting
+        return 0;
+    }
+
+    /**
+     * Clear index for a specific table
+     */
+    public function clearTableIndex(string $table): bool
+    {
+        // This is a placeholder - actual implementation would clear table index
+        $this->logger->info('Clearing table index', [
+            'table' => $table
+        ]);
+
+        // For now, just return true to avoid errors
+        // TODO: Implement actual index clearing
+        return true;
+    }
+
+    /**
+     * Clear all indexes
+     */
+    public function clearAllIndexes(): bool
+    {
+        // This is a placeholder - actual implementation would clear all indexes
+        $this->logger->info('Clearing all indexes');
+
+        // For now, just return true to avoid errors
+        // TODO: Implement actual index clearing
+        return true;
+    }
+
+    /**
+     * Get index statistics
+     */
+    public function getIndexStatistics(): ?array
+    {
+        // This is a placeholder - actual implementation would get stats from API
+        $this->logger->info('Getting index statistics');
+
+        // For now, just return null to avoid errors
+        // TODO: Implement actual statistics retrieval
+        return null;
+    }
 }

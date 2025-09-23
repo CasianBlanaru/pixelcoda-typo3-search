@@ -11,18 +11,36 @@ ExtensionManagementUtility::addStaticFile(
     'pixelcoda Search'
 );
 
-// Add plugin to content element wizard
+// Add plugin to content element wizard (as list_type plugin)
 ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:plugin.search.title',
         'pixelcodasearch_search',
-        'EXT:pixelcoda_search/Resources/Public/Icons/ContentElement.svg'
+        'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg'
     ],
-    'CType',
+    'list_type',
     'pixelcoda_search'
 );
 
-// Add FlexForm configuration
+// Also add it to the Plugin wizard (new content element wizard)
+ExtensionManagementUtility::addPageTSConfig('
+    mod.wizards.newContentElement.wizardItems.plugins {
+        elements {
+            pixelcodasearch_search {
+                iconIdentifier = pixelcoda-search
+                title = LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:plugin.search.title
+                description = LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:plugin.search.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = pixelcodasearch_search
+                }
+            }
+        }
+        show = *
+    }
+');
+
+// Add TCA configuration for the custom CType
 $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search'] = [
     'showitem' => '
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
@@ -45,7 +63,7 @@ $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search'] = [
     '
 ];
 
-// Add FlexForm configuration
+// Add FlexForm configuration for the custom CType
 $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search']['columnsOverrides'] = [
     'pi_flexform' => [
         'config' => [
@@ -55,6 +73,13 @@ $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search']['columnsOverrid
         ]
     ]
 ];
+
+// Configure the list plugin type as well (for traditional plugin approach)
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['pixelcodasearch_search'] = 'layout,select_key,pages,recursive';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['pixelcodasearch_search'] = 'pi_flexform';
+
+// Add FlexForm configuration for the plugin
+$GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['pixelcodasearch_search'] = 'FILE:EXT:pixelcoda_search/Configuration/FlexForms/Search.xml';
 
 // Register backend module
 ExtensionManagementUtility::addModule(

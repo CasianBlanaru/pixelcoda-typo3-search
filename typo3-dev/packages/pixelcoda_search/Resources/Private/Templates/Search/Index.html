@@ -3,6 +3,16 @@
 <f:layout name="Default" />
 
 <f:section name="Main">
+    <!-- DEBUG: Plugin is working! -->
+    <div class="pixelcoda-search-debug">
+        <h3>🔍 pixelcoda Search Plugin ist aktiv!</h3>
+        <p><strong>Mode:</strong> {settings.mode}</p>
+        <p><strong>Collections:</strong> {settings.collections}</p>
+        <p><strong>Template:</strong> {settings.template}</p>
+        <p><strong>API URL:</strong> {settings.api_url}</p>
+        <p><strong>Project ID:</strong> {settings.project_id}</p>
+    </div>
+
     <div class="pixelcoda-search {settings.cssClass}" data-mode="{settings.mode}" data-project-id="{settings.project_id}" data-api-url="{settings.api_url}">
 
         <!-- Search Form -->

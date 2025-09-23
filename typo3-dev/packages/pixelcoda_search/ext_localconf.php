@@ -6,17 +6,11 @@ use PixelCoda\PixelcodaSearch\Command\IndexCommand;
 use PixelCoda\PixelcodaSearch\Command\ReindexCommand;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-// Register DataHandler hooks for automatic indexing
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = DatamapHook::class;
+// Register DataHandler hooks for automatic indexing (temporarily disabled due to signature issues)
+// $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
+// $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = DatamapHook::class;
 
-// Register CLI commands
-$GLOBALS['TYPO3_CONF_VARS']['CONSOLE']['commands']['pixelcoda:search:index'] = [
-    'class' => IndexCommand::class
-];
-$GLOBALS['TYPO3_CONF_VARS']['CONSOLE']['commands']['pixelcoda:search:reindex'] = [
-    'class' => ReindexCommand::class
-];
+// CLI commands are now registered via Configuration/Services.yaml
 
 // Register Frontend Plugin
 ExtensionUtility::configurePlugin(

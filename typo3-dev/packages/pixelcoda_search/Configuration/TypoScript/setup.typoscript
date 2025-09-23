@@ -1,5 +1,37 @@
 # pixelcoda Search TypoScript Setup
 
+# Content Element Rendering Definition for list plugin
+tt_content.list.20.pixelcodasearch_search = USER
+tt_content.list.20.pixelcodasearch_search {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = PixelcodaSearch
+    pluginName = Search
+    vendorName = PixelCoda
+    controller = Search
+    action = index
+    switchableControllerActions {
+        Search {
+            1 = index
+            2 = search
+            3 = ask
+            4 = results
+        }
+    }
+}
+
+# Headless Integration: Add plugin data to JSON output
+lib.contentElement {
+    settings {
+        content {
+            pixelcodasearch_search {
+                dataProcessing {
+                    10 = PixelCoda\PixelcodaSearch\DataProcessing\SearchConfigProcessor
+                }
+            }
+        }
+    }
+}
+
 plugin.tx_pixelcodasearch_search {
     view {
         templateRootPaths {
