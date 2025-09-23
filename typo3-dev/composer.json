@@ -40,7 +40,8 @@
         "typo3/cms-seo": "^12.4",
         "friendsoftypo3/headless": "^4.0",
         "georgringer/news": "^11.0",
-        "pixelcoda/pixelcoda-search": "dev-main"
+        "pixelcoda/pixelcoda-search": "dev-main",
+        "symfony/cache": "^7.0"
     },
     "require-dev": {
         "typo3/testing-framework": "^8.0",
