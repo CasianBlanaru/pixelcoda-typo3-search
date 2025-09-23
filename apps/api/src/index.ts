@@ -53,10 +53,16 @@ export default {
 };
 
 if (process.env.NODE_ENV !== 'production') {
-  Bun?.serve?.({ fetch: app.fetch, port }) ??
-  (async () => {
-    const { serve } = await import('@hono/node-server');
-    serve({ fetch: app.fetch, port });
-    console.log(`[api] listening on http://localhost:${port}`);
-  })();
+  // Check if running with Bun
+  if (typeof Bun !== 'undefined' && Bun?.serve) {
+    Bun.serve({ fetch: app.fetch, port });
+    console.log(`[api] listening with Bun on http://localhost:${port}`);
+  } else {
+    // Use Node.js server
+    (async () => {
+      const { serve } = await import('@hono/node-server');
+      serve({ fetch: app.fetch, port });
+      console.log(`[api] listening with Node.js on http://localhost:${port}`);
+    })();
+  }
 }
