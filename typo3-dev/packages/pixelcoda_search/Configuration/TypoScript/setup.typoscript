@@ -20,15 +20,9 @@ tt_content.list.20.pixelcodasearch_search {
 }
 
 # Headless Integration: Add plugin data to JSON output
-lib.contentElement {
-    settings {
-        content {
-            pixelcodasearch_search {
-                dataProcessing {
-                    10 = PixelCoda\PixelcodaSearch\DataProcessing\SearchConfigProcessor
-                }
-            }
-        }
+tt_content.list.20.pixelcodasearch_search {
+    dataProcessing {
+        10 = PixelCoda\PixelcodaSearch\DataProcessing\SearchConfigProcessor
     }
 }
 
