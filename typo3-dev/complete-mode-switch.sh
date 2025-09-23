@@ -59,40 +59,46 @@ case $choice in
         cp config/system/PackageStates.php.standard config/system/PackageStates.php
         
         # Update database templates for Standard
-        ddev mysql -e "
-        UPDATE sys_template 
-        SET 
-            config = '# Standard Mode Configuration
+            ddev mysql -e "
+            UPDATE sys_template 
+            SET 
+                config = '# Standard Mode Configuration with Fluid Styled Content
+@import \"EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript\"
+
 page = PAGE
 page {
     typeNum = 0
     
-    # HTML Meta
+    # Meta tags
     meta {
         viewport = width=device-width, initial-scale=1
     }
     
-    # Simple HTML with Content
+    # Include CSS
+    includeCSS {
+        search = EXT:pixelcoda_search/Resources/Public/Css/search.css
+    }
+    
+    # Include JS
+    includeJS {
+        search = EXT:pixelcoda_search/Resources/Public/JavaScript/search.js
+    }
+    
+    # Container wrapper
     10 = TEXT
     10.value = <div class=\"container\">
     
-    # Main Content from Backend
+    # Main content from backend
     20 < styles.content.get
     20.select.where = {#colPos}=0
     
+    # Close container
     30 = TEXT
     30.value = </div>
 }
-
-# Content rendering
-lib.contentElement {
-    templateRootPaths {
-        10 = EXT:fluid_styled_content/Resources/Private/Templates/
-    }
-}
 ',
-            include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript'
-        WHERE uid = 3;
+                include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript'
+            WHERE uid = 3;
         
         UPDATE sys_template 
         SET 
@@ -111,8 +117,14 @@ page {
     10.value = <div class=\"container\">
     
     # Main Content from Backend
-    20 < styles.content.get
-    20.select.where = {#colPos}=0
+    20 = CONTENT
+    20 {
+        table = tt_content
+        select {
+            orderBy = sorting
+            where = {#colPos}=0
+        }
+    }
     
     30 = TEXT
     30.value = </div>

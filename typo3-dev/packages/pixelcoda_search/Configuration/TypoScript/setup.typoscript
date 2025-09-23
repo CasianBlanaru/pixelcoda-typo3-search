@@ -20,76 +20,21 @@ tt_content.list.20.pixelcodasearch_search {
     }
 }
 
-# OVERRIDE: Force content element configuration for Headless
-# This must come AFTER the headless extension's configuration
-tt_content.pixelcodasearch_search >
-tt_content.pixelcodasearch_search =< lib.contentElementWithHeader
+# Content Element Rendering - Standard Mode with Fluid Template
+tt_content.pixelcodasearch_search = FLUIDTEMPLATE
 tt_content.pixelcodasearch_search {
-    fields {
-        content {
-            fields {
-                # Add plugin-specific fields to the existing content structure
-                pluginType = TEXT
-                pluginType.value = pixelcodasearch_search
-                
-                mode = TEXT
-                mode.value = headless
-                
-                placeholder = TEXT
-                placeholder.value = Website durchsuchen...
-                
-                searchConfig = JSON
-                searchConfig {
-                    fields {
-                        mode = TEXT
-                        mode.value = headless
-                        
-                        placeholder = TEXT
-                        placeholder.value = Website durchsuchen...
-                        
-                        resultsPerPage = INT
-                        resultsPerPage.value = 10
-                        
-                        collections = TEXT
-                        collections.value = pages,news
-                        
-                        enableSuggestions = INT
-                        enableSuggestions.value = 1
-                        
-                        enableAsk = INT
-                        enableAsk.value = 1
-                    }
-                }
-                
-                endpoints = JSON
-                endpoints {
-                    fields {
-                        search = TEXT
-                        search.value = /api/search
-                        
-                        ask = TEXT
-                        ask.value = /api/ask
-                        
-                        suggest = TEXT
-                        suggest.value = /api/suggest
-                    }
-                }
-                
-                ui = JSON
-                ui {
-                    fields {
-                        showSuggestions = INT
-                        showSuggestions.value = 1
-                        
-                        showAsk = INT
-                        showAsk.value = 1
-                        
-                        template = TEXT
-                        template.value = Default
-                    }
-                }
-            }
-        }
+    templateName = Search
+    templateRootPaths {
+        10 = EXT:pixelcoda_search/Resources/Private/Templates/ContentElements/
+    }
+    layoutRootPaths {
+        10 = EXT:pixelcoda_search/Resources/Private/Layouts/ContentElements/
+    }
+    partialRootPaths {
+        10 = EXT:pixelcoda_search/Resources/Private/Partials/ContentElements/
+    }
+    dataProcessing {
+        10 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
     }
 }
 
