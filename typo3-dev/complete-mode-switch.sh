@@ -32,11 +32,15 @@ case $choice in
         # Update database templates for Headless
         ddev mysql -e "
         UPDATE sys_template 
-        SET include_static_file = 'EXT:headless/Configuration/TypoScript,EXT:headless/Configuration/TypoScript/Mixed,EXT:pixelcoda_search/Configuration/TypoScript'
+        SET 
+            config = '',
+            include_static_file = 'EXT:headless/Configuration/TypoScript,EXT:headless/Configuration/TypoScript/Mixed,EXT:pixelcoda_search/Configuration/TypoScript'
         WHERE uid = 3;
         
         UPDATE sys_template 
-        SET include_static_file = 'EXT:headless/Configuration/TypoScript,EXT:pixelcoda_search/Configuration/TypoScript'
+        SET 
+            config = '',
+            include_static_file = 'EXT:headless/Configuration/TypoScript,EXT:pixelcoda_search/Configuration/TypoScript'
         WHERE uid = 4;
         "
         
@@ -57,11 +61,71 @@ case $choice in
         # Update database templates for Standard
         ddev mysql -e "
         UPDATE sys_template 
-        SET include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript'
+        SET 
+            config = '# Standard Mode Configuration
+page = PAGE
+page {
+    typeNum = 0
+    
+    # HTML Meta
+    meta {
+        viewport = width=device-width, initial-scale=1
+    }
+    
+    # Simple HTML with Content
+    10 = TEXT
+    10.value = <div class=\"container\">
+    
+    # Main Content from Backend
+    20 < styles.content.get
+    20.select.where = {#colPos}=0
+    
+    30 = TEXT
+    30.value = </div>
+}
+
+# Content rendering
+lib.contentElement {
+    templateRootPaths {
+        10 = EXT:fluid_styled_content/Resources/Private/Templates/
+    }
+}
+',
+            include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript'
         WHERE uid = 3;
         
         UPDATE sys_template 
-        SET include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/'
+        SET 
+            config = '# Standard Mode Configuration
+page = PAGE
+page {
+    typeNum = 0
+    
+    # HTML Meta
+    meta {
+        viewport = width=device-width, initial-scale=1
+    }
+    
+    # Simple HTML with Content
+    10 = TEXT
+    10.value = <div class=\"container\">
+    
+    # Main Content from Backend
+    20 < styles.content.get
+    20.select.where = {#colPos}=0
+    
+    30 = TEXT
+    30.value = </div>
+}
+
+# Content rendering
+lib.contentElement {
+    templateRootPaths {
+        10 = EXT:fluid_styled_content/Resources/Private/Templates/
+    }
+}
+',
+            include_static_file = 'EXT:fluid_styled_content/Configuration/TypoScript/'
         WHERE uid = 4;
         "
         
