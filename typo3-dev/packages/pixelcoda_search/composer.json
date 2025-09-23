@@ -1,0 +1,23 @@
+{
+    "name": "pixelcoda/pixelcoda-search",
+    "description": "pixelcoda Search Extension for TYPO3",
+    "type": "typo3-cms-extension",
+    "license": "MIT",
+    "require": {
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-backend": "^12.4",
+        "typo3/cms-frontend": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-fluid": "^12.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PixelCoda\\PixelcodaSearch\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pixelcoda_search"
+        }
+    }
+}
