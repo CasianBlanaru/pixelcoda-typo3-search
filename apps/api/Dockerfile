@@ -6,27 +6,29 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+# Enable Yarn 4 (Berry)
+RUN corepack enable && corepack prepare yarn@stable --activate
+
+# Copy all necessary files for workspace resolution
+COPY package.json yarn.lock* ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/llm-adapter/package.json ./packages/llm-adapter/
 
-# Install dependencies
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Install dependencies using Yarn 4
+RUN yarn install --immutable
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Enable Yarn 4
+RUN corepack enable && corepack prepare yarn@stable --activate
+
+COPY --from=deps /app ./
 COPY . .
 
 # Build the API
-RUN npm run build -w apps/api
+RUN yarn workspace @pixelcoda/api build
 
 # Production image, copy all the files and run the app
 FROM base AS runner
