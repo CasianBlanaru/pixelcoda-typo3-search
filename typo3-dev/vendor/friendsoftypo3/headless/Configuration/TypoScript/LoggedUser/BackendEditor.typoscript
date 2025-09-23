@@ -1,3 +1,0 @@
-[backend.user.isLoggedIn]
-    initialData.10.fields.backendEditor < lib.backendEditor
-[END]

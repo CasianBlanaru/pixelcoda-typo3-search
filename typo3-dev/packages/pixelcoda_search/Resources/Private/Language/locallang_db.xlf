@@ -10,6 +10,17 @@
                 <source>Advanced search functionality powered by pixelcoda Search API</source>
             </trans-unit>
             
+            <!-- Content Element Labels -->
+            <trans-unit id="tt_content.CType.pixelcodasearch_search" xml:space="preserve">
+                <source>pixelcoda Search</source>
+            </trans-unit>
+            <trans-unit id="tt_content.CType.pixelcodasearch_search.description" xml:space="preserve">
+                <source>Add AI-powered search functionality to your page</source>
+            </trans-unit>
+            <trans-unit id="tabs.plugin" xml:space="preserve">
+                <source>Plugin Settings</source>
+            </trans-unit>
+            
             <!-- FlexForm Labels -->
             <trans-unit id="flexform.general" xml:space="preserve">
                 <source>General Settings</source>

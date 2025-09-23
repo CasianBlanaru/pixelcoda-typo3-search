@@ -4,7 +4,7 @@ defined('TYPO3') || die();
 use PixelCoda\PixelcodaSearch\Hook\DatamapHook;
 use PixelCoda\PixelcodaSearch\Command\IndexCommand;
 use PixelCoda\PixelcodaSearch\Command\ReindexCommand;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+// ExtensionUtility removed - not needed anymore
 
 // Register DataHandler hooks for automatic indexing (temporarily disabled due to signature issues)
 // $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = DatamapHook::class;
@@ -12,17 +12,19 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 // CLI commands are now registered via Configuration/Services.yaml
 
-// Register Frontend Plugin
-ExtensionUtility::configurePlugin(
-    'PixelcodaSearch',
-    'Search',
-    [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'index,search,ask,results'
-    ],
-    [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,ask'
-    ]
+// Auto-include TypoScript setup
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+    '@import "EXT:pixelcoda_search/Configuration/TypoScript/setup.typoscript"'
 );
+
+// Auto-include TypoScript constants
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
+    '@import "EXT:pixelcoda_search/Configuration/TypoScript/constants.typoscript"'
+);
+
+// Plugin registration removed - using Content Element only (TYPO3 Best Practice)
+// The search functionality is provided as a Content Element (CType: pixelcodasearch_search)
+// This prevents duplicate registration and follows TYPO3 Headless best practices
 
 // Register AJAX endpoints for search suggestions
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_suggest'] = 

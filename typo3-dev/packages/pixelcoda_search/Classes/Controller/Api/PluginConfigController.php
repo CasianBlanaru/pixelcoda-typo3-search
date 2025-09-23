@@ -192,8 +192,8 @@ class PluginConfigController
      */
     private function isPixelcodaSearchPlugin(array $contentElement): bool
     {
-        return ($contentElement['CType'] === 'pixelcodasearch_search') ||
-               ($contentElement['CType'] === 'list' && $contentElement['list_type'] === 'pixelcodasearch_search');
+        // Only check for Content Element type (not list_type plugin anymore)
+        return $contentElement['CType'] === 'pixelcodasearch_search';
     }
 
     /**

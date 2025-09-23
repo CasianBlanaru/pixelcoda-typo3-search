@@ -35,10 +35,6 @@ coverage/
 # nyc test coverage
 .nyc_output
 
-# Dependency directories
-node_modules/
-jspm_packages/
-
 # TypeScript cache
 *.tsbuildinfo
 
@@ -66,13 +62,6 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -85,28 +74,6 @@ out
 .nuxt
 dist
 
-# Gatsby files
-.cache/
-public
-
-# Vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
-
 # yarn v2
 .yarn/cache
 .yarn/unplugged
@@ -116,6 +83,7 @@ public
 
 # Docker
 .dockerignore
+docker-compose.override.yml
 
 # OS generated files
 .DS_Store
@@ -132,47 +100,105 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.phpstorm.meta.php
 
 # Database
 *.db
 *.sqlite
 *.sqlite3
+*.sql.gz
 
 # Temporary files
 tmp/
 temp/
 
-# PHPStorm
-.phpstorm.meta.php
+# ========================================
+# TYPO3 SPECIFIC
+# ========================================
 
-# Composer (for TYPO3 connector)
-apps/typo3-connector/vendor/
-
-# Local development
-docker-compose.override.yml
-
-# TYPO3 Development Environment
-typo3-dev/public/
-typo3-dev/var/
+# TYPO3 Vendor & Dependencies
 typo3-dev/vendor/
 typo3-dev/composer.lock
-typo3-dev/.env
-typo3-dev/config/
-typo3-dev/fileadmin/
-typo3-dev/uploads/
 
-# Keep only our extension in TYPO3
+# TYPO3 Public folder - generated files
+typo3-dev/public/index.php
+typo3-dev/public/typo3/
+typo3-dev/public/typo3temp/
 typo3-dev/public/typo3conf/ext/*
-!typo3-dev/public/typo3conf/ext/pixelcoda_search/
+!typo3-dev/public/typo3conf/ext/.gitkeep
 
-# TYPO3 Configuration (sensitive)
+# TYPO3 Fileadmin - user uploads (keep structure, ignore content)
+typo3-dev/public/fileadmin/_processed_/
+typo3-dev/public/fileadmin/_temp_/
+typo3-dev/public/fileadmin/user_upload/
+typo3-dev/fileadmin/_processed_/
+typo3-dev/fileadmin/_temp_/
+typo3-dev/fileadmin/user_upload/
+
+# TYPO3 var folder - caches, logs, sessions
+typo3-dev/var/cache/
+typo3-dev/var/charset/
+typo3-dev/var/labels/
+typo3-dev/var/lock/
+typo3-dev/var/log/
+typo3-dev/var/session/
+typo3-dev/var/transient/
+
+# TYPO3 Configuration (sensitive or auto-generated)
 typo3-dev/public/typo3conf/LocalConfiguration.php
 typo3-dev/public/typo3conf/AdditionalConfiguration.php
 typo3-dev/public/typo3conf/PackageStates.php
 typo3-dev/public/typo3conf/ENABLE_INSTALL_TOOL
+typo3-dev/public/typo3conf/FIRST_INSTALL
+
+# TYPO3 System Configuration
+typo3-dev/config/system/settings.php
+typo3-dev/config/system/additional.php
+typo3-dev/config/system/PackageStates.php
+
+# TYPO3 Environment file
+typo3-dev/.env
+typo3-dev/env.example
+
+# Keep our custom packages
+!typo3-dev/packages/
+!typo3-dev/packages/pixelcoda_search/
+!typo3-dev/packages/site_package/
+
+# Ignore vendor inside our packages
+typo3-dev/packages/*/vendor/
+typo3-dev/packages/*/composer.lock
+
+# TYPO3 Database dumps (but keep structure files)
+typo3-dev/data/*.sql
+typo3-dev/data/*.sql.gz
+!typo3-dev/data/.gitkeep
 
 # DDEV generated files
 typo3-dev/.ddev/commands/
 typo3-dev/.ddev/homeadditions/
 typo3-dev/.ddev/.dbimageBuild/
 typo3-dev/.ddev/.webimageBuild/
+typo3-dev/.ddev/db_snapshots/
+typo3-dev/.ddev/.global_commands/
+
+# Standalone API build files
+standalone-api/node_modules/
+standalone-api/dist/
+standalone-api/.env
+
+# Apps build outputs
+apps/*/dist/
+apps/*/build/
+apps/*/.env
+apps/*/node_modules/
+
+# Keep important config files
+!typo3-dev/composer.json
+!typo3-dev/config/sites/
+!typo3-dev/packages/pixelcoda_search/**
+!typo3-dev/packages/site_package/**
+
+# Ignore lock files in packages
+typo3-dev/packages/pixelcoda_search/composer.lock
+typo3-dev/packages/site_package/composer.lock

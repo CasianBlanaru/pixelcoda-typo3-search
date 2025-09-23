@@ -1,5 +1,6 @@
 # pixelcoda Search TypoScript Setup
 
+
 # Content Element Rendering Definition for list plugin
 tt_content.list.20.pixelcodasearch_search = USER
 tt_content.list.20.pixelcodasearch_search {
@@ -19,29 +20,24 @@ tt_content.list.20.pixelcodasearch_search {
     }
 }
 
-# Debug: Test if TypoScript is loaded
-page.headerData.999 = TEXT
-page.headerData.999.value = <!-- pixelcoda Search TypoScript loaded -->
-
-# Test: Simple content element configuration for Headless
+# OVERRIDE: Force content element configuration for Headless
+# This must come AFTER the headless extension's configuration
+tt_content.pixelcodasearch_search >
 tt_content.pixelcodasearch_search =< lib.contentElementWithHeader
 tt_content.pixelcodasearch_search {
-    dataProcessing >
     fields {
         content {
             fields {
-                # Simple test field
+                # Add plugin-specific fields to the existing content structure
                 pluginType = TEXT
                 pluginType.value = pixelcodasearch_search
                 
-                # Simple search config
                 mode = TEXT
                 mode.value = headless
                 
                 placeholder = TEXT
                 placeholder.value = Website durchsuchen...
                 
-                # Test JSON object
                 searchConfig = JSON
                 searchConfig {
                     fields {
@@ -53,16 +49,53 @@ tt_content.pixelcodasearch_search {
                         
                         resultsPerPage = INT
                         resultsPerPage.value = 10
+                        
+                        collections = TEXT
+                        collections.value = pages,news
+                        
+                        enableSuggestions = INT
+                        enableSuggestions.value = 1
+                        
+                        enableAsk = INT
+                        enableAsk.value = 1
                     }
                 }
                 
-                # Debug field to verify TypoScript is working
-                debug = TEXT
-                debug.value = TypoScript is loaded and working!
+                endpoints = JSON
+                endpoints {
+                    fields {
+                        search = TEXT
+                        search.value = /api/search
+                        
+                        ask = TEXT
+                        ask.value = /api/ask
+                        
+                        suggest = TEXT
+                        suggest.value = /api/suggest
+                    }
+                }
+                
+                ui = JSON
+                ui {
+                    fields {
+                        showSuggestions = INT
+                        showSuggestions.value = 1
+                        
+                        showAsk = INT
+                        showAsk.value = 1
+                        
+                        template = TEXT
+                        template.value = Default
+                    }
+                }
             }
         }
     }
 }
+
+# Debug: Add a simple test to verify TypoScript is loaded
+page.headerData.999 = TEXT
+page.headerData.999.value = <!-- pixelcoda Search TypoScript loaded -->
 
 # Clean configuration - using native Headless JSON structure
 
