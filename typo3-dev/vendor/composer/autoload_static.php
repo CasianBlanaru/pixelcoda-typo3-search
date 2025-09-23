@@ -559,7 +559,8 @@ class ComposerStaticInitcd0687926ae709b07970e3d73ff8ab67
         ),
         'PixelCoda\\PixelcodaSearch\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/packages/pixelcoda_search/Classes',
+            0 => __DIR__ . '/../..' . '/public/typo3conf/ext/pixelcoda_search/Classes',
+            1 => __DIR__ . '/..' . '/pixelcoda/pixelcoda-search/Classes',
         ),
         'PhpParser\\' => 
         array (

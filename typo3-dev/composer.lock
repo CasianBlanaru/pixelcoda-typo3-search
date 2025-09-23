@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd0687926ae709b07970e3d73ff8ab67",
+    "content-hash": "3189cd766ab1887e094f45eb38960139",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1744,6 +1744,40 @@
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/1.33.0"
             },
             "time": "2024-10-13T11:25:22+00:00"
+        },
+        {
+            "name": "pixelcoda/pixelcoda-search",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./packages/pixelcoda_search",
+                "reference": "5e62ac2217f02bf529f47bdaf62fcc75f62595d3"
+            },
+            "require": {
+                "typo3/cms-backend": "^12.4",
+                "typo3/cms-core": "^12.4",
+                "typo3/cms-extbase": "^12.4",
+                "typo3/cms-fluid": "^12.4",
+                "typo3/cms-frontend": "^12.4"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "pixelcoda_search"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PixelCoda\\PixelcodaSearch\\": "Classes/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "pixelcoda Search Extension for TYPO3",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "psr/cache",
@@ -8189,16 +8223,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.55",
+            "version": "10.5.56",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4b2d546b336876bd9562f24641b08a25335b06b6"
+                "reference": "e00fdca14e854ed26256da31f4ab1c9a58453742"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4b2d546b336876bd9562f24641b08a25335b06b6",
-                "reference": "4b2d546b336876bd9562f24641b08a25335b06b6",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e00fdca14e854ed26256da31f4ab1c9a58453742",
+                "reference": "e00fdca14e854ed26256da31f4ab1c9a58453742",
                 "shasum": ""
             },
             "require": {
@@ -8222,7 +8256,7 @@
                 "sebastian/comparator": "^5.0.4",
                 "sebastian/diff": "^5.1.1",
                 "sebastian/environment": "^6.1.0",
-                "sebastian/exporter": "^5.1.2",
+                "sebastian/exporter": "^5.1.3",
                 "sebastian/global-state": "^6.0.2",
                 "sebastian/object-enumerator": "^5.0.0",
                 "sebastian/recursion-context": "^5.0.1",
@@ -8270,7 +8304,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.55"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.56"
             },
             "funding": [
                 {
@@ -8294,7 +8328,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-14T06:19:20+00:00"
+            "time": "2025-09-23T06:21:55+00:00"
         },
         {
             "name": "react/cache",
@@ -10192,7 +10226,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "pixelcoda/pixelcoda-search": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

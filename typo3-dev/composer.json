@@ -9,10 +9,7 @@
         },
         {
             "type": "path",
-            "url": "vendor/pixelcoda/pixelcoda_search",
-            "options": {
-                "symlink": false
-            }
+            "url": "./packages/pixelcoda_search"
         }
     ],
     "require": {
@@ -43,7 +40,7 @@
         "typo3/cms-seo": "^12.4",
         "friendsoftypo3/headless": "^4.0",
         "georgringer/news": "^11.0",
-        "pixelcoda/pixelcoda_search": "*"
+        "pixelcoda/pixelcoda-search": "dev-main"
     },
     "require-dev": {
         "typo3/testing-framework": "^8.0",
@@ -53,7 +50,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PixelCoda\\PixelcodaSearch\\": "packages/pixelcoda_search/Classes/"
+            "PixelCoda\\PixelcodaSearch\\": "public/typo3conf/ext/pixelcoda_search/Classes/"
         }
     },
     "autoload-dev": {
