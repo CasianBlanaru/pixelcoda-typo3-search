@@ -69,7 +69,74 @@
             </trans-unit>
             <trans-unit id="flexform.template.cards" xml:space="preserve">
                 <source>Cards</source>
-            </trans-unit>
-        </body>
-    </file>
+        </trans-unit>
+        
+        <!-- FlexForm Labels -->
+        <trans-unit id="flexform.tab.general" resname="flexform.tab.general">
+            <source>General Settings</source>
+        </trans-unit>
+        <trans-unit id="flexform.tab.advanced" resname="flexform.tab.advanced">
+            <source>Advanced Settings</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.mode" resname="flexform.settings.mode">
+            <source>Plugin Mode</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.mode.classic" resname="flexform.settings.mode.classic">
+            <source>Classic Frontend</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.mode.headless" resname="flexform.settings.mode.headless">
+            <source>Headless API</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.template" resname="flexform.settings.template">
+            <source>Template Variant</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.template.default" resname="flexform.settings.template.default">
+            <source>Standard (Default)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.template.minimal" resname="flexform.settings.template.minimal">
+            <source>Minimal</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.template.advanced" resname="flexform.settings.template.advanced">
+            <source>Erweitert (Advanced)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.template.cards" resname="flexform.settings.template.cards">
+            <source>Karten-Layout (Cards)</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.collections" resname="flexform.settings.collections">
+            <source>Collections to Search</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.collections.pages" resname="flexform.settings.collections.pages">
+            <source>[pages]</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.collections.news" resname="flexform.settings.collections.news">
+            <source>[news]</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.collections.tt_content" resname="flexform.settings.collections.tt_content">
+            <source>[tt_content]</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.placeholder" resname="flexform.settings.placeholder">
+            <source>Placeholder Text</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.resultsPerPage" resname="flexform.settings.resultsPerPage">
+            <source>Results per Page</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.enableSuggestions" resname="flexform.settings.enableSuggestions">
+            <source>Enable Search Suggestions</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.enableAsk" resname="flexform.settings.enableAsk">
+            <source>Enable AI Ask Feature</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.minQueryLength" resname="flexform.settings.minQueryLength">
+            <source>Minimum Query Length</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.cssClass" resname="flexform.settings.cssClass">
+            <source>Additional CSS Class</source>
+        </trans-unit>
+    </body>
+</file>
 </xliff>

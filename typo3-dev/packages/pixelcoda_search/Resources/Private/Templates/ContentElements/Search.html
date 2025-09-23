@@ -16,7 +16,7 @@
     <div class="pixelcoda-search">
         <form class="search-form" action="/search" method="get">
             <div class="search-input-wrapper">
-                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: data.pi_flexform.placeholder, then: data.pi_flexform.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben">
+                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: settings.placeholder, then: settings.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben">
                 <button type="submit" class="search-button" aria-label="Suche starten">
                     <f:comment>
                         <!-- Search Icon SVG -->

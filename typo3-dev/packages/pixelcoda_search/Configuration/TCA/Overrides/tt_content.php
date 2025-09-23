@@ -43,7 +43,7 @@ $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search'] = [
 // Add FlexForm configuration
 ExtensionManagementUtility::addPiFlexFormValue(
     '',
-    'FILE:EXT:pixelcoda_search/Configuration/FlexForms/Search.xml',
+    'FILE:EXT:pixelcoda_search/Configuration/FlexForms/PluginSettings.xml',
     'pixelcodasearch_search'
 );
 
