@@ -1,18 +1,9 @@
 # Site Package Constants
+# =======================
 
-# Pixelcoda Search Mode Configuration
-# =====================================
-# Choose how the search plugin should render:
-# - "headless" = JSON output for React/Vue/Next.js frontends
-# - "standard" = Traditional TYPO3 with Fluid templates
-plugin.tx_pixelcodasearch_search.settings.mode = headless
-
-# You can override this in the TYPO3 Backend:
-# Template > Constant Editor > Plugin > Pixelcoda Search
-
-# API Configuration (for both modes)
-pixelcoda.search {
-    apiUrl = http://localhost:8787
-    projectId = typo3-site
-    readApiKey = pc_read_dev_key
+# Get rendering mode from site configuration
+plugin.tx_site_package {
+    settings {
+        renderingMode = {$site:customConfiguration.renderingMode}
+    }
 }
