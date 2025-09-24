@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Custom serializer for pixelcoda Search plugin in Headless mode
+ * Custom serializer for pixelcoda Search plugin in Headless mode.
  */
 class PixelcodaSearchSerializer
 {
@@ -22,8 +22,8 @@ class PixelcodaSearchSerializer
 
     public function __construct(
         JsonEncoder $encoder,
-        ConfigurationService $configurationService = null,
-        FlexFormService $flexFormService = null
+        ?ConfigurationService $configurationService = null,
+        ?FlexFormService $flexFormService = null
     ) {
         $this->encoder = $encoder;
         $this->configurationService = $configurationService ?? GeneralUtility::makeInstance(ConfigurationService::class);
@@ -32,33 +32,33 @@ class PixelcodaSearchSerializer
 
     /**
      * Serialize the pixelcoda Search plugin for JSON output
-     * This method is called by the Headless extension for each content element
+     * This method is called by the Headless extension for each content element.
      */
     public function serialize(array $contentElement, array $context = []): array
     {
         // Create basic structure
         $data = [
-            'id' => (int)$contentElement['uid'],
+            'id' => (int) $contentElement['uid'],
             'type' => $contentElement['CType'],
-            'colPos' => (int)$contentElement['colPos'],
+            'colPos' => (int) $contentElement['colPos'],
             'categories' => $contentElement['categories'] ?? '',
             'appearance' => [
                 'layout' => $contentElement['layout'] ?? 'default',
                 'frameClass' => $contentElement['frame_class'] ?? 'default',
                 'spaceBefore' => $contentElement['space_before_class'] ?? '',
-                'spaceAfter' => $contentElement['space_after_class'] ?? ''
-            ]
+                'spaceAfter' => $contentElement['space_after_class'] ?? '',
+            ],
         ];
 
         // Add standard content fields
         $data['content'] = [
             'header' => $contentElement['header'] ?? '',
             'subheader' => $contentElement['subheader'] ?? '',
-            'headerLayout' => (int)($contentElement['header_layout'] ?? 0),
+            'headerLayout' => (int) ($contentElement['header_layout'] ?? 0),
             'headerPosition' => $contentElement['header_position'] ?? '',
             'headerLink' => $contentElement['header_link'] ?? '',
             'pluginType' => 'pixelcodasearch_search',
-            'pluginName' => 'pixelcoda Search'
+            'pluginName' => 'pixelcoda Search',
         ];
 
         // Parse FlexForm data
@@ -82,7 +82,7 @@ class PixelcodaSearchSerializer
                 'contentElement' => array_keys($contentElement),
                 'flexFormData' => $flexFormData,
                 'mergedSettings' => $settings,
-                'hasFlexForm' => !empty($contentElement['pi_flexform'])
+                'hasFlexForm' => !empty($contentElement['pi_flexform']),
             ];
         }
 
@@ -92,17 +92,17 @@ class PixelcodaSearchSerializer
             'apiUrl' => $settings['api_url'] ?? '',
             'projectId' => $settings['project_id'] ?? '',
             'collections' => $this->parseCollections($settings['collections'] ?? 'pages,news'),
-            'resultsPerPage' => (int)($settings['resultsPerPage'] ?? 10),
-            'maxPassages' => (int)($settings['maxPassages'] ?? 6),
-            'enableSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-            'enableAsk' => (bool)($settings['enableAsk'] ?? true),
-            'enableMetrics' => (bool)($settings['enableMetrics'] ?? true),
-            'showDebug' => (bool)($settings['showDebug'] ?? false),
+            'resultsPerPage' => (int) ($settings['resultsPerPage'] ?? 10),
+            'maxPassages' => (int) ($settings['maxPassages'] ?? 6),
+            'enableSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+            'enableAsk' => (bool) ($settings['enableAsk'] ?? true),
+            'enableMetrics' => (bool) ($settings['enableMetrics'] ?? true),
+            'showDebug' => (bool) ($settings['showDebug'] ?? false),
             'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
             'template' => $settings['template'] ?? 'Default',
             'cssClass' => $settings['cssClass'] ?? 'pixelcoda-search',
-            'minQueryLength' => (int)($settings['minQueryLength'] ?? 2),
-            'debounceMs' => (int)($settings['debounceMs'] ?? 300),
+            'minQueryLength' => (int) ($settings['minQueryLength'] ?? 2),
+            'debounceMs' => (int) ($settings['debounceMs'] ?? 300),
         ];
 
         // Add API endpoints
@@ -122,22 +122,22 @@ class PixelcodaSearchSerializer
                     'name' => 'q',
                     'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
                     'required' => true,
-                    'minLength' => (int)($settings['minQueryLength'] ?? 2)
+                    'minLength' => (int) ($settings['minQueryLength'] ?? 2),
                 ],
                 'collections' => [
                     'type' => 'hidden',
                     'name' => 'collections',
-                    'value' => $settings['collections'] ?? 'pages,news'
-                ]
-            ]
+                    'value' => $settings['collections'] ?? 'pages,news',
+                ],
+            ],
         ];
 
         // Add UI configuration
         $data['content']['ui'] = [
-            'showSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-            'showAsk' => (bool)($settings['enableAsk'] ?? true),
-            'showDebug' => (bool)($settings['showDebug'] ?? false),
-            'template' => $settings['template'] ?? 'Default'
+            'showSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+            'showAsk' => (bool) ($settings['enableAsk'] ?? true),
+            'showDebug' => (bool) ($settings['showDebug'] ?? false),
+            'template' => $settings['template'] ?? 'Default',
         ];
 
         // Add debug information if available
@@ -149,7 +149,7 @@ class PixelcodaSearchSerializer
     }
 
     /**
-     * Parse collections string into array
+     * Parse collections string into array.
      */
     private function parseCollections(string $collections): array
     {

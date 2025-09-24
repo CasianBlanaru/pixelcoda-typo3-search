@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * API Controller for pixelcoda Search Plugin Configuration
+ * API Controller for pixelcoda Search Plugin Configuration.
  *
  * Provides plugin configuration data for frontend applications
  */
@@ -28,9 +28,9 @@ class PluginConfigController
     protected ConnectionPool $connectionPool;
 
     public function __construct(
-        ConfigurationService $configurationService = null,
-        FlexFormService $flexFormService = null,
-        ConnectionPool $connectionPool = null
+        ?ConfigurationService $configurationService = null,
+        ?FlexFormService $flexFormService = null,
+        ?ConnectionPool $connectionPool = null
     ) {
         $this->configurationService = $configurationService ?? GeneralUtility::makeInstance(ConfigurationService::class);
         $this->flexFormService = $flexFormService ?? GeneralUtility::makeInstance(FlexFormService::class);
@@ -38,7 +38,7 @@ class PluginConfigController
     }
 
     /**
-     * Get plugin configuration for a specific content element
+     * Get plugin configuration for a specific content element.
      *
      * Route: GET /api/pixelcoda/search/config/{contentElementId}
      */
@@ -49,21 +49,21 @@ class PluginConfigController
             'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Methods' => 'GET, OPTIONS',
             'Access-Control-Allow-Headers' => 'Content-Type, X-Requested-With',
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ];
 
         // Handle preflight OPTIONS request
-        if ($request->getMethod() === 'OPTIONS') {
+        if ('OPTIONS' === $request->getMethod()) {
             return new JsonResponse(null, 200, $headers);
         }
 
         try {
             // Get content element ID from route
-            $contentElementId = (int)($request->getAttribute('routing')->getArgument('contentElementId') ?? 0);
+            $contentElementId = (int) ($request->getAttribute('routing')->getArgument('contentElementId') ?? 0);
 
             if ($contentElementId <= 0) {
                 return new JsonResponse([
-                    'error' => 'Invalid content element ID'
+                    'error' => 'Invalid content element ID',
                 ], 400, $headers);
             }
 
@@ -72,14 +72,14 @@ class PluginConfigController
 
             if (!$contentElement) {
                 return new JsonResponse([
-                    'error' => 'Content element not found'
+                    'error' => 'Content element not found',
                 ], 404, $headers);
             }
 
             // Check if it's a pixelcoda search plugin
             if (!$this->isPixelcodaSearchPlugin($contentElement)) {
                 return new JsonResponse([
-                    'error' => 'Content element is not a pixelcoda Search plugin'
+                    'error' => 'Content element is not a pixelcoda Search plugin',
                 ], 400, $headers);
             }
 
@@ -103,7 +103,7 @@ class PluginConfigController
             $responseData = [
                 'data' => [
                     'type' => 'pixelcodasearch_config',
-                    'id' => (string)$contentElementId,
+                    'id' => (string) $contentElementId,
                     'attributes' => [
                         'pluginType' => 'pixelcodasearch_search',
                         'pluginName' => 'pixelcoda Search',
@@ -112,20 +112,20 @@ class PluginConfigController
                             'apiUrl' => $settings['api_url'] ?? 'http://localhost:8787',
                             'projectId' => $settings['project_id'] ?? 'typo3',
                             'collections' => $this->parseCollections($settings['collections'] ?? 'pages,news'),
-                            'resultsPerPage' => (int)($settings['resultsPerPage'] ?? 10),
-                            'enableSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-                            'enableAsk' => (bool)($settings['enableAsk'] ?? true),
+                            'resultsPerPage' => (int) ($settings['resultsPerPage'] ?? 10),
+                            'enableSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+                            'enableAsk' => (bool) ($settings['enableAsk'] ?? true),
                             'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
                             'template' => $settings['template'] ?? 'Default',
                             'cssClass' => $settings['cssClass'] ?? 'pixelcoda-search',
-                            'minQueryLength' => (int)($settings['minQueryLength'] ?? 2),
-                            'debounceMs' => (int)($settings['debounceMs'] ?? 300),
+                            'minQueryLength' => (int) ($settings['minQueryLength'] ?? 2),
+                            'debounceMs' => (int) ($settings['debounceMs'] ?? 300),
                         ],
                         'endpoints' => [
                             'search' => '/api/pixelcoda/search',
                             'ask' => '/api/pixelcoda/ask',
                             'suggest' => '/api/pixelcoda/suggest',
-                            'config' => '/api/pixelcoda/search/config/' . $contentElementId
+                            'config' => '/api/pixelcoda/search/config/' . $contentElementId,
                         ],
                         'form' => [
                             'method' => 'POST',
@@ -136,28 +136,28 @@ class PluginConfigController
                                     'name' => 'q',
                                     'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
                                     'required' => true,
-                                    'minLength' => (int)($settings['minQueryLength'] ?? 2)
+                                    'minLength' => (int) ($settings['minQueryLength'] ?? 2),
                                 ],
                                 'collections' => [
                                     'type' => 'hidden',
                                     'name' => 'collections',
-                                    'value' => $settings['collections'] ?? 'pages,news'
-                                ]
-                            ]
+                                    'value' => $settings['collections'] ?? 'pages,news',
+                                ],
+                            ],
                         ],
                         'ui' => [
-                            'showSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-                            'showAsk' => (bool)($settings['enableAsk'] ?? true),
-                            'showDebug' => (bool)($settings['showDebug'] ?? false),
-                            'template' => $settings['template'] ?? 'Default'
-                        ]
-                    ]
+                            'showSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+                            'showAsk' => (bool) ($settings['enableAsk'] ?? true),
+                            'showDebug' => (bool) ($settings['showDebug'] ?? false),
+                            'template' => $settings['template'] ?? 'Default',
+                        ],
+                    ],
                 ],
                 'meta' => [
                     'contentElementId' => $contentElementId,
                     'timestamp' => time(),
-                    'version' => '2.0'
-                ]
+                    'version' => '2.0',
+                ],
             ];
 
             return new JsonResponse($responseData, 200, $headers);
@@ -165,13 +165,13 @@ class PluginConfigController
         } catch (Exception $exception) {
             return new JsonResponse([
                 'error' => 'Failed to get plugin configuration',
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 500, $headers);
         }
     }
 
     /**
-     * Get content element from database
+     * Get content element from database.
      */
     private function getContentElement(int $uid): ?array
     {
@@ -192,16 +192,16 @@ class PluginConfigController
     }
 
     /**
-     * Check if content element is a pixelcoda search plugin
+     * Check if content element is a pixelcoda search plugin.
      */
     private function isPixelcodaSearchPlugin(array $contentElement): bool
     {
         // Only check for Content Element type (not list_type plugin anymore)
-        return $contentElement['CType'] === 'pixelcodasearch_search';
+        return 'pixelcodasearch_search' === $contentElement['CType'];
     }
 
     /**
-     * Parse collections string into array
+     * Parse collections string into array.
      */
     private function parseCollections(string $collections): array
     {

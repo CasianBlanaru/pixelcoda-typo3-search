@@ -1,8 +1,9 @@
 <?php
-defined('TYPO3') || die();
+
+declare(strict_types=1);
+defined('TYPO3') || exit();
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 // Add static TypoScript for plugin configuration
 ExtensionManagementUtility::addStaticFile(
@@ -35,7 +36,7 @@ $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search'] = [
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-    '
+    ',
 ];
 
 // Add FlexForm configuration for the custom CType
@@ -43,10 +44,10 @@ $GLOBALS['TCA']['tt_content']['types']['pixelcodasearch_search']['columnsOverrid
     'pi_flexform' => [
         'config' => [
             'ds' => [
-                'default' => 'FILE:EXT:pixelcoda_search/Configuration/FlexForms/Search.xml'
-            ]
-        ]
-    ]
+                'default' => 'FILE:EXT:pixelcoda_search/Configuration/FlexForms/Search.xml',
+            ],
+        ],
+    ],
 ];
 
 // Configure the list plugin type as well (for traditional plugin approach)

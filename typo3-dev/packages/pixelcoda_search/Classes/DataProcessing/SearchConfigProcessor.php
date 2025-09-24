@@ -11,7 +11,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 
 /**
- * DataProcessor for adding pixelcoda Search configuration to content elements
+ * DataProcessor for adding pixelcoda Search configuration to content elements.
  */
 class SearchConfigProcessor implements DataProcessorInterface
 {
@@ -20,15 +20,15 @@ class SearchConfigProcessor implements DataProcessorInterface
     protected FlexFormService $flexFormService;
 
     public function __construct(
-        ConfigurationService $configurationService = null,
-        FlexFormService $flexFormService = null
+        ?ConfigurationService $configurationService = null,
+        ?FlexFormService $flexFormService = null
     ) {
         $this->configurationService = $configurationService ?? GeneralUtility::makeInstance(ConfigurationService::class);
         $this->flexFormService = $flexFormService ?? GeneralUtility::makeInstance(FlexFormService::class);
     }
 
     /**
-     * Process content element data and add search configuration
+     * Process content element data and add search configuration.
      */
     public function process(
         ContentObjectRenderer $cObj,
@@ -38,7 +38,7 @@ class SearchConfigProcessor implements DataProcessorInterface
     ): array {
 
         // Only process if this is a pixelcoda search content element
-        if ($processedData['data']['CType'] !== 'pixelcodasearch_search') {
+        if ('pixelcodasearch_search' !== $processedData['data']['CType']) {
             return $processedData;
         }
 
@@ -66,17 +66,17 @@ class SearchConfigProcessor implements DataProcessorInterface
             'apiUrl' => $settings['api_url'] ?? 'http://localhost:8787',
             'projectId' => $settings['project_id'] ?? 'typo3',
             'collections' => $this->parseCollections($settings['collections'] ?? 'pages,news'),
-            'resultsPerPage' => (int)($settings['resultsPerPage'] ?? 10),
-            'maxPassages' => (int)($settings['maxPassages'] ?? 6),
-            'enableSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-            'enableAsk' => (bool)($settings['enableAsk'] ?? true),
-            'enableMetrics' => (bool)($settings['enableMetrics'] ?? true),
-            'showDebug' => (bool)($settings['showDebug'] ?? false),
+            'resultsPerPage' => (int) ($settings['resultsPerPage'] ?? 10),
+            'maxPassages' => (int) ($settings['maxPassages'] ?? 6),
+            'enableSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+            'enableAsk' => (bool) ($settings['enableAsk'] ?? true),
+            'enableMetrics' => (bool) ($settings['enableMetrics'] ?? true),
+            'showDebug' => (bool) ($settings['showDebug'] ?? false),
             'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
             'template' => $settings['template'] ?? 'Default',
             'cssClass' => $settings['cssClass'] ?? 'pixelcoda-search',
-            'minQueryLength' => (int)($settings['minQueryLength'] ?? 2),
-            'debounceMs' => (int)($settings['debounceMs'] ?? 300),
+            'minQueryLength' => (int) ($settings['minQueryLength'] ?? 2),
+            'debounceMs' => (int) ($settings['debounceMs'] ?? 300),
         ];
 
         // Also add individual fields for TypoScript access
@@ -101,29 +101,29 @@ class SearchConfigProcessor implements DataProcessorInterface
                     'name' => 'q',
                     'placeholder' => $settings['placeholder'] ?? 'Website durchsuchen...',
                     'required' => true,
-                    'minLength' => (int)($settings['minQueryLength'] ?? 2)
+                    'minLength' => (int) ($settings['minQueryLength'] ?? 2),
                 ],
                 'collections' => [
                     'type' => 'hidden',
                     'name' => 'collections',
-                    'value' => $settings['collections'] ?? 'pages,news'
-                ]
-            ]
+                    'value' => $settings['collections'] ?? 'pages,news',
+                ],
+            ],
         ];
 
         // Add UI configuration
         $processedData['ui'] = [
-            'showSuggestions' => (bool)($settings['enableSuggestions'] ?? true),
-            'showAsk' => (bool)($settings['enableAsk'] ?? true),
-            'showDebug' => (bool)($settings['showDebug'] ?? false),
-            'template' => $settings['template'] ?? 'Default'
+            'showSuggestions' => (bool) ($settings['enableSuggestions'] ?? true),
+            'showAsk' => (bool) ($settings['enableAsk'] ?? true),
+            'showDebug' => (bool) ($settings['showDebug'] ?? false),
+            'template' => $settings['template'] ?? 'Default',
         ];
 
         return $processedData;
     }
 
     /**
-     * Parse collections string into array
+     * Parse collections string into array.
      */
     private function parseCollections(string $collections): array
     {

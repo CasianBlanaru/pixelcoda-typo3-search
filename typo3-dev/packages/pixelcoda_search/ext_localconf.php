@@ -1,9 +1,10 @@
 <?php
-defined('TYPO3') || die();
+
+declare(strict_types=1);
+defined('TYPO3') || exit();
 
 use PixelCoda\PixelcodaSearch\Hook\DatamapHook;
-use PixelCoda\PixelcodaSearch\Command\IndexCommand;
-use PixelCoda\PixelcodaSearch\Command\ReindexCommand;
+
 // ExtensionUtility removed - not needed anymore
 
 // Register DataHandler hooks for automatic indexing (temporarily disabled due to signature issues)
@@ -13,12 +14,12 @@ use PixelCoda\PixelcodaSearch\Command\ReindexCommand;
 // CLI commands are now registered via Configuration/Services.yaml
 
 // Auto-include TypoScript setup
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
     '@import "EXT:pixelcoda_search/Configuration/TypoScript/setup.typoscript"'
 );
 
 // Auto-include TypoScript constants
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
+TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
     '@import "EXT:pixelcoda_search/Configuration/TypoScript/constants.typoscript"'
 );
 
@@ -27,12 +28,12 @@ use PixelCoda\PixelcodaSearch\Command\ReindexCommand;
 // This prevents duplicate registration and follows TYPO3 Headless best practices
 
 // Register AJAX endpoints for search suggestions
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_suggest'] = 
-    \PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_suggest']
+    = PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';
 
 // Register API routes for plugin configuration
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_config'] = 
-    \PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController::class . '::getPluginConfig';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_config']
+    = PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController::class . '::getPluginConfig';
 
 // Register page type for JSON API (headless mode)
 $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
@@ -50,39 +51,39 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
     'enable_vector_search' => true,
     'batch_size' => 50,
     'timeout' => 30,
-    'debug_mode' => true
+    'debug_mode' => true,
 ];
 
 // Static TypoScript files are now added in ext_tables.php
 
 // Add page TSconfig
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     '@import "EXT:pixelcoda_search/Configuration/TsConfig/Page/All.tsconfig"'
 );
 
 // Register icon for backend module
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Core\Imaging\IconRegistry::class
+$iconRegistry = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    TYPO3\CMS\Core\Imaging\IconRegistry::class
 );
 $iconRegistry->registerIcon(
     'pixelcoda-search',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
     ['source' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg']
 );
 
 // Register the search plugin for the search results page
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'PixelcodaSearch',
     'SearchResults',
     [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest'
+        PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest',
     ],
     // non-cacheable actions
     [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest'
+        PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest',
     ]
 );
 
 // Register EID handler for AJAX autocomplete
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest'] = 
-    \PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest']
+    = PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';

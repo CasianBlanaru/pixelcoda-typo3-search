@@ -10,25 +10,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
- * Configuration Service - handles plugin settings and FlexForm data
+ * Configuration Service - handles plugin settings and FlexForm data.
  */
 class ConfigurationService
 {
     public $config;
+
     protected ExtensionConfiguration $extensionConfiguration;
 
     protected FlexFormService $flexFormService;
 
     public function __construct(
-        ExtensionConfiguration $extensionConfiguration = null,
-        FlexFormService $flexFormService = null
+        ?ExtensionConfiguration $extensionConfiguration = null,
+        ?FlexFormService $flexFormService = null
     ) {
         $this->extensionConfiguration = $extensionConfiguration ?? GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $this->flexFormService = $flexFormService ?? GeneralUtility::makeInstance(FlexFormService::class);
     }
 
     /**
-     * Get merged plugin settings (TypoScript + FlexForm + Extension Config)
+     * Get merged plugin settings (TypoScript + FlexForm + Extension Config).
      */
     public function getPluginSettings(array $typoScriptSettings = []): array
     {
@@ -46,120 +47,11 @@ class ConfigurationService
         }
 
         // Apply defaults
-        $settings = array_merge($this->getDefaultSettings(), $settings);
-
-        return $settings;
+        return array_merge($this->getDefaultSettings(), $settings);
     }
 
     /**
-     * Get default plugin settings
-     */
-    protected function getDefaultSettings(): array
-    {
-        return [
-            'mode' => 'classic', // classic|headless
-            'resultsPerPage' => 10,
-            'maxPassages' => 6,
-            'enableSuggestions' => true,
-            'enableAsk' => true,
-            'showDebug' => false,
-            'enableMetrics' => true,
-            'collections' => ['pages', 'news'],
-            'placeholder' => 'Website durchsuchen...',
-            'noResultsText' => 'Keine Ergebnisse gefunden.',
-            'searchButtonText' => 'Suchen',
-            'askButtonText' => 'Fragen',
-            'loadingText' => 'Lädt...',
-            'errorText' => 'Ein Fehler ist aufgetreten.',
-            'template' => 'Default',
-            'cssClass' => 'pixelcoda-search',
-            'enableAutoComplete' => true,
-            'minQueryLength' => 2,
-            'debounceMs' => 300
-        ];
-    }
-
-    /**
-     * Normalize FlexForm data structure
-     */
-    protected function normalizeFlexFormData(array $flexFormData): array
-    {
-        $normalized = [];
-
-        // Map FlexForm fields to settings
-        $fieldMapping = [
-            'settings.mode' => 'mode',
-            'settings.resultsPerPage' => 'resultsPerPage',
-            'settings.maxPassages' => 'maxPassages',
-            'settings.enableSuggestions' => 'enableSuggestions',
-            'settings.enableAsk' => 'enableAsk',
-            'settings.showDebug' => 'showDebug',
-            'settings.collections' => 'collections',
-            'settings.placeholder' => 'placeholder',
-            'settings.template' => 'template',
-            'settings.cssClass' => 'cssClass'
-        ];
-
-        foreach ($fieldMapping as $flexFormKey => $settingKey) {
-            $value = $this->getFlexFormValue($flexFormData, $flexFormKey);
-            if ($value !== null) {
-                $normalized[$settingKey] = $value;
-            }
-        }
-
-        // Handle special cases
-        if (isset($normalized['collections']) && is_string($normalized['collections'])) {
-            $normalized['collections'] = GeneralUtility::trimExplode(',', $normalized['collections'], true);
-        }
-
-        // Convert string booleans
-        $booleanFields = ['enableSuggestions', 'enableAsk', 'showDebug', 'enableMetrics'];
-        foreach ($booleanFields as $field) {
-            if (isset($normalized[$field])) {
-                $normalized[$field] = (bool)$normalized[$field];
-            }
-        }
-
-        // Convert numeric fields
-        $numericFields = ['resultsPerPage', 'maxPassages', 'minQueryLength', 'debounceMs'];
-        foreach ($numericFields as $field) {
-            if (isset($normalized[$field])) {
-                $normalized[$field] = (int)$normalized[$field];
-            }
-        }
-
-        return $normalized;
-    }
-
-    /**
-     * Get value from FlexForm data structure
-     */
-    protected function getFlexFormValue(array $flexFormData, string $key): mixed
-    {
-        $keys = explode('.', $key);
-        $current = $flexFormData;
-
-        foreach ($keys as $keyPart) {
-            if (!is_array($current) || !isset($current[$keyPart])) {
-                return null;
-            }
-
-            $current = $current[$keyPart];
-        }
-
-        return $current;
-    }
-
-    /**
-     * Get content object renderer
-     */
-    protected function getContentObjectRenderer(): ?ContentObjectRenderer
-    {
-        return $GLOBALS['TSFE']->cObj ?? null;
-    }
-
-    /**
-     * Get API configuration for frontend JavaScript
+     * Get API configuration for frontend JavaScript.
      */
     public function getApiConfigForFrontend(): array
     {
@@ -169,12 +61,12 @@ class ConfigurationService
             // Note: Don't expose write API key to frontend!
             'readApiKey' => $this->config['read_api_key'] ?? '',
             'enableMetrics' => $this->config['enable_metrics'] ?? true,
-            'debugMode' => $this->config['debug_mode'] ?? false
+            'debugMode' => $this->config['debug_mode'] ?? false,
         ];
     }
 
     /**
-     * Validate configuration
+     * Validate configuration.
      */
     public function validateConfiguration(): array
     {
@@ -198,14 +90,14 @@ class ConfigurationService
         }
 
         return [
-            'valid' => $errors === [],
+            'valid' => [] === $errors,
             'errors' => $errors,
-            'warnings' => $warnings
+            'warnings' => $warnings,
         ];
     }
 
     /**
-     * Get available templates
+     * Get available templates.
      */
     public function getAvailableTemplates(): array
     {
@@ -213,19 +105,126 @@ class ConfigurationService
             'Default' => 'Standard Template',
             'Minimal' => 'Minimales Template',
             'Advanced' => 'Erweiterte Ansicht',
-            'Cards' => 'Karten-Layout'
+            'Cards' => 'Karten-Layout',
         ];
     }
 
     /**
-     * Get available collections
+     * Get available collections.
      */
     public function getAvailableCollections(): array
     {
         return [
             'pages' => 'Seiten',
             'news' => 'News',
-            'tt_content' => 'Inhaltselemente'
+            'tt_content' => 'Inhaltselemente',
         ];
+    }
+
+    /**
+     * Get default plugin settings.
+     */
+    protected function getDefaultSettings(): array
+    {
+        return [
+            'mode' => 'classic', // classic|headless
+            'resultsPerPage' => 10,
+            'maxPassages' => 6,
+            'enableSuggestions' => true,
+            'enableAsk' => true,
+            'showDebug' => false,
+            'enableMetrics' => true,
+            'collections' => ['pages', 'news'],
+            'placeholder' => 'Website durchsuchen...',
+            'noResultsText' => 'Keine Ergebnisse gefunden.',
+            'searchButtonText' => 'Suchen',
+            'askButtonText' => 'Fragen',
+            'loadingText' => 'Lädt...',
+            'errorText' => 'Ein Fehler ist aufgetreten.',
+            'template' => 'Default',
+            'cssClass' => 'pixelcoda-search',
+            'enableAutoComplete' => true,
+            'minQueryLength' => 2,
+            'debounceMs' => 300,
+        ];
+    }
+
+    /**
+     * Normalize FlexForm data structure.
+     */
+    protected function normalizeFlexFormData(array $flexFormData): array
+    {
+        $normalized = [];
+
+        // Map FlexForm fields to settings
+        $fieldMapping = [
+            'settings.mode' => 'mode',
+            'settings.resultsPerPage' => 'resultsPerPage',
+            'settings.maxPassages' => 'maxPassages',
+            'settings.enableSuggestions' => 'enableSuggestions',
+            'settings.enableAsk' => 'enableAsk',
+            'settings.showDebug' => 'showDebug',
+            'settings.collections' => 'collections',
+            'settings.placeholder' => 'placeholder',
+            'settings.template' => 'template',
+            'settings.cssClass' => 'cssClass',
+        ];
+
+        foreach ($fieldMapping as $flexFormKey => $settingKey) {
+            $value = $this->getFlexFormValue($flexFormData, $flexFormKey);
+            if (null !== $value) {
+                $normalized[$settingKey] = $value;
+            }
+        }
+
+        // Handle special cases
+        if (isset($normalized['collections']) && is_string($normalized['collections'])) {
+            $normalized['collections'] = GeneralUtility::trimExplode(',', $normalized['collections'], true);
+        }
+
+        // Convert string booleans
+        $booleanFields = ['enableSuggestions', 'enableAsk', 'showDebug', 'enableMetrics'];
+        foreach ($booleanFields as $field) {
+            if (isset($normalized[$field])) {
+                $normalized[$field] = (bool) $normalized[$field];
+            }
+        }
+
+        // Convert numeric fields
+        $numericFields = ['resultsPerPage', 'maxPassages', 'minQueryLength', 'debounceMs'];
+        foreach ($numericFields as $field) {
+            if (isset($normalized[$field])) {
+                $normalized[$field] = (int) $normalized[$field];
+            }
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Get value from FlexForm data structure.
+     */
+    protected function getFlexFormValue(array $flexFormData, string $key): mixed
+    {
+        $keys = explode('.', $key);
+        $current = $flexFormData;
+
+        foreach ($keys as $keyPart) {
+            if (!is_array($current) || !isset($current[$keyPart])) {
+                return null;
+            }
+
+            $current = $current[$keyPart];
+        }
+
+        return $current;
+    }
+
+    /**
+     * Get content object renderer.
+     */
+    protected function getContentObjectRenderer(): ?ContentObjectRenderer
+    {
+        return $GLOBALS['TSFE']->cObj ?? null;
     }
 }

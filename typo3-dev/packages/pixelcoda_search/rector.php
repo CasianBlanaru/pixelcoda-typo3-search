@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPromotedPropertyRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
-use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPromotedPropertyRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -22,7 +23,7 @@ return RectorConfig::configure()
     ->withSets([
         // PHP version sets
         LevelSetList::UP_TO_PHP_81,
-        
+
         // Code quality sets
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,

@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * CLI Command for indexing content to pixelcoda Search
+ * CLI Command for indexing content to pixelcoda Search.
  */
 class IndexCommand extends Command
 {
@@ -79,11 +79,12 @@ class IndexCommand extends Command
                 $io->section(sprintf('Indexing single record: %s:%s', $table, $id));
 
                 if (!$dryRun) {
-                    $result = $this->searchService->indexRecord($table, (int)$id, 'update', $force);
+                    $result = $this->searchService->indexRecord($table, (int) $id, 'update', $force);
                     if ($result) {
                         $io->success(sprintf('Successfully indexed %s:%s', $table, $id));
                     } else {
                         $io->error(sprintf('Failed to index %s:%s', $table, $id));
+
                         return Command::FAILURE;
                     }
                 } else {
@@ -103,7 +104,7 @@ class IndexCommand extends Command
             } else {
                 // Index all enabled tables
                 $enabledTables = $this->getEnabledTables();
-                $io->section("Indexing all enabled tables: " . implode(', ', $enabledTables));
+                $io->section('Indexing all enabled tables: ' . implode(', ', $enabledTables));
 
                 $totalCount = 0;
                 foreach ($enabledTables as $tableName) {
@@ -140,11 +141,12 @@ class IndexCommand extends Command
     }
 
     /**
-     * Get enabled tables from extension configuration
+     * Get enabled tables from extension configuration.
      */
     private function getEnabledTables(): array
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
+
         return $config['enabled_tables'] ?? ['pages', 'tt_content'];
     }
 }

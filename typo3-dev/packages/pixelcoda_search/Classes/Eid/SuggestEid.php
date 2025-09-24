@@ -11,12 +11,12 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * EID handler for search suggestions
+ * EID handler for search suggestions.
  */
 class SuggestEid
 {
     /**
-     * Process the AJAX request
+     * Process the AJAX request.
      */
     public function processRequest(ServerRequestInterface $request): ResponseInterface
     {
@@ -34,7 +34,7 @@ class SuggestEid
     }
 
     /**
-     * Get search suggestions
+     * Get search suggestions.
      */
     protected function getSuggestions(string $query, int $limit = 10): array
     {
@@ -69,7 +69,7 @@ class SuggestEid
             $suggestions[] = [
                 'title' => $row['title'],
                 'url' => $url,
-                'type' => 'page'
+                'type' => 'page',
             ];
         }
 
@@ -109,7 +109,7 @@ class SuggestEid
                     'title' => $row['header'],
                     'subtitle' => 'in: ' . $row['page_title'],
                     'url' => $url,
-                    'type' => 'content'
+                    'type' => 'content',
                 ];
             }
         }
@@ -120,7 +120,7 @@ class SuggestEid
             $suggestions[] = [
                 'title' => $term,
                 'url' => '/search?q=' . urlencode((string) $term),
-                'type' => 'search'
+                'type' => 'search',
             ];
         }
 
@@ -128,16 +128,16 @@ class SuggestEid
     }
 
     /**
-     * Get popular search terms
+     * Get popular search terms.
      */
     protected function getPopularSearchTerms(string $query, int $limit = 5): array
     {
         $popularTerms = [
             'TYPO3', 'Headless', 'PWA', 'Content', 'News',
-            'Products', 'Services', 'Contact', 'About', 'Documentation'
+            'Products', 'Services', 'Contact', 'About', 'Documentation',
         ];
 
-        $filtered = array_filter($popularTerms, fn(string $term): bool => stripos($term, $query) !== false && strtolower($term) !== strtolower($query));
+        $filtered = array_filter($popularTerms, static fn (string $term): bool => false !== stripos($term, $query) && strtolower($term) !== strtolower($query));
 
         return array_slice($filtered, 0, $limit);
     }

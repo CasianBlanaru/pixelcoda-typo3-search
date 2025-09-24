@@ -6,13 +6,13 @@ namespace PixelCoda\PixelcodaSearch\Hook;
 
 use Exception;
 use PixelCoda\PixelcodaSearch\Service\SearchService;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * DataHandler hook for automatic content indexing
+ * DataHandler hook for automatic content indexing.
  *
  * This hook listens to TYPO3 DataHandler operations and automatically
  * indexes content when it's created, updated, or deleted.
@@ -29,7 +29,7 @@ class DatamapHook implements LoggerAwareInterface
     }
 
     /**
-     * Hook that is called before the datamap is processed
+     * Hook that is called before the datamap is processed.
      */
     public function processDatamap_beforeStart(DataHandler $dataHandler): void
     {
@@ -38,12 +38,12 @@ class DatamapHook implements LoggerAwareInterface
     }
 
     /**
-     * Hook that is called after a record has been processed
+     * Hook that is called after a record has been processed.
      *
-     * @param string $status The status of the operation (new, update)
-     * @param string $table The table name
-     * @param string|int $id The record ID
-     * @param array $fieldArray The field values
+     * @param string     $status     The status of the operation (new, update)
+     * @param string     $table      The table name
+     * @param int|string $id         The record ID
+     * @param array      $fieldArray The field values
      */
     public function processDatamap_afterDatabaseOperations(
         string $status,
@@ -64,11 +64,13 @@ class DatamapHook implements LoggerAwareInterface
                 case 'new':
                     // Get the actual ID for new records
                     $actualId = $dataHandler->substNEWwithIDs[$id] ?? $id;
-                    $this->indexRecord($table, (int)$actualId, 'create');
+                    $this->indexRecord($table, (int) $actualId, 'create');
+
                     break;
 
                 case 'update':
-                    $this->indexRecord($table, (int)$id, 'update');
+                    $this->indexRecord($table, (int) $id, 'update');
+
                     break;
             }
         } catch (Exception $exception) {
@@ -76,13 +78,13 @@ class DatamapHook implements LoggerAwareInterface
                 'table' => $table,
                 'id' => $id,
                 'status' => $status,
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
             ]);
         }
     }
 
     /**
-     * Hook that is called after all commands have been processed
+     * Hook that is called after all commands have been processed.
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
@@ -99,21 +101,23 @@ class DatamapHook implements LoggerAwareInterface
                     try {
                         switch ($command) {
                             case 'delete':
-                                $this->deleteFromIndex($table, (int)$id);
+                                $this->deleteFromIndex($table, (int) $id);
+
                                 break;
 
                             case 'copy':
                                 // Index the copied record
                                 if (isset($dataHandler->copyMappingArray[$table][$id])) {
                                     $newId = $dataHandler->copyMappingArray[$table][$id];
-                                    $this->indexRecord($table, (int)$newId, 'create');
+                                    $this->indexRecord($table, (int) $newId, 'create');
                                 }
 
                                 break;
 
                             case 'move':
                                 // Re-index moved record (URL might have changed)
-                                $this->indexRecord($table, (int)$id, 'update');
+                                $this->indexRecord($table, (int) $id, 'update');
+
                                 break;
                         }
                     } catch (Exception $e) {
@@ -121,7 +125,7 @@ class DatamapHook implements LoggerAwareInterface
                             'table' => $table,
                             'id' => $id,
                             'command' => $command,
-                            'error' => $e->getMessage()
+                            'error' => $e->getMessage(),
                         ]);
                     }
                 }
@@ -130,7 +134,7 @@ class DatamapHook implements LoggerAwareInterface
     }
 
     /**
-     * Index a single record
+     * Index a single record.
      */
     private function indexRecord(string $table, int $id, string $action): void
     {
@@ -141,7 +145,7 @@ class DatamapHook implements LoggerAwareInterface
         $this->logger?->info('pixelcoda Search: Indexing record', [
             'table' => $table,
             'id' => $id,
-            'action' => $action
+            'action' => $action,
         ]);
 
         // Delegate to SearchService for actual indexing
@@ -149,7 +153,7 @@ class DatamapHook implements LoggerAwareInterface
     }
 
     /**
-     * Remove a record from the search index
+     * Remove a record from the search index.
      */
     private function deleteFromIndex(string $table, int $id): void
     {
@@ -159,27 +163,29 @@ class DatamapHook implements LoggerAwareInterface
 
         $this->logger?->info('pixelcoda Search: Deleting from index', [
             'table' => $table,
-            'id' => $id
+            'id' => $id,
         ]);
 
         $this->searchService->deleteRecord($table, $id);
     }
 
     /**
-     * Get enabled tables from extension configuration
+     * Get enabled tables from extension configuration.
      */
     private function getEnabledTables(): array
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
+
         return $config['enabled_tables'] ?? ['pages', 'tt_content'];
     }
 
     /**
-     * Check if auto-indexing is enabled
+     * Check if auto-indexing is enabled.
      */
     private function isAutoIndexingEnabled(): bool
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
-        return (bool)($config['enable_auto_index'] ?? true);
+
+        return (bool) ($config['enable_auto_index'] ?? true);
     }
 }

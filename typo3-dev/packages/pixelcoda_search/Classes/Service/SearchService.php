@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
 
-use RuntimeException;
 use Exception;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use RuntimeException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Search Service - communicates with pixelcoda Search API
+ * Search Service - communicates with pixelcoda Search API.
  */
 class SearchService
 {
@@ -24,8 +24,8 @@ class SearchService
     protected array $config;
 
     public function __construct(
-        RequestFactory $requestFactory = null,
-        ExtensionConfiguration $extensionConfiguration = null
+        ?RequestFactory $requestFactory = null,
+        ?ExtensionConfiguration $extensionConfiguration = null
     ) {
         $this->requestFactory = $requestFactory ?? GeneralUtility::makeInstance(RequestFactory::class);
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
@@ -35,7 +35,7 @@ class SearchService
     }
 
     /**
-     * Perform search via API
+     * Perform search via API.
      */
     public function search(array $params): array
     {
@@ -43,7 +43,7 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+        if ('' === $apiUrl || '0' === $apiUrl || empty($apiKey)) {
             throw new RuntimeException('pixelcoda Search API not configured');
         }
 
@@ -54,19 +54,19 @@ class SearchService
                 'Content-Type' => 'application/json',
                 'X-API-Key' => $apiKey,
                 'Accept' => 'application/vnd.api+json',
-                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0'
+                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0',
             ],
             'body' => json_encode($params),
-            'timeout' => $this->config['timeout'] ?? 30
+            'timeout' => $this->config['timeout'] ?? 30,
         ];
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
 
-            if ($response->getStatusCode() !== 200) {
+            if (200 !== $response->getStatusCode()) {
                 throw new RuntimeException(
-                    sprintf('Search API returned status %s: ', $response->getStatusCode()) .
-                    $response->getBody()->getContents()
+                    sprintf('Search API returned status %s: ', $response->getStatusCode())
+                    . $response->getBody()->getContents()
                 );
             }
 
@@ -79,7 +79,7 @@ class SearchService
             $this->logger->info('Search completed', [
                 'query' => $params['q'],
                 'results' => count($result['data'] ?? []),
-                'response_time' => $result['meta']['search']['response_time_ms'] ?? 0
+                'response_time' => $result['meta']['search']['response_time_ms'] ?? 0,
             ]);
 
             return $result;
@@ -88,14 +88,15 @@ class SearchService
             $this->logger->error('Search API error', [
                 'query' => $params['q'],
                 'error' => $exception->getMessage(),
-                'url' => $url
+                'url' => $url,
             ]);
+
             throw $exception;
         }
     }
 
     /**
-     * Ask AI-powered question via API
+     * Ask AI-powered question via API.
      */
     public function ask(array $params): array
     {
@@ -103,7 +104,7 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+        if ('' === $apiUrl || '0' === $apiUrl || empty($apiKey)) {
             throw new RuntimeException('pixelcoda Search API not configured');
         }
 
@@ -114,19 +115,19 @@ class SearchService
                 'Content-Type' => 'application/json',
                 'X-API-Key' => $apiKey,
                 'Accept' => 'application/vnd.api+json',
-                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0'
+                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0',
             ],
             'body' => json_encode($params),
-            'timeout' => ($this->config['timeout'] ?? 30) * 2 // Longer timeout for AI
+            'timeout' => ($this->config['timeout'] ?? 30) * 2, // Longer timeout for AI
         ];
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
 
-            if ($response->getStatusCode() !== 200) {
+            if (200 !== $response->getStatusCode()) {
                 throw new RuntimeException(
-                    sprintf('Ask API returned status %s: ', $response->getStatusCode()) .
-                    $response->getBody()->getContents()
+                    sprintf('Ask API returned status %s: ', $response->getStatusCode())
+                    . $response->getBody()->getContents()
                 );
             }
 
@@ -139,7 +140,7 @@ class SearchService
             $this->logger->info('Ask completed', [
                 'question' => $params['q'],
                 'citations' => count($result['included'] ?? []),
-                'response_time' => $result['meta']['generation']['response_time_ms'] ?? 0
+                'response_time' => $result['meta']['generation']['response_time_ms'] ?? 0,
             ]);
 
             return $result;
@@ -148,14 +149,15 @@ class SearchService
             $this->logger->error('Ask API error', [
                 'question' => $params['q'],
                 'error' => $exception->getMessage(),
-                'url' => $url
+                'url' => $url,
             ]);
+
             throw $exception;
         }
     }
 
     /**
-     * Get search suggestions via API
+     * Get search suggestions via API.
      */
     public function suggest(array $params): array
     {
@@ -163,7 +165,7 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+        if ('' === $apiUrl || '0' === $apiUrl || empty($apiKey)) {
             return ['data' => []]; // Return empty suggestions if not configured
         }
 
@@ -174,35 +176,37 @@ class SearchService
                 'Content-Type' => 'application/json',
                 'X-API-Key' => $apiKey,
                 'Accept' => 'application/vnd.api+json',
-                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0'
+                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0',
             ],
             'body' => json_encode($params),
-            'timeout' => 10 // Short timeout for suggestions
+            'timeout' => 10, // Short timeout for suggestions
         ];
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
 
-            if ($response->getStatusCode() !== 200) {
+            if (200 !== $response->getStatusCode()) {
                 return ['data' => []]; // Return empty on error
             }
 
             $result = json_decode($response->getBody()->getContents(), true);
+
             return $result ?? ['data' => []];
 
         } catch (Exception $exception) {
             $this->logger->warning('Suggest API error', [
                 'query' => $params['q'] ?? '',
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
             ]);
+
             return ['data' => []];
         }
     }
 
     /**
-     * Log click metrics
+     * Log click metrics.
      */
-    public function logClick(string $query, string $documentId, int $position, string $url = null): void
+    public function logClick(string $query, string $documentId, int $position, ?string $url = null): void
     {
         if (!($this->config['enable_metrics'] ?? true)) {
             return;
@@ -212,7 +216,7 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+        if ('' === $apiUrl || '0' === $apiUrl || empty($apiKey)) {
             return;
         }
 
@@ -222,45 +226,46 @@ class SearchService
             'headers' => [
                 'Content-Type' => 'application/json',
                 'X-API-Key' => $apiKey,
-                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0'
+                'User-Agent' => 'TYPO3-pixelcoda-Search/2.0',
             ],
             'body' => json_encode([
                 'query' => $query,
                 'document_id' => $documentId,
                 'position' => $position,
-                'url' => $url
+                'url' => $url,
             ]),
-            'timeout' => 5
+            'timeout' => 5,
         ];
 
         try {
             $this->requestFactory->request($metricsUrl, 'POST', $requestOptions);
         } catch (Exception $exception) {
             $this->logger->warning('Failed to log click metrics', [
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
             ]);
         }
     }
 
     /**
-     * Check API health
+     * Check API health.
      */
     public function checkApiHealth(): array
     {
         $apiUrl = rtrim($this->config['api_url'] ?? '', '/');
 
-        if ($apiUrl === '' || $apiUrl === '0') {
+        if ('' === $apiUrl || '0' === $apiUrl) {
             return ['status' => 'not_configured', 'message' => 'API URL not configured'];
         }
 
         try {
             $response = $this->requestFactory->request($apiUrl . '/health', 'GET', [
-                'timeout' => 5
+                'timeout' => 5,
             ]);
 
-            if ($response->getStatusCode() === 200) {
+            if (200 === $response->getStatusCode()) {
                 return ['status' => 'healthy', 'message' => 'API is responding'];
             }
+
             return ['status' => 'unhealthy', 'message' => 'API returned status ' . $response->getStatusCode()];
 
         } catch (Exception $exception) {
@@ -269,22 +274,23 @@ class SearchService
     }
 
     /**
-     * Get search suggestions
+     * Get search suggestions.
      */
     public function getSuggestions(string $query, int $limit = 5, string $collections = 'pages,tt_content'): array
     {
         $params = [
             'q' => $query,
             'limit' => $limit,
-            'collections' => explode(',', $collections)
+            'collections' => explode(',', $collections),
         ];
 
         $result = $this->suggest($params);
+
         return $result['data'] ?? [];
     }
 
     /**
-     * Index a single record
+     * Index a single record.
      */
     public function indexRecord(string $table, int $id, string $action = 'update', bool $force = false): bool
     {
@@ -294,7 +300,7 @@ class SearchService
             'table' => $table,
             'id' => $id,
             'action' => $action,
-            'force' => $force
+            'force' => $force,
         ]);
 
         // For now, just return true to avoid errors
@@ -303,14 +309,14 @@ class SearchService
     }
 
     /**
-     * Delete a record from the search index
+     * Delete a record from the search index.
      */
     public function deleteRecord(string $table, int $id): bool
     {
         // This is a placeholder - actual implementation would call delete API
         $this->logger->info('Deleting record from index', [
             'table' => $table,
-            'id' => $id
+            'id' => $id,
         ]);
 
         // For now, just return true to avoid errors
@@ -319,7 +325,7 @@ class SearchService
     }
 
     /**
-     * Index all records from a table
+     * Index all records from a table.
      */
     public function indexTable(string $table, bool $force = false): int
     {
@@ -327,7 +333,7 @@ class SearchService
         // and index them
         $this->logger->info('Indexing table', [
             'table' => $table,
-            'force' => $force
+            'force' => $force,
         ]);
 
         // For now, just return 0 to avoid errors
@@ -336,13 +342,13 @@ class SearchService
     }
 
     /**
-     * Get record count for a table
+     * Get record count for a table.
      */
     public function getTableRecordCount(string $table): int
     {
         // This is a placeholder - actual implementation would count records
         $this->logger->info('Getting table record count', [
-            'table' => $table
+            'table' => $table,
         ]);
 
         // For now, just return 0 to avoid errors
@@ -351,13 +357,13 @@ class SearchService
     }
 
     /**
-     * Clear index for a specific table
+     * Clear index for a specific table.
      */
     public function clearTableIndex(string $table): bool
     {
         // This is a placeholder - actual implementation would clear table index
         $this->logger->info('Clearing table index', [
-            'table' => $table
+            'table' => $table,
         ]);
 
         // For now, just return true to avoid errors
@@ -366,7 +372,7 @@ class SearchService
     }
 
     /**
-     * Clear all indexes
+     * Clear all indexes.
      */
     public function clearAllIndexes(): bool
     {
@@ -379,7 +385,7 @@ class SearchService
     }
 
     /**
-     * Get index statistics
+     * Get index statistics.
      */
     public function getIndexStatistics(): ?array
     {

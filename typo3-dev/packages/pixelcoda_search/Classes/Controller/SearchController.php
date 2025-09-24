@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller;
 
-use TYPO3\CMS\Core\Resource\FileRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Search Controller for handling search requests
+ * Search Controller for handling search requests.
  */
 class SearchController extends ActionController
 {
     /**
-     * Display search form
+     * Display search form.
      */
     public function indexAction(): ResponseInterface
     {
@@ -26,7 +26,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * AJAX endpoint for search suggestions
+     * AJAX endpoint for search suggestions.
      */
     public function suggestAction(): ResponseInterface
     {
@@ -44,13 +44,13 @@ class SearchController extends ActionController
     }
 
     /**
-     * Handle search and display results with pagination
+     * Handle search and display results with pagination.
      */
     public function searchAction(): ResponseInterface
     {
         $params = $this->request->getQueryParams();
         $searchQuery = trim($params['q'] ?? '');
-        $currentPage = (int)($params['page'] ?? 1);
+        $currentPage = (int) ($params['page'] ?? 1);
 
         // Get filter parameters
         $filters = [
@@ -61,9 +61,9 @@ class SearchController extends ActionController
             'searchIn' => [
                 'pages' => !empty($params['filter_pages']),
                 'content' => !empty($params['filter_content']),
-                'news' => !empty($params['filter_news'])
+                'news' => !empty($params['filter_news']),
             ],
-            'sort' => $params['sort'] ?? 'relevance'
+            'sort' => $params['sort'] ?? 'relevance',
         ];
 
         // Default to searching in pages and content if nothing selected
@@ -73,8 +73,8 @@ class SearchController extends ActionController
         }
 
         // Get settings from FlexForm or fallback to defaults
-        $resultsPerPage = (int)($this->settings['resultsPerPage'] ?? 10);
-        $minQueryLength = (int)($this->settings['minQueryLength'] ?? 3);
+        $resultsPerPage = (int) ($this->settings['resultsPerPage'] ?? 10);
+        $minQueryLength = (int) ($this->settings['minQueryLength'] ?? 3);
 
         $results = [];
         $message = '';
@@ -109,7 +109,7 @@ class SearchController extends ActionController
             // Get results for current page
             $results = array_slice($allResults, $offset, $resultsPerPage);
 
-            if ($results === []) {
+            if ([] === $results) {
                 $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
             } else {
                 $message = $totalResults . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
@@ -122,7 +122,7 @@ class SearchController extends ActionController
                     'total' => $totalPages,
                     'prev' => $currentPage > 1 ? $currentPage - 1 : null,
                     'next' => $currentPage < $totalPages ? $currentPage + 1 : null,
-                    'pages' => range(1, $totalPages)
+                    'pages' => range(1, $totalPages),
                 ];
             }
         }
@@ -131,14 +131,14 @@ class SearchController extends ActionController
         $availableCategories = $this->getAvailableCategories();
 
         $this->view->assignMultiple([
-        'searchQuery' => htmlspecialchars($searchQuery),
-        'results' => $results,
-        'message' => $message,
-        'pagination' => $pagination,
-        'totalResults' => $totalResults,
-        'settings' => $this->settings,
-        'filters' => $filters,
-        'availableCategories' => $availableCategories
+            'searchQuery' => htmlspecialchars($searchQuery),
+            'results' => $results,
+            'message' => $message,
+            'pagination' => $pagination,
+            'totalResults' => $totalResults,
+            'settings' => $this->settings,
+            'filters' => $filters,
+            'availableCategories' => $availableCategories,
         ]);
 
         // Use the enhanced template with filters
@@ -150,7 +150,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Search in pages table
+     * Search in pages table.
      */
     protected function searchInPages(string $query): array
     {
@@ -203,7 +203,7 @@ class SearchController extends ActionController
             $results[] = [
                 'title' => $row['title'],
                 'abstract' => $row['abstract'] ?: $this->getTranslation('search.results.nodescription'),
-                'url' => $url
+                'url' => $url,
             ];
         }
 
@@ -214,7 +214,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Search in content elements
+     * Search in content elements.
      */
     protected function searchInContent(string $query): array
     {
@@ -278,7 +278,7 @@ class SearchController extends ActionController
                 'title' => $row['header'] ?: $row['page_title'],
                 'abstract' => $abstract ?: $this->getTranslation('search.results.nodescription'),
                 'url' => $url,
-                'page' => $row['page_title']
+                'page' => $row['page_title'],
             ];
         }
 
@@ -286,7 +286,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Enhanced search with images, tags, categories
+     * Enhanced search with images, tags, categories.
      */
     protected function searchInPagesEnhanced(string $query, string $sortOrder = 'relevance'): array
     {
@@ -325,12 +325,15 @@ class SearchController extends ActionController
         switch ($sortOrder) {
             case 'date_desc':
                 $queryBuilder->orderBy('lastUpdated', 'DESC');
+
                 break;
             case 'date_asc':
                 $queryBuilder->orderBy('lastUpdated', 'ASC');
+
                 break;
             case 'title':
                 $queryBuilder->orderBy('title', 'ASC');
+
                 break;
             default: // relevance - no specific order
                 break;
@@ -362,7 +365,7 @@ class SearchController extends ActionController
                     $fileReference = $fileReferences[0];
                     $image = [
                         'url' => $fileReference->getPublicUrl(),
-                        'alt' => $fileReference->getAlternative() ?: $row['title']
+                        'alt' => $fileReference->getAlternative() ?: $row['title'],
                     ];
                 }
             }
@@ -388,7 +391,7 @@ class SearchController extends ActionController
                 'image' => $image,
                 'tags' => $tags,
                 'date' => $date,
-                'categories' => $this->getPageCategories($row['uid'])
+                'categories' => $this->getPageCategories($row['uid']),
             ];
         }
 
@@ -399,7 +402,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Enhanced search in content elements
+     * Enhanced search in content elements.
      */
     protected function searchInContentEnhanced(string $query, string $sortOrder = 'relevance'): array
     {
@@ -441,12 +444,15 @@ class SearchController extends ActionController
         switch ($sortOrder) {
             case 'date_desc':
                 $queryBuilder->orderBy('tt_content.crdate', 'DESC');
+
                 break;
             case 'date_asc':
                 $queryBuilder->orderBy('tt_content.crdate', 'ASC');
+
                 break;
             case 'title':
                 $queryBuilder->orderBy('tt_content.header', 'ASC');
+
                 break;
         }
 
@@ -487,7 +493,7 @@ class SearchController extends ActionController
                     $fileReference = $fileReferences[0];
                     $image = [
                         'url' => $fileReference->getPublicUrl(),
-                        'alt' => $fileReference->getAlternative() ?: $row['header']
+                        'alt' => $fileReference->getAlternative() ?: $row['header'],
                     ];
                 }
             }
@@ -503,7 +509,7 @@ class SearchController extends ActionController
                 'image' => $image,
                 'tags' => [],
                 'date' => $row['crdate'] ? date('d.m.Y', $row['crdate']) : null,
-                'categories' => $this->getContentCategories($row['uid'])
+                'categories' => $this->getContentCategories($row['uid']),
             ];
         }
 
@@ -511,7 +517,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get categories for a page
+     * Get categories for a page.
      */
     protected function getPageCategories(int $pageUid): array
     {
@@ -542,7 +548,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get categories for content
+     * Get categories for content.
      */
     protected function getContentCategories(int $contentUid): array
     {
@@ -573,7 +579,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Search in pages with filters
+     * Search in pages with filters.
      */
     protected function searchInPagesWithFilters(string $query, array $filters): array
     {
@@ -621,7 +627,7 @@ class SearchController extends ActionController
                     'mm.uid_foreign = pages.uid AND mm.tablenames = ' . $queryBuilder->createNamedParameter('pages')
                 )
                 ->andWhere(
-                    $queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter((int)$filters['category']))
+                    $queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter((int) $filters['category']))
                 );
         }
 
@@ -645,7 +651,7 @@ class SearchController extends ActionController
                 'url' => $url,
                 'date' => $row['lastUpdated'] ?: $row['crdate'],
                 'type' => 'page',
-                'categories' => $this->getPageCategories($row['uid'])
+                'categories' => $this->getPageCategories($row['uid']),
             ];
         }
 
@@ -653,7 +659,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Search in content with filters
+     * Search in content with filters.
      */
     protected function searchInContentWithFilters(string $query, array $filters): array
     {
@@ -681,7 +687,7 @@ class SearchController extends ActionController
             );
 
         // Apply content type filter
-        if ($filters['contentType'] !== 'all' && !empty($filters['contentType'])) {
+        if ('all' !== $filters['contentType'] && !empty($filters['contentType'])) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('tt_content.CType', $queryBuilder->createNamedParameter($filters['contentType']))
             );
@@ -729,7 +735,7 @@ class SearchController extends ActionController
                 'date' => $row['tstamp'] ?: $row['crdate'],
                 'type' => 'content',
                 'contentType' => $row['CType'],
-                'categories' => $this->getContentCategories($row['uid'])
+                'categories' => $this->getContentCategories($row['uid']),
             ];
         }
 
@@ -737,14 +743,14 @@ class SearchController extends ActionController
     }
 
     /**
-     * Sort results based on selected criteria
+     * Sort results based on selected criteria.
      */
     protected function sortResults(array $results, string $sortBy): array
     {
         match ($sortBy) {
-            'date_desc' => usort($results, fn(array $a, array $b): int|float => ($b['date'] ?? 0) - ($a['date'] ?? 0)),
-            'date_asc' => usort($results, fn(array $a, array $b): int|float => ($a['date'] ?? 0) - ($b['date'] ?? 0)),
-            'title' => usort($results, fn(array $a, array $b): int => strcasecmp((string) $a['title'], (string) $b['title'])),
+            'date_desc' => usort($results, static fn (array $a, array $b): int|float => ($b['date'] ?? 0) - ($a['date'] ?? 0)),
+            'date_asc' => usort($results, static fn (array $a, array $b): int|float => ($a['date'] ?? 0) - ($b['date'] ?? 0)),
+            'title' => usort($results, static fn (array $a, array $b): int => strcasecmp((string) $a['title'], (string) $b['title'])),
             default => $results,
         };
 
@@ -752,7 +758,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get all available categories
+     * Get all available categories.
      */
     protected function getAvailableCategories(): array
     {
@@ -773,7 +779,7 @@ class SearchController extends ActionController
         while ($row = $statement->fetchAssociative()) {
             $categories[] = [
                 'uid' => $row['uid'],
-                'title' => $row['title']
+                'title' => $row['title'],
             ];
         }
 
@@ -781,7 +787,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get search suggestions for autocomplete
+     * Get search suggestions for autocomplete.
      */
     protected function getSuggestions(string $query, int $limit = 10): array
     {
@@ -816,7 +822,7 @@ class SearchController extends ActionController
             $suggestions[] = [
                 'title' => $row['title'],
                 'url' => $url,
-                'type' => 'page'
+                'type' => 'page',
             ];
         }
 
@@ -856,7 +862,7 @@ class SearchController extends ActionController
                     'title' => $row['header'],
                     'subtitle' => 'in: ' . $row['page_title'],
                     'url' => $url,
-                    'type' => 'content'
+                    'type' => 'content',
                 ];
             }
         }
@@ -867,7 +873,7 @@ class SearchController extends ActionController
             $suggestions[] = [
                 'title' => $term,
                 'url' => '/search?q=' . urlencode((string) $term),
-                'type' => 'search'
+                'type' => 'search',
             ];
         }
 
@@ -875,7 +881,7 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get popular search terms (placeholder for future implementation)
+     * Get popular search terms (placeholder for future implementation).
      */
     protected function getPopularSearchTerms(string $query, int $limit = 5): array
     {
@@ -883,16 +889,16 @@ class SearchController extends ActionController
         // For now, return some example terms
         $popularTerms = [
             'TYPO3', 'Headless', 'PWA', 'Content', 'News',
-            'Products', 'Services', 'Contact', 'About', 'Documentation'
+            'Products', 'Services', 'Contact', 'About', 'Documentation',
         ];
 
-        $filtered = array_filter($popularTerms, fn(string $term): bool => stripos($term, $query) !== false && strtolower($term) !== strtolower($query));
+        $filtered = array_filter($popularTerms, static fn (string $term): bool => false !== stripos($term, $query) && strtolower($term) !== strtolower($query));
 
         return array_slice($filtered, 0, $limit);
     }
 
     /**
-     * Return JSON response for suggestions
+     * Return JSON response for suggestions.
      */
     protected function createJsonResponse(array $data): ResponseInterface
     {
@@ -900,10 +906,11 @@ class SearchController extends ActionController
     }
 
     /**
-     * Get translation for a given key
+     * Get translation for a given key.
      *
-     * @param string $key Translation key
-     * @param array $arguments Optional arguments for sprintf
+     * @param string $key       Translation key
+     * @param array  $arguments Optional arguments for sprintf
+     *
      * @return string Translated text
      */
     protected function getTranslation(string $key, array $arguments = []): string
@@ -913,7 +920,7 @@ class SearchController extends ActionController
             'PixelcodaSearch'
         ) ?? $key;
 
-        if ($arguments !== []) {
+        if ([] !== $arguments) {
             return vsprintf($translation, $arguments);
         }
 

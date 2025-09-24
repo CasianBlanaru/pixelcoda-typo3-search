@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * CLI Command for re-indexing content to pixelcoda Search
- * This command clears the existing index and rebuilds it from scratch
+ * This command clears the existing index and rebuilds it from scratch.
  */
 class ReindexCommand extends Command
 {
@@ -91,7 +91,7 @@ class ReindexCommand extends Command
             } else {
                 // Re-index all enabled tables
                 $enabledTables = $this->getEnabledTables();
-                $io->section("Re-indexing all enabled tables: " . implode(', ', $enabledTables));
+                $io->section('Re-indexing all enabled tables: ' . implode(', ', $enabledTables));
 
                 if (!$skipClear) {
                     if (!$dryRun) {
@@ -128,6 +128,7 @@ class ReindexCommand extends Command
             // Show some statistics
             if (!$dryRun && !$skipClear) {
                 $io->section('Index Statistics');
+
                 try {
                     $stats = $this->searchService->getIndexStatistics();
                     if ($stats) {
@@ -155,11 +156,12 @@ class ReindexCommand extends Command
     }
 
     /**
-     * Get enabled tables from extension configuration
+     * Get enabled tables from extension configuration.
      */
     private function getEnabledTables(): array
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
+
         return $config['enabled_tables'] ?? ['pages', 'tt_content'];
     }
 }

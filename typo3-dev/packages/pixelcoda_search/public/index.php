@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -14,8 +16,8 @@
  */
 
 // Set up the application for the frontend
-call_user_func(static function () {
-    $classLoader = require dirname(dirname(dirname(__DIR__))).'/vendor/autoload.php';
-    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE);
-    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Frontend\Http\Application::class)->run();
+call_user_func(static function (): void {
+    $classLoader = require dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php';
+    TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(0, TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE);
+    TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(TYPO3\CMS\Frontend\Http\Application::class)->run();
 });

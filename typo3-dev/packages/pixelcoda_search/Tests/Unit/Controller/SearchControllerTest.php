@@ -1,38 +1,38 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Unit\Controller;
 
-use PHPUnit\Framework\TestCase;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use ReflectionClass;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Test case for SearchController
+ * Test case for SearchController.
  */
 class SearchControllerTest extends UnitTestCase
 {
     protected SearchController $subject;
+
     protected ViewInterface $viewMock;
+
     protected ServerRequest $requestMock;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->subject = $this->getMockBuilder(SearchController::class)
             ->onlyMethods(['htmlResponse', 'createJsonResponse'])
             ->disableOriginalConstructor()
             ->getMock();
-            
+
         $this->viewMock = $this->createMock(ViewInterface::class);
         $this->requestMock = $this->createMock(ServerRequest::class);
-        
+
         // Inject mocks
         $this->inject($this->subject, 'view', $this->viewMock);
         $this->inject($this->subject, 'request', $this->requestMock);
@@ -45,7 +45,7 @@ class SearchControllerTest extends UnitTestCase
     {
         $this->subject->expects($this->once())
             ->method('htmlResponse');
-            
+
         $this->subject->indexAction();
     }
 
@@ -57,11 +57,11 @@ class SearchControllerTest extends UnitTestCase
         $this->requestMock->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['q' => 'a']);
-            
+
         $this->subject->expects($this->once())
             ->method('createJsonResponse')
             ->with([]);
-            
+
         $this->subject->suggestAction();
     }
 
@@ -73,27 +73,27 @@ class SearchControllerTest extends UnitTestCase
         $this->requestMock->expects($this->once())
             ->method('getQueryParams')
             ->willReturn(['q' => 'test']);
-            
+
         $this->subject = $this->getMockBuilder(SearchController::class)
             ->onlyMethods(['createJsonResponse', 'getSuggestions'])
             ->disableOriginalConstructor()
             ->getMock();
-            
+
         $this->inject($this->subject, 'request', $this->requestMock);
-        
+
         $expectedSuggestions = [
-            ['title' => 'Test Page', 'url' => '/test', 'type' => 'page']
+            ['title' => 'Test Page', 'url' => '/test', 'type' => 'page'],
         ];
-        
+
         $this->subject->expects($this->once())
             ->method('getSuggestions')
             ->with('test')
             ->willReturn($expectedSuggestions);
-            
+
         $this->subject->expects($this->once())
             ->method('createJsonResponse')
             ->with($expectedSuggestions);
-            
+
         $this->subject->suggestAction();
     }
 
@@ -106,23 +106,24 @@ class SearchControllerTest extends UnitTestCase
             ->method('getQueryParams')
             ->willReturn([
                 'q' => 'search term',
-                'page' => '2'
+                'page' => '2',
             ]);
-            
+
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(function ($data) {
-                return isset($data['searchQuery']) 
-                    && isset($data['results'])
-                    && isset($data['pagination'])
-                    && isset($data['filters']);
+            ->with($this->callback(static function ($data) {
+                return isset($data['searchQuery'])
+                    && isset($data['results'], $data['pagination'], $data['filters'])
+
+                ;
             }));
-            
+
         $this->subject->searchAction();
     }
 
     /**
      * @test
+     *
      * @dataProvider filterDataProvider
      */
     public function searchActionProcessesFiltersCorrectly(array $params, array $expectedFilters): void
@@ -130,13 +131,13 @@ class SearchControllerTest extends UnitTestCase
         $this->requestMock->expects($this->once())
             ->method('getQueryParams')
             ->willReturn($params);
-            
+
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(function ($data) use ($expectedFilters) {
+            ->with($this->callback(static function ($data) use ($expectedFilters) {
                 return $data['filters'] === $expectedFilters;
             }));
-            
+
         $this->subject->searchAction();
     }
 
@@ -151,8 +152,8 @@ class SearchControllerTest extends UnitTestCase
                     'dateTo' => '',
                     'contentType' => 'all',
                     'searchIn' => ['pages' => true, 'content' => true, 'news' => false],
-                    'sort' => 'relevance'
-                ]
+                    'sort' => 'relevance',
+                ],
             ],
             'with date range' => [
                 ['q' => 'test', 'date_from' => '2024-01-01', 'date_to' => '2024-12-31'],
@@ -162,8 +163,8 @@ class SearchControllerTest extends UnitTestCase
                     'dateTo' => '2024-12-31',
                     'contentType' => 'all',
                     'searchIn' => ['pages' => true, 'content' => true, 'news' => false],
-                    'sort' => 'relevance'
-                ]
+                    'sort' => 'relevance',
+                ],
             ],
             'with sort order' => [
                 ['q' => 'test', 'sort' => 'date_desc'],
@@ -173,18 +174,21 @@ class SearchControllerTest extends UnitTestCase
                     'dateTo' => '',
                     'contentType' => 'all',
                     'searchIn' => ['pages' => true, 'content' => true, 'news' => false],
-                    'sort' => 'date_desc'
-                ]
-            ]
+                    'sort' => 'date_desc',
+                ],
+            ],
         ];
     }
 
     /**
-     * Helper method to inject properties
+     * Helper method to inject properties.
+     *
+     * @param mixed $object
+     * @param mixed $value
      */
     protected function inject($object, string $property, $value): void
     {
-        $reflection = new \ReflectionClass($object);
+        $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty($property);
         $property->setAccessible(true);
         $property->setValue($object, $value);
