@@ -28,14 +28,33 @@ class SearchController extends ActionController
      */
     public function searchAction(): ResponseInterface
     {
-        $searchQuery = $this->request->getQueryParams()['q'] ?? '';
-        $searchQuery = trim($searchQuery);
-        $currentPage = (int)($this->request->getQueryParams()['page'] ?? 1);
+        $params = $this->request->getQueryParams();
+        $searchQuery = trim($params['q'] ?? '');
+        $currentPage = (int)($params['page'] ?? 1);
+        
+        // Get filter parameters
+        $filters = [
+            'category' => $params['category'] ?? '',
+            'dateFrom' => $params['date_from'] ?? '',
+            'dateTo' => $params['date_to'] ?? '',
+            'contentType' => $params['content_type'] ?? 'all',
+            'searchIn' => [
+                'pages' => !empty($params['filter_pages']),
+                'content' => !empty($params['filter_content']),
+                'news' => !empty($params['filter_news'])
+            ],
+            'sort' => $params['sort'] ?? 'relevance'
+        ];
+        
+        // Default to searching in pages and content if nothing selected
+        if (!$filters['searchIn']['pages'] && !$filters['searchIn']['content'] && !$filters['searchIn']['news']) {
+            $filters['searchIn']['pages'] = true;
+            $filters['searchIn']['content'] = true;
+        }
         
         // Get settings from FlexForm or fallback to defaults
         $resultsPerPage = (int)($this->settings['resultsPerPage'] ?? 10);
         $minQueryLength = (int)($this->settings['minQueryLength'] ?? 3);
-        $sortOrder = $this->settings['sortOrder'] ?? 'relevance';
         
         $results = [];
         $message = '';
@@ -45,8 +64,21 @@ class SearchController extends ActionController
         if (strlen($searchQuery) < $minQueryLength) {
             $message = sprintf($this->getTranslation('search.results.minlength'), $minQueryLength);
         } else {
-            // Search in pages with enhanced features
-            $allResults = $this->searchInPagesEnhanced($searchQuery, $sortOrder);
+            // Search with filters
+            $allResults = [];
+            
+            if ($filters['searchIn']['pages']) {
+                $pageResults = $this->searchInPagesWithFilters($searchQuery, $filters);
+                $allResults = array_merge($allResults, $pageResults);
+            }
+            
+            if ($filters['searchIn']['content']) {
+                $contentResults = $this->searchInContentWithFilters($searchQuery, $filters);
+                $allResults = array_merge($allResults, $contentResults);
+            }
+            
+            // Apply sorting
+            $allResults = $this->sortResults($allResults, $filters['sort']);
             $totalResults = count($allResults);
             
             // Calculate pagination
@@ -75,15 +107,25 @@ class SearchController extends ActionController
             }
         }
         
+            // Get available categories for filter dropdown
+            $availableCategories = $this->getAvailableCategories();
+            
             $this->view->assignMultiple([
             'searchQuery' => htmlspecialchars($searchQuery),
             'results' => $results,
             'message' => $message,
             'pagination' => $pagination,
             'totalResults' => $totalResults,
-            'settings' => $this->settings
+            'settings' => $this->settings,
+            'filters' => $filters,
+            'availableCategories' => $availableCategories
             ]);
 
+            // Use the enhanced template with filters
+            $this->view->setTemplatePathAndFilename(
+                'EXT:pixelcoda_search/Resources/Private/Templates/Search/SearchWithFilters.html'
+            );
+            
             return $this->htmlResponse();
     }
     
@@ -505,6 +547,228 @@ class SearchController extends ActionController
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
             $categories[] = $row['title'];
+        }
+        
+        return $categories;
+    }
+    
+    /**
+     * Search in pages with filters
+     */
+    protected function searchInPagesWithFilters(string $query, array $filters): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        
+        $searchTerms = '%' . $queryBuilder->escapeLikeWildcards($query) . '%';
+        
+        $queryBuilder
+            ->select('pages.*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like('title', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('abstract', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('keywords', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('description', $queryBuilder->createNamedParameter($searchTerms))
+                ),
+                $queryBuilder->expr()->eq('hidden', 0),
+                $queryBuilder->expr()->eq('deleted', 0)
+            );
+        
+        // Apply date filters
+        if (!empty($filters['dateFrom'])) {
+            $dateFrom = strtotime($filters['dateFrom']);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gte('lastUpdated', $dateFrom)
+            );
+        }
+        
+        if (!empty($filters['dateTo'])) {
+            $dateTo = strtotime($filters['dateTo']);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->lte('lastUpdated', $dateTo)
+            );
+        }
+        
+        // Apply category filter
+        if (!empty($filters['category'])) {
+            $queryBuilder
+                ->leftJoin(
+                    'pages',
+                    'sys_category_record_mm',
+                    'mm',
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq('mm.uid_foreign', $queryBuilder->quoteIdentifier('pages.uid')),
+                        $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('pages'))
+                    )
+                )
+                ->andWhere(
+                    $queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter((int)$filters['category']))
+                );
+        }
+        
+        $results = [];
+        $statement = $queryBuilder->execute();
+        
+        while ($row = $statement->fetchAssociative()) {
+            // Build URL
+            if (!empty($row['slug'])) {
+                $url = $row['slug'];
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
+                }
+            } else {
+                $url = '/index.php?id=' . $row['uid'];
+            }
+            
+            $results[] = [
+                'title' => $row['title'],
+                'abstract' => $row['abstract'] ?: $this->getTranslation('search.results.nodescription'),
+                'url' => $url,
+                'date' => $row['lastUpdated'] ?: $row['crdate'],
+                'type' => 'page',
+                'categories' => $this->getPageCategories($row['uid'])
+            ];
+        }
+        
+        return $results;
+    }
+    
+    /**
+     * Search in content with filters
+     */
+    protected function searchInContentWithFilters(string $query, array $filters): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+        
+        $searchTerms = '%' . $queryBuilder->escapeLikeWildcards($query) . '%';
+        
+        $queryBuilder
+            ->select('tt_content.*', 'pages.title as page_title', 'pages.slug as page_slug')
+            ->from('tt_content')
+            ->leftJoin(
+                'tt_content',
+                'pages',
+                'pages',
+                $queryBuilder->expr()->eq('pages.uid', $queryBuilder->quoteIdentifier('tt_content.pid'))
+            )
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like('tt_content.header', $queryBuilder->createNamedParameter($searchTerms)),
+                    $queryBuilder->expr()->like('tt_content.bodytext', $queryBuilder->createNamedParameter($searchTerms))
+                ),
+                $queryBuilder->expr()->eq('tt_content.hidden', 0),
+                $queryBuilder->expr()->eq('tt_content.deleted', 0)
+            );
+        
+        // Apply content type filter
+        if ($filters['contentType'] !== 'all' && !empty($filters['contentType'])) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq('tt_content.CType', $queryBuilder->createNamedParameter($filters['contentType']))
+            );
+        }
+        
+        // Apply date filters
+        if (!empty($filters['dateFrom'])) {
+            $dateFrom = strtotime($filters['dateFrom']);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->gte('tt_content.tstamp', $dateFrom)
+            );
+        }
+        
+        if (!empty($filters['dateTo'])) {
+            $dateTo = strtotime($filters['dateTo']);
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->lte('tt_content.tstamp', $dateTo)
+            );
+        }
+        
+        $results = [];
+        $statement = $queryBuilder->execute();
+        
+        while ($row = $statement->fetchAssociative()) {
+            $abstract = strip_tags($row['bodytext'] ?? '');
+            $abstract = mb_substr($abstract, 0, 150) . (mb_strlen($abstract) > 150 ? '...' : '');
+            
+            // Build URL
+            if (!empty($row['page_slug'])) {
+                $url = $row['page_slug'];
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
+                }
+                $url .= '#c' . $row['uid'];
+            } else {
+                $url = '/index.php?id=' . $row['pid'] . '#c' . $row['uid'];
+            }
+            
+            $results[] = [
+                'title' => $row['header'] ?: $row['page_title'],
+                'abstract' => $abstract ?: $this->getTranslation('search.results.nodescription'),
+                'url' => $url,
+                'page' => $row['page_title'],
+                'date' => $row['tstamp'] ?: $row['crdate'],
+                'type' => 'content',
+                'contentType' => $row['CType'],
+                'categories' => $this->getContentCategories($row['uid'])
+            ];
+        }
+        
+        return $results;
+    }
+    
+    /**
+     * Sort results based on selected criteria
+     */
+    protected function sortResults(array $results, string $sortBy): array
+    {
+        switch ($sortBy) {
+            case 'date_desc':
+                usort($results, function($a, $b) {
+                    return ($b['date'] ?? 0) - ($a['date'] ?? 0);
+                });
+                break;
+            case 'date_asc':
+                usort($results, function($a, $b) {
+                    return ($a['date'] ?? 0) - ($b['date'] ?? 0);
+                });
+                break;
+            case 'title':
+                usort($results, function($a, $b) {
+                    return strcasecmp($a['title'], $b['title']);
+                });
+                break;
+            // 'relevance' is default - no sorting needed as results come in order
+        }
+        
+        return $results;
+    }
+    
+    /**
+     * Get all available categories
+     */
+    protected function getAvailableCategories(): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_category');
+        
+        $statement = $queryBuilder
+            ->select('uid', 'title')
+            ->from('sys_category')
+            ->where(
+                $queryBuilder->expr()->eq('deleted', 0),
+                $queryBuilder->expr()->eq('hidden', 0)
+            )
+            ->orderBy('title')
+            ->execute();
+        
+        $categories = [];
+        while ($row = $statement->fetchAssociative()) {
+            $categories[] = [
+                'uid' => $row['uid'],
+                'title' => $row['title']
+            ];
         }
         
         return $categories;

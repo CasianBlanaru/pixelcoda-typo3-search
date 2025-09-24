@@ -16,7 +16,7 @@
     <div class="pixelcoda-search">
         <form class="search-form" action="/search" method="get">
             <div class="search-input-wrapper">
-                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: '{f:translate(key: \'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.placeholder.default\')}'')}" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.input')}">
+                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.placeholder.default'))}" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.input')}">
                 <button type="submit" class="search-button" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.submit')}">
                     <f:comment>
                         <!-- Search Icon SVG -->
