@@ -114,17 +114,31 @@ class SearchController extends ActionController
         
         $results = [];
         while ($row = $statement->fetchAssociative()) {
-            // Build URL for the page
+            // Build URL for the page - use relative URLs
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $conf = [
                 'parameter' => $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 1
+                'forceAbsoluteUrl' => 0  // Use relative URLs
             ];
             $url = $cObj->typoLink_URL($conf);
             // Fallback wenn URL leer ist
-            if (empty($url)) {
-                $url = '/?id=' . $row['uid'];
+            if (empty($url) || $url == '/') {
+                // Try to get the slug directly from the database
+                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+                $slugResult = $slugQuery
+                    ->select('slug')
+                    ->from('pages')
+                    ->where($slugQuery->expr()->eq('uid', $row['uid']))
+                    ->execute()
+                    ->fetchAssociative();
+                
+                if ($slugResult && $slugResult['slug']) {
+                    $url = $slugResult['slug'];
+                } else {
+                    $url = '/?id=' . $row['uid'];
+                }
             }
             
             $results[] = [
@@ -180,7 +194,7 @@ class SearchController extends ActionController
             $conf = [
                 'parameter' => $row['pid'] . '#c' . $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 1
+                'forceAbsoluteUrl' => 0  // Use relative URLs
             ];
             
             $abstract = strip_tags($row['bodytext'] ?? '');
@@ -188,8 +202,22 @@ class SearchController extends ActionController
             
             $url = $cObj->typoLink_URL($conf);
             // Fallback wenn URL leer ist
-            if (empty($url)) {
-                $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            if (empty($url) || $url == '/' || $url == '/#c' . $row['uid']) {
+                // Try to get the parent page slug
+                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+                $slugResult = $slugQuery
+                    ->select('slug')
+                    ->from('pages')
+                    ->where($slugQuery->expr()->eq('uid', $row['pid']))
+                    ->execute()
+                    ->fetchAssociative();
+                
+                if ($slugResult && $slugResult['slug']) {
+                    $url = $slugResult['slug'] . '#c' . $row['uid'];
+                } else {
+                    $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+                }
             }
             
             $results[] = [
@@ -218,6 +246,7 @@ class SearchController extends ActionController
             ->select(
                 'pages.uid',
                 'pages.title',
+                'pages.slug',
                 'pages.abstract',
                 'pages.keywords',
                 'pages.description',
@@ -262,12 +291,17 @@ class SearchController extends ActionController
             $conf = [
                 'parameter' => $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 1
+                'forceAbsoluteUrl' => 0  // Use relative URLs
             ];
             $url = $cObj->typoLink_URL($conf);
             // Fallback wenn URL leer ist
-            if (empty($url)) {
-                $url = '/?id=' . $row['uid'];
+            if (empty($url) || $url == '/') {
+                // Use slug from the already selected data
+                if (!empty($row['slug'])) {
+                    $url = $row['slug'];
+                } else {
+                    $url = '/?id=' . $row['uid'];
+                }
             }
             
             // Get first image if available
@@ -378,12 +412,26 @@ class SearchController extends ActionController
             $conf = [
                 'parameter' => $row['pid'] . '#c' . $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 1
+                'forceAbsoluteUrl' => 0  // Use relative URLs
             ];
             $url = $cObj->typoLink_URL($conf);
             // Fallback wenn URL leer ist
-            if (empty($url)) {
-                $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            if (empty($url) || $url == '/' || $url == '/#c' . $row['uid']) {
+                // Try to get the parent page slug
+                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                    ->getQueryBuilderForTable('pages');
+                $slugResult = $slugQuery
+                    ->select('slug')
+                    ->from('pages')
+                    ->where($slugQuery->expr()->eq('uid', $row['pid']))
+                    ->execute()
+                    ->fetchAssociative();
+                
+                if ($slugResult && $slugResult['slug']) {
+                    $url = $slugResult['slug'] . '#c' . $row['uid'];
+                } else {
+                    $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+                }
             }
             
             // Get first image if available
