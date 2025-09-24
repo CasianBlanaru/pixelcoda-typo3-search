@@ -131,14 +131,14 @@ class SearchAutocomplete {
 
     getIconForType(type) {
         switch (type) {
-            case 'page':
-                return '📄';
-            case 'content':
-                return '📝';
-            case 'search':
-                return '🔍';
-            default:
-                return '📋';
+        case 'page':
+            return '📄';
+        case 'content':
+            return '📝';
+        case 'search':
+            return '🔍';
+        default:
+            return '📋';
         }
     }
 
@@ -152,34 +152,34 @@ class SearchAutocomplete {
         if (!this.isOpen) return;
 
         switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                this.currentFocus++;
-                if (this.currentFocus >= this.suggestions.length) {
-                    this.currentFocus = 0;
-                }
-                this.updateActive();
-                break;
+        case 'ArrowDown':
+            e.preventDefault();
+            this.currentFocus++;
+            if (this.currentFocus >= this.suggestions.length) {
+                this.currentFocus = 0;
+            }
+            this.updateActive();
+            break;
 
-            case 'ArrowUp':
-                e.preventDefault();
-                this.currentFocus--;
-                if (this.currentFocus < 0) {
-                    this.currentFocus = this.suggestions.length - 1;
-                }
-                this.updateActive();
-                break;
+        case 'ArrowUp':
+            e.preventDefault();
+            this.currentFocus--;
+            if (this.currentFocus < 0) {
+                this.currentFocus = this.suggestions.length - 1;
+            }
+            this.updateActive();
+            break;
 
-            case 'Enter':
-                e.preventDefault();
-                if (this.currentFocus > -1) {
-                    this.selectSuggestion(this.currentFocus);
-                }
-                break;
+        case 'Enter':
+            e.preventDefault();
+            if (this.currentFocus > -1) {
+                this.selectSuggestion(this.currentFocus);
+            }
+            break;
 
-            case 'Escape':
-                this.closeSuggestions();
-                break;
+        case 'Escape':
+            this.closeSuggestions();
+            break;
         }
     }
 
@@ -277,11 +277,12 @@ function resetFilters() {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize autocomplete for all search inputs
     const searchInputs = document.querySelectorAll('.search-input');
+    const autocompleteInstances = [];
     searchInputs.forEach(input => {
-        new SearchAutocomplete(input);
+        autocompleteInstances.push(new SearchAutocomplete(input));
     });
 
     // Restore filter panel state from localStorage
@@ -300,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (autoSubmit) {
         document.querySelectorAll('.search-filters select, .search-filters input[type="checkbox"]').forEach(element => {
-            element.addEventListener('change', function() {
+            element.addEventListener('change', function () {
                 document.querySelector('.search-form').submit();
             });
         });
