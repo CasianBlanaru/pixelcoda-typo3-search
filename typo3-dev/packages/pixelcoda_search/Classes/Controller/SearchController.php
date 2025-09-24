@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -42,7 +43,7 @@ class SearchController extends ActionController
         $pagination = [];
         
         if (strlen($searchQuery) < $minQueryLength) {
-            $message = 'Bitte geben Sie mindestens ' . $minQueryLength . ' Zeichen ein.';
+            $message = sprintf($this->getTranslation('search.results.minlength'), $minQueryLength);
         } else {
             // Search in pages with enhanced features
             $allResults = $this->searchInPagesEnhanced($searchQuery, $sortOrder);
@@ -143,7 +144,7 @@ class SearchController extends ActionController
             
             $results[] = [
                 'title' => $row['title'],
-                'abstract' => $row['abstract'] ?: 'Keine Beschreibung verfügbar.',
+                'abstract' => $row['abstract'] ?: $this->getTranslation('search.results.nodescription'),
                 'url' => $url
             ];
         }
@@ -222,7 +223,7 @@ class SearchController extends ActionController
             
             $results[] = [
                 'title' => $row['header'] ?: $row['page_title'],
-                'abstract' => $abstract ?: 'Keine Beschreibung verfügbar.',
+                'abstract' => $abstract ?: $this->getTranslation('search.results.nodescription'),
                 'url' => $url,
                 'page' => $row['page_title']
             ];
@@ -453,7 +454,7 @@ class SearchController extends ActionController
             
             $results[] = [
                 'title' => $row['header'] ?: $row['page_title'],
-                'abstract' => $abstract ?: 'Keine Beschreibung verfügbar.',
+                'abstract' => $abstract ?: $this->getTranslation('search.results.nodescription'),
                 'url' => $url,
                 'page' => $row['page_title'],
                 'image' => $image,
@@ -526,5 +527,26 @@ class SearchController extends ActionController
         }
         
         return $categories;
+    }
+    
+    /**
+     * Get translation for a given key
+     * 
+     * @param string $key Translation key
+     * @param array $arguments Optional arguments for sprintf
+     * @return string Translated text
+     */
+    protected function getTranslation(string $key, array $arguments = []): string
+    {
+        $translation = LocalizationUtility::translate(
+            'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:' . $key,
+            'PixelcodaSearch'
+        ) ?? $key;
+        
+        if (!empty($arguments)) {
+            return vsprintf($translation, $arguments);
+        }
+        
+        return $translation;
     }
 }

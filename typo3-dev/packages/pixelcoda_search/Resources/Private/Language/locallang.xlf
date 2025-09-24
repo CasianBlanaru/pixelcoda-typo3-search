@@ -1,198 +1,140 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2024-01-01T00:00:00Z" product-name="pixelcoda_search">
+    <file source-language="en" datatype="plaintext" original="messages" date="2024-01-01T00:00:00Z" product-name="pixelcoda_search">
         <header/>
         <body>
-            <!-- Search Form -->
-            <trans-unit id="search.form.label">
-                <source>Search Website</source>
-                <target>Website durchsuchen</target>
+            <!-- Search Form Labels -->
+            <trans-unit id="search.placeholder" xml:space="preserve">
+                <source>Search...</source>
             </trans-unit>
-            <trans-unit id="search.input.label">
-                <source>Search term</source>
-                <target>Suchbegriff</target>
+            <trans-unit id="search.placeholder.default" xml:space="preserve">
+                <source>Website durchsuchen...</source>
             </trans-unit>
-            <trans-unit id="search.placeholder">
-                <source>Search website...</source>
-                <target>Website durchsuchen...</target>
+            <trans-unit id="search.placeholder.minimal" xml:space="preserve">
+                <source>Suchen...</source>
             </trans-unit>
-            <trans-unit id="search.submit.label">
-                <source>Start search</source>
-                <target>Suche starten</target>
+            <trans-unit id="search.placeholder.advanced" xml:space="preserve">
+                <source>Was suchen Sie?</source>
             </trans-unit>
-            <trans-unit id="search.submit.text">
+            <trans-unit id="search.placeholder.cards" xml:space="preserve">
+                <source>Suchbegriff eingeben...</source>
+            </trans-unit>
+            
+            <!-- Button Labels -->
+            <trans-unit id="search.button" xml:space="preserve">
                 <source>Search</source>
-                <target>Suchen</target>
             </trans-unit>
-            <trans-unit id="search.loading">
-                <source>Searching...</source>
-                <target>Suche läuft...</target>
+            <trans-unit id="search.button.submit" xml:space="preserve">
+                <source>Suchen</source>
             </trans-unit>
-
-            <!-- Search Results -->
-            <trans-unit id="search.results.title">
-                <source>Search Results</source>
-                <target>Suchergebnisse</target>
+            <trans-unit id="search.button.submit.advanced" xml:space="preserve">
+                <source>Jetzt suchen</source>
             </trans-unit>
-            <trans-unit id="search.results.label">
-                <source>Search results</source>
-                <target>Suchergebnisse</target>
+            
+            <!-- Advanced Search Options -->
+            <trans-unit id="search.options.title" xml:space="preserve">
+                <source>Suchoptionen</source>
             </trans-unit>
-            <trans-unit id="search.results.for">
-                <source>Search results for</source>
-                <target>Suchergebnisse für</target>
+            <trans-unit id="search.filter.pages" xml:space="preserve">
+                <source>Seiten durchsuchen</source>
             </trans-unit>
-            <trans-unit id="search.results.count">
-                <source>%s results found</source>
-                <target>%s Ergebnisse gefunden</target>
+            <trans-unit id="search.filter.news" xml:space="preserve">
+                <source>News durchsuchen</source>
             </trans-unit>
-            <trans-unit id="search.results.showing">
-                <source>Showing %s of %s results</source>
-                <target>Zeige %s von %s Ergebnissen</target>
+            <trans-unit id="search.filter.content" xml:space="preserve">
+                <source>Inhalte durchsuchen</source>
             </trans-unit>
-
-            <!-- No Results -->
-            <trans-unit id="search.noResults.title">
-                <source>No results found</source>
-                <target>Keine Ergebnisse gefunden</target>
+            <trans-unit id="search.sort.label" xml:space="preserve">
+                <source>Sortierung:</source>
             </trans-unit>
-            <trans-unit id="search.noResults.message">
-                <source>Your search for "%s" returned no results.</source>
-                <target>Ihre Suche nach "%s" ergab keine Treffer.</target>
+            <trans-unit id="search.sort.relevance" xml:space="preserve">
+                <source>Nach Relevanz</source>
             </trans-unit>
-            <trans-unit id="search.noResults.suggestions.title">
-                <source>Try the following:</source>
-                <target>Versuchen Sie folgendes:</target>
+            <trans-unit id="search.sort.date_desc" xml:space="preserve">
+                <source>Neueste zuerst</source>
             </trans-unit>
-            <trans-unit id="search.noResults.suggestions.spelling">
-                <source>Check your spelling</source>
-                <target>Überprüfen Sie die Rechtschreibung</target>
+            <trans-unit id="search.sort.date_asc" xml:space="preserve">
+                <source>Älteste zuerst</source>
             </trans-unit>
-            <trans-unit id="search.noResults.suggestions.keywords">
-                <source>Try different keywords</source>
-                <target>Verwenden Sie andere Suchbegriffe</target>
+            <trans-unit id="search.sort.title" xml:space="preserve">
+                <source>Alphabetisch</source>
             </trans-unit>
-            <trans-unit id="search.noResults.suggestions.general">
-                <source>Try more general terms</source>
-                <target>Verwenden Sie allgemeinere Begriffe</target>
+            
+            <!-- Cards Template -->
+            <trans-unit id="search.cards.title" xml:space="preserve">
+                <source>Finden Sie was Sie suchen</source>
             </trans-unit>
-            <trans-unit id="search.noResults.suggestions.filters">
-                <source>Remove filters or restrictions</source>
-                <target>Entfernen Sie Filter oder Einschränkungen</target>
+            <trans-unit id="search.cards.description" xml:space="preserve">
+                <source>Durchsuchen Sie unsere gesamte Website nach Informationen, Produkten und Services.</source>
             </trans-unit>
-
-            <!-- AI Ask Feature -->
-            <trans-unit id="ask.title">
-                <source>AI Answer</source>
-                <target>KI-Antwort</target>
+            <trans-unit id="search.cards.popular" xml:space="preserve">
+                <source>Beliebte Suchbegriffe:</source>
             </trans-unit>
-            <trans-unit id="ask.description">
-                <source>Let our AI answer your question:</source>
-                <target>Lassen Sie sich Ihre Frage von unserer KI beantworten:</target>
+            <trans-unit id="search.cards.tag.products" xml:space="preserve">
+                <source>Produkte</source>
             </trans-unit>
-            <trans-unit id="ask.input.label">
-                <source>Your question</source>
-                <target>Ihre Frage</target>
+            <trans-unit id="search.cards.tag.service" xml:space="preserve">
+                <source>Service</source>
             </trans-unit>
-            <trans-unit id="ask.placeholder">
-                <source>Ask a question about your search...</source>
-                <target>Stellen Sie eine Frage zu Ihrer Suche...</target>
+            <trans-unit id="search.cards.tag.contact" xml:space="preserve">
+                <source>Kontakt</source>
             </trans-unit>
-            <trans-unit id="ask.submit">
-                <source>Ask question</source>
-                <target>Frage stellen</target>
-            </trans-unit>
-            <trans-unit id="ask.help">
-                <source>The AI will answer based on the search results.</source>
-                <target>Die KI wird basierend auf den Suchergebnissen antworten.</target>
-            </trans-unit>
-            <trans-unit id="ask.results.label">
-                <source>AI Answer</source>
-                <target>KI-Antwort</target>
-            </trans-unit>
-            <trans-unit id="ask.citations.title">
-                <source>Sources</source>
-                <target>Quellen</target>
-            </trans-unit>
-
-            <!-- Collections -->
-            <trans-unit id="collections.pages">
-                <source>Pages</source>
-                <target>Seiten</target>
-            </trans-unit>
-            <trans-unit id="collections.news">
+            <trans-unit id="search.cards.tag.news" xml:space="preserve">
                 <source>News</source>
-                <target>News</target>
             </trans-unit>
-            <trans-unit id="collections.content">
-                <source>Content</source>
-                <target>Inhalte</target>
+            
+            <!-- Search Results Page -->
+            <trans-unit id="search.results.title" xml:space="preserve">
+                <source>Suchergebnisse</source>
             </trans-unit>
-
-            <!-- Suggestions -->
-            <trans-unit id="search.suggestions.label">
-                <source>Search suggestions</source>
-                <target>Suchvorschläge</target>
+            <trans-unit id="search.results.found" xml:space="preserve">
+                <source>%d Ergebnis(se) für "%s" gefunden.</source>
             </trans-unit>
-
+            <trans-unit id="search.results.notfound" xml:space="preserve">
+                <source>Keine Ergebnisse für "%s" gefunden.</source>
+            </trans-unit>
+            <trans-unit id="search.results.noresults" xml:space="preserve">
+                <source>Keine Ergebnisse gefunden. Versuchen Sie es mit anderen Suchbegriffen.</source>
+            </trans-unit>
+            <trans-unit id="search.results.minlength" xml:space="preserve">
+                <source>Bitte geben Sie mindestens %d Zeichen ein.</source>
+            </trans-unit>
+            <trans-unit id="search.results.page" xml:space="preserve">
+                <source>Seite:</source>
+            </trans-unit>
+            <trans-unit id="search.results.link" xml:space="preserve">
+                <source>Zur Seite →</source>
+            </trans-unit>
+            <trans-unit id="search.results.nodescription" xml:space="preserve">
+                <source>Keine Beschreibung verfügbar.</source>
+            </trans-unit>
+            
             <!-- Pagination -->
-            <trans-unit id="pagination.previous">
-                <source>Previous</source>
-                <target>Zurück</target>
+            <trans-unit id="search.pagination.previous" xml:space="preserve">
+                <source>&laquo; Zurück</source>
             </trans-unit>
-            <trans-unit id="pagination.next">
-                <source>Next</source>
-                <target>Weiter</target>
+            <trans-unit id="search.pagination.next" xml:space="preserve">
+                <source>Weiter &raquo;</source>
             </trans-unit>
-            <trans-unit id="pagination.page">
-                <source>Page %s</source>
-                <target>Seite %s</target>
+            <trans-unit id="search.pagination.info" xml:space="preserve">
+                <source>Seite %d von %d | %d Ergebnisse insgesamt</source>
             </trans-unit>
-
-            <!-- Accessibility -->
-            <trans-unit id="accessibility.skipToContent">
-                <source>Skip to main content</source>
-                <target>Zum Hauptinhalt springen</target>
+            <trans-unit id="search.pagination.label" xml:space="preserve">
+                <source>Seitennavigation</source>
             </trans-unit>
-            <trans-unit id="accessibility.skipToSearch">
-                <source>Skip to search</source>
-                <target>Zur Suche springen</target>
+            
+            <!-- Aria Labels -->
+            <trans-unit id="search.aria.input" xml:space="preserve">
+                <source>Suchbegriff eingeben</source>
             </trans-unit>
-
-            <!-- Errors -->
-            <trans-unit id="search.error.emptyQuery">
-                <source>Please enter a search term</source>
-                <target>Bitte geben Sie einen Suchbegriff ein</target>
+            <trans-unit id="search.aria.submit" xml:space="preserve">
+                <source>Suche starten</source>
             </trans-unit>
-            <trans-unit id="search.error.general">
-                <source>Search failed. Please try again.</source>
-                <target>Suche fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
+            <trans-unit id="search.aria.previous" xml:space="preserve">
+                <source>Vorherige</source>
             </trans-unit>
-            <trans-unit id="ask.error.emptyQuestion">
-                <source>Please enter a question</source>
-                <target>Bitte geben Sie eine Frage ein</target>
-            </trans-unit>
-            <trans-unit id="ask.error.general">
-                <source>Failed to generate answer. Please try again.</source>
-                <target>Antwort konnte nicht generiert werden. Bitte versuchen Sie es erneut.</target>
-            </trans-unit>
-
-            <!-- Misc -->
-            <trans-unit id="search.poweredBy">
-                <source>Powered by</source>
-                <target>Powered by</target>
-            </trans-unit>
-            <trans-unit id="search.loadMore">
-                <source>Load more results</source>
-                <target>Weitere Ergebnisse laden</target>
-            </trans-unit>
-            <trans-unit id="search.loadMore.help">
-                <source>Loads more search results for the current search</source>
-                <target>Lädt weitere Suchergebnisse für die aktuelle Suche</target>
-            </trans-unit>
-            <trans-unit id="search.backToSearch">
-                <source>Back to search</source>
-                <target>Zurück zur Suche</target>
+            <trans-unit id="search.aria.next" xml:space="preserve">
+                <source>Nächste</source>
             </trans-unit>
         </body>
     </file>

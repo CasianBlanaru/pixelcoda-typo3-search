@@ -16,8 +16,8 @@
     <div class="pixelcoda-search">
         <form class="search-form" action="/search" method="get">
             <div class="search-input-wrapper">
-                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben">
-                <button type="submit" class="search-button" aria-label="Suche starten">
+                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: '{f:translate(key: \'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.placeholder.default\')}'')}" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.input')}">
+                <button type="submit" class="search-button" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.submit')}">
                     <f:comment>
                         <!-- Search Icon SVG -->
                     </f:comment>
@@ -25,7 +25,8 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <span>Suchen</span>
+                    <span>
+                        <f:translate key="LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.button.submit" /></span>
                 </button>
             </div>
         </form>
