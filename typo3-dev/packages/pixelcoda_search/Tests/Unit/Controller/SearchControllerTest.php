@@ -17,7 +17,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class SearchControllerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    
+
     protected MockObject $subject;
 
     protected MockObject $viewMock;

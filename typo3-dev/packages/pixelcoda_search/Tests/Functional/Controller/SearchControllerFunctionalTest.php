@@ -206,7 +206,7 @@ class SearchControllerFunctionalTest extends FunctionalTestCase
             parse_str($parsedUrl['query'], $queryParams);
             $request = $request->withQueryParameters($queryParams);
         }
-        
+
         return $request;
     }
 
