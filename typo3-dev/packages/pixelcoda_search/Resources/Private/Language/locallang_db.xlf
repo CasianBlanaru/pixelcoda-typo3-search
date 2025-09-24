@@ -137,6 +137,66 @@
         <trans-unit id="flexform.settings.cssClass" resname="flexform.settings.cssClass">
             <source>Additional CSS Class</source>
         </trans-unit>
+        
+        <!-- New Display Options -->
+        <trans-unit id="flexform.settings.showImages" resname="flexform.settings.showImages">
+            <source>Bilder in Suchergebnissen anzeigen</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.showTags" resname="flexform.settings.showTags">
+            <source>Tags anzeigen</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.showDate" resname="flexform.settings.showDate">
+            <source>Datum anzeigen</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.showCategories" resname="flexform.settings.showCategories">
+            <source>Kategorien anzeigen</source>
+        </trans-unit>
+        
+        <!-- Sort Order -->
+        <trans-unit id="flexform.settings.sortOrder" resname="flexform.settings.sortOrder">
+            <source>Sortierung</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.sortOrder.relevance" resname="flexform.settings.sortOrder.relevance">
+            <source>Nach Relevanz</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.sortOrder.date_desc" resname="flexform.settings.sortOrder.date_desc">
+            <source>Datum (Neueste zuerst)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.sortOrder.date_asc" resname="flexform.settings.sortOrder.date_asc">
+            <source>Datum (Älteste zuerst)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.sortOrder.title" resname="flexform.settings.sortOrder.title">
+            <source>Alphabetisch (Titel)</source>
+        </trans-unit>
+        
+        <!-- Advanced Features -->
+        <trans-unit id="flexform.settings.highlightTerms" resname="flexform.settings.highlightTerms">
+            <source>Suchbegriffe hervorheben</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.showBreadcrumb" resname="flexform.settings.showBreadcrumb">
+            <source>Breadcrumb-Navigation anzeigen</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.enableFacets" resname="flexform.settings.enableFacets">
+            <source>Facettensuche aktivieren (Filter)</source>
+        </trans-unit>
+        
+        <!-- Image Size -->
+        <trans-unit id="flexform.settings.imageSize" resname="flexform.settings.imageSize">
+            <source>Bildgröße</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.imageSize.small" resname="flexform.settings.imageSize.small">
+            <source>Klein (80x80)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.imageSize.medium" resname="flexform.settings.imageSize.medium">
+            <source>Mittel (150x150)</source>
+        </trans-unit>
+        <trans-unit id="flexform.settings.imageSize.large" resname="flexform.settings.imageSize.large">
+            <source>Groß (250x250)</source>
+        </trans-unit>
+        
+        <trans-unit id="flexform.settings.enableHistory" resname="flexform.settings.enableHistory">
+            <source>Suchverlauf aktivieren</source>
+        </trans-unit>
     </body>
 </file>
 </xliff>

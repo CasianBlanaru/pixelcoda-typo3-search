@@ -52,22 +52,13 @@ tt_content.pixelcodasearch_search {
     dataProcessing {
         10 = TYPO3\CMS\Frontend\DataProcessing\FlexFormProcessor
         10 {
-            as = flexform
+            fieldName = pi_flexform
+            as = flexform_data
         }
     }
     settings < plugin.tx_pixelcodasearch_search.settings
-    settings {
-        # Override with FlexForm values
-        placeholder = {field:flexform_settings_placeholder}
-        placeholder.insertData = 1
-        mode = {field:flexform_settings_mode}
-        mode.insertData = 1
-        template = {field:flexform_settings_template}
-        template.insertData = 1
-        collections = {field:flexform_settings_collections}
-        collections.insertData = 1
-        resultsPerPage = {field:flexform_settings_resultsPerPage}
-        resultsPerPage.insertData = 1
+    variables {
+        settings < plugin.tx_pixelcodasearch_search.settings
     }
 }
 

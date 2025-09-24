@@ -240,6 +240,106 @@
                             </config>
                         </TCEforms>
                     </settings.cssClass>
+                    
+                    <!-- Sort Order -->
+                    <settings.sortOrder>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.relevance</numIndex>
+                                        <numIndex index="1">relevance</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.date_desc</numIndex>
+                                        <numIndex index="1">date_desc</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.date_asc</numIndex>
+                                        <numIndex index="1">date_asc</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.title</numIndex>
+                                        <numIndex index="1">title</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>relevance</default>
+                            </config>
+                        </TCEforms>
+                    </settings.sortOrder>
+                    
+                    <!-- Highlight Search Terms -->
+                    <settings.highlightTerms>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.highlightTerms</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                        </TCEforms>
+                    </settings.highlightTerms>
+                    
+                    <!-- Show Breadcrumb -->
+                    <settings.showBreadcrumb>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showBreadcrumb</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                        </TCEforms>
+                    </settings.showBreadcrumb>
+                    
+                    <!-- Enable Faceted Search -->
+                    <settings.enableFacets>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableFacets</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                        </TCEforms>
+                    </settings.enableFacets>
+                    
+                    <!-- Image Size -->
+                    <settings.imageSize>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.small</numIndex>
+                                        <numIndex index="1">small</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.medium</numIndex>
+                                        <numIndex index="1">medium</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.large</numIndex>
+                                        <numIndex index="1">large</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>medium</default>
+                            </config>
+                        </TCEforms>
+                    </settings.imageSize>
+                    
+                    <!-- Enable Search History -->
+                    <settings.enableHistory>
+                        <TCEforms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableHistory</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                        </TCEforms>
+                    </settings.enableHistory>
                 </el>
             </ROOT>
         </advanced>
