@@ -111,10 +111,10 @@
             
             <!-- Pagination -->
             <trans-unit id="search.pagination.previous" xml:space="preserve">
-                <source>&laquo; Zurück</source>
+                <source>« Zurück</source>
             </trans-unit>
             <trans-unit id="search.pagination.next" xml:space="preserve">
-                <source>Weiter &raquo;</source>
+                <source>Weiter »</source>
             </trans-unit>
             <trans-unit id="search.pagination.info" xml:space="preserve">
                 <source>Seite %d von %d | %d Ergebnisse insgesamt</source>

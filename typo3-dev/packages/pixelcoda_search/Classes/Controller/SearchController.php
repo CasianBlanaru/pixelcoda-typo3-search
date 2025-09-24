@@ -115,31 +115,27 @@ class SearchController extends ActionController
         
         $results = [];
         while ($row = $statement->fetchAssociative()) {
-            // Build URL for the page - use relative URLs
-            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $conf = [
-                'parameter' => $row['uid'],
-                'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0  // Use relative URLs
-            ];
-            $url = $cObj->typoLink_URL($conf);
-            // Fallback wenn URL leer ist
-            if (empty($url) || $url == '/') {
-                // Try to get the slug directly from the database
-                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages');
-                $slugResult = $slugQuery
-                    ->select('slug')
-                    ->from('pages')
-                    ->where($slugQuery->expr()->eq('uid', $row['uid']))
-                    ->execute()
-                    ->fetchAssociative();
-                
-                if ($slugResult && $slugResult['slug']) {
-                    $url = $slugResult['slug'];
-                } else {
-                    $url = '/?id=' . $row['uid'];
+            // Build URL for the page - use slug directly
+            // First try to get the slug from the database
+            $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $slugResult = $slugQuery
+                ->select('slug')
+                ->from('pages')
+                ->where($slugQuery->expr()->eq('uid', $row['uid']))
+                ->execute()
+                ->fetchAssociative();
+            
+            if ($slugResult && !empty($slugResult['slug'])) {
+                // Use the slug directly
+                $url = $slugResult['slug'];
+                // Ensure it starts with /
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
                 }
+            } else {
+                // Fallback to ID-based URL
+                $url = '/index.php?id=' . $row['uid'];
             }
             
             $results[] = [
@@ -191,34 +187,29 @@ class SearchController extends ActionController
         $results = [];
         while ($row = $statement->fetchAssociative()) {
             // Build URL for the parent page
-            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $conf = [
-                'parameter' => $row['pid'] . '#c' . $row['uid'],
-                'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0  // Use relative URLs
-            ];
-            
             $abstract = strip_tags($row['bodytext'] ?? '');
             $abstract = mb_substr($abstract, 0, 150) . (mb_strlen($abstract) > 150 ? '...' : '');
             
-            $url = $cObj->typoLink_URL($conf);
-            // Fallback wenn URL leer ist
-            if (empty($url) || $url == '/' || $url == '/#c' . $row['uid']) {
-                // Try to get the parent page slug
-                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages');
-                $slugResult = $slugQuery
-                    ->select('slug')
-                    ->from('pages')
-                    ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                    ->execute()
-                    ->fetchAssociative();
-                
-                if ($slugResult && $slugResult['slug']) {
-                    $url = $slugResult['slug'] . '#c' . $row['uid'];
-                } else {
-                    $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            // Get the parent page slug
+            $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $slugResult = $slugQuery
+                ->select('slug')
+                ->from('pages')
+                ->where($slugQuery->expr()->eq('uid', $row['pid']))
+                ->execute()
+                ->fetchAssociative();
+            
+            if ($slugResult && !empty($slugResult['slug'])) {
+                $url = $slugResult['slug'];
+                // Ensure it starts with /
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
                 }
+                $url .= '#c' . $row['uid'];
+            } else {
+                // Fallback to ID-based URL
+                $url = '/index.php?id=' . $row['pid'] . '#c' . $row['uid'];
             }
             
             $results[] = [
@@ -287,22 +278,16 @@ class SearchController extends ActionController
         
         $results = [];
         while ($row = $statement->fetchAssociative()) {
-            // Build URL for the page
-            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $conf = [
-                'parameter' => $row['uid'],
-                'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0  // Use relative URLs
-            ];
-            $url = $cObj->typoLink_URL($conf);
-            // Fallback wenn URL leer ist
-            if (empty($url) || $url == '/') {
-                // Use slug from the already selected data
-                if (!empty($row['slug'])) {
-                    $url = $row['slug'];
-                } else {
-                    $url = '/?id=' . $row['uid'];
+            // Build URL for the page - use slug directly
+            if (!empty($row['slug'])) {
+                $url = $row['slug'];
+                // Ensure it starts with /
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
                 }
+            } else {
+                // Fallback to ID-based URL
+                $url = '/index.php?id=' . $row['uid'];
             }
             
             // Get first image if available
@@ -409,30 +394,26 @@ class SearchController extends ActionController
         $results = [];
         while ($row = $statement->fetchAssociative()) {
             // Build URL for the parent page
-            $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $conf = [
-                'parameter' => $row['pid'] . '#c' . $row['uid'],
-                'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0  // Use relative URLs
-            ];
-            $url = $cObj->typoLink_URL($conf);
-            // Fallback wenn URL leer ist
-            if (empty($url) || $url == '/' || $url == '/#c' . $row['uid']) {
-                // Try to get the parent page slug
-                $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable('pages');
-                $slugResult = $slugQuery
-                    ->select('slug')
-                    ->from('pages')
-                    ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                    ->execute()
-                    ->fetchAssociative();
-                
-                if ($slugResult && $slugResult['slug']) {
-                    $url = $slugResult['slug'] . '#c' . $row['uid'];
-                } else {
-                    $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            // Get the parent page slug
+            $slugQuery = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('pages');
+            $slugResult = $slugQuery
+                ->select('slug')
+                ->from('pages')
+                ->where($slugQuery->expr()->eq('uid', $row['pid']))
+                ->execute()
+                ->fetchAssociative();
+            
+            if ($slugResult && !empty($slugResult['slug'])) {
+                $url = $slugResult['slug'];
+                // Ensure it starts with /
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
                 }
+                $url .= '#c' . $row['uid'];
+            } else {
+                // Fallback to ID-based URL
+                $url = '/index.php?id=' . $row['pid'] . '#c' . $row['uid'];
             }
             
             // Get first image if available
