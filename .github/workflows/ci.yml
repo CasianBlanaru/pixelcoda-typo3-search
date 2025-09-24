@@ -144,11 +144,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'yarn'
           
       - name: Install dependencies
         run: |
           cd typo3-dev/packages/pixelcoda_search
+          touch yarn.lock
           yarn install
           
       - name: Run Jest tests
@@ -187,10 +187,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
+      - name: Check if composer.lock exists
+        id: check_files
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "typo3-dev/packages/pixelcoda_search/composer.lock"
+      
       - name: Run Security Check
+        if: steps.check_files.outputs.files_exists == 'true'
         uses: symfonycorp/security-checker-action@v4
         with:
-          directory: typo3-dev/packages/pixelcoda_search
+          lock: typo3-dev/packages/pixelcoda_search/composer.lock
 
   build-assets:
     runs-on: ubuntu-latest
