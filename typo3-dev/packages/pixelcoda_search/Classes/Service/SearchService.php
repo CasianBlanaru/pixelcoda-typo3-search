@@ -70,7 +70,7 @@ class SearchService
                 );
             }
 
-            $result = json_decode($response->getBody()->getContents(), true);
+            $result = json_decode((string) $response->getBody()->getContents(), true);
 
             if (!$result) {
                 throw new RuntimeException('Invalid JSON response from Search API');
@@ -131,7 +131,7 @@ class SearchService
                 );
             }
 
-            $result = json_decode($response->getBody()->getContents(), true);
+            $result = json_decode((string) $response->getBody()->getContents(), true);
 
             if (!$result) {
                 throw new RuntimeException('Invalid JSON response from Ask API');
@@ -189,7 +189,7 @@ class SearchService
                 return ['data' => []]; // Return empty on error
             }
 
-            $result = json_decode($response->getBody()->getContents(), true);
+            $result = json_decode((string) $response->getBody()->getContents(), true);
 
             return $result ?? ['data' => []];
 
