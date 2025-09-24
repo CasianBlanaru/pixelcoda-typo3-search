@@ -16,6 +16,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 class SearchConfigProcessor implements DataProcessorInterface
 {
     protected ConfigurationService $configurationService;
+
     protected FlexFormService $flexFormService;
 
     public function __construct(

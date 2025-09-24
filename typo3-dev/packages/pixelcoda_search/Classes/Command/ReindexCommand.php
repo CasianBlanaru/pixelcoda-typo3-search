@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Command;
 
+use Exception;
 use PixelCoda\PixelcodaSearch\Service\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ReindexCommand extends Command
 {
-    private SearchService $searchService;
+    private readonly SearchService $searchService;
 
     public function __construct()
     {
@@ -68,7 +69,7 @@ class ReindexCommand extends Command
         try {
             if ($table) {
                 // Re-index specific table
-                $io->section("Re-indexing table: {$table}");
+                $io->section('Re-indexing table: ' . $table);
 
                 if (!$skipClear) {
                     if (!$dryRun) {
@@ -76,16 +77,16 @@ class ReindexCommand extends Command
                         $this->searchService->clearTableIndex($table);
                         $io->text('✓ Index cleared');
                     } else {
-                        $io->info("Would clear index for table: {$table}");
+                        $io->info('Would clear index for table: ' . $table);
                     }
                 }
 
                 if (!$dryRun) {
                     $count = $this->searchService->indexTable($table, true);
-                    $io->success("Successfully re-indexed {$count} records from {$table}");
+                    $io->success(sprintf('Successfully re-indexed %d records from %s', $count, $table));
                 } else {
                     $count = $this->searchService->getTableRecordCount($table);
-                    $io->info("Would re-index {$count} records from {$table}");
+                    $io->info(sprintf('Would re-index %d records from %s', $count, $table));
                 }
             } else {
                 // Re-index all enabled tables
@@ -104,23 +105,23 @@ class ReindexCommand extends Command
 
                 $totalCount = 0;
                 foreach ($enabledTables as $tableName) {
-                    $io->text("Processing table: {$tableName}");
+                    $io->text('Processing table: ' . $tableName);
 
                     if (!$dryRun) {
                         $count = $this->searchService->indexTable($tableName, true);
-                        $io->text("  → Re-indexed {$count} records");
+                        $io->text(sprintf('  → Re-indexed %d records', $count));
                         $totalCount += $count;
                     } else {
                         $count = $this->searchService->getTableRecordCount($tableName);
-                        $io->text("  → Would re-index {$count} records");
+                        $io->text(sprintf('  → Would re-index %d records', $count));
                         $totalCount += $count;
                     }
                 }
 
                 if (!$dryRun) {
-                    $io->success("Successfully re-indexed {$totalCount} records total");
+                    $io->success(sprintf('Successfully re-indexed %d records total', $totalCount));
                 } else {
-                    $io->info("Would re-index {$totalCount} records total");
+                    $io->info(sprintf('Would re-index %d records total', $totalCount));
                 }
             }
 
@@ -136,17 +137,17 @@ class ReindexCommand extends Command
                             ['Last Updated' => $stats['last_updated'] ?? 'N/A']
                         );
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $io->note('Could not retrieve index statistics: ' . $e->getMessage());
                 }
             }
 
             return Command::SUCCESS;
-        } catch (\Exception $e) {
-            $io->error('Re-indexing failed: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            $io->error('Re-indexing failed: ' . $exception->getMessage());
 
             if ($output->isVerbose()) {
-                $io->text($e->getTraceAsString());
+                $io->text($exception->getTraceAsString());
             }
 
             return Command::FAILURE;
@@ -155,8 +156,6 @@ class ReindexCommand extends Command
 
     /**
      * Get enabled tables from extension configuration
-     *
-     * @return array
      */
     private function getEnabledTables(): array
     {

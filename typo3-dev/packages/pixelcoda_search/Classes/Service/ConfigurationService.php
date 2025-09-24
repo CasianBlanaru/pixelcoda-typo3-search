@@ -14,7 +14,9 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class ConfigurationService
 {
+    public $config;
     protected ExtensionConfiguration $extensionConfiguration;
+
     protected FlexFormService $flexFormService;
 
     public function __construct(
@@ -141,6 +143,7 @@ class ConfigurationService
             if (!is_array($current) || !isset($current[$keyPart])) {
                 return null;
             }
+
             $current = $current[$keyPart];
         }
 
@@ -195,7 +198,7 @@ class ConfigurationService
         }
 
         return [
-            'valid' => empty($errors),
+            'valid' => $errors === [],
             'errors' => $errors,
             'warnings' => $warnings
         ];

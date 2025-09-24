@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Command;
 
+use Exception;
 use PixelCoda\PixelcodaSearch\Service\SearchService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class IndexCommand extends Command
 {
-    private SearchService $searchService;
+    private readonly SearchService $searchService;
 
     public function __construct()
     {
@@ -75,29 +76,29 @@ class IndexCommand extends Command
         try {
             if ($table && $id) {
                 // Index specific record
-                $io->section("Indexing single record: {$table}:{$id}");
+                $io->section(sprintf('Indexing single record: %s:%s', $table, $id));
 
                 if (!$dryRun) {
                     $result = $this->searchService->indexRecord($table, (int)$id, 'update', $force);
                     if ($result) {
-                        $io->success("Successfully indexed {$table}:{$id}");
+                        $io->success(sprintf('Successfully indexed %s:%s', $table, $id));
                     } else {
-                        $io->error("Failed to index {$table}:{$id}");
+                        $io->error(sprintf('Failed to index %s:%s', $table, $id));
                         return Command::FAILURE;
                     }
                 } else {
-                    $io->info("Would index: {$table}:{$id}");
+                    $io->info(sprintf('Would index: %s:%s', $table, $id));
                 }
             } elseif ($table) {
                 // Index specific table
-                $io->section("Indexing table: {$table}");
+                $io->section('Indexing table: ' . $table);
 
                 if (!$dryRun) {
                     $count = $this->searchService->indexTable($table, $force);
-                    $io->success("Successfully indexed {$count} records from {$table}");
+                    $io->success(sprintf('Successfully indexed %d records from %s', $count, $table));
                 } else {
                     $count = $this->searchService->getTableRecordCount($table);
-                    $io->info("Would index {$count} records from {$table}");
+                    $io->info(sprintf('Would index %d records from %s', $count, $table));
                 }
             } else {
                 // Index all enabled tables
@@ -106,32 +107,32 @@ class IndexCommand extends Command
 
                 $totalCount = 0;
                 foreach ($enabledTables as $tableName) {
-                    $io->text("Processing table: {$tableName}");
+                    $io->text('Processing table: ' . $tableName);
 
                     if (!$dryRun) {
                         $count = $this->searchService->indexTable($tableName, $force);
-                        $io->text("  → Indexed {$count} records");
+                        $io->text(sprintf('  → Indexed %d records', $count));
                         $totalCount += $count;
                     } else {
                         $count = $this->searchService->getTableRecordCount($tableName);
-                        $io->text("  → Would index {$count} records");
+                        $io->text(sprintf('  → Would index %d records', $count));
                         $totalCount += $count;
                     }
                 }
 
                 if (!$dryRun) {
-                    $io->success("Successfully indexed {$totalCount} records total");
+                    $io->success(sprintf('Successfully indexed %d records total', $totalCount));
                 } else {
-                    $io->info("Would index {$totalCount} records total");
+                    $io->info(sprintf('Would index %d records total', $totalCount));
                 }
             }
 
             return Command::SUCCESS;
-        } catch (\Exception $e) {
-            $io->error('Indexing failed: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            $io->error('Indexing failed: ' . $exception->getMessage());
 
             if ($output->isVerbose()) {
-                $io->text($e->getTraceAsString());
+                $io->text($exception->getTraceAsString());
             }
 
             return Command::FAILURE;
@@ -140,8 +141,6 @@ class IndexCommand extends Command
 
     /**
      * Get enabled tables from extension configuration
-     *
-     * @return array
      */
     private function getEnabledTables(): array
     {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller;
 
+use TYPO3\CMS\Core\Resource\FileRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Search Controller for handling search requests
@@ -109,7 +109,7 @@ class SearchController extends ActionController
             // Get results for current page
             $results = array_slice($allResults, $offset, $resultsPerPage);
 
-            if (empty($results)) {
+            if ($results === []) {
                 $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
             } else {
                 $message = $totalResults . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
@@ -192,7 +192,7 @@ class SearchController extends ActionController
                 // Use the slug directly
                 $url = $slugResult['slug'];
                 // Ensure it starts with /
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
             } else {
@@ -209,9 +209,8 @@ class SearchController extends ActionController
 
         // Also search in tt_content
         $contentResults = $this->searchInContent($query);
-        $results = array_merge($results, $contentResults);
 
-        return $results;
+        return array_merge($results, $contentResults);
     }
 
     /**
@@ -265,9 +264,10 @@ class SearchController extends ActionController
             if ($slugResult && !empty($slugResult['slug'])) {
                 $url = $slugResult['slug'];
                 // Ensure it starts with /
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
+
                 $url .= '#c' . $row['uid'];
             } else {
                 // Fallback to ID-based URL
@@ -344,7 +344,7 @@ class SearchController extends ActionController
             if (!empty($row['slug'])) {
                 $url = $row['slug'];
                 // Ensure it starts with /
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
             } else {
@@ -356,7 +356,7 @@ class SearchController extends ActionController
             $image = null;
             if ($row['media']) {
                 // Get file reference
-                $fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileReferences = $fileRepository->findByRelation('pages', 'media', $row['uid']);
                 if (!empty($fileReferences)) {
                     $fileReference = $fileReferences[0];
@@ -370,7 +370,7 @@ class SearchController extends ActionController
             // Parse keywords as tags
             $tags = [];
             if ($row['keywords']) {
-                $tags = array_map('trim', explode(',', $row['keywords']));
+                $tags = array_map('trim', explode(',', (string) $row['keywords']));
             }
 
             // Format date
@@ -383,7 +383,7 @@ class SearchController extends ActionController
 
             $results[] = [
                 'title' => $row['title'],
-                'abstract' => $row['abstract'] ?: $row['description'] ?: 'Keine Beschreibung verfügbar.',
+                'abstract' => ($row['abstract'] ?: $row['description']) ?: 'Keine Beschreibung verfügbar.',
                 'url' => $url,
                 'image' => $image,
                 'tags' => $tags,
@@ -394,9 +394,8 @@ class SearchController extends ActionController
 
         // Also search in content elements with enhanced features
         $contentResults = $this->searchInContentEnhanced($query, $sortOrder);
-        $results = array_merge($results, $contentResults);
 
-        return $results;
+        return array_merge($results, $contentResults);
     }
 
     /**
@@ -469,9 +468,10 @@ class SearchController extends ActionController
             if ($slugResult && !empty($slugResult['slug'])) {
                 $url = $slugResult['slug'];
                 // Ensure it starts with /
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
+
                 $url .= '#c' . $row['uid'];
             } else {
                 // Fallback to ID-based URL
@@ -481,7 +481,7 @@ class SearchController extends ActionController
             // Get first image if available
             $image = null;
             if ($row['image']) {
-                $fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
+                $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
                 $fileReferences = $fileRepository->findByRelation('tt_content', 'image', $row['uid']);
                 if (!empty($fileReferences)) {
                     $fileReference = $fileReferences[0];
@@ -598,14 +598,14 @@ class SearchController extends ActionController
 
         // Apply date filters
         if (!empty($filters['dateFrom'])) {
-            $dateFrom = strtotime($filters['dateFrom']);
+            $dateFrom = strtotime((string) $filters['dateFrom']);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->gte('lastUpdated', $dateFrom)
             );
         }
 
         if (!empty($filters['dateTo'])) {
-            $dateTo = strtotime($filters['dateTo']);
+            $dateTo = strtotime((string) $filters['dateTo']);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->lte('lastUpdated', $dateTo)
             );
@@ -618,10 +618,7 @@ class SearchController extends ActionController
                     'pages',
                     'sys_category_record_mm',
                     'mm',
-                    $queryBuilder->expr()->and(
-                        $queryBuilder->expr()->eq('mm.uid_foreign', $queryBuilder->quoteIdentifier('pages.uid')),
-                        $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('pages'))
-                    )
+                    'mm.uid_foreign = pages.uid AND mm.tablenames = ' . $queryBuilder->createNamedParameter('pages')
                 )
                 ->andWhere(
                     $queryBuilder->expr()->eq('mm.uid_local', $queryBuilder->createNamedParameter((int)$filters['category']))
@@ -635,7 +632,7 @@ class SearchController extends ActionController
             // Build URL
             if (!empty($row['slug'])) {
                 $url = $row['slug'];
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
             } else {
@@ -692,14 +689,14 @@ class SearchController extends ActionController
 
         // Apply date filters
         if (!empty($filters['dateFrom'])) {
-            $dateFrom = strtotime($filters['dateFrom']);
+            $dateFrom = strtotime((string) $filters['dateFrom']);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->gte('tt_content.tstamp', $dateFrom)
             );
         }
 
         if (!empty($filters['dateTo'])) {
-            $dateTo = strtotime($filters['dateTo']);
+            $dateTo = strtotime((string) $filters['dateTo']);
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->lte('tt_content.tstamp', $dateTo)
             );
@@ -715,9 +712,10 @@ class SearchController extends ActionController
             // Build URL
             if (!empty($row['page_slug'])) {
                 $url = $row['page_slug'];
-                if (!str_starts_with($url, '/')) {
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
+
                 $url .= '#c' . $row['uid'];
             } else {
                 $url = '/index.php?id=' . $row['pid'] . '#c' . $row['uid'];
@@ -743,24 +741,12 @@ class SearchController extends ActionController
      */
     protected function sortResults(array $results, string $sortBy): array
     {
-        switch ($sortBy) {
-            case 'date_desc':
-                usort($results, function ($a, $b) {
-                    return ($b['date'] ?? 0) - ($a['date'] ?? 0);
-                });
-                break;
-            case 'date_asc':
-                usort($results, function ($a, $b) {
-                    return ($a['date'] ?? 0) - ($b['date'] ?? 0);
-                });
-                break;
-            case 'title':
-                usort($results, function ($a, $b) {
-                    return strcasecmp($a['title'], $b['title']);
-                });
-                break;
-                // 'relevance' is default - no sorting needed as results come in order
-        }
+        match ($sortBy) {
+            'date_desc' => usort($results, fn(array $a, array $b): int|float => ($b['date'] ?? 0) - ($a['date'] ?? 0)),
+            'date_asc' => usort($results, fn(array $a, array $b): int|float => ($a['date'] ?? 0) - ($b['date'] ?? 0)),
+            'title' => usort($results, fn(array $a, array $b): int => strcasecmp((string) $a['title'], (string) $b['title'])),
+            default => $results,
+        };
 
         return $results;
     }
@@ -822,8 +808,8 @@ class SearchController extends ActionController
             ->execute();
 
         while ($row = $statement->fetchAssociative()) {
-            $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['uid'];
-            if (!str_starts_with($url, '/')) {
+            $url = empty($row['slug']) ? '/index.php?id=' . $row['uid'] : $row['slug'];
+            if (!str_starts_with((string) $url, '/')) {
                 $url = '/' . $url;
             }
 
@@ -859,10 +845,11 @@ class SearchController extends ActionController
                 ->execute();
 
             while ($row = $contentStatement->fetchAssociative()) {
-                $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['pid'];
-                if (!str_starts_with($url, '/')) {
+                $url = empty($row['slug']) ? '/index.php?id=' . $row['pid'] : $row['slug'];
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
+
                 $url .= '#c' . $row['uid'];
 
                 $suggestions[] = [
@@ -879,7 +866,7 @@ class SearchController extends ActionController
         foreach ($popularTerms as $term) {
             $suggestions[] = [
                 'title' => $term,
-                'url' => '/search?q=' . urlencode($term),
+                'url' => '/search?q=' . urlencode((string) $term),
                 'type' => 'search'
             ];
         }
@@ -899,9 +886,7 @@ class SearchController extends ActionController
             'Products', 'Services', 'Contact', 'About', 'Documentation'
         ];
 
-        $filtered = array_filter($popularTerms, function ($term) use ($query) {
-            return stripos($term, $query) !== false && strtolower($term) !== strtolower($query);
-        });
+        $filtered = array_filter($popularTerms, fn(string $term): bool => stripos($term, $query) !== false && strtolower($term) !== strtolower($query));
 
         return array_slice($filtered, 0, $limit);
     }
@@ -928,7 +913,7 @@ class SearchController extends ActionController
             'PixelcodaSearch'
         ) ?? $key;
 
-        if (!empty($arguments)) {
+        if ($arguments !== []) {
             return vsprintf($translation, $arguments);
         }
 

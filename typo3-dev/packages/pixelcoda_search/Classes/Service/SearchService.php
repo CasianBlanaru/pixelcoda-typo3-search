@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
 
+use RuntimeException;
+use Exception;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -16,7 +18,9 @@ use TYPO3\CMS\Core\Log\Logger;
 class SearchService
 {
     protected RequestFactory $requestFactory;
+
     protected Logger $logger;
+
     protected array $config;
 
     public function __construct(
@@ -24,7 +28,7 @@ class SearchService
         ExtensionConfiguration $extensionConfiguration = null
     ) {
         $this->requestFactory = $requestFactory ?? GeneralUtility::makeInstance(RequestFactory::class);
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
 
         $extConfig = $extensionConfiguration ?? GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $this->config = $extConfig->get('pixelcoda_search') ?? [];
@@ -39,11 +43,11 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if (empty($apiUrl) || empty($apiKey)) {
-            throw new \RuntimeException('pixelcoda Search API not configured');
+        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+            throw new RuntimeException('pixelcoda Search API not configured');
         }
 
-        $url = "{$apiUrl}/v1/search/{$projectId}";
+        $url = sprintf('%s/v1/search/%s', $apiUrl, $projectId);
 
         $requestOptions = [
             'headers' => [
@@ -60,8 +64,8 @@ class SearchService
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
 
             if ($response->getStatusCode() !== 200) {
-                throw new \RuntimeException(
-                    "Search API returned status {$response->getStatusCode()}: " .
+                throw new RuntimeException(
+                    sprintf('Search API returned status %s: ', $response->getStatusCode()) .
                     $response->getBody()->getContents()
                 );
             }
@@ -69,7 +73,7 @@ class SearchService
             $result = json_decode($response->getBody()->getContents(), true);
 
             if (!$result) {
-                throw new \RuntimeException('Invalid JSON response from Search API');
+                throw new RuntimeException('Invalid JSON response from Search API');
             }
 
             $this->logger->info('Search completed', [
@@ -80,13 +84,13 @@ class SearchService
 
             return $result;
 
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             $this->logger->error('Search API error', [
                 'query' => $params['q'],
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
                 'url' => $url
             ]);
-            throw $e;
+            throw $exception;
         }
     }
 
@@ -99,11 +103,11 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if (empty($apiUrl) || empty($apiKey)) {
-            throw new \RuntimeException('pixelcoda Search API not configured');
+        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
+            throw new RuntimeException('pixelcoda Search API not configured');
         }
 
-        $url = "{$apiUrl}/v1/ask/{$projectId}";
+        $url = sprintf('%s/v1/ask/%s', $apiUrl, $projectId);
 
         $requestOptions = [
             'headers' => [
@@ -120,8 +124,8 @@ class SearchService
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
 
             if ($response->getStatusCode() !== 200) {
-                throw new \RuntimeException(
-                    "Ask API returned status {$response->getStatusCode()}: " .
+                throw new RuntimeException(
+                    sprintf('Ask API returned status %s: ', $response->getStatusCode()) .
                     $response->getBody()->getContents()
                 );
             }
@@ -129,7 +133,7 @@ class SearchService
             $result = json_decode($response->getBody()->getContents(), true);
 
             if (!$result) {
-                throw new \RuntimeException('Invalid JSON response from Ask API');
+                throw new RuntimeException('Invalid JSON response from Ask API');
             }
 
             $this->logger->info('Ask completed', [
@@ -140,13 +144,13 @@ class SearchService
 
             return $result;
 
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             $this->logger->error('Ask API error', [
                 'question' => $params['q'],
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
                 'url' => $url
             ]);
-            throw $e;
+            throw $exception;
         }
     }
 
@@ -159,11 +163,11 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if (empty($apiUrl) || empty($apiKey)) {
+        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
             return ['data' => []]; // Return empty suggestions if not configured
         }
 
-        $url = "{$apiUrl}/v1/suggest/{$projectId}";
+        $url = sprintf('%s/v1/suggest/%s', $apiUrl, $projectId);
 
         $requestOptions = [
             'headers' => [
@@ -186,10 +190,10 @@ class SearchService
             $result = json_decode($response->getBody()->getContents(), true);
             return $result ?? ['data' => []];
 
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             $this->logger->warning('Suggest API error', [
                 'query' => $params['q'] ?? '',
-                'error' => $e->getMessage()
+                'error' => $exception->getMessage()
             ]);
             return ['data' => []];
         }
@@ -208,11 +212,11 @@ class SearchService
         $projectId = $this->config['project_id'] ?? 'typo3';
         $apiKey = $this->config['api_key'] ?? '';
 
-        if (empty($apiUrl) || empty($apiKey)) {
+        if ($apiUrl === '' || $apiUrl === '0' || empty($apiKey)) {
             return;
         }
 
-        $metricsUrl = "{$apiUrl}/v1/metrics/click/{$projectId}";
+        $metricsUrl = sprintf('%s/v1/metrics/click/%s', $apiUrl, $projectId);
 
         $requestOptions = [
             'headers' => [
@@ -231,9 +235,9 @@ class SearchService
 
         try {
             $this->requestFactory->request($metricsUrl, 'POST', $requestOptions);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             $this->logger->warning('Failed to log click metrics', [
-                'error' => $e->getMessage()
+                'error' => $exception->getMessage()
             ]);
         }
     }
@@ -245,23 +249,22 @@ class SearchService
     {
         $apiUrl = rtrim($this->config['api_url'] ?? '', '/');
 
-        if (empty($apiUrl)) {
+        if ($apiUrl === '' || $apiUrl === '0') {
             return ['status' => 'not_configured', 'message' => 'API URL not configured'];
         }
 
         try {
-            $response = $this->requestFactory->request("{$apiUrl}/health", 'GET', [
+            $response = $this->requestFactory->request($apiUrl . '/health', 'GET', [
                 'timeout' => 5
             ]);
 
             if ($response->getStatusCode() === 200) {
                 return ['status' => 'healthy', 'message' => 'API is responding'];
-            } else {
-                return ['status' => 'unhealthy', 'message' => "API returned status {$response->getStatusCode()}"];
             }
+            return ['status' => 'unhealthy', 'message' => 'API returned status ' . $response->getStatusCode()];
 
-        } catch (\Exception $e) {
-            return ['status' => 'error', 'message' => $e->getMessage()];
+        } catch (Exception $exception) {
+            return ['status' => 'error', 'message' => $exception->getMessage()];
         }
     }
 

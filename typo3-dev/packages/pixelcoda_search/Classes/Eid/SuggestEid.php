@@ -61,8 +61,8 @@ class SuggestEid
             ->execute();
 
         while ($row = $statement->fetchAssociative()) {
-            $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['uid'];
-            if (!str_starts_with($url, '/')) {
+            $url = empty($row['slug']) ? '/index.php?id=' . $row['uid'] : $row['slug'];
+            if (!str_starts_with((string) $url, '/')) {
                 $url = '/' . $url;
             }
 
@@ -98,10 +98,11 @@ class SuggestEid
                 ->execute();
 
             while ($row = $contentStatement->fetchAssociative()) {
-                $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['pid'];
-                if (!str_starts_with($url, '/')) {
+                $url = empty($row['slug']) ? '/index.php?id=' . $row['pid'] : $row['slug'];
+                if (!str_starts_with((string) $url, '/')) {
                     $url = '/' . $url;
                 }
+
                 $url .= '#c' . $row['uid'];
 
                 $suggestions[] = [
@@ -118,7 +119,7 @@ class SuggestEid
         foreach ($popularTerms as $term) {
             $suggestions[] = [
                 'title' => $term,
-                'url' => '/search?q=' . urlencode($term),
+                'url' => '/search?q=' . urlencode((string) $term),
                 'type' => 'search'
             ];
         }
@@ -136,9 +137,7 @@ class SuggestEid
             'Products', 'Services', 'Contact', 'About', 'Documentation'
         ];
 
-        $filtered = array_filter($popularTerms, function ($term) use ($query) {
-            return stripos($term, $query) !== false && strtolower($term) !== strtolower($query);
-        });
+        $filtered = array_filter($popularTerms, fn(string $term): bool => stripos($term, $query) !== false && strtolower($term) !== strtolower($query));
 
         return array_slice($filtered, 0, $limit);
     }

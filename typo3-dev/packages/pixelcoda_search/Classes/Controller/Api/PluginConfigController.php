@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller\Api;
 
+use Exception;
+use PDO;
 use PixelCoda\PixelcodaSearch\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,7 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PluginConfigController
 {
     protected ConfigurationService $configurationService;
+
     protected FlexFormService $flexFormService;
+
     protected ConnectionPool $connectionPool;
 
     public function __construct(
@@ -158,10 +162,10 @@ class PluginConfigController
 
             return new JsonResponse($responseData, 200, $headers);
 
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return new JsonResponse([
                 'error' => 'Failed to get plugin configuration',
-                'message' => $e->getMessage()
+                'message' => $exception->getMessage()
             ], 500, $headers);
         }
     }
@@ -177,7 +181,7 @@ class PluginConfigController
             ->select('*')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('deleted', 0),
                 $queryBuilder->expr()->eq('hidden', 0)
             )

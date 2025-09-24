@@ -15,7 +15,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PixelcodaSearchSerializer
 {
     protected ConfigurationService $configurationService;
+
     protected FlexFormService $flexFormService;
+
     protected JsonEncoder $encoder;
 
     public function __construct(
