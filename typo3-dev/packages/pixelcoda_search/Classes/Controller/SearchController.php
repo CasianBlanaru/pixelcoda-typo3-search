@@ -74,16 +74,16 @@ class SearchController extends ActionController
             }
         }
         
-        $this->view->assignMultiple([
+            $this->view->assignMultiple([
             'searchQuery' => htmlspecialchars($searchQuery),
             'results' => $results,
             'message' => $message,
             'pagination' => $pagination,
             'totalResults' => $totalResults,
             'settings' => $this->settings
-        ]);
-        
-        return $this->htmlResponse();
+            ]);
+
+            return $this->htmlResponse();
     }
     
     /**
@@ -119,14 +119,18 @@ class SearchController extends ActionController
             $conf = [
                 'parameter' => $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0
+                'forceAbsoluteUrl' => 1
             ];
             $url = $cObj->typoLink_URL($conf);
+            // Fallback wenn URL leer ist
+            if (empty($url)) {
+                $url = '/?id=' . $row['uid'];
+            }
             
             $results[] = [
                 'title' => $row['title'],
                 'abstract' => $row['abstract'] ?: 'Keine Beschreibung verfügbar.',
-                'url' => '/' . ltrim($url, '/')
+                'url' => $url
             ];
         }
         
@@ -174,20 +178,24 @@ class SearchController extends ActionController
             // Build URL for the parent page
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $conf = [
-                'parameter' => $row['pid'],
+                'parameter' => $row['pid'] . '#c' . $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0
+                'forceAbsoluteUrl' => 1
             ];
             
             $abstract = strip_tags($row['bodytext'] ?? '');
             $abstract = mb_substr($abstract, 0, 150) . (mb_strlen($abstract) > 150 ? '...' : '');
             
             $url = $cObj->typoLink_URL($conf);
+            // Fallback wenn URL leer ist
+            if (empty($url)) {
+                $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            }
             
             $results[] = [
                 'title' => $row['header'] ?: $row['page_title'],
                 'abstract' => $abstract ?: 'Keine Beschreibung verfügbar.',
-                'url' => '/' . ltrim($url, '/'),
+                'url' => $url,
                 'page' => $row['page_title']
             ];
         }
@@ -254,9 +262,13 @@ class SearchController extends ActionController
             $conf = [
                 'parameter' => $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0
+                'forceAbsoluteUrl' => 1
             ];
             $url = $cObj->typoLink_URL($conf);
+            // Fallback wenn URL leer ist
+            if (empty($url)) {
+                $url = '/?id=' . $row['uid'];
+            }
             
             // Get first image if available
             $image = null;
@@ -290,7 +302,7 @@ class SearchController extends ActionController
             $results[] = [
                 'title' => $row['title'],
                 'abstract' => $row['abstract'] ?: $row['description'] ?: 'Keine Beschreibung verfügbar.',
-                'url' => '/' . ltrim($url, '/'),
+                'url' => $url,
                 'image' => $image,
                 'tags' => $tags,
                 'date' => $date,
@@ -364,11 +376,15 @@ class SearchController extends ActionController
             // Build URL for the parent page
             $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $conf = [
-                'parameter' => $row['pid'],
+                'parameter' => $row['pid'] . '#c' . $row['uid'],
                 'returnLast' => 'url',
-                'forceAbsoluteUrl' => 0
+                'forceAbsoluteUrl' => 1
             ];
             $url = $cObj->typoLink_URL($conf);
+            // Fallback wenn URL leer ist
+            if (empty($url)) {
+                $url = '/?id=' . $row['pid'] . '#c' . $row['uid'];
+            }
             
             // Get first image if available
             $image = null;
@@ -390,7 +406,7 @@ class SearchController extends ActionController
             $results[] = [
                 'title' => $row['header'] ?: $row['page_title'],
                 'abstract' => $abstract ?: 'Keine Beschreibung verfügbar.',
-                'url' => '/' . ltrim($url, '/'),
+                'url' => $url,
                 'page' => $row['page_title'],
                 'image' => $image,
                 'tags' => [],

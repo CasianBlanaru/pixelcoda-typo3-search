@@ -44,6 +44,45 @@
                         </article>
                     </f:for>
                 </div>
+
+                <!-- Pagination -->
+                <f:if condition="{pagination}">
+                    <nav class="pagination-wrapper" aria-label="Seitennavigation">
+                        <ul class="pagination">
+                            <f:if condition="{pagination.prev}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={searchQuery}&page={pagination.prev}" aria-label="Vorherige">
+                                        &laquo; Zurück
+                                    </a>
+                                </li>
+                            </f:if>
+
+                            <f:for each="{pagination.pages}" as="pageNumber">
+                                <li class="page-item {f:if(condition: '{pageNumber} == {pagination.current}', then: 'active')}">
+                                    <f:if condition="{pageNumber} == {pagination.current}">
+                                        <f:then>
+                                            <span class="page-link current">{pageNumber}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <a class="page-link" href="?q={searchQuery}&page={pageNumber}">{pageNumber}</a>
+                                        </f:else>
+                                    </f:if>
+                                </li>
+                            </f:for>
+
+                            <f:if condition="{pagination.next}">
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={searchQuery}&page={pagination.next}" aria-label="Nächste">
+                                        Weiter &raquo;
+                                    </a>
+                                </li>
+                            </f:if>
+                        </ul>
+                        <p class="pagination-info">
+                            Seite {pagination.current} von {pagination.total} | {totalResults} Ergebnisse insgesamt
+                        </p>
+                    </nav>
+                </f:if>
             </f:then>
             <f:else>
                 <f:if condition="{searchQuery}">
