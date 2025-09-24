@@ -31,11 +31,8 @@ return RectorConfig::configure()
         SetList::EARLY_RETURN,
         SetList::CODING_STYLE,
     ])
-    ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
-        InlineConstructorDefaultToPropertyRector::class,
-        RemoveUnusedPromotedPropertyRector::class,
-    ])
+    // Removed duplicate rules already included in the sets above
+    ->withRules([])
     ->withImportNames(
         importShortClasses: true,
         removeUnusedImports: true,

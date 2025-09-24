@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Unit\Controller;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
 use ReflectionClass;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -15,11 +16,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SearchControllerTest extends UnitTestCase
 {
-    protected SearchController $subject;
+    protected MockObject $subject;
 
-    protected ViewInterface $viewMock;
+    protected MockObject $viewMock;
 
-    protected ServerRequest $requestMock;
+    protected MockObject $requestMock;
 
     protected function setUp(): void
     {
@@ -111,12 +112,8 @@ class SearchControllerTest extends UnitTestCase
 
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(static function ($data) {
-                return isset($data['searchQuery'])
-                    && isset($data['results'], $data['pagination'], $data['filters'])
-
-                ;
-            }));
+            ->with($this->callback(static fn($data): bool => isset($data['searchQuery'])
+                && isset($data['results'], $data['pagination'], $data['filters'])));
 
         $this->subject->searchAction();
     }
@@ -134,9 +131,7 @@ class SearchControllerTest extends UnitTestCase
 
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(static function ($data) use ($expectedFilters) {
-                return $data['filters'] === $expectedFilters;
-            }));
+            ->with($this->callback(static fn($data): bool => $data['filters'] === $expectedFilters));
 
         $this->subject->searchAction();
     }
@@ -190,7 +185,6 @@ class SearchControllerTest extends UnitTestCase
     {
         $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty($property);
-        $property->setAccessible(true);
         $property->setValue($object, $value);
     }
 }
