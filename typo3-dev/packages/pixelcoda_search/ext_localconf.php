@@ -75,10 +75,14 @@ $iconRegistry->registerIcon(
     'PixelcodaSearch',
     'SearchResults',
     [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search'
+        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest'
     ],
     // non-cacheable actions
     [
-        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search'
+        \PixelCoda\PixelcodaSearch\Controller\SearchController::class => 'search,suggest'
     ]
 );
+
+// Register EID handler for AJAX autocomplete
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest'] = 
+    \PixelCoda\PixelcodaSearch\Eid\SuggestEid::class . '::processRequest';

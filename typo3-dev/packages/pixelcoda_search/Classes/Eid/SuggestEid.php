@@ -1,130 +1,144 @@
 <?php
-
 declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Eid;
 
-use PixelCoda\PixelcodaSearch\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
- * eID script for AJAX search suggestions
- * 
- * This provides fast autocomplete suggestions for the search input
+ * EID handler for search suggestions
  */
 class SuggestEid
 {
-    private SearchService $searchService;
-
-    public function __construct()
-    {
-        $this->searchService = GeneralUtility::makeInstance(SearchService::class);
-    }
-
     /**
-     * Process the AJAX request for search suggestions
-     * 
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
+     * Process the AJAX request
      */
-    public static function processRequest(ServerRequestInterface $request): ResponseInterface
+    public function processRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $instance = GeneralUtility::makeInstance(self::class);
-        return $instance->handleRequest($request);
-    }
-
-    /**
-     * Handle the suggestion request
-     * 
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
-    {
-        // Set CORS headers for frontend requests
-        $headers = [
-            'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers' => 'Content-Type, X-Requested-With',
-        ];
-
-        // Handle preflight OPTIONS request
-        if ($request->getMethod() === 'OPTIONS') {
-            return new JsonResponse(null, 200, $headers);
+        $params = $request->getQueryParams();
+        $query = trim($params['q'] ?? '');
+        
+        // Return empty if query is too short
+        if (strlen($query) < 2) {
+            return new JsonResponse([]);
         }
-
-        try {
-            // Get query parameters
-            $queryParams = $request->getQueryParams();
-            $query = trim($queryParams['q'] ?? '');
-            $limit = min((int)($queryParams['limit'] ?? 5), 20); // Max 20 suggestions
-            $collections = $queryParams['collections'] ?? 'pages,tt_content';
-
-            // Validate query
-            if (empty($query) || strlen($query) < 2) {
-                return new JsonResponse([
-                    'suggestions' => [],
-                    'meta' => [
-                        'query' => $query,
-                        'count' => 0,
-                        'message' => 'Query too short (minimum 2 characters)'
-                    ]
-                ], 200, $headers);
+        
+        $suggestions = $this->getSuggestions($query);
+        
+        return new JsonResponse($suggestions);
+    }
+    
+    /**
+     * Get search suggestions
+     */
+    protected function getSuggestions(string $query, int $limit = 10): array
+    {
+        $suggestions = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        
+        $searchTerm = $queryBuilder->escapeLikeWildcards($query) . '%';
+        
+        // Search in pages
+        $statement = $queryBuilder
+            ->select('uid', 'title', 'slug')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->like('title', $queryBuilder->createNamedParameter($searchTerm)),
+                    $queryBuilder->expr()->like('keywords', $queryBuilder->createNamedParameter($searchTerm))
+                ),
+                $queryBuilder->expr()->eq('hidden', 0),
+                $queryBuilder->expr()->eq('deleted', 0)
+            )
+            ->orderBy('title')
+            ->setMaxResults($limit)
+            ->execute();
+        
+        while ($row = $statement->fetchAssociative()) {
+            $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['uid'];
+            if (!str_starts_with($url, '/')) {
+                $url = '/' . $url;
             }
-
-            // Get suggestions from search service
-            $suggestions = $this->searchService->getSuggestions($query, $limit, $collections);
-
-            // Format response
-            $response = [
-                'suggestions' => $suggestions,
-                'meta' => [
-                    'query' => $query,
-                    'count' => count($suggestions),
-                    'limit' => $limit,
-                    'collections' => $collections
-                ]
-            ];
-
-            return new JsonResponse($response, 200, $headers);
-
-        } catch (\Exception $e) {
-            // Log error but don't expose internal details
-            $errorMessage = 'Suggestion request failed';
             
-            if ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search']['debug_mode'] ?? false) {
-                $errorMessage .= ': ' . $e->getMessage();
+            $suggestions[] = [
+                'title' => $row['title'],
+                'url' => $url,
+                'type' => 'page'
+            ];
+        }
+        
+        // Also search in content elements if we have less than limit
+        if (count($suggestions) < $limit) {
+            $contentBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('tt_content');
+            
+            $contentStatement = $contentBuilder
+                ->select('tt_content.uid', 'tt_content.header', 'tt_content.pid', 'pages.slug', 'pages.title as page_title')
+                ->from('tt_content')
+                ->leftJoin(
+                    'tt_content',
+                    'pages',
+                    'pages',
+                    $contentBuilder->expr()->eq('pages.uid', $contentBuilder->quoteIdentifier('tt_content.pid'))
+                )
+                ->where(
+                    $contentBuilder->expr()->like('tt_content.header', $contentBuilder->createNamedParameter($searchTerm)),
+                    $contentBuilder->expr()->eq('tt_content.hidden', 0),
+                    $contentBuilder->expr()->eq('tt_content.deleted', 0),
+                    $contentBuilder->expr()->neq('tt_content.header', $contentBuilder->createNamedParameter(''))
+                )
+                ->orderBy('tt_content.header')
+                ->setMaxResults($limit - count($suggestions))
+                ->execute();
+            
+            while ($row = $contentStatement->fetchAssociative()) {
+                $url = !empty($row['slug']) ? $row['slug'] : '/index.php?id=' . $row['pid'];
+                if (!str_starts_with($url, '/')) {
+                    $url = '/' . $url;
+                }
+                $url .= '#c' . $row['uid'];
+                
+                $suggestions[] = [
+                    'title' => $row['header'],
+                    'subtitle' => 'in: ' . $row['page_title'],
+                    'url' => $url,
+                    'type' => 'content'
+                ];
             }
-
-            return new JsonResponse([
-                'suggestions' => [],
-                'meta' => [
-                    'query' => $query ?? '',
-                    'count' => 0,
-                    'error' => $errorMessage
-                ]
-            ], 500, $headers);
         }
+        
+        // Add popular search terms
+        $popularTerms = $this->getPopularSearchTerms($query, 3);
+        foreach ($popularTerms as $term) {
+            $suggestions[] = [
+                'title' => $term,
+                'url' => '/search?q=' . urlencode($term),
+                'type' => 'search'
+            ];
+        }
+        
+        return $suggestions;
     }
-
+    
     /**
-     * Initialize TYPO3 frontend if needed
-     * This is required for proper database access and configuration
+     * Get popular search terms
      */
-    private function initializeFrontend(): void
+    protected function getPopularSearchTerms(string $query, int $limit = 5): array
     {
-        if (!isset($GLOBALS['TSFE']) || !$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-            // Basic frontend initialization for eID scripts
-            $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-                TypoScriptFrontendController::class,
-                null,
-                0,
-                0
-            );
-        }
+        $popularTerms = [
+            'TYPO3', 'Headless', 'PWA', 'Content', 'News', 
+            'Products', 'Services', 'Contact', 'About', 'Documentation'
+        ];
+        
+        $filtered = array_filter($popularTerms, function($term) use ($query) {
+            return stripos($term, $query) !== false && strtolower($term) !== strtolower($query);
+        });
+        
+        return array_slice($filtered, 0, $limit);
     }
 }
