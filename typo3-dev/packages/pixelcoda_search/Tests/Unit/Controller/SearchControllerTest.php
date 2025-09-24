@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
 use ReflectionClass;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\TemplateView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,7 +31,7 @@ class SearchControllerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->viewMock = $this->createMock(ViewInterface::class);
+        $this->viewMock = $this->createMock(TemplateView::class);
         $this->requestMock = $this->createMock(ServerRequest::class);
 
         // Inject mocks
@@ -112,7 +112,7 @@ class SearchControllerTest extends UnitTestCase
 
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(static fn($data): bool => isset($data['searchQuery'])
+            ->with($this->callback(static fn ($data): bool => isset($data['searchQuery'])
                 && isset($data['results'], $data['pagination'], $data['filters'])));
 
         $this->subject->searchAction();
@@ -131,7 +131,7 @@ class SearchControllerTest extends UnitTestCase
 
         $this->viewMock->expects($this->once())
             ->method('assignMultiple')
-            ->with($this->callback(static fn($data): bool => $data['filters'] === $expectedFilters));
+            ->with($this->callback(static fn ($data): bool => $data['filters'] === $expectedFilters));
 
         $this->subject->searchAction();
     }

@@ -24,7 +24,6 @@ return $config
         // Arrays
         'array_syntax' => ['syntax' => 'short'],
         'no_multiline_whitespace_around_double_arrow' => true,
-        'no_trailing_comma_in_singleline_array' => true,
         'no_whitespace_before_comma_in_array' => true,
         'normalize_index_brace' => true,
         'trailing_comma_in_multiline' => ['elements' => ['arrays']],
@@ -41,7 +40,7 @@ return $config
         'magic_constant_casing' => true,
         'magic_method_casing' => true,
         'native_function_casing' => true,
-        'native_function_type_declaration_casing' => true,
+            'native_type_declaration_casing' => true,
         
         // Cast Notation
         'cast_spaces' => ['space' => 'single'],
@@ -99,9 +98,9 @@ return $config
         'no_alternative_syntax' => true,
         'no_break_comment' => false,
         'no_superfluous_elseif' => true,
-        'no_trailing_comma_in_list_call' => true,
+            'no_trailing_comma_in_singleline' => true,
         'no_unneeded_control_parentheses' => true,
-        'no_unneeded_curly_braces' => true,
+            'no_unneeded_braces' => true,
         'no_useless_else' => true,
         'simplified_if_return' => true,
         'switch_case_semicolon_to_colon' => true,
@@ -110,7 +109,7 @@ return $config
         
         // Function Notation
         'function_declaration' => true,
-        'function_typehint_space' => true,
+            'type_declaration_spaces' => true,
         'lambda_not_used_import' => true,
         'method_argument_space' => true,
         'no_spaces_after_function_name' => true,
@@ -142,7 +141,7 @@ return $config
         'declare_equal_normalize' => true,
         'declare_parentheses' => true,
         'explicit_indirect_variable' => true,
-        'single_space_after_construct' => true,
+            'single_space_around_construct' => true,
         
         // Namespace Notation
         'blank_line_after_namespace' => true,
@@ -154,7 +153,7 @@ return $config
         'concat_space' => ['spacing' => 'one'],
         'increment_style' => true,
         'logical_operators' => true,
-        'new_with_braces' => true,
+            'new_with_parentheses' => true,
         'no_space_around_double_colon' => true,
         'not_operator_with_space' => false,
         'not_operator_with_successor_space' => false,
@@ -246,14 +245,14 @@ return $config
                 'try',
             ],
         ],
-        'compact_nullable_typehint' => true,
+            'compact_nullable_type_declaration' => true,
         'heredoc_indentation' => true,
         'indentation_type' => true,
         'line_ending' => true,
         'method_chaining_indentation' => true,
         'no_extra_blank_lines' => true,
         'no_spaces_around_offset' => true,
-        'no_spaces_inside_parenthesis' => true,
+            'spaces_inside_parentheses' => false,
         'no_trailing_whitespace' => true,
         'no_whitespace_in_blank_line' => true,
         'single_blank_line_at_eof' => true,

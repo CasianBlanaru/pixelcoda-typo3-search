@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use PixelCoda\PixelcodaSearch\Eid\SuggestEid;
 use PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
+use PixelCoda\PixelcodaSearch\Eid\SuggestEid;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') || exit();
 
 // ExtensionUtility removed - not needed anymore
