@@ -19,8 +19,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DatamapHook implements LoggerAwareInterface
 {
-    public $logger;
     use LoggerAwareTrait;
+
+    public $logger;
 
     private SearchService $searchService;
 

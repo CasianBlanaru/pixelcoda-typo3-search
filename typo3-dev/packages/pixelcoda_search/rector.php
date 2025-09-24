@@ -33,4 +33,11 @@ return RectorConfig::configure()
     ->withImportNames(
         importShortClasses: true,
         removeUnusedImports: true,
-    );
+    )
+    ->withSkip([
+        \Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector::class,
+        \Rector\CodeQuality\Rector\FuncCall\RemoveSoleValueSprintfRector::class,
+        \Rector\DeadCode\Rector\Cast\RecastingRemovalRector::class => [
+            __DIR__ . '/Classes/Service/SearchService.php',
+        ],
+    ]);

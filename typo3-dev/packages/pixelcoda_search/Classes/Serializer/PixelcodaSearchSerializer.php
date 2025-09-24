@@ -141,7 +141,7 @@ class PixelcodaSearchSerializer
         ];
 
         // Add debug information if available
-        if ($debugInfo !== []) {
+        if ([] !== $debugInfo) {
             $data['content']['debug'] = $debugInfo;
         }
 
