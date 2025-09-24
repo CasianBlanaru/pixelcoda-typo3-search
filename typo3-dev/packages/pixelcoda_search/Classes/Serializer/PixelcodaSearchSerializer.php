@@ -67,7 +67,7 @@ class PixelcodaSearchSerializer
 
         // Get plugin settings
         $settings = $this->configurationService->getPluginSettings();
-        
+
         // Merge with FlexForm settings
         if (isset($flexFormData['settings'])) {
             $settings = array_merge($settings, $flexFormData['settings']);
@@ -106,7 +106,7 @@ class PixelcodaSearchSerializer
         // Add API endpoints
         $data['content']['endpoints'] = [
             'search' => '/api/search',
-            'ask' => '/api/ask', 
+            'ask' => '/api/ask',
             'suggest' => '/api/suggest',
         ];
 

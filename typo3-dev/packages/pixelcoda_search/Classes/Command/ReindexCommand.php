@@ -54,7 +54,7 @@ class ReindexCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
+
         $io->title('pixelcoda Search Re-indexer');
 
         $table = $input->getOption('table');
@@ -69,7 +69,7 @@ class ReindexCommand extends Command
             if ($table) {
                 // Re-index specific table
                 $io->section("Re-indexing table: {$table}");
-                
+
                 if (!$skipClear) {
                     if (!$dryRun) {
                         $io->text('Clearing existing index for table...');
@@ -79,7 +79,7 @@ class ReindexCommand extends Command
                         $io->info("Would clear index for table: {$table}");
                     }
                 }
-                
+
                 if (!$dryRun) {
                     $count = $this->searchService->indexTable($table, true);
                     $io->success("Successfully re-indexed {$count} records from {$table}");
@@ -91,7 +91,7 @@ class ReindexCommand extends Command
                 // Re-index all enabled tables
                 $enabledTables = $this->getEnabledTables();
                 $io->section("Re-indexing all enabled tables: " . implode(', ', $enabledTables));
-                
+
                 if (!$skipClear) {
                     if (!$dryRun) {
                         $io->text('Clearing entire search index...');
@@ -101,11 +101,11 @@ class ReindexCommand extends Command
                         $io->info('Would clear entire search index');
                     }
                 }
-                
+
                 $totalCount = 0;
                 foreach ($enabledTables as $tableName) {
                     $io->text("Processing table: {$tableName}");
-                    
+
                     if (!$dryRun) {
                         $count = $this->searchService->indexTable($tableName, true);
                         $io->text("  → Re-indexed {$count} records");
@@ -116,7 +116,7 @@ class ReindexCommand extends Command
                         $totalCount += $count;
                     }
                 }
-                
+
                 if (!$dryRun) {
                     $io->success("Successfully re-indexed {$totalCount} records total");
                 } else {
@@ -144,18 +144,18 @@ class ReindexCommand extends Command
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $io->error('Re-indexing failed: ' . $e->getMessage());
-            
+
             if ($output->isVerbose()) {
                 $io->text($e->getTraceAsString());
             }
-            
+
             return Command::FAILURE;
         }
     }
 
     /**
      * Get enabled tables from extension configuration
-     * 
+     *
      * @return array
      */
     private function getEnabledTables(): array

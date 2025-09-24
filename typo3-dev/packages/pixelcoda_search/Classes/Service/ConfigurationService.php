@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
@@ -31,10 +32,10 @@ class ConfigurationService
     {
         // Start with extension configuration
         $settings = $this->extensionConfiguration->get('pixelcoda_search') ?? [];
-        
+
         // Merge with TypoScript settings
         $settings = array_merge($settings, $typoScriptSettings);
-        
+
         // Get FlexForm data if available
         $contentObject = $this->getContentObjectRenderer();
         if ($contentObject && !empty($contentObject->data['pi_flexform'])) {

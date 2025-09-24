@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * API Controller for pixelcoda Search Plugin Configuration
- * 
+ *
  * Provides plugin configuration data for frontend applications
  */
 class PluginConfigController
@@ -35,7 +35,7 @@ class PluginConfigController
 
     /**
      * Get plugin configuration for a specific content element
-     * 
+     *
      * Route: GET /api/pixelcoda/search/config/{contentElementId}
      */
     public function getPluginConfig(ServerRequestInterface $request): ResponseInterface
@@ -56,7 +56,7 @@ class PluginConfigController
         try {
             // Get content element ID from route
             $contentElementId = (int)($request->getAttribute('routing')->getArgument('contentElementId') ?? 0);
-            
+
             if ($contentElementId <= 0) {
                 return new JsonResponse([
                     'error' => 'Invalid content element ID'
@@ -65,7 +65,7 @@ class PluginConfigController
 
             // Get content element from database
             $contentElement = $this->getContentElement($contentElementId);
-            
+
             if (!$contentElement) {
                 return new JsonResponse([
                     'error' => 'Content element not found'
@@ -89,7 +89,7 @@ class PluginConfigController
 
             // Get plugin settings
             $settings = $this->configurationService->getPluginSettings();
-            
+
             // Merge with FlexForm settings
             if (isset($flexFormData['settings'])) {
                 $settings = array_merge($settings, $flexFormData['settings']);
@@ -119,7 +119,7 @@ class PluginConfigController
                         ],
                         'endpoints' => [
                             'search' => '/api/pixelcoda/search',
-                            'ask' => '/api/pixelcoda/ask', 
+                            'ask' => '/api/pixelcoda/ask',
                             'suggest' => '/api/pixelcoda/suggest',
                             'config' => '/api/pixelcoda/search/config/' . $contentElementId
                         ],
@@ -172,7 +172,7 @@ class PluginConfigController
     private function getContentElement(int $uid): ?array
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
-        
+
         $result = $queryBuilder
             ->select('*')
             ->from('tt_content')

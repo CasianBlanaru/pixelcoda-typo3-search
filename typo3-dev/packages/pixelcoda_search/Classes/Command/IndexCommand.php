@@ -60,7 +60,7 @@ class IndexCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
+
         $io->title('pixelcoda Search Indexer');
 
         $table = $input->getOption('table');
@@ -76,7 +76,7 @@ class IndexCommand extends Command
             if ($table && $id) {
                 // Index specific record
                 $io->section("Indexing single record: {$table}:{$id}");
-                
+
                 if (!$dryRun) {
                     $result = $this->searchService->indexRecord($table, (int)$id, 'update', $force);
                     if ($result) {
@@ -91,7 +91,7 @@ class IndexCommand extends Command
             } elseif ($table) {
                 // Index specific table
                 $io->section("Indexing table: {$table}");
-                
+
                 if (!$dryRun) {
                     $count = $this->searchService->indexTable($table, $force);
                     $io->success("Successfully indexed {$count} records from {$table}");
@@ -103,11 +103,11 @@ class IndexCommand extends Command
                 // Index all enabled tables
                 $enabledTables = $this->getEnabledTables();
                 $io->section("Indexing all enabled tables: " . implode(', ', $enabledTables));
-                
+
                 $totalCount = 0;
                 foreach ($enabledTables as $tableName) {
                     $io->text("Processing table: {$tableName}");
-                    
+
                     if (!$dryRun) {
                         $count = $this->searchService->indexTable($tableName, $force);
                         $io->text("  → Indexed {$count} records");
@@ -118,7 +118,7 @@ class IndexCommand extends Command
                         $totalCount += $count;
                     }
                 }
-                
+
                 if (!$dryRun) {
                     $io->success("Successfully indexed {$totalCount} records total");
                 } else {
@@ -129,18 +129,18 @@ class IndexCommand extends Command
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $io->error('Indexing failed: ' . $e->getMessage());
-            
+
             if ($output->isVerbose()) {
                 $io->text($e->getTraceAsString());
             }
-            
+
             return Command::FAILURE;
         }
     }
 
     /**
      * Get enabled tables from extension configuration
-     * 
+     *
      * @return array
      */
     private function getEnabledTables(): array

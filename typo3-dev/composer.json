@@ -43,10 +43,11 @@
         "pixelcoda/pixelcoda-search": "dev-main"
     },
     "require-dev": {
-        "typo3/testing-framework": "^8.0",
-        "phpunit/phpunit": "^10.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "phpstan/phpstan": "^1.0"
+        "typo3/testing-framework": "^8.2",
+        "phpunit/phpunit": "^10.5",
+        "friendsofphp/php-cs-fixer": "^3.87",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.1"
     },
     "autoload": {
         "psr-4": {

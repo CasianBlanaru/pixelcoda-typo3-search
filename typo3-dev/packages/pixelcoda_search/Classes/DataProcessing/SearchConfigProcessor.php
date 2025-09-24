@@ -35,7 +35,7 @@ class SearchConfigProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ): array {
-        
+
         // Only process if this is a pixelcoda search content element
         if ($processedData['data']['CType'] !== 'pixelcodasearch_search') {
             return $processedData;
@@ -51,7 +51,7 @@ class SearchConfigProcessor implements DataProcessorInterface
 
         // Get plugin settings
         $settings = $this->configurationService->getPluginSettings();
-        
+
         // Merge with FlexForm settings
         if (isset($flexFormData['settings'])) {
             $settings = array_merge($settings, $flexFormData['settings']);
@@ -77,7 +77,7 @@ class SearchConfigProcessor implements DataProcessorInterface
             'minQueryLength' => (int)($settings['minQueryLength'] ?? 2),
             'debounceMs' => (int)($settings['debounceMs'] ?? 300),
         ];
-        
+
         // Also add individual fields for TypoScript access
         foreach ($processedData['searchConfig'] as $key => $value) {
             $processedData[$key] = $value;
@@ -86,7 +86,7 @@ class SearchConfigProcessor implements DataProcessorInterface
         // Add API endpoints
         $processedData['endpoints'] = [
             'search' => '/api/search',
-            'ask' => '/api/ask', 
+            'ask' => '/api/ask',
             'suggest' => '/api/suggest',
         ];
 

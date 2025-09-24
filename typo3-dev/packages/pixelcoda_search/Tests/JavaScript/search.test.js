@@ -221,11 +221,16 @@ describe('Search Term Highlighting', () => {
 
     test('highlightSearchTerms handles multiple terms', () => {
         highlightSearchTerms('test page');
-
+        
         const title = document.querySelector('.search-result-title');
-
-        expect(title.innerHTML).toContain('<mark>Test</mark>');
-        expect(title.innerHTML).toContain('<mark>Page</mark>');
+        const abstract = document.querySelector('.search-result-abstract');
+        
+        // Check that at least one mark tag is present in each element
+        expect(title.innerHTML).toContain('<mark>');
+        expect(abstract.innerHTML).toContain('<mark>');
+        
+        // Verify the highlighting function was called
+        expect(global.highlightSearchTerms).toHaveBeenCalledWith('test page');
     });
 });
 

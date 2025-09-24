@@ -13,7 +13,7 @@ use Psr\Log\LoggerAwareTrait;
 
 /**
  * DataHandler hook for automatic content indexing
- * 
+ *
  * This hook listens to TYPO3 DataHandler operations and automatically
  * indexes content when it's created, updated, or deleted.
  */
@@ -30,7 +30,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Hook that is called before the datamap is processed
-     * 
+     *
      * @param DataHandler $dataHandler
      */
     public function processDatamap_beforeStart(DataHandler $dataHandler): void
@@ -41,7 +41,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Hook that is called after a record has been processed
-     * 
+     *
      * @param string $status The status of the operation (new, update)
      * @param string $table The table name
      * @param string|int $id The record ID
@@ -57,7 +57,7 @@ class DatamapHook implements LoggerAwareInterface
     ): void {
         // Only index supported tables
         $enabledTables = $this->getEnabledTables();
-        
+
         if (!in_array($table, $enabledTables, true)) {
             return;
         }
@@ -69,7 +69,7 @@ class DatamapHook implements LoggerAwareInterface
                     $actualId = $dataHandler->substNEWwithIDs[$id] ?? $id;
                     $this->indexRecord($table, (int)$actualId, 'create');
                     break;
-                
+
                 case 'update':
                     $this->indexRecord($table, (int)$id, 'update');
                     break;
@@ -86,19 +86,19 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Hook that is called after all commands have been processed
-     * 
+     *
      * @param DataHandler $dataHandler
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
         $enabledTables = $this->getEnabledTables();
-        
+
         // Process all commands that were executed
         foreach ($dataHandler->cmdmap as $table => $commands) {
             if (!in_array($table, $enabledTables, true)) {
                 continue;
             }
-            
+
             foreach ($commands as $id => $commandData) {
                 foreach ($commandData as $command => $value) {
                     try {
@@ -106,7 +106,7 @@ class DatamapHook implements LoggerAwareInterface
                             case 'delete':
                                 $this->deleteFromIndex($table, (int)$id);
                                 break;
-                            
+
                             case 'copy':
                                 // Index the copied record
                                 if (isset($dataHandler->copyMappingArray[$table][$id])) {
@@ -114,7 +114,7 @@ class DatamapHook implements LoggerAwareInterface
                                     $this->indexRecord($table, (int)$newId, 'create');
                                 }
                                 break;
-                            
+
                             case 'move':
                                 // Re-index moved record (URL might have changed)
                                 $this->indexRecord($table, (int)$id, 'update');
@@ -135,7 +135,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Index a single record
-     * 
+     *
      * @param string $table
      * @param int $id
      * @param string $action
@@ -158,7 +158,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Remove a record from the search index
-     * 
+     *
      * @param string $table
      * @param int $id
      */
@@ -178,7 +178,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Get enabled tables from extension configuration
-     * 
+     *
      * @return array
      */
     private function getEnabledTables(): array
@@ -189,7 +189,7 @@ class DatamapHook implements LoggerAwareInterface
 
     /**
      * Check if auto-indexing is enabled
-     * 
+     *
      * @return bool
      */
     private function isAutoIndexingEnabled(): bool

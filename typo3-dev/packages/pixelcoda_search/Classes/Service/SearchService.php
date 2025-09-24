@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
@@ -24,7 +25,7 @@ class SearchService
     ) {
         $this->requestFactory = $requestFactory ?? GeneralUtility::makeInstance(RequestFactory::class);
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        
+
         $extConfig = $extensionConfiguration ?? GeneralUtility::makeInstance(ExtensionConfiguration::class);
         $this->config = $extConfig->get('pixelcoda_search') ?? [];
     }
@@ -43,7 +44,7 @@ class SearchService
         }
 
         $url = "{$apiUrl}/v1/search/{$projectId}";
-        
+
         $requestOptions = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -57,16 +58,16 @@ class SearchService
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
-            
+
             if ($response->getStatusCode() !== 200) {
                 throw new \RuntimeException(
-                    "Search API returned status {$response->getStatusCode()}: " . 
+                    "Search API returned status {$response->getStatusCode()}: " .
                     $response->getBody()->getContents()
                 );
             }
 
             $result = json_decode($response->getBody()->getContents(), true);
-            
+
             if (!$result) {
                 throw new \RuntimeException('Invalid JSON response from Search API');
             }
@@ -103,7 +104,7 @@ class SearchService
         }
 
         $url = "{$apiUrl}/v1/ask/{$projectId}";
-        
+
         $requestOptions = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -117,16 +118,16 @@ class SearchService
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
-            
+
             if ($response->getStatusCode() !== 200) {
                 throw new \RuntimeException(
-                    "Ask API returned status {$response->getStatusCode()}: " . 
+                    "Ask API returned status {$response->getStatusCode()}: " .
                     $response->getBody()->getContents()
                 );
             }
 
             $result = json_decode($response->getBody()->getContents(), true);
-            
+
             if (!$result) {
                 throw new \RuntimeException('Invalid JSON response from Ask API');
             }
@@ -163,7 +164,7 @@ class SearchService
         }
 
         $url = "{$apiUrl}/v1/suggest/{$projectId}";
-        
+
         $requestOptions = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -177,7 +178,7 @@ class SearchService
 
         try {
             $response = $this->requestFactory->request($url, 'POST', $requestOptions);
-            
+
             if ($response->getStatusCode() !== 200) {
                 return ['data' => []]; // Return empty on error
             }
@@ -212,7 +213,7 @@ class SearchService
         }
 
         $metricsUrl = "{$apiUrl}/v1/metrics/click/{$projectId}";
-        
+
         $requestOptions = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -243,7 +244,7 @@ class SearchService
     public function checkApiHealth(): array
     {
         $apiUrl = rtrim($this->config['api_url'] ?? '', '/');
-        
+
         if (empty($apiUrl)) {
             return ['status' => 'not_configured', 'message' => 'API URL not configured'];
         }
@@ -252,7 +253,7 @@ class SearchService
             $response = $this->requestFactory->request("{$apiUrl}/health", 'GET', [
                 'timeout' => 5
             ]);
-            
+
             if ($response->getStatusCode() === 200) {
                 return ['status' => 'healthy', 'message' => 'API is responding'];
             } else {
