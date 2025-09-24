@@ -202,7 +202,7 @@ class SearchControllerFunctionalTest extends FunctionalTestCase
     {
         $request = new InternalRequest($uri);
         $parsedUrl = parse_url($uri);
-        if (isset($parsedUrl['query']) && ($parsedUrl['query'] !== '' && $parsedUrl['query'] !== '0')) {
+        if (isset($parsedUrl['query']) && ('' !== $parsedUrl['query'] && '0' !== $parsedUrl['query'])) {
             parse_str($parsedUrl['query'], $queryParams);
             $request = $request->withQueryParameters($queryParams);
         }
