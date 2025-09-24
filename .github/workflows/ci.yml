@@ -199,37 +199,3 @@ jobs:
         with:
           lock: typo3-dev/packages/pixelcoda_search/composer.lock
 
-  build-assets:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'yarn'
-          
-      - name: Install dependencies
-        run: |
-          cd typo3-dev/packages/pixelcoda_search
-          yarn install
-          
-      - name: Build CSS
-        run: |
-          cd typo3-dev/packages/pixelcoda_search
-          yarn build:css
-          
-      - name: Build JavaScript
-        run: |
-          cd typo3-dev/packages/pixelcoda_search
-          yarn build:js
-          
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: built-assets
-          path: |
-            typo3-dev/packages/pixelcoda_search/Resources/Public/Css/
-            typo3-dev/packages/pixelcoda_search/Resources/Public/JavaScript/
