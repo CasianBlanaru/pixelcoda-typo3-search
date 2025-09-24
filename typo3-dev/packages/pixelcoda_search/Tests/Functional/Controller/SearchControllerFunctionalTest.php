@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Functional\Controller;
 
-use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -198,11 +198,16 @@ class SearchControllerFunctionalTest extends FunctionalTestCase
     /**
      * Build a frontend request.
      */
-    protected function buildRequest(string $uri): ServerRequest
+    protected function buildRequest(string $uri): InternalRequest
     {
-        $request = new ServerRequest($uri, 'GET');
-
-        return $request->withQueryParams($this->parseQueryString($uri));
+        $request = new InternalRequest($uri);
+        $parsedUrl = parse_url($uri);
+        if (!empty($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParams);
+            $request = $request->withQueryParameters($queryParams);
+        }
+        
+        return $request;
     }
 
     /**
