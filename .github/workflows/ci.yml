@@ -1,0 +1,228 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2']
+        
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, pdo_mysql, zip
+          coverage: xdebug
+          
+      - name: Validate composer.json
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          composer validate --strict
+          
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
+            
+      - name: Install dependencies
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          composer install --prefer-dist --no-progress
+          
+      - name: PHP Syntax check
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          find Classes -name '*.php' -exec php -l {} \;
+
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    needs: php-lint
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: php-cs-fixer
+          
+      - name: Run PHP-CS-Fixer
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          php-cs-fixer fix --dry-run --diff --verbose
+
+  rector:
+    runs-on: ubuntu-latest
+    needs: php-lint
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          
+      - name: Install Rector
+        run: composer global require rector/rector
+        
+      - name: Run Rector
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          ~/.composer/vendor/bin/rector process --dry-run
+
+  phpunit:
+    runs-on: ubuntu-latest
+    needs: php-lint
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2']
+        typo3-version: ['^12.4']
+        
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: typo3_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl, pdo_mysql, zip
+          coverage: xdebug
+          
+      - name: Install TYPO3 and dependencies
+        run: |
+          cd typo3-dev
+          composer require typo3/cms-core:${{ matrix.typo3-version }}
+          composer require --dev phpunit/phpunit typo3/testing-framework
+          
+      - name: Run Unit Tests
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          ../../vendor/bin/phpunit -c Tests/Build/UnitTests.xml
+          
+      - name: Run Functional Tests
+        env:
+          typo3DatabaseHost: 127.0.0.1
+          typo3DatabasePort: 3306
+          typo3DatabaseUsername: root
+          typo3DatabasePassword: root
+          typo3DatabaseName: typo3_test
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          ../../vendor/bin/phpunit -c Tests/Build/FunctionalTests.xml
+
+  javascript-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn install
+          
+      - name: Run Jest tests
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn test
+          
+      - name: Run ESLint
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn lint
+
+  typo3-scan:
+    runs-on: ubuntu-latest
+    needs: php-lint
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          
+      - name: Install TYPO3 Scan
+        run: composer global require michielroos/typo3scan
+        
+      - name: Run TYPO3 Scan
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          ~/.composer/vendor/bin/typo3scan scan . --target 12
+
+  security-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run Security Check
+        uses: symfonycorp/security-checker-action@v4
+        with:
+          directory: typo3-dev/packages/pixelcoda_search
+
+  build-assets:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          
+      - name: Install dependencies
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn install
+          
+      - name: Build CSS
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn build:css
+          
+      - name: Build JavaScript
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          yarn build:js
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-assets
+          path: |
+            typo3-dev/packages/pixelcoda_search/Resources/Public/Css/
+            typo3-dev/packages/pixelcoda_search/Resources/Public/JavaScript/
