@@ -1,77 +1,72 @@
 # 🚀 Pixelcoda Search Platform - Schnellstart
 
-## Übersicht
-Die Pixelcoda Search Platform integriert TYPO3 Headless mit einer modernen Suchinfrastruktur basierend auf Meilisearch.
-
-## ✅ Aktueller Status
-
-### Was bereits läuft:
-- ✅ **TYPO3 mit DDEV**: https://pixelcoda-typo3-dev.ddev.site
-- ✅ **Such-API**: http://localhost:8787
-- ✅ **Datenbank-Services**: PostgreSQL, Meilisearch, Redis
-- ✅ **Demo-Seite**: demo/index.html
+Die Pixelcoda Search Platform ist eine moderne, API-basierte Suchplattform mit KI-Unterstützung für TYPO3 und andere CMS-Systeme.
 
 ## 🎯 Schnellstart (5 Minuten)
 
-### 1. Services starten
+### 1. Repository klonen
+```bash
+git clone git@github.com:CasianBlanaru/typo3-search.git
+cd typo3-search
+```
+
+### 2. Abhängigkeiten installieren
+```bash
+yarn install
+```
+
+### 3. Services starten
 ```bash
 # Datenbank-Services starten
 docker-compose up -d postgres meilisearch redis
 
 # API starten
 yarn workspace @pixelcoda/api dev
-# ODER mit expliziten ENV-Variablen:
-API_READ_KEY=pc_read_dev_key API_WRITE_KEY=pc_write_dev_key yarn workspace @pixelcoda/api tsx src/index.ts
 ```
 
-### 2. TYPO3 Backend
-```bash
-# TYPO3 ist bereits gestartet mit DDEV
-open https://pixelcoda-typo3-dev.ddev.site/typo3
-
-# Login:
-# Benutzer: admin
-# Passwort: admin
-```
-
-### 3. Demo-Seite öffnen
+### 4. Demo-Seite öffnen
 ```bash
 open demo/index.html
 ```
 
-## 📝 TYPO3 Konfiguration
+Die API läuft nun unter: **http://localhost:8787**
 
-### Search Plugin einbinden:
-1. Im TYPO3 Backend einloggen
-2. Neue Seite erstellen oder bestehende bearbeiten
-3. Neues Content Element hinzufügen
-4. "Pixelcoda Search" aus der Plugin-Kategorie wählen
-5. Speichern
+## 📝 TYPO3 Integration (Optional)
 
-### JSON-Output testen:
+### TYPO3 Entwicklungsumgebung starten:
 ```bash
-# Ersetze [SEITEN-ID] mit der tatsächlichen ID
-curl https://pixelcoda-typo3-dev.ddev.site/?type=834&id=[SEITEN-ID]
+cd typo3-dev
+ddev start
+# Öffne: http://pixelcoda-typo3-dev.ddev.site
 ```
 
-## 🔧 Entwicklung
+### Plugin aktivieren:
+1. TYPO3 Backend öffnen (admin/admin)
+2. Admin Tools → Extensions
+3. "pixelcoda_search" aktivieren
+4. Content-Element "Pixelcoda Search" zu einer Seite hinzufügen
 
-### API-Endpunkte:
-- **Health Check**: GET http://localhost:8787/health
-- **Search**: POST http://localhost:8787/v1/search/{project}
-- **Suggestions**: POST http://localhost:8787/v1/suggest/{project}
-- **Ask (AI)**: POST http://localhost:8787/v1/ask/{project}
+## 🔧 API-Endpunkte
 
-### Beispiel-Suchanfrage:
+- **Health Check**: `GET http://localhost:8787/health`
+- **Suche**: `POST http://localhost:8787/v1/search/{project}`
+- **Vorschläge**: `POST http://localhost:8787/v1/suggest/{project}`
+- **KI-Antworten**: `POST http://localhost:8787/v1/ask/{project}`
+
+## 📊 Beispiel-Anfragen
+
+### Suche:
 ```bash
 curl -X POST http://localhost:8787/v1/search/demo \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: pc_read_dev_key" \
-  -d '{
-    "query": "TYPO3",
-    "collections": ["pages", "news"],
-    "limit": 10
-  }'
+  -d '{"q": "TYPO3", "limit": 10}'
+```
+
+### KI-Antwort:
+```bash
+curl -X POST http://localhost:8787/v1/ask/demo \
+  -H "Content-Type: application/json" \
+  -d '{"q": "Was ist Pixelcoda Search?"}'
 ```
 
 ## 📂 Projektstruktur
@@ -91,46 +86,37 @@ pixelcoda-headless-search-starter/
 └── docker-compose.yml  # Services
 ```
 
-## 🐛 Troubleshooting
+## 🐛 Fehlerbehebung
 
-### API startet nicht:
+### API startet nicht?
 ```bash
-# Prozesse beenden
-pkill -f "tsx src/index.ts"
-
-# Neu starten mit Logs
-NODE_ENV=development yarn workspace @pixelcoda/api tsx src/index.ts
-```
-
-### TYPO3 Cache leeren:
-```bash
-cd typo3-dev
-rm -rf var/cache/*
-ddev exec typo3 cache:flush
-```
-
-### Docker Services prüfen:
-```bash
+# Services prüfen
 docker-compose ps
+
+# Logs anzeigen
 docker-compose logs -f api
+
+# Neustart
+docker-compose restart
+```
+
+### Port bereits belegt?
+```bash
+# Port 8787 freigeben
+lsof -i :8787 | grep LISTEN
+kill -9 <PID>
 ```
 
 ## 🚀 Nächste Schritte
 
-1. **Inhalte indexieren**: TYPO3-Inhalte in Meilisearch indexieren
-2. **Frontend anpassen**: Widget-Styles und Funktionen erweitern
-3. **AI-Features**: OpenAI/Ollama für intelligente Antworten konfigurieren
-4. **Production Build**: Docker-Images für Deployment vorbereiten
+1. **Umgebungsvariablen konfigurieren**: `.env`-Datei aus `env.example` erstellen
+2. **Inhalte indexieren**: Dokumente über die API hinzufügen
+3. **KI-Provider einrichten**: OpenAI/Ollama für intelligente Antworten
+4. **Widgets integrieren**: React-Komponenten in Ihre Anwendung einbinden
 
-## 📚 Weitere Dokumentation
+## 📚 Weitere Ressourcen
 
-- [TYPO3 Headless Docs](https://docs.typo3.org/p/friendsoftypo3/headless/main/en-us/)
-- [Meilisearch Docs](https://docs.meilisearch.com/)
-- [Hono.js Docs](https://hono.dev/)
-
-## 💡 Support
-
-Bei Fragen oder Problemen:
-- GitHub Issues erstellen
-- Logs prüfen: `docker-compose logs`
-- TYPO3 Logs: `typo3-dev/var/log/`
+- **Hauptdokumentation**: Siehe [README.md](README.md)
+- **TYPO3 Integration**: Siehe [typo3-dev/README.md](typo3-dev/README.md)
+- **Sicherheit**: Siehe [SECURITY.md](SECURITY.md)
+- **GitHub**: https://github.com/CasianBlanaru/typo3-search
