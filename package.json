@@ -14,8 +14,8 @@
     "heroku-postbuild": "echo 'Post-build complete'",
     "api:dev": "cd standalone-api && npm run dev",
     "api:start": "cd standalone-api && npm start",
-    "widgets:dev": "cd apps/widgets && yarn dev",
-    "widgets:build": "cd apps/widgets && yarn build"
+    "widgets:dev": "cd apps/widgets && npm run dev",
+    "widgets:build": "cd apps/widgets && npm run build"
   },
   "dependencies": {
     "dotenv": "^16.4.5"
