@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { authMiddleware } from '../middleware/auth.js';
 import { MeiliEngine } from '../engines/meili.js';
+import { HybridRetriever } from '../lib/hybrid-retrieval.js';
+import { getTelemetryService } from '../lib/telemetry.js';
 import { searchSchema, suggestSchema } from '../schemas.js';
 import { 
   createJsonApiResponse, 
@@ -13,6 +15,8 @@ import {
 
 export const router = new Hono();
 const engine = new MeiliEngine(process.env.MEILI_URL || 'http://localhost:7700', process.env.MEILI_KEY);
+const hybridRetriever = new HybridRetriever();
+const telemetryService = getTelemetryService();
 
 // Main search endpoint - JSON:API 1.0 compatible
 router.post('/search/:project', 
@@ -33,7 +37,27 @@ router.post('/search/:project',
         };
       }
 
-      const searchResults = await engine.search(project, payload);
+      // Use hybrid retrieval if enabled
+      let searchResults;
+      if (process.env.ENABLE_HYBRID_RETRIEVAL === 'true') {
+        const hybridResults = await hybridRetriever.retrieve({
+          project,
+          query: payload.q,
+          collections: payload.collections,
+          limit: payload.limit,
+          language: payload.lang,
+          enableRerank: false
+        });
+        
+        // Convert to Meilisearch format
+        searchResults = {
+          hits: hybridResults,
+          estimatedTotalHits: hybridResults.length,
+          processingTimeMs: Date.now() - startTime
+        };
+      } else {
+        searchResults = await engine.search(project, payload);
+      }
       const responseTime = Date.now() - startTime;
       
       // Extract hits and pagination info
@@ -72,6 +96,19 @@ router.post('/search/:project',
         }
       };
 
+      // Track telemetry
+      await telemetryService.trackQuery({
+        query: payload.q,
+        project_id: project,
+        results_count: hits.length,
+        response_time_ms: responseTime,
+        language: payload.lang,
+        collections: payload.collections,
+        user_agent: c.req.header('user-agent'),
+        ip: c.req.header('x-forwarded-for') || c.req.header('x-real-ip'),
+        timestamp: new Date()
+      });
+      
       // Log metrics (if enabled)
       if (process.env.ENABLE_METRICS === 'true') {
         console.log(`Search: "${payload.q}" in ${responseTime}ms, ${hits.length} results`);

@@ -12,6 +12,8 @@ import { router as synonymsRouter } from './routes/synonyms.js';
 import { router as metricsRouter } from './routes/metrics.js';
 import { router as webhookRouter } from './routes/webhook.js';
 import { router as adminRouter } from './routes/admin.js';
+import { router as askStreamRouter } from './routes/ask-stream.js';
+import { router as adminConsoleRouter } from './routes/admin-console.js';
 import { rateLimit, corsMiddleware, securityHeaders, requestLogger, inputSanitization } from './middleware/security.js';
 
 const app = new Hono();
@@ -42,6 +44,8 @@ app.route('/v1', synonymsRouter);
 app.route('/v1', metricsRouter);
 app.route('/v1', webhookRouter);
 app.route('/v1', adminRouter);
+app.route('/v1', askStreamRouter);
+app.route('/v1', adminConsoleRouter);
 
 // 404
 app.notFound((c) => c.json({ error: 'Not Found' }, 404));
