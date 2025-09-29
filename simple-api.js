@@ -12,7 +12,16 @@ import {
     URL
 } from 'url';
 
-const PORT = 8787;
+const PORT = process.env.PORT || 8787;
+const API_READ_KEY = process.env.API_READ_KEY || 'pc_read_dev_key';
+const API_WRITE_KEY = process.env.API_WRITE_KEY || 'pc_write_dev_key';
+
+// Simple auth check
+function checkAuth(req, requiredKey = API_READ_KEY) {
+    const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
+    const providedKey = authHeader.replace('Bearer ', '').replace('ApiKey ', '');
+    return providedKey === requiredKey || process.env.NODE_ENV === 'development';
+}
 
 // Simple JSON:API response helper
 function jsonApiResponse(data, included = [], meta = {}) {
@@ -29,7 +38,8 @@ function jsonApiResponse(data, included = [], meta = {}) {
 // Request handler
 const server = createServer(async (req, res) => {
     // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS || '*';
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
     res.setHeader('Content-Type', 'application/vnd.api+json');
@@ -62,6 +72,18 @@ const server = createServer(async (req, res) => {
 
         // Search endpoint
         if (path.match(/^\/v1\/search\//) && method === 'POST') {
+            if (!checkAuth(req, API_READ_KEY)) {
+                res.writeHead(401);
+                res.end(JSON.stringify({
+                    errors: [{
+                        status: '401',
+                        title: 'Unauthorized',
+                        detail: 'Valid API key required'
+                    }]
+                }));
+                return;
+            }
+
             const project = path.split('/')[3];
             const body = await getRequestBody(req);
             const query = body.q || '';
