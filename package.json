@@ -1,42 +1,43 @@
 {
-  "name": "pixelcoda-headless-search-starter",
-  "version": "2.0.0",
-  "description": "Modern, API-first search platform with AI agents for TYPO3 and other CMS systems",
-  "type": "module",
-  "main": "simple-api.js",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "start": "node simple-api.js",
-    "dev": "node simple-api.js",
-    "build": "echo 'No build step required for simple API'",
-    "heroku-postbuild": "echo 'Post-build complete'",
-    "api:dev": "cd standalone-api && npm run dev",
-    "api:start": "cd standalone-api && npm start",
-    "widgets:dev": "cd apps/widgets && npm run dev",
-    "widgets:build": "cd apps/widgets && npm run build"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "typescript": "^5.6.3"
-  },
-  "keywords": [
-    "search",
-    "api",
-    "typo3",
-    "cms",
-    "ai",
-    "vector-search",
-    "meilisearch"
-  ],
-  "author": "Pixelcoda",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/CasianBlanaru/typo3-search.git"
-  },
-  "homepage": "https://github.com/CasianBlanaru/typo3-search#readme"
+    "name": "pixelcoda-headless-search-starter",
+    "version": "2.0.0",
+    "description": "Modern, API-first search platform with AI agents for TYPO3 and other CMS systems",
+    "type": "module",
+    "main": "simple-api.js",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "scripts": {
+        "start": "node simple-api.js",
+        "dev": "node simple-api.js",
+        "test": "echo 'No tests specified' && exit 0",
+        "build": "echo 'No build step required for simple API'",
+        "heroku-postbuild": "echo 'Post-build complete'",
+        "api:dev": "cd standalone-api && npm run dev",
+        "api:start": "cd standalone-api && npm start",
+        "widgets:dev": "cd apps/widgets && npm run dev",
+        "widgets:build": "cd apps/widgets && npm run build"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    },
+    "devDependencies": {
+        "typescript": "^5.6.3"
+    },
+    "keywords": [
+        "search",
+        "api",
+        "typo3",
+        "cms",
+        "ai",
+        "vector-search",
+        "meilisearch"
+    ],
+    "author": "Pixelcoda",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CasianBlanaru/typo3-search.git"
+    },
+    "homepage": "https://github.com/CasianBlanaru/typo3-search#readme"
 }
