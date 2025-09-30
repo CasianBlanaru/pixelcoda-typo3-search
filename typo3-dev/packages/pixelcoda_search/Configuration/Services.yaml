@@ -35,3 +35,9 @@ services:
       - name: 'console.command'
         command: 'pixelcoda:search:reindex'
         description: 'Re-index all content to pixelcoda Search'
+
+  PixelCoda\PixelcodaSearch\Command\SwitchModeCommand:
+    tags:
+      - name: 'console.command'
+        command: 'pixelcoda:search:switch-mode'
+        description: 'Switch between Headless and Standard rendering mode'

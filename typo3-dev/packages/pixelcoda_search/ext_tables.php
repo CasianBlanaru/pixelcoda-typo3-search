@@ -57,17 +57,17 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['pixelcodasea
 // Add FlexForm configuration for the plugin
 $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['pixelcodasearch_search'] = 'FILE:EXT:pixelcoda_search/Configuration/FlexForms/Search.xml';
 
-// Backend module temporarily disabled - controller not yet implemented
-// ExtensionManagementUtility::addModule(
-//     'tools',
-//     'PixelcodaSearchM1',
-//     '',
-//     '',
-//     [
-//         'routeTarget' => \PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController::class . '::handleRequest',
-//         'access' => 'user,group',
-//         'name' => 'tools_PixelcodaSearchM1',
-//         'icon' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg',
-//         'labels' => 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_mod.xlf'
-//     ]
-// );
+// Backend module for pixelcoda Search administration
+ExtensionManagementUtility::addModule(
+    'tools',
+    'PixelcodaSearchM1',
+    '',
+    '',
+    [
+        'routeTarget' => \PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController::class . '::handleRequest',
+        'access' => 'user,group',
+        'name' => 'tools_PixelcodaSearchM1',
+        'icon' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg',
+        'labels' => 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_mod.xlf'
+    ]
+);
