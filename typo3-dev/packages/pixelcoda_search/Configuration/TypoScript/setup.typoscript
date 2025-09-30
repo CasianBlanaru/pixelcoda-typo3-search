@@ -16,6 +16,9 @@ tt_content.list.20.pixelcodasearch_search {
             2 = search
             3 = ask
             4 = results
+            5 = apiSearch
+            6 = apiAsk
+            7 = apiAskStream
         }
     }
 }
@@ -113,6 +116,9 @@ pixelcoda_search_api {
         disableAllHeaderCode = 1
         additionalHeaders.10.header = Content-Type: application/vnd.api+json
         additionalHeaders.20.header = X-Powered-By: pixelcoda Search v2.0
+        additionalHeaders.30.header = Access-Control-Allow-Origin: *
+        additionalHeaders.40.header = Access-Control-Allow-Methods: GET, POST, OPTIONS
+        additionalHeaders.50.header = Access-Control-Allow-Headers: Content-Type, Authorization, X-Project-ID
         xhtml_cleaning = 0
         admPanel = 0
         debug = 0
@@ -130,8 +136,113 @@ pixelcoda_search_api {
             Search {
                 1 = search
                 2 = ask
+                3 = apiSearch
+                4 = apiAsk
+                5 = apiAskStream
             }
         }
+    }
+}
+
+# JSON:API Search endpoint
+pixelcoda_search_api_search = PAGE
+pixelcoda_search_api_search {
+    typeNum = 1701
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-Type: application/vnd.api+json
+        additionalHeaders.20.header = X-Powered-By: pixelcoda Search v2.0
+        additionalHeaders.30.header = Access-Control-Allow-Origin: *
+        additionalHeaders.40.header = Access-Control-Allow-Methods: GET, POST, OPTIONS
+        additionalHeaders.50.header = Access-Control-Allow-Headers: Content-Type, Authorization, X-Project-ID
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = PixelcodaSearch
+        pluginName = Search
+        vendorName = PixelCoda
+        controller = Search
+        action = apiSearch
+    }
+}
+
+# JSON:API Ask endpoint
+pixelcoda_search_api_ask = PAGE
+pixelcoda_search_api_ask {
+    typeNum = 1702
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-Type: application/vnd.api+json
+        additionalHeaders.20.header = X-Powered-By: pixelcoda Search v2.0
+        additionalHeaders.30.header = Access-Control-Allow-Origin: *
+        additionalHeaders.40.header = Access-Control-Allow-Methods: GET, POST, OPTIONS
+        additionalHeaders.50.header = Access-Control-Allow-Headers: Content-Type, Authorization, X-Project-ID
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = PixelcodaSearch
+        pluginName = Search
+        vendorName = PixelCoda
+        controller = Search
+        action = apiAsk
+    }
+}
+
+# SSE Ask Stream endpoint
+pixelcoda_search_api_ask_stream = PAGE
+pixelcoda_search_api_ask_stream {
+    typeNum = 1703
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-Type: text/event-stream
+        additionalHeaders.20.header = Cache-Control: no-cache
+        additionalHeaders.30.header = Connection: keep-alive
+        additionalHeaders.40.header = X-Accel-Buffering: no
+        additionalHeaders.50.header = Access-Control-Allow-Origin: *
+        additionalHeaders.60.header = Access-Control-Allow-Methods: GET, POST, OPTIONS
+        additionalHeaders.70.header = Access-Control-Allow-Headers: Content-Type, Authorization, X-Project-ID
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = PixelcodaSearch
+        pluginName = Search
+        vendorName = PixelCoda
+        controller = Search
+        action = apiAskStream
+    }
+}
+
+# Webhook endpoint
+pixelcoda_webhook = PAGE
+pixelcoda_webhook {
+    typeNum = 1704
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders.10.header = Content-Type: application/json
+        additionalHeaders.20.header = X-Powered-By: pixelcoda Search v2.0
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+    
+    10 = USER
+    10 {
+        userFunc = PixelCoda\PixelcodaSearch\Controller\WebhookController->indexAction
     }
 }
 

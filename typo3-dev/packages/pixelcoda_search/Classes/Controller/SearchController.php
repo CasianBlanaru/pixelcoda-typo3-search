@@ -44,6 +44,46 @@ class SearchController extends ActionController
     }
 
     /**
+     * Handle AI-powered ask functionality.
+     */
+    public function askAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($this->settings['maxPassages'] ?? 6);
+
+        $answer = '';
+        $sources = [];
+        $message = '';
+
+        if (strlen($question) < 3) {
+            $message = $this->getTranslation('ask.results.minlength');
+        } else {
+            // Get AI answer with sources
+            $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+            
+            if ($aiResponse) {
+                $answer = $aiResponse['answer'] ?? '';
+                $sources = $aiResponse['sources'] ?? [];
+                $message = $this->getTranslation('ask.results.success');
+            } else {
+                $message = $this->getTranslation('ask.results.error');
+            }
+        }
+
+        $this->view->assignMultiple([
+            'question' => htmlspecialchars($question),
+            'answer' => $answer,
+            'sources' => $sources,
+            'message' => $message,
+            'settings' => $this->settings,
+        ]);
+
+        return $this->htmlResponse();
+    }
+
+    /**
      * Handle search and display results with pagination.
      */
     public function searchAction(): ResponseInterface
@@ -903,6 +943,210 @@ class SearchController extends ActionController
     protected function createJsonResponse(array $data): ResponseInterface
     {
         return new JsonResponse($data);
+    }
+
+    /**
+     * Get AI answer for a question using the pixelcoda API.
+     */
+    protected function getAiAnswer(string $question, string $context = '', int $maxPassages = 6): ?array
+    {
+        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
+        $apiUrl = $config['api_url'] ?? 'http://host.docker.internal:8787';
+        $apiKey = $config['api_key'] ?? 'pc_write_dev_key';
+        $projectId = $config['project_id'] ?? 'typo3-dev';
+
+        $requestData = [
+            'question' => $question,
+            'context' => $context,
+            'max_passages' => $maxPassages,
+            'project_id' => $projectId,
+        ];
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $apiUrl . '/v1/ask',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($requestData),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $apiKey,
+                'X-Project-ID: ' . $projectId,
+            ],
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CONNECTTIMEOUT => 10,
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if (false === $response || 200 !== $httpCode) {
+            return null;
+        }
+
+        $data = json_decode($response, true);
+        return $data ?: null;
+    }
+
+    /**
+     * Get AI answer with streaming support for chat widget.
+     */
+    protected function getAiAnswerStream(string $question, string $context = '', int $maxPassages = 6): void
+    {
+        $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
+        $apiUrl = $config['api_url'] ?? 'http://host.docker.internal:8787';
+        $apiKey = $config['api_key'] ?? 'pc_write_dev_key';
+        $projectId = $config['project_id'] ?? 'typo3-dev';
+
+        $requestData = [
+            'question' => $question,
+            'context' => $context,
+            'max_passages' => $maxPassages,
+            'project_id' => $projectId,
+            'stream' => true,
+        ];
+
+        // Set headers for SSE
+        header('Content-Type: text/event-stream');
+        header('Cache-Control: no-cache');
+        header('Connection: keep-alive');
+        header('X-Accel-Buffering: no'); // Disable nginx buffering
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $apiUrl . '/v1/ask/stream',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($requestData),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $apiKey,
+                'X-Project-ID: ' . $projectId,
+            ],
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_WRITEFUNCTION => function ($ch, $data) {
+                echo $data;
+                flush();
+                return strlen($data);
+            },
+        ]);
+
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
+    /**
+     * JSON:API compatible search endpoint.
+     */
+    public function apiSearchAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $searchQuery = trim($params['q'] ?? '');
+        $currentPage = (int) ($params['page'] ?? 1);
+        $resultsPerPage = (int) ($params['per_page'] ?? 10);
+
+        $results = [];
+        $meta = [
+            'total' => 0,
+            'page' => $currentPage,
+            'per_page' => $resultsPerPage,
+            'total_pages' => 0,
+        ];
+
+        if (strlen($searchQuery) >= 3) {
+            $allResults = $this->searchInPages($searchQuery);
+            $meta['total'] = count($allResults);
+            $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
+            
+            $offset = ($currentPage - 1) * $resultsPerPage;
+            $results = array_slice($allResults, $offset, $resultsPerPage);
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => array_map(function ($result) {
+                return [
+                    'type' => 'search-result',
+                    'id' => uniqid(),
+                    'attributes' => [
+                        'title' => $result['title'],
+                        'abstract' => $result['abstract'],
+                        'url' => $result['url'],
+                        'type' => $result['type'] ?? 'page',
+                    ],
+                ];
+            }, $results),
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * JSON:API compatible ask endpoint.
+     */
+    public function apiAskAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        $answer = '';
+        $sources = [];
+        $meta = ['status' => 'error'];
+
+        if (strlen($question) >= 3) {
+            $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+            
+            if ($aiResponse) {
+                $answer = $aiResponse['answer'] ?? '';
+                $sources = $aiResponse['sources'] ?? [];
+                $meta['status'] = 'success';
+            }
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => [
+                'type' => 'ai-answer',
+                'id' => uniqid(),
+                'attributes' => [
+                    'question' => $question,
+                    'answer' => $answer,
+                    'sources' => $sources,
+                ],
+            ],
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * SSE streaming endpoint for ask functionality.
+     */
+    public function apiAskStreamAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        if (strlen($question) < 3) {
+            return new JsonResponse(['error' => 'Question too short'], 400);
+        }
+
+        $this->getAiAnswerStream($question, $context, $maxPassages);
+        exit; // End execution after streaming
     }
 
     /**

@@ -50,13 +50,16 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
     'api_url' => $_ENV['PIXELCODA_API_URL'] ?? 'http://host.docker.internal:8787',
     'api_key' => $_ENV['PIXELCODA_API_KEY'] ?? 'pc_write_dev_key',
+    'read_api_key' => $_ENV['PIXELCODA_READ_API_KEY'] ?? 'pc_read_dev_key',
     'hmac_secret' => $_ENV['PIXELCODA_HMAC_SECRET'] ?? 'dev_hmac_secret_key',
     'project_id' => $_ENV['PIXELCODA_PROJECT_ID'] ?? 'typo3-dev',
     'typo3_headless_url' => $_ENV['TYPO3_HEADLESS_URL'] ?? 'http://localhost:8080/api',
+    'cors_origins' => $_ENV['PIXELCODA_CORS_ORIGINS'] ?? '',
     'enabled_tables' => ['pages', 'tt_content', 'tx_news_domain_model_news'],
     'default_mode' => 'classic', // classic|headless
     'enable_auto_index' => true,
     'enable_vector_search' => true,
+    'enable_metrics' => true,
     'batch_size' => 50,
     'timeout' => 30,
     'debug_mode' => true,
@@ -95,3 +98,7 @@ ExtensionUtility::configurePlugin(
 // Register EID handler for AJAX autocomplete
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest']
     = SuggestEid::class . '::processRequest';
+
+// Register webhook endpoint
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_webhook']
+    = \PixelCoda\PixelcodaSearch\Controller\WebhookController::class . '::indexAction';
