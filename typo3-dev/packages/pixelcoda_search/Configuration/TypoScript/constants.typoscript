@@ -70,6 +70,18 @@ pixelcoda.search {
     # cat=pixelcoda.search/api; type=string; label=Read API Key (for frontend)
     readApiKey = 
     
+    # cat=pixelcoda.search/api; type=string; label=Write API Key (for backend)
+    writeApiKey = 
+    
+    # cat=pixelcoda.search/api; type=string; label=HMAC Secret for webhooks
+    hmacSecret = 
+    
+    # cat=pixelcoda.search/api; type=string; label=Allowed CORS Origins (comma-separated)
+    corsOrigins = 
+    
     # cat=pixelcoda.search/api; type=boolean; label=Enable debug mode
     debugMode = 0
+    
+    # cat=pixelcoda.search/api; type=boolean; label=Enable metrics and logging
+    enableMetrics = 1
 }
