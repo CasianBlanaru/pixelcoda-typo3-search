@@ -13,32 +13,208 @@
 </f:section>
 
 <f:section name="Main">
-    <div class="pixelcoda-search">
-        <form class="search-form" action="/search" method="get">
-            <div class="search-input-wrapper">
-                <input type="text" class="search-input" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: '{f:translate(key: \'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.placeholder.default\')}')}" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.input')}">
-                <button type="submit" class="search-button" aria-label="{f:translate(key: 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.aria.submit')}">
-                    <f:comment>
-                        <!-- Search Icon SVG -->
-                    </f:comment>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    <span>
-                        <f:translate key="LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang.xlf:search.button.submit" /></span>
-                </button>
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}">
+        <!-- Search Form -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-search me-2"></i>
+                    <f:if condition="{data.header}">
+                        <f:then>{data.header}</f:then>
+                        <f:else>Website durchsuchen</f:else>
+                    </f:if>
+                </h5>
             </div>
-        </form>
+            <div class="card-body">
+                <form class="pixelcoda-search-form" id="search-form-{data.uid}" onsubmit="return pixelcodaSearch(event, {data.uid})">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="search-input-{data.uid}" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben" autocomplete="off">
+                        <button class="btn btn-primary" type="submit" id="search-button-{data.uid}">
+                            <i class="fas fa-search"></i>
+                            <span class="d-none d-sm-inline ms-1">Suchen</span>
+                        </button>
+                    </div>
+                </form>
 
-        <f:if condition="{data.pi_flexform.showSuggestions}">
-            <div class="search-suggestions" id="search-suggestions-{data.uid}" style="display: none;">
-                <f:comment>
-                    <!-- Suggestions will be populated via JavaScript -->
-                </f:comment>
+                <!-- Search Status -->
+                <div id="search-status-{data.uid}" class="alert alert-info d-none" role="status">
+                    <i class="fas fa-spinner fa-spin me-2"></i>
+                    Suche läuft...
+                </div>
+
+                <!-- API Status -->
+                <div class="d-flex align-items-center mb-3">
+                    <small class="text-muted">
+                        API Status:
+                        <span id="api-status-{data.uid}" class="badge bg-secondary">
+                            <i class="fas fa-circle-notch fa-spin"></i> Prüfe...
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div id="search-results-{data.uid}" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Suchergebnisse
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div id="results-content-{data.uid}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant (if enabled) -->
+        <f:if condition="{settings.enableAsk}">
+            <div id="ai-section-{data.uid}" class="mt-4" style="display: none;">
+                <div class="card border-info">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-robot me-2"></i>
+                            KI-Assistent
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="ai-response-{data.uid}"></div>
+                    </div>
+                </div>
+            </div>
+        </f:if>
+
+        <!-- Debug Information (if enabled) -->
+        <f:if condition="{settings.showDebug}">
+            <div class="mt-4">
+                <details class="card">
+                    <summary class="card-header">
+                        <i class="fas fa-bug me-2"></i>
+                        Debug-Informationen
+                    </summary>
+                    <div class="card-body">
+                        <pre class="bg-light p-3 rounded"><code id="debug-info-{data.uid}">
+Plugin-ID: {data.uid}
+Mode: {settings.mode}
+API URL: {settings.apiUrl}
+Collections: {settings.collections}
+Enable Ask: {settings.enableAsk}
+Enable Suggestions: {settings.enableSuggestions}
+                        </code></pre>
+                    </div>
+                </details>
             </div>
         </f:if>
     </div>
+
+    <!-- JavaScript for Search Functionality -->
+    <script>
+        // API Status Check
+        (function() {
+            const statusElement = document.getElementById('api-status-{data.uid}');
+            const apiUrl = '{settings.apiUrl}' || 'http://localhost:8787';
+
+            fetch(apiUrl + '/health')
+                .then(response => response.json())
+                .then(data => {
+                    statusElement.innerHTML = '<i class="fas fa-check-circle text-success"></i> Online';
+                    statusElement.className = 'badge bg-success';
+                })
+                .catch(error => {
+                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle text-warning"></i> Offline';
+                    statusElement.className = 'badge bg-warning';
+                });
+        })();
+
+        // Search Function
+        function pixelcodaSearch(event, uid) {
+            event.preventDefault();
+
+            const query = document.getElementById('search-input-' + uid).value.trim();
+            if (!query) return false;
+
+            const statusElement = document.getElementById('search-status-' + uid);
+            const resultsElement = document.getElementById('search-results-' + uid);
+            const resultsContent = document.getElementById('results-content-' + uid);
+
+            // Show loading state
+            statusElement.classList.remove('d-none');
+            resultsElement.style.display = 'none';
+
+            // API Configuration
+            const apiUrl = '{settings.apiUrl}' || 'http://localhost:8787';
+            const apiKey = '{settings.apiKey}' || 'pc_write_dev_key';
+
+            // Perform search
+            fetch(apiUrl + '/v1/search/demo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + apiKey
+                    },
+                    body: JSON.stringify({
+                        q: query,
+                        limit: {
+                            settings.resultsPerPage
+                        } || 10,
+                        collections: '{settings.collections}'.split(',') || ['pages', 'tt_content']
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    statusElement.classList.add('d-none');
+
+                    if (data.data && data.data.length > 0) {
+                        let html = '<div class="row">';
+                        data.data.forEach((result, index) => {
+                            html += `
+                            <div class="col-12 mb-3">
+                                <div class="border-start border-primary border-3 ps-3">
+                                    <h6 class="mb-1">
+                                        <a href="${result.attributes.url || '#'}" class="text-decoration-none">
+                                            ${result.attributes.title || 'Ohne Titel'}
+                                        </a>
+                                    </h6>
+                                    <p class="text-muted small mb-1">${result.attributes.summary || 'Keine Beschreibung verfügbar'}</p>
+                                    <small class="text-muted">
+                                        <i class="fas fa-tag me-1"></i>
+                                        ${result.attributes.collection || 'Unbekannt'}
+                                        ${result.attributes.score ? ` • Score: ${Math.round(result.attributes.score * 100)}%` : ''}
+                                    </small>
+                                </div>
+                            </div>
+                        `;
+                        });
+                        html += '</div>';
+
+                        resultsContent.innerHTML = html;
+                        resultsElement.style.display = 'block';
+                    } else {
+                        resultsContent.innerHTML = `
+                        <div class="text-center py-4">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">Keine Ergebnisse für "${query}" gefunden.</p>
+                        </div>
+                    `;
+                        resultsElement.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    statusElement.classList.add('d-none');
+                    resultsContent.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Fehler:</strong> ${error.message}
+                    </div>
+                `;
+                    resultsElement.style.display = 'block';
+                });
+
+            return false;
+        }
+    </script>
 </f:section>
 
 </html>

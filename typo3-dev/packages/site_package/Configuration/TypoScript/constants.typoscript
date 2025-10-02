@@ -98,3 +98,37 @@ site_package {
         resultsPerPage = 10
     }
 }
+
+# pixelcoda Search Plugin Configuration
+plugin.tx_pixelcodasearch_search {
+    view {
+        templateRootPath = EXT:pixelcoda_search/Resources/Private/Templates/
+        partialRootPath = EXT:pixelcoda_search/Resources/Private/Partials/
+        layoutRootPath = EXT:pixelcoda_search/Resources/Private/Layouts/
+    }
+    
+    persistence {
+        storagePid = 1
+    }
+    
+    settings {
+        mode = standard
+        resultsPerPage = 10
+        maxPassages = 3
+        enableSuggestions = 1
+        enableAsk = 1
+        showDebug = 0
+        collections = pages,tt_content,news
+        placeholder = Website durchsuchen...
+        template = Default
+        cssClass = pixelcoda-search
+        enableMetrics = 1
+        minQueryLength = 2
+        debounceMs = 300
+        
+        # API Configuration
+        apiUrl = http://localhost:8787
+        apiKey = pc_write_dev_key
+        projectId = typo3-dev
+    }
+}

@@ -90,6 +90,9 @@
     # Include Fluid Styled Content (fallback)
     @import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
     
+    # Include pixelcoda Search Plugin
+    @import 'EXT:pixelcoda_search/Configuration/TypoScript/setup.typoscript'
+    
     # Standard HTML configuration
     config {
         doctype = html5
@@ -115,6 +118,8 @@
         
         # CSS
         includeCSS {
+            fontawesome = https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
+            fontawesome.external = 1
             custom = EXT:site_package/Resources/Public/Css/custom.css
         }
         
@@ -150,3 +155,15 @@
 
 # Shared configuration for both modes
 lib.parseFunc_RTE < lib.parseFunc_RTE
+
+# Header class configuration for Bootstrap Package compatibility
+lib.contentElement {
+    settings {
+        header {
+            defaultHeaderType = 2
+            class = TEXT
+            class.field = header_class
+            class.ifEmpty = 
+        }
+    }
+}
