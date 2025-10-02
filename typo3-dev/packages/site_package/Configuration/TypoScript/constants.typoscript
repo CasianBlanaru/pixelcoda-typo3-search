@@ -1,9 +1,100 @@
-# Site Package Constants
-# =======================
+# Bootstrap Package Constants
+# ===========================
 
-# Get rendering mode from site configuration
-plugin.tx_site_package {
+# Basic Bootstrap Package Configuration
+plugin.bootstrap_package {
     settings {
-        renderingMode = {$site:customConfiguration.renderingMode}
+        # Color scheme
+        scss {
+            primary = #577760
+            secondary = #6c757d
+            success = #28a745
+            info = #17a2b8
+            warning = #ffc107
+            danger = #dc3545
+            light = #f8f9fa
+            dark = #343a40
+        }
+        
+        # Google Fonts
+        googleFont {
+            font = Source Sans Pro
+            weight = 300,400,600,700
+        }
+        
+        # Logo configuration
+        logo {
+            file = EXT:site_package/Resources/Public/Images/logo.png
+            alt = pixelcoda TYPO3 Site
+            width = 150
+            height = 50
+        }
+        
+        # Navigation
+        navigation {
+            main {
+                levels = 3
+                showAccessProtected = 0
+            }
+        }
+        
+        # Content
+        content {
+            defaultHeaderType = 2
+            shortcutIcon = EXT:site_package/Resources/Public/Icons/favicon.ico
+        }
+        
+        # Responsive breakpoints
+        breakpoint {
+            xs = 0
+            sm = 576
+            md = 768
+            lg = 992
+            xl = 1200
+            xxl = 1400
+        }
+    }
+}
+
+# Page configuration
+page {
+    theme {
+        # Google Font settings
+        googleFont {
+            font = Source Sans Pro
+            weight = 300,400,600,700
+        }
+        
+        # Copyright notice
+        copyright {
+            text = © 2024 pixelcoda TYPO3 Site. All rights reserved.
+        }
+    }
+    
+    # Meta tags
+    meta {
+        author = pixelcoda
+        description = TYPO3 Site with Bootstrap Package and pixelcoda Search
+        keywords = TYPO3, Bootstrap, Search, pixelcoda
+        viewport = width=device-width, initial-scale=1, shrink-to-fit=no
+    }
+}
+
+# Custom constants for dual mode support
+site_package {
+    # Rendering mode switch
+    renderingMode = {$site:customConfiguration.renderingMode}
+    
+    # API configuration
+    api {
+        baseUrl = http://localhost:8787
+        readKey = pc_read_dev_key
+    }
+    
+    # Search configuration
+    search {
+        enabled = 1
+        placeholder = Search...
+        resultsPerPage = 10
     }
 }

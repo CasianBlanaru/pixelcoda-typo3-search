@@ -1,6 +1,9 @@
 # Site Package Main Setup
 # ========================
 
+# Import constants
+@import 'EXT:site_package/Configuration/TypoScript/constants.typoscript'
+
 # Import page configuration with mode switch
 @import 'EXT:site_package/Configuration/TypoScript/Setup/*.typoscript'
 
@@ -81,7 +84,10 @@
     # STANDARD MODE ACTIVE
     # ====================
     
-    # Include Fluid Styled Content
+    # Include Bootstrap Package
+    @import 'EXT:bootstrap_package/Configuration/TypoScript/setup.typoscript'
+    
+    # Include Fluid Styled Content (fallback)
     @import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
     
     # Standard HTML configuration
@@ -109,8 +115,7 @@
         
         # CSS
         includeCSS {
-            normalize = EXT:site_package/Resources/Public/Css/normalize.css
-            main = EXT:site_package/Resources/Public/Css/main.css
+            custom = EXT:site_package/Resources/Public/Css/custom.css
         }
         
         # JavaScript

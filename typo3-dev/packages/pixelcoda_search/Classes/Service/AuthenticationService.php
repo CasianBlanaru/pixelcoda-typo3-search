@@ -21,7 +21,7 @@ class AuthenticationService
     /**
      * Validate HMAC signature for webhook requests
      */
-    public function validateHmacSignature(string $payload, string $signature, string $secret = null): bool
+    public function validateHmacSignature(string $payload, string $signature, ?string $secret = null): bool
     {
         $secret = $secret ?? $this->config['hmac_secret'] ?? '';
         
@@ -37,7 +37,7 @@ class AuthenticationService
     /**
      * Generate HMAC signature for outgoing requests
      */
-    public function generateHmacSignature(string $payload, string $secret = null): string
+    public function generateHmacSignature(string $payload, ?string $secret = null): string
     {
         $secret = $secret ?? $this->config['hmac_secret'] ?? '';
         
@@ -122,7 +122,7 @@ class AuthenticationService
     /**
      * Get authentication headers for outgoing requests
      */
-    public function getAuthHeaders(string $apiKey = null): array
+    public function getAuthHeaders(?string $apiKey = null): array
     {
         $apiKey = $apiKey ?? $this->config['api_key'] ?? '';
         $projectId = $this->config['project_id'] ?? '';
@@ -189,7 +189,7 @@ class AuthenticationService
     /**
      * Log authentication attempt
      */
-    public function logAuthAttempt(string $ip, string $userAgent, bool $success, string $error = null): void
+    public function logAuthAttempt(string $ip, string $userAgent, bool $success, ?string $error = null): void
     {
         if (!$this->config['enable_metrics'] ?? false) {
             return;
