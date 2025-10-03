@@ -13,7 +13,8 @@
 </f:section>
 
 <f:section name="Main">
-    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}">
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}">
+
         <!-- Search Form -->
         <div class="card">
             <div class="card-header">
@@ -26,7 +27,7 @@
                 </h5>
             </div>
             <div class="card-body">
-                <form class="pixelcoda-search-form" id="search-form-{data.uid}" onsubmit="return pixelcodaSearch(event, {data.uid})">
+                <form class="pixelcoda-search-form" id="search-form-{data.uid}">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="search-input-{data.uid}" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben" autocomplete="off">
                         <button class="btn btn-primary" type="submit" id="search-button-{data.uid}">
@@ -69,24 +70,7 @@
             </div>
         </div>
 
-        <!-- AI Assistant (if enabled) -->
-        <f:if condition="{settings.enableAsk}">
-            <div id="ai-section-{data.uid}" class="mt-4" style="display: none;">
-                <div class="card border-info">
-                    <div class="card-header bg-info text-white">
-                        <h6 class="card-title mb-0">
-                            <i class="fas fa-robot me-2"></i>
-                            KI-Assistent
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div id="ai-response-{data.uid}"></div>
-                    </div>
-                </div>
-            </div>
-        </f:if>
-
-        <!-- Debug Information (if enabled) -->
+        <!-- Debug Information -->
         <f:if condition="{settings.showDebug}">
             <div class="mt-4">
                 <details class="card">
@@ -95,126 +79,219 @@
                         Debug-Informationen
                     </summary>
                     <div class="card-body">
-                        <pre class="bg-light p-3 rounded"><code id="debug-info-{data.uid}">
-Plugin-ID: {data.uid}
+                        <pre class="bg-light p-3 rounded"><code>Plugin-ID: {data.uid}
 Mode: {settings.mode}
 API URL: {settings.apiUrl}
 Collections: {settings.collections}
 Enable Ask: {settings.enableAsk}
-Enable Suggestions: {settings.enableSuggestions}
-                        </code></pre>
+Enable Suggestions: {settings.enableSuggestions}</code></pre>
                     </div>
                 </details>
             </div>
         </f:if>
     </div>
-
-    <!-- JavaScript for Search Functionality -->
-    <script>
-        // API Status Check
-        (function() {
-            const statusElement = document.getElementById('api-status-{data.uid}');
-            const apiUrl = '{settings.apiUrl}' || 'http://localhost:8787';
-
-            fetch(apiUrl + '/health')
-                .then(response => response.json())
-                .then(data => {
-                    statusElement.innerHTML = '<i class="fas fa-check-circle text-success"></i> Online';
-                    statusElement.className = 'badge bg-success';
-                })
-                .catch(error => {
-                    statusElement.innerHTML = '<i class="fas fa-exclamation-triangle text-warning"></i> Offline';
-                    statusElement.className = 'badge bg-warning';
-                });
-        })();
-
-        // Search Function
-        function pixelcodaSearch(event, uid) {
-            event.preventDefault();
-
-            const query = document.getElementById('search-input-' + uid).value.trim();
-            if (!query) return false;
-
-            const statusElement = document.getElementById('search-status-' + uid);
-            const resultsElement = document.getElementById('search-results-' + uid);
-            const resultsContent = document.getElementById('results-content-' + uid);
-
-            // Show loading state
-            statusElement.classList.remove('d-none');
-            resultsElement.style.display = 'none';
-
-            // API Configuration
-            const apiUrl = '{settings.apiUrl}' || 'http://localhost:8787';
-            const apiKey = '{settings.apiKey}' || 'pc_write_dev_key';
-
-            // Perform search
-            fetch(apiUrl + '/v1/search/demo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + apiKey
-                    },
-                    body: JSON.stringify({
-                        q: query,
-                        limit: {
-                            settings.resultsPerPage
-                        } || 10,
-                        collections: '{settings.collections}'.split(',') || ['pages', 'tt_content']
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    statusElement.classList.add('d-none');
-
-                    if (data.data && data.data.length > 0) {
-                        let html = '<div class="row">';
-                        data.data.forEach((result, index) => {
-                            html += `
-                            <div class="col-12 mb-3">
-                                <div class="border-start border-primary border-3 ps-3">
-                                    <h6 class="mb-1">
-                                        <a href="${result.attributes.url || '#'}" class="text-decoration-none">
-                                            ${result.attributes.title || 'Ohne Titel'}
-                                        </a>
-                                    </h6>
-                                    <p class="text-muted small mb-1">${result.attributes.summary || 'Keine Beschreibung verfügbar'}</p>
-                                    <small class="text-muted">
-                                        <i class="fas fa-tag me-1"></i>
-                                        ${result.attributes.collection || 'Unbekannt'}
-                                        ${result.attributes.score ? ` • Score: ${Math.round(result.attributes.score * 100)}%` : ''}
-                                    </small>
-                                </div>
-                            </div>
-                        `;
-                        });
-                        html += '</div>';
-
-                        resultsContent.innerHTML = html;
-                        resultsElement.style.display = 'block';
-                    } else {
-                        resultsContent.innerHTML = `
-                        <div class="text-center py-4">
-                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">Keine Ergebnisse für "${query}" gefunden.</p>
-                        </div>
-                    `;
-                        resultsElement.style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    statusElement.classList.add('d-none');
-                    resultsContent.innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        <strong>Fehler:</strong> ${error.message}
-                    </div>
-                `;
-                    resultsElement.style.display = 'block';
-                });
-
-            return false;
-        }
-    </script>
 </f:section>
 
 </html>
+
+<script>
+    // pixelcoda Search Plugin JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find all pixelcoda search containers
+        const searchContainers = document.querySelectorAll('.pixelcoda-search-container');
+
+        searchContainers.forEach(function(container) {
+            initPixelcodaSearch(container);
+        });
+
+        function initPixelcodaSearch(container) {
+            // Get configuration from data attributes
+            const uid = container.dataset.uid;
+            const apiUrl = container.dataset.apiUrl || 'http://localhost:8787';
+            const apiKey = container.dataset.apiKey || 'pc_write_dev_key';
+            const resultsPerPage = parseInt(container.dataset.resultsPerPage) || 10;
+            const collections = (container.dataset.collections || 'pages,tt_content').split(',');
+            const enableAsk = container.dataset.enableAsk === '1';
+            const enableSuggestions = container.dataset.enableSuggestions === '1';
+
+            // Get DOM elements
+            const form = document.getElementById('search-form-' + uid);
+            const searchInput = document.getElementById('search-input-' + uid);
+            const statusElement = document.getElementById('search-status-' + uid);
+            const resultsElement = document.getElementById('search-results-' + uid);
+            const resultsContent = document.getElementById('results-content-' + uid);
+            const apiStatusElement = document.getElementById('api-status-' + uid);
+
+            if (!form || !searchInput || !statusElement || !resultsElement || !resultsContent || !apiStatusElement) {
+                console.error('pixelcoda Search: Required DOM elements not found for UID:', uid);
+                return;
+            }
+
+            // Check API status
+            checkApiStatus();
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // Handle Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+
+            function checkApiStatus() {
+                fetch(apiUrl + '/health')
+                    .then(function(response) {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('API nicht erreichbar');
+                    })
+                    .then(function(data) {
+                        apiStatusElement.innerHTML = '<i class="fas fa-check-circle"></i> Online';
+                        apiStatusElement.className = 'badge bg-success';
+                    })
+                    .catch(function(error) {
+                        apiStatusElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Demo-Modus';
+                        apiStatusElement.className = 'badge bg-warning';
+                    });
+            }
+
+            function performSearch() {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    alert('Bitte geben Sie einen Suchbegriff ein.');
+                    return;
+                }
+
+                // Show loading state
+                statusElement.classList.remove('d-none');
+                resultsElement.style.display = 'none';
+
+                // Try API search first, fallback to demo
+                fetch(apiUrl + '/v1/search/demo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + apiKey
+                        },
+                        body: JSON.stringify({
+                            q: query,
+                            limit: resultsPerPage,
+                            collections: collections
+                        })
+                    })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('API nicht verfügbar');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        statusElement.classList.add('d-none');
+                        displayResults(data, false);
+                    })
+                    .catch(function(error) {
+                        console.log('API error, using demo results:', error.message);
+                        // Fallback to demo results
+                        const demoData = generateDemoResults(query);
+                        statusElement.classList.add('d-none');
+                        displayResults(demoData, true);
+                    });
+            }
+
+            function generateDemoResults(query) {
+                const demoResults = [{
+                        attributes: {
+                            title: 'TYPO3 Startseite - ' + query,
+                            summary: 'Willkommen auf unserer TYPO3-Website. Hier finden Sie alle Informationen zu ' + query + '.',
+                            url: '/',
+                            collection: 'pages',
+                            score: 0.95
+                        }
+                    },
+                    {
+                        attributes: {
+                            title: 'Bootstrap Package Integration',
+                            summary: 'Erfahren Sie mehr über die Integration des Bootstrap Package in TYPO3 für moderne, responsive Designs.',
+                            url: '/bootstrap',
+                            collection: 'tt_content',
+                            score: 0.87
+                        }
+                    },
+                    {
+                        attributes: {
+                            title: 'pixelcoda Search Plugin',
+                            summary: 'Das pixelcoda Search Plugin bietet erweiterte Suchfunktionen für TYPO3-Websites mit KI-Unterstützung.',
+                            url: '/search',
+                            collection: 'pages',
+                            score: 0.82
+                        }
+                    }
+                ];
+
+                return {
+                    data: demoResults,
+                    meta: {
+                        total: demoResults.length,
+                        query: query,
+                        mode: 'demo'
+                    }
+                };
+            }
+
+            function displayResults(data, isDemo) {
+                let html = '<div class="row">';
+
+                // Add demo notice if in demo mode
+                if (isDemo) {
+                    html += '<div class="col-12 mb-3">';
+                    html += '<div class="alert alert-info">';
+                    html += '<i class="fas fa-info-circle me-2"></i>';
+                    html += '<strong>Demo-Modus:</strong> API ist offline. Hier sind Beispiel-Ergebnisse für "' + searchInput.value + '".';
+                    html += '</div>';
+                    html += '</div>';
+                }
+
+                if (data.data && data.data.length > 0) {
+                    data.data.forEach(function(result, index) {
+                        html += '<div class="col-12 mb-3">';
+                        html += '<div class="border-start border-primary border-3 ps-3">';
+                        html += '<h6 class="mb-1">';
+                        html += '<a href="' + (result.attributes.url || '#') + '" class="text-decoration-none">';
+                        html += result.attributes.title || 'Ohne Titel';
+                        html += '</a>';
+                        html += '</h6>';
+                        html += '<p class="text-muted small mb-1">' + (result.attributes.summary || 'Keine Beschreibung verfügbar') + '</p>';
+                        html += '<small class="text-muted">';
+                        html += '<i class="fas fa-tag me-1"></i>';
+                        html += result.attributes.collection || 'Unbekannt';
+                        if (result.attributes.score) {
+                            html += ' • Score: ' + Math.round(result.attributes.score * 100) + '%';
+                        }
+                        html += '</small>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+                } else {
+                    html += '<div class="col-12">';
+                    html += '<div class="text-center py-4">';
+                    html += '<i class="fas fa-search fa-3x text-muted mb-3"></i>';
+                    html += '<p class="text-muted">Keine Ergebnisse für "' + searchInput.value + '" gefunden.</p>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+
+                html += '</div>';
+
+                resultsContent.innerHTML = html;
+                resultsElement.style.display = 'block';
+            }
+        }
+    });
+</script>
