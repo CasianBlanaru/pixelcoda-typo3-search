@@ -116,7 +116,7 @@ jobs:
         run: |
           cd typo3-dev
           composer require typo3/cms-core:${{ matrix.typo3-version }}
-          composer require --dev phpunit/phpunit typo3/testing-framework
+          composer require --dev phpunit/phpunit:^10.5 typo3/testing-framework:^8.2
           
       - name: Run Unit Tests
         run: |
