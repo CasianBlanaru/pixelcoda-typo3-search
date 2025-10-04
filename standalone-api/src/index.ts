@@ -53,7 +53,6 @@ export default {
 };
 
 if (process.env.NODE_ENV !== 'production') {
-  Bun?.serve?.({ fetch: app.fetch, port }) ??
   (async () => {
     const { serve } = await import('@hono/node-server');
     serve({ fetch: app.fetch, port });
