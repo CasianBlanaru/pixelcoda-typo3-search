@@ -48,7 +48,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 
 // Extension configuration with environment fallbacks
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
-    'api_url' => $_ENV['PIXELCODA_API_URL'] ?? 'http://host.docker.internal:8787',
+    'api_url' => $_ENV['PIXELCODA_API_URL'] ?? 'http://localhost:8787',
     'api_key' => $_ENV['PIXELCODA_API_KEY'] ?? 'pc_write_dev_key',
     'read_api_key' => $_ENV['PIXELCODA_READ_API_KEY'] ?? 'pc_read_dev_key',
     'hmac_secret' => $_ENV['PIXELCODA_HMAC_SECRET'] ?? 'dev_hmac_secret_key',

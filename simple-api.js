@@ -221,7 +221,7 @@ const server = createServer(async (req, res) => {
             res.writeHead(200);
             res.end(JSON.stringify({
                 success: true,
-                processed: body.documents ? .length || 0,
+                processed: body.documents?.length || 0,
                 message: 'Documents indexed successfully (demo mode)'
             }));
             return;

@@ -11,12 +11,19 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use PixelCoda\PixelcodaSearch\Service\SearchService;
 
 /**
  * Search Controller for handling search requests.
  */
 class SearchController extends ActionController
 {
+    protected SearchService $searchService;
+
+    public function __construct(SearchService $searchService)
+    {
+        $this->searchService = $searchService;
+    }
     /**
      * Display search form.
      */
@@ -60,15 +67,34 @@ class SearchController extends ActionController
         if (strlen($question) < 3) {
             $message = $this->getTranslation('ask.results.minlength');
         } else {
-            // Get AI answer with sources
-            $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-            
-            if ($aiResponse) {
-                $answer = $aiResponse['answer'] ?? '';
-                $sources = $aiResponse['sources'] ?? [];
-                $message = $this->getTranslation('ask.results.success');
-            } else {
-                $message = $this->getTranslation('ask.results.error');
+            try {
+                // Use pixelcoda Search API for AI answers
+                $askParams = [
+                    'q' => $question,
+                    'context' => $context,
+                    'max_passages' => $maxPassages,
+                ];
+
+                $aiResponse = $this->searchService->ask($askParams);
+                
+                if ($aiResponse && isset($aiResponse['data'])) {
+                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
+                    $sources = $aiResponse['included'] ?? [];
+                    $message = $this->getTranslation('ask.results.success');
+                } else {
+                    $message = $this->getTranslation('ask.results.error');
+                }
+            } catch (\Exception $e) {
+                // Fallback to local AI answer method
+                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+                
+                if ($aiResponse) {
+                    $answer = $aiResponse['answer'] ?? '';
+                    $sources = $aiResponse['sources'] ?? [];
+                    $message = $this->getTranslation('ask.results.success');
+                } else {
+                    $message = $this->getTranslation('ask.results.error');
+                }
             }
         }
 
@@ -124,46 +150,83 @@ class SearchController extends ActionController
         if (strlen($searchQuery) < $minQueryLength) {
             $message = sprintf($this->getTranslation('search.results.minlength'), $minQueryLength);
         } else {
-            // Search with filters
-            $allResults = [];
-
-            if ($filters['searchIn']['pages']) {
-                $pageResults = $this->searchInPagesWithFilters($searchQuery, $filters);
-                $allResults = array_merge($allResults, $pageResults);
-            }
-
-            if ($filters['searchIn']['content']) {
-                $contentResults = $this->searchInContentWithFilters($searchQuery, $filters);
-                $allResults = array_merge($allResults, $contentResults);
-            }
-
-            // Apply sorting
-            $allResults = $this->sortResults($allResults, $filters['sort']);
-            $totalResults = count($allResults);
-
-            // Calculate pagination
-            $totalPages = ceil($totalResults / $resultsPerPage);
-            $currentPage = max(1, min($currentPage, $totalPages));
-            $offset = ($currentPage - 1) * $resultsPerPage;
-
-            // Get results for current page
-            $results = array_slice($allResults, $offset, $resultsPerPage);
-
-            if ([] === $results) {
-                $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
-            } else {
-                $message = $totalResults . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
-            }
-
-            // Build pagination array
-            if ($totalPages > 1) {
-                $pagination = [
-                    'current' => $currentPage,
-                    'total' => $totalPages,
-                    'prev' => $currentPage > 1 ? $currentPage - 1 : null,
-                    'next' => $currentPage < $totalPages ? $currentPage + 1 : null,
-                    'pages' => range(1, $totalPages),
+            try {
+                // Use pixelcoda Search API
+                $searchParams = [
+                    'q' => $searchQuery,
+                    'page' => $currentPage,
+                    'per_page' => $resultsPerPage,
+                    'collections' => $this->getEnabledCollections($filters),
                 ];
+
+                $apiResponse = $this->searchService->search($searchParams);
+                
+                if (isset($apiResponse['data'])) {
+                    $results = $this->formatApiResults($apiResponse['data']);
+                    $totalResults = $apiResponse['meta']['pagination']['total'] ?? count($results);
+                    
+                    // Build pagination array
+                    $totalPages = $apiResponse['meta']['pagination']['pages'] ?? 1;
+                    if ($totalPages > 1) {
+                        $pagination = [
+                            'current' => $currentPage,
+                            'total' => $totalPages,
+                            'prev' => $currentPage > 1 ? $currentPage - 1 : null,
+                            'next' => $currentPage < $totalPages ? $currentPage + 1 : null,
+                            'pages' => range(1, $totalPages),
+                        ];
+                    }
+
+                    if ([] === $results) {
+                        $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
+                    } else {
+                        $message = $totalResults . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
+                    }
+                } else {
+                    $message = 'Fehler bei der Suche. Bitte versuchen Sie es später erneut.';
+                }
+            } catch (\Exception $e) {
+                // Fallback to local search if API fails
+                $allResults = [];
+
+                if ($filters['searchIn']['pages']) {
+                    $pageResults = $this->searchInPagesWithFilters($searchQuery, $filters);
+                    $allResults = array_merge($allResults, $pageResults);
+                }
+
+                if ($filters['searchIn']['content']) {
+                    $contentResults = $this->searchInContentWithFilters($searchQuery, $filters);
+                    $allResults = array_merge($allResults, $contentResults);
+                }
+
+                // Apply sorting
+                $allResults = $this->sortResults($allResults, $filters['sort']);
+                $totalResults = count($allResults);
+
+                // Calculate pagination
+                $totalPages = ceil($totalResults / $resultsPerPage);
+                $currentPage = max(1, min($currentPage, $totalPages));
+                $offset = ($currentPage - 1) * $resultsPerPage;
+
+                // Get results for current page
+                $results = array_slice($allResults, $offset, $resultsPerPage);
+
+                if ([] === $results) {
+                    $message = 'Keine Ergebnisse für "' . htmlspecialchars($searchQuery) . '" gefunden.';
+                } else {
+                    $message = $totalResults . ' Ergebnis(se) für "' . htmlspecialchars($searchQuery) . '" gefunden.';
+                }
+
+                // Build pagination array
+                if ($totalPages > 1) {
+                    $pagination = [
+                        'current' => $currentPage,
+                        'total' => $totalPages,
+                        'prev' => $currentPage > 1 ? $currentPage - 1 : null,
+                        'next' => $currentPage < $totalPages ? $currentPage + 1 : null,
+                        'pages' => range(1, $totalPages),
+                    ];
+                }
             }
         }
 
@@ -1056,12 +1119,30 @@ class SearchController extends ActionController
         ];
 
         if (strlen($searchQuery) >= 3) {
-            $allResults = $this->searchInPages($searchQuery);
-            $meta['total'] = count($allResults);
-            $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
-            
-            $offset = ($currentPage - 1) * $resultsPerPage;
-            $results = array_slice($allResults, $offset, $resultsPerPage);
+            try {
+                // Use pixelcoda Search API
+                $searchParams = [
+                    'q' => $searchQuery,
+                    'page' => $currentPage,
+                    'per_page' => $resultsPerPage,
+                    'collections' => ['pages', 'tt_content'],
+                ];
+
+                $apiResponse = $this->searchService->search($searchParams);
+                
+                if (isset($apiResponse['data'])) {
+                    $results = $this->formatApiResults($apiResponse['data']);
+                    $meta = $apiResponse['meta']['pagination'] ?? $meta;
+                }
+            } catch (\Exception $e) {
+                // Fallback to local search if API fails
+                $allResults = $this->searchInPages($searchQuery);
+                $meta['total'] = count($allResults);
+                $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
+                
+                $offset = ($currentPage - 1) * $resultsPerPage;
+                $results = array_slice($allResults, $offset, $resultsPerPage);
+            }
         }
 
         // Format as JSON:API 1.0
@@ -1102,12 +1183,30 @@ class SearchController extends ActionController
         $meta = ['status' => 'error'];
 
         if (strlen($question) >= 3) {
-            $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-            
-            if ($aiResponse) {
-                $answer = $aiResponse['answer'] ?? '';
-                $sources = $aiResponse['sources'] ?? [];
-                $meta['status'] = 'success';
+            try {
+                // Use pixelcoda Search API for AI answers
+                $askParams = [
+                    'q' => $question,
+                    'context' => $context,
+                    'max_passages' => $maxPassages,
+                ];
+
+                $aiResponse = $this->searchService->ask($askParams);
+                
+                if ($aiResponse && isset($aiResponse['data'])) {
+                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
+                    $sources = $aiResponse['included'] ?? [];
+                    $meta['status'] = 'success';
+                }
+            } catch (\Exception $e) {
+                // Fallback to local AI answer method
+                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+                
+                if ($aiResponse) {
+                    $answer = $aiResponse['answer'] ?? '';
+                    $sources = $aiResponse['sources'] ?? [];
+                    $meta['status'] = 'success';
+                }
             }
         }
 
@@ -1147,6 +1246,42 @@ class SearchController extends ActionController
 
         $this->getAiAnswerStream($question, $context, $maxPassages);
         exit; // End execution after streaming
+    }
+
+    /**
+     * Format API results for template.
+     */
+    protected function formatApiResults(array $apiData): array
+    {
+        $results = [];
+        foreach ($apiData as $item) {
+            $results[] = [
+                'title' => $item['attributes']['title'] ?? '',
+                'abstract' => $item['attributes']['content'] ?? $item['attributes']['summary'] ?? '',
+                'url' => $item['attributes']['url'] ?? '',
+                'type' => $item['attributes']['collection'] ?? 'page',
+                'score' => $item['attributes']['score'] ?? 0,
+            ];
+        }
+        return $results;
+    }
+
+    /**
+     * Get enabled collections based on filters.
+     */
+    protected function getEnabledCollections(array $filters): array
+    {
+        $collections = [];
+        if ($filters['searchIn']['pages']) {
+            $collections[] = 'pages';
+        }
+        if ($filters['searchIn']['content']) {
+            $collections[] = 'tt_content';
+        }
+        if ($filters['searchIn']['news']) {
+            $collections[] = 'news';
+        }
+        return $collections;
     }
 
     /**
