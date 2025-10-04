@@ -39,5 +39,6 @@
         "type": "git",
         "url": "https://github.com/CasianBlanaru/typo3-search.git"
     },
-    "homepage": "https://github.com/CasianBlanaru/typo3-search#readme"
+    "homepage": "https://github.com/CasianBlanaru/typo3-search#readme",
+    "packageManager": "yarn@4.10.3"
 }
