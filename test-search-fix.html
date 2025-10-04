@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYPO3 Search Fix - Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section { 
+            margin: 30px 0; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            background: #fafafa;
+        }
+        .test-section h2 { 
+            color: #ff8700; 
+            margin-top: 0; 
+        }
+        .test-form { 
+            margin: 15px 0; 
+        }
+        .test-form input, .test-form textarea { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box;
+        }
+        .test-form button { 
+            background: #ff8700; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px 5px 5px 0;
+        }
+        .test-form button:hover { 
+            background: #e67600; 
+        }
+        .result { 
+            margin: 15px 0; 
+            padding: 15px; 
+            background: #f5f5f5; 
+            border-radius: 4px; 
+            white-space: pre-wrap; 
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { 
+            background: #ffebee; 
+            border-left: 4px solid #f44336; 
+        }
+        .success { 
+            background: #e8f5e8; 
+            border-left: 4px solid #4caf50; 
+        }
+        .endpoint { 
+            font-family: monospace; 
+            background: #f0f0f0; 
+            padding: 2px 6px; 
+            border-radius: 3px; 
+            font-size: 11px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .search-result {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        .search-result h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .search-result .url {
+            color: #0066cc;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .search-result .abstract {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 TYPO3 Search Fix - Test Results</h1>
+        
+        <div class="status success">
+            ✅ <strong>Problem Identified and Fixed!</strong><br>
+            The TYPO3 search extension was using local database search instead of the pixelcoda Search API. 
+            I've updated the SearchController to use the SearchService for API communication.
+        </div>
+
+        <div class="test-section">
+            <h2>1. API Health Check</h2>
+            <p>Verify that the pixelcoda Search API is running and accessible.</p>
+            <div class="endpoint">GET http://localhost:8787/health</div>
+            <div class="test-form">
+                <button onclick="testApiHealth()">Test API Health</button>
+            </div>
+            <div id="health-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Search Functionality Test</h2>
+            <p>Test the search API with various queries to ensure it returns results.</p>
+            <div class="endpoint">POST http://localhost:8787/v1/search/typo3-dev</div>
+            <div class="test-form">
+                <input type="text" id="search-query" placeholder="Enter search term..." value="TYPO3">
+                <button onclick="testSearch()">Test Search</button>
+            </div>
+            <div id="search-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. AI Ask Functionality Test</h2>
+            <p>Test the AI-powered ask feature for natural language questions.</p>
+            <div class="endpoint">POST http://localhost:8787/v1/ask/typo3-dev</div>
+            <div class="test-form">
+                <input type="text" id="ask-query" placeholder="Enter your question..." value="What is TYPO3?">
+                <button onclick="testAsk()">Test AI Ask</button>
+            </div>
+            <div id="ask-result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. TYPO3 Extension Configuration</h2>
+            <p>Summary of changes made to fix the search functionality:</p>
+            <ul>
+                <li><strong>SearchController.php</strong>: Updated to use SearchService instead of local database search</li>
+                <li><strong>ext_localconf.php</strong>: Changed API URL from host.docker.internal to localhost:8787</li>
+                <li><strong>Added fallback</strong>: If API fails, falls back to local search</li>
+                <li><strong>API Integration</strong>: All search methods now use the pixelcoda Search API</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>5. Next Steps</h2>
+            <p>To complete the setup:</p>
+            <ol>
+                <li>Ensure the pixelcoda Search API is running (✅ Done)</li>
+                <li>Configure TYPO3 extension settings with correct API keys</li>
+                <li>Index your TYPO3 content using the CLI commands</li>
+                <li>Test the search functionality in your TYPO3 frontend</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function testApiHealth() {
+            const resultDiv = document.getElementById('health-result');
+            
+            try {
+                const response = await fetch('http://localhost:8787/health');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `<strong>Status:</strong> ${response.status}\n<strong>Response:</strong>\n${JSON.stringify(data, null, 2)}`;
+                resultDiv.className = response.ok ? 'result success' : 'result error';
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        async function testSearch() {
+            const query = document.getElementById('search-query').value;
+            const resultDiv = document.getElementById('search-result');
+            
+            try {
+                const response = await fetch('http://localhost:8787/v1/search/typo3-dev', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'pc_read_dev_key'
+                    },
+                    body: JSON.stringify({ q: query, page: 1, per_page: 5 })
+                });
+                
+                const data = await response.json();
+                
+                let html = `<strong>Status:</strong> ${response.status}\n<strong>Query:</strong> ${query}\n<strong>Results Found:</strong> ${data.meta?.pagination?.total || 0}\n\n`;
+                
+                if (data.data && data.data.length > 0) {
+                    html += '<strong>Search Results:</strong>\n';
+                    data.data.forEach((result, index) => {
+                        html += `\n${index + 1}. ${result.attributes.title}\n`;
+                        html += `   URL: ${result.attributes.url}\n`;
+                        html += `   Summary: ${result.attributes.summary}\n`;
+                        html += `   Score: ${result.attributes.score}\n`;
+                    });
+                } else {
+                    html += '\nNo results found.';
+                }
+                
+                resultDiv.innerHTML = html;
+                resultDiv.className = response.ok ? 'result success' : 'result error';
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        async function testAsk() {
+            const query = document.getElementById('ask-query').value;
+            const resultDiv = document.getElementById('ask-result');
+            
+            try {
+                const response = await fetch('http://localhost:8787/v1/ask/typo3-dev', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'pc_read_dev_key'
+                    },
+                    body: JSON.stringify({ q: query })
+                });
+                
+                const data = await response.json();
+                
+                let html = `<strong>Status:</strong> ${response.status}\n<strong>Question:</strong> ${query}\n\n`;
+                
+                if (data.data && data.data.attributes) {
+                    html += `<strong>AI Answer:</strong>\n${data.data.attributes.text}\n\n`;
+                    
+                    if (data.included && data.included.length > 0) {
+                        html += '<strong>Sources:</strong>\n';
+                        data.included.forEach((citation, index) => {
+                            html += `\n${index + 1}. ${citation.attributes.title}\n`;
+                            html += `   URL: ${citation.attributes.url}\n`;
+                            html += `   Reference: ${citation.attributes.reference}\n`;
+                        });
+                    }
+                } else {
+                    html += '\nNo answer generated.';
+                }
+                
+                resultDiv.innerHTML = html;
+                resultDiv.className = response.ok ? 'result success' : 'result error';
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                resultDiv.className = 'result error';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        // Auto-test on page load
+        window.onload = function() {
+            testApiHealth();
+        };
+    </script>
+</body>
+</html>
