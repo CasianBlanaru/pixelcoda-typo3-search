@@ -44,5 +44,12 @@
   ],
   "scripts": {
     "postdeploy": "echo 'Deployment successful'"
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "npm test"
+      }
+    }
   }
 }

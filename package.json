@@ -10,7 +10,7 @@
     "scripts": {
         "start": "node simple-api.js",
         "dev": "node simple-api.js",
-        "test": "echo 'No tests specified' && exit 0",
+        "test": "echo 'Tests skipped - using simple API deployment' && exit 0",
         "build": "echo 'No build step required for simple API'",
         "heroku-postbuild": "echo 'Post-build complete'",
         "api:dev": "cd standalone-api && npm run dev",
@@ -40,5 +40,4 @@
         "url": "https://github.com/CasianBlanaru/typo3-search.git"
     },
     "homepage": "https://github.com/CasianBlanaru/typo3-search#readme",
-    "packageManager": "yarn@4.10.3"
 }
