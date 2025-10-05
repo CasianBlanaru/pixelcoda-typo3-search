@@ -1,11 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-use TYPO3\CMS\Backend\Http\Application;
-use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,8 +14,8 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
  */
 
 // Set up the application for the backend
-call_user_func(static function (): void {
-    $classLoader = require dirname(__DIR__, 4) . '/vendor/autoload.php';
-    SystemEnvironmentBuilder::run(1, SystemEnvironmentBuilder::REQUESTTYPE_BE);
-    Bootstrap::init($classLoader)->get(Application::class)->run();
+call_user_func(static function () {
+    $classLoader = require dirname(dirname(dirname(dirname(__DIR__)))).'/vendor/autoload.php';
+    \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run(1, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE);
+    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Backend\Http\Application::class)->run();
 });
