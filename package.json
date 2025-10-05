@@ -5,7 +5,8 @@
     "type": "module",
     "main": "simple-api.js",
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
     },
     "scripts": {
         "start": "node simple-api.js",
