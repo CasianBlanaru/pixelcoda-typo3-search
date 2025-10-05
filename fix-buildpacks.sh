@@ -2,8 +2,11 @@
 
 # Fix Heroku buildpack configuration
 # This script removes duplicate and unnecessary buildpacks
+# Updated to handle PHP buildpack detection issues
 
 echo "🔧 Fixing Heroku buildpack configuration..."
+echo "📋 This script will set Node.js as the primary buildpack"
+echo "   (since this is primarily a Node.js application)"
 
 # Check if heroku CLI is available
 if ! command -v heroku &> /dev/null; then
