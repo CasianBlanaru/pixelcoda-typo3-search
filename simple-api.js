@@ -9,8 +9,18 @@ import {
     createServer
 } from 'http';
 import {
-    URL
+    URL,
+    fileURLToPath
 } from 'url';
+import {
+    readFile
+} from 'fs/promises';
+import {
+    dirname,
+    join
+} from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PORT = process.env.PORT || 8787;
 const API_READ_KEY = process.env.API_READ_KEY || 'pc_read_dev_key';
@@ -58,6 +68,21 @@ const server = createServer(async (req, res) => {
     console.log(`${new Date().toISOString()} ${method} ${path}`);
 
     try {
+        // Home landing page
+        if (path === '/' && method === 'GET') {
+            try {
+                const html = await readFile(join(__dirname, 'index.html'), 'utf8');
+                res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                res.writeHead(200);
+                res.end(html);
+            } catch {
+                res.setHeader('Content-Type', 'text/plain');
+                res.writeHead(500);
+                res.end('Could not load landing page');
+            }
+            return;
+        }
+
         // Health endpoint
         if (path === '/health' && method === 'GET') {
             res.writeHead(200);
