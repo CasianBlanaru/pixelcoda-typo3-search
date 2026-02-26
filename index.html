@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pixelcoda Search – Die KI-Suchplattform für TYPO3</title>
+    <meta name="description" content="Blitzschnelle, KI-gestützte Suche für TYPO3. Headless & Classic kompatibel, DSGVO-konform, mit Hybrid-Suche und SSE-Streaming-Chat.">
+    <style>
+        :root {
+            --color-bg: #0a0f1e;
+            --color-surface: #111827;
+            --color-surface-2: #1a2235;
+            --color-border: rgba(255, 255, 255, 0.07);
+            --color-primary: #7c3aed;
+            --color-primary-light: #a78bfa;
+            --color-accent: #06b6d4;
+            --color-accent-light: #67e8f9;
+            --color-text: #f1f5f9;
+            --color-text-muted: #94a3b8;
+            --color-text-subtle: #64748b;
+            --color-success: #10b981;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
+            --shadow-glow: 0 0 60px rgba(124, 58, 237, 0.18);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 68px;
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--color-primary), #6d28d9);
+            color: #fff !important;
+            padding: 9px 22px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: box-shadow 0.2s, transform 0.2s !important;
+        }
+
+        .nav-cta:hover {
+            box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
+            transform: translateY(-1px);
+            color: #fff !important;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: var(--color-primary-light);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-badge-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--color-success);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            max-width: 820px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #67e8f9 60%, #a78bfa 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            color: var(--color-text-muted);
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            max-width: 640px;
+            margin-bottom: 44px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 72px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #6d28d9 100%);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: box-shadow 0.25s, transform 0.25s;
+            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.55);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.25s, border-color 0.25s, transform 0.25s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Hero demo search bar */
+        .hero-search {
+            width: 100%;
+            max-width: 680px;
+            background: var(--color-surface);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            padding: 8px 12px 8px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+            gap: 12px;
+        }
+
+        .hero-search svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-text-subtle);
+            flex-shrink: 0;
+        }
+
+        .hero-search input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: var(--color-text);
+        }
+
+        .hero-search input::placeholder {
+            color: var(--color-text-subtle);
+        }
+
+        .hero-search-btn {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #6d28d9 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            flex-shrink: 0;
+        }
+
+        .hero-search-btn:hover {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 56px;
+            flex-wrap: wrap;
+            padding: 40px 24px;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-top: 4px;
+        }
+
+        /* ── Sections ── */
+        section {
+            padding: 100px 24px;
+        }
+
+        .section-inner {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        .section-eyebrow {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-primary-light);
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            max-width: 580px;
+            margin-bottom: 64px;
+        }
+
+        /* ── Features grid ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .icon-purple { background: rgba(124, 58, 237, 0.15); }
+        .icon-cyan   { background: rgba(6, 182, 212, 0.15); }
+        .icon-green  { background: rgba(16, 185, 129, 0.15); }
+        .icon-orange { background: rgba(245, 158, 11, 0.15); }
+        .icon-pink   { background: rgba(236, 72, 153, 0.15); }
+        .icon-blue   { background: rgba(59, 130, 246, 0.15); }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        /* ── Comparison table ── */
+        .comparison-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead tr {
+            background: var(--color-surface-2);
+        }
+
+        th {
+            padding: 18px 24px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 1px solid var(--color-border);
+            white-space: nowrap;
+        }
+
+        th:not(:first-child) {
+            text-align: center;
+        }
+
+        td {
+            padding: 15px 24px;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text-muted);
+        }
+
+        td:not(:first-child) {
+            text-align: center;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .th-highlight {
+            color: var(--color-primary-light);
+        }
+
+        .check { color: var(--color-success); font-size: 1.1rem; }
+        .cross { color: #ef4444; font-size: 1.1rem; }
+        .partial { color: #f59e0b; font-size: 0.9rem; }
+
+        /* ── Integration cards ── */
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .integration-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            transition: border-color 0.25s, transform 0.25s;
+        }
+
+        .integration-card:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .integration-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .integration-card p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            color: var(--color-accent-light);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        /* ── CTA section ── */
+        .cta-section {
+            text-align: center;
+            padding: 100px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 44px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--color-border);
+            padding: 60px 40px 40px;
+        }
+
+        .footer-inner {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+        }
+
+        .footer-brand p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-top: 14px;
+            max-width: 280px;
+            line-height: 1.7;
+        }
+
+        .footer-col h5 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-subtle);
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col ul a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--color-text);
+        }
+
+        .footer-bottom {
+            max-width: 1140px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--color-text-subtle);
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .stats-bar {
+                gap: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Utility ── */
+        .text-center { text-align: center; }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav aria-label="Hauptnavigation">
+        <a href="/" class="nav-logo" aria-label="pixelcoda Search - Startseite">
+            <span class="nav-logo-icon" aria-hidden="true">🔍</span>
+            pixelcoda Search
+        </a>
+        <ul class="nav-links" role="list">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#comparison">Vergleich</a></li>
+            <li><a href="#integrations">Integrationen</a></li>
+            <li><a href="demo/index.html">Demo</a></li>
+            <li><a href="demo/index.html" class="nav-cta">Jetzt testen</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero" role="banner">
+        <div class="hero-badge" aria-label="Status: Live und bereit">
+            <span class="hero-badge-dot" aria-hidden="true"></span>
+            v2.0 — Jetzt mit KI-Streaming-Chat
+        </div>
+
+        <h1>
+            Die schnellste Suche<br>
+            <span class="gradient-text">für TYPO3 &amp; Headless CMS</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Hybrid-Suche mit BM25 + Vektorsuche, KI-gestützte Antworten per SSE-Streaming,
+            DSGVO-konform und in Minuten einsatzbereit.
+        </p>
+
+        <div class="hero-actions">
+            <a href="demo/index.html" class="btn-primary">Live-Demo ausprobieren</a>
+            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+                GitHub ansehen
+            </a>
+        </div>
+
+        <div class="hero-search" role="search" aria-label="Suchvorschau">
+            <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" id="heroSearch" placeholder="TYPO3 Headless, Meilisearch, KI-Suche …"
+                aria-label="Suchbegriff eingeben" autocomplete="off">
+            <button class="hero-search-btn" onclick="goToDemo()" aria-label="Suche starten">
+                Suchen
+            </button>
+        </div>
+    </header>
+
+    <!-- Stats bar -->
+    <div class="stats-bar" aria-label="Kennzahlen">
+        <div class="stat-item">
+            <div class="stat-value">10×</div>
+            <div class="stat-label">schneller als T3AS</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">+86%</div>
+            <div class="stat-label">höhere Klickrate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">23 ms</div>
+            <div class="stat-label">Ø Response-Zeit</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">DSGVO-konform</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">−61%</div>
+            <div class="stat-label">No-Results-Rate</div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <section id="features" aria-labelledby="features-heading">
+        <div class="section-inner">
+            <p class="section-eyebrow">Features</p>
+            <h2 class="section-title" id="features-heading">Alles, was moderne Suche braucht</h2>
+            <p class="section-subtitle">
+                Von der Hybrid-Indizierung bis zum KI-gestützten Chat – pixelcoda Search liefert
+                jede Komponente, die Sie benötigen.
+            </p>
+
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon icon-purple" aria-hidden="true">🔀</div>
+                    <h3>Hybrid Retrieval</h3>
+                    <p>BM25 Keyword-Suche kombiniert mit semantischer Vektorsuche und Reciprocal Rank Fusion für optimale Relevanzbewertung.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon icon-cyan" aria-hidden="true">🤖</div>
+                    <h3>KI-Streaming-Chat</h3>
+                    <p>RAG-basierte Antworten per Server-Sent Events. Echtzeit-Streaming mit verifizierten Quellenangaben – kein Halluzinieren.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon icon-green" aria-hidden="true">📊</div>
+                    <h3>Analytics &amp; Telemetrie</h3>
+                    <p>Query-Tracking, Click-Through-Rate, No-Results-Analyse und automatisches Synonym-Mining aus echtem Suchverhalten.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon icon-orange" aria-hidden="true">🛡️</div>
+                    <h3>DSGVO &amp; Security</h3>
+                    <p>PII-Redaktion, HMAC-Webhook-Verifizierung, Audit-Logging und konfigurierbare Datenlöschfristen ab Werk.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon icon-pink" aria-hidden="true">⚙️</div>
+                    <h3>Admin Console</h3>
+                    <p>Synonym-Verwaltung, Performance-Rules (Pin / Boost / Bury), A/B-Tests und Blue/Green-Deployments ohne Ausfallzeit.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon icon-blue" aria-hidden="true">🔌</div>
+                    <h3>Multi-Provider LLM</h3>
+                    <p>Nahtlose Integration mit OpenAI, Azure OpenAI, Ollama und Hugging Face – Provider-agnostisch und jederzeit wechselbar.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section id="comparison" style="background: var(--color-surface); padding: 100px 24px;" aria-labelledby="comparison-heading">
+        <div class="section-inner">
+            <p class="section-eyebrow">Vergleich</p>
+            <h2 class="section-title" id="comparison-heading">Besser als TYPO3 Advanced Search</h2>
+            <p class="section-subtitle">
+                pixelcoda Search übertrifft T3AS in jedem entscheidenden Bereich.
+            </p>
+
+            <div class="comparison-wrapper" role="region" aria-label="Vergleichstabelle T3AS vs. pixelcoda Search">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Merkmal</th>
+                            <th>T3AS</th>
+                            <th class="th-highlight">pixelcoda Search</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Durchschnittliche Response-Zeit</td>
+                            <td>250 ms</td>
+                            <td><strong>23 ms</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Relevanzbewertung (NDCG@10)</td>
+                            <td>0,65</td>
+                            <td><strong>0,89 (+37 %)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>No-Results-Rate</td>
+                            <td>18 %</td>
+                            <td><strong>7 % (−61 %)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Click-Through-Rate</td>
+                            <td>22 %</td>
+                            <td><strong>41 % (+86 %)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Semantisches Verstehen</td>
+                            <td><span class="cross" aria-label="Nein">✗</span></td>
+                            <td><span class="check" aria-label="Ja">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Echtzeit-Analytics</td>
+                            <td><span class="cross" aria-label="Nein">✗</span></td>
+                            <td><span class="check" aria-label="Ja">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>KI-Antworten (RAG)</td>
+                            <td><span class="cross" aria-label="Nein">✗</span></td>
+                            <td><span class="check" aria-label="Ja">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>DSGVO-Konformität</td>
+                            <td><span class="partial" aria-label="Teilweise">Teilweise</span></td>
+                            <td><span class="check" aria-label="Vollständig">✓ Vollständig</span></td>
+                        </tr>
+                        <tr>
+                            <td>Headless / API-First</td>
+                            <td><span class="cross" aria-label="Nein">✗</span></td>
+                            <td><span class="check" aria-label="Ja">✓</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations -->
+    <section id="integrations" aria-labelledby="integrations-heading">
+        <div class="section-inner">
+            <p class="section-eyebrow">Integrationen</p>
+            <h2 class="section-title" id="integrations-heading">Passt in jede Architektur</h2>
+            <p class="section-subtitle">
+                Classic TYPO3, Headless-Setup oder eigenes Frontend – pixelcoda Search fügt sich
+                nahtlos ein.
+            </p>
+
+            <div class="integration-grid">
+                <article class="integration-card">
+                    <span class="tag">Classic</span>
+                    <h4>TYPO3 Extbase Plugin</h4>
+                    <p>Drag-and-Drop-Integration via Fluid-Templates. Konfiguration per FlexForm, kein Custom-Code nötig.</p>
+                </article>
+
+                <article class="integration-card">
+                    <span class="tag">Headless</span>
+                    <h4>nuxt-typo3 / Next.js</h4>
+                    <p>JSON:API 1.0-kompatible REST-Endpunkte. Direkter Einsatz mit nuxt-typo3 und allen modernen Frameworks.</p>
+                </article>
+
+                <article class="integration-card">
+                    <span class="tag">React</span>
+                    <h4>React Widgets</h4>
+                    <p>BITV 2.0-konforme Komponenten: <code>SearchBox</code>, <code>AnswerPanel</code> und programmatischer Client.</p>
+                </article>
+
+                <article class="integration-card">
+                    <span class="tag">Vanilla JS</span>
+                    <h4>CDN-Bundle</h4>
+                    <p>Einzelne Script-Einbindung genügt. Kein Build-Step, sofort einsatzbereit auf jeder bestehenden Seite.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+        <h2 id="cta-heading">Bereit für die beste TYPO3-Suche?</h2>
+        <p>
+            Starten Sie kostenlos mit der Live-Demo oder erkunden Sie den Quellcode auf GitHub.
+        </p>
+        <div class="hero-actions">
+            <a href="demo/index.html" class="btn-primary">Live-Demo starten</a>
+            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+                Quellcode ansehen
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="/" class="nav-logo" aria-label="pixelcoda Search - Startseite">
+                    <span class="nav-logo-icon" aria-hidden="true">🔍</span>
+                    pixelcoda Search
+                </a>
+                <p>
+                    Die moderne, API-first Suchplattform mit KI-Agenten – gebaut für TYPO3 und
+                    andere CMS-Systeme.
+                </p>
+            </div>
+
+            <nav class="footer-col" aria-label="Produkt-Links">
+                <h5>Produkt</h5>
+                <ul role="list">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#comparison">Vergleich</a></li>
+                    <li><a href="demo/index.html">Demo</a></li>
+                    <li><a href="demo/ai-test.html">KI-Chat Demo</a></li>
+                </ul>
+            </nav>
+
+            <nav class="footer-col" aria-label="Entwickler-Links">
+                <h5>Entwickler</h5>
+                <ul role="list">
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                    <li><a href="README.md">Dokumentation</a></li>
+                    <li><a href="README_BETTER_THAN_T3AS.md">API-Referenz</a></li>
+                    <li><a href="QUICKSTART.md">Quick Start</a></li>
+                </ul>
+            </nav>
+
+            <nav class="footer-col" aria-label="Rechtliche Links">
+                <h5>Rechtliches</h5>
+                <ul role="list">
+                    <li><a href="SECURITY.md">Security</a></li>
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search/issues" target="_blank" rel="noopener noreferrer">Issues</a></li>
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search/discussions" target="_blank" rel="noopener noreferrer">Discussions</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2025 pixelcoda. MIT License.</span>
+            <span>Built with ❤️ für die TYPO3 Community.</span>
+        </div>
+    </footer>
+
+    <script>
+        function goToDemo() {
+            const q = document.getElementById('heroSearch').value.trim();
+            const url = q ? `demo/index.html?q=${encodeURIComponent(q)}` : 'demo/index.html';
+            window.location.href = url;
+        }
+
+        document.getElementById('heroSearch').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') goToDemo();
+        });
+    </script>
+
+</body>
+</html>
