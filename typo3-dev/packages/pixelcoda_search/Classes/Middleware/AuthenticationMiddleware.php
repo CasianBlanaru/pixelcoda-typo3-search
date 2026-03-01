@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Middleware;
 
+use PixelCoda\PixelcodaSearch\Service\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use PixelCoda\PixelcodaSearch\Service\AuthenticationService;
 
 /**
- * Middleware for API authentication
+ * Middleware for API authentication.
  */
 class AuthenticationMiddleware implements MiddlewareInterface
 {

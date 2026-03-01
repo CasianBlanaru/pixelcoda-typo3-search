@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * CLI Command for re-indexing content to pixelcoda Search
+ * CLI Command for re-indexing content to pixelcoda Search.
  * This command clears the existing index and rebuilds it from scratch.
  */
 class ReindexCommand extends Command
