@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,7 +51,7 @@ class SwitchModeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        
+
         $io->title('🔄 TYPO3 Complete Mode Switcher');
         $io->text('Switches between Headless and Standard mode');
         $io->newLine();
@@ -61,40 +63,43 @@ class SwitchModeCommand extends Command
 
         // Get target mode
         $targetMode = $input->getArgument('mode');
-        
+
         if (!$targetMode) {
             $targetMode = $io->choice(
                 'Select new mode:',
                 [
                     'headless' => 'Headless (JSON output)',
-                    'standard' => 'Standard (HTML output)'
+                    'standard' => 'Standard (HTML output)',
                 ],
-                $currentMode === 'headless' ? 'standard' : 'headless'
+                'headless' === $currentMode ? 'standard' : 'headless'
             );
         }
 
         if (!in_array($targetMode, ['headless', 'standard'], true)) {
             $io->error('Invalid mode. Use "headless" or "standard".');
+
             return Command::FAILURE;
         }
 
         if ($currentMode === $targetMode) {
             $io->success("Already in {$targetMode} mode. Nothing to do.");
+
             return Command::SUCCESS;
         }
 
         // Confirm switch
         if (!$input->getOption('force')) {
-            $modeLabel = $targetMode === 'headless' ? 'Headless (JSON API)' : 'Standard (HTML Templates)';
+            $modeLabel = 'headless' === $targetMode ? 'Headless (JSON API)' : 'Standard (HTML Templates)';
             if (!$io->confirm("Switch to {$modeLabel} mode?", true)) {
                 $io->text('Mode switch cancelled.');
+
                 return Command::SUCCESS;
             }
         }
 
         try {
             $io->section("🚀 Switching to {$targetMode} mode...");
-            
+
             // Step 1: Update site configuration
             $io->text('📝 Updating site configuration...');
             $this->updateSiteConfiguration($targetMode);
@@ -102,7 +107,7 @@ class SwitchModeCommand extends Command
 
             // Step 2: Update plugin configuration
             $io->text('⚙️  Updating plugin configuration...');
-            $pluginMode = $targetMode === 'headless' ? 'headless' : 'classic';
+            $pluginMode = 'headless' === $targetMode ? 'headless' : 'classic';
             $this->updatePluginConfiguration($pluginMode);
             $io->text('✅ Plugin configuration updated');
 
@@ -124,26 +129,27 @@ class SwitchModeCommand extends Command
             $io->newLine();
 
             // Show mode-specific information
-            if ($targetMode === 'headless') {
+            if ('headless' === $targetMode) {
                 $io->section('📌 Headless Mode Active:');
                 $io->listing([
                     'JSON API: https://pixelcoda-typo3-dev.ddev.site/',
                     'All pages return JSON',
-                    'Connect your React/Vue/Next.js frontend'
+                    'Connect your React/Vue/Next.js frontend',
                 ]);
             } else {
                 $io->section('📌 Standard Mode Active:');
                 $io->listing([
                     'HTML output: https://pixelcoda-typo3-dev.ddev.site/',
                     'Traditional TYPO3 with Fluid templates',
-                    'SEO-friendly HTML pages'
+                    'SEO-friendly HTML pages',
                 ]);
             }
 
             $io->note('🔄 Please reload your browser to see the changes!');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $io->error('Failed to switch mode: ' . $e->getMessage());
+
             return Command::FAILURE;
         }
 
@@ -156,16 +162,16 @@ class SwitchModeCommand extends Command
     protected function getCurrentMode(): string
     {
         $configPath = Environment::getPublicPath() . '/../config/sites/main/config.yaml';
-        
+
         if (!file_exists($configPath)) {
             return 'unknown';
         }
-        
+
         $content = file_get_contents($configPath);
         if (preg_match('/renderingMode:\s*(\w+)/', $content, $matches)) {
             return $matches[1];
         }
-        
+
         return 'standard'; // default
     }
 
@@ -175,16 +181,16 @@ class SwitchModeCommand extends Command
     protected function updateSiteConfiguration(string $mode): void
     {
         $configPath = Environment::getPublicPath() . '/../config/sites/main/config.yaml';
-        
+
         if (!file_exists($configPath)) {
-            throw new \Exception('Site configuration file not found');
+            throw new Exception('Site configuration file not found');
         }
-        
+
         $content = file_get_contents($configPath);
         $content = preg_replace('/renderingMode:\s*\w+/', "renderingMode: {$mode}", $content);
-        
-        if (file_put_contents($configPath, $content) === false) {
-            throw new \Exception('Failed to update site configuration');
+
+        if (false === file_put_contents($configPath, $content)) {
+            throw new Exception('Failed to update site configuration');
         }
     }
 
@@ -207,15 +213,15 @@ class SwitchModeCommand extends Command
         $configDir = Environment::getPublicPath() . '/../config/system';
         $sourceFile = $configDir . '/PackageStates.php.' . $mode;
         $targetFile = $configDir . '/PackageStates.php';
-        
+
         if (!file_exists($sourceFile)) {
             return false;
         }
-        
+
         if (!copy($sourceFile, $targetFile)) {
-            throw new \Exception('Failed to switch PackageStates.php');
+            throw new Exception('Failed to switch PackageStates.php');
         }
-        
+
         return true;
     }
 
@@ -225,15 +231,15 @@ class SwitchModeCommand extends Command
     protected function clearAllCaches(): void
     {
         // Clear TYPO3 caches
-        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $cacheManager->flushCaches();
-        
+
         // Clear var/cache directory
         $cacheDir = Environment::getVarPath() . '/cache';
         if (is_dir($cacheDir)) {
             $this->removeDirectory($cacheDir);
         }
-        
+
         // Clear typo3temp
         $tempDir = Environment::getPublicPath() . '/typo3temp';
         if (is_dir($tempDir)) {
@@ -249,7 +255,7 @@ class SwitchModeCommand extends Command
         if (!is_dir($dir)) {
             return;
         }
-        
+
         $files = array_diff(scandir($dir), ['.', '..']);
         foreach ($files as $file) {
             $path = $dir . '/' . $file;

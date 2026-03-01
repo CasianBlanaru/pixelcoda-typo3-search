@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller;
 
+use Exception;
+use PixelCoda\PixelcodaSearch\Service\SearchService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -11,7 +13,6 @@ use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use PixelCoda\PixelcodaSearch\Service\SearchService;
 
 /**
  * Search Controller for handling search requests.
@@ -76,7 +77,7 @@ class SearchController extends ActionController
                 ];
 
                 $aiResponse = $this->searchService->ask($askParams);
-                
+
                 if ($aiResponse && isset($aiResponse['data'])) {
                     $answer = $aiResponse['data']['attributes']['text'] ?? '';
                     $sources = $aiResponse['included'] ?? [];
@@ -84,10 +85,10 @@ class SearchController extends ActionController
                 } else {
                     $message = $this->getTranslation('ask.results.error');
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to local AI answer method
                 $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-                
+
                 if ($aiResponse) {
                     $answer = $aiResponse['answer'] ?? '';
                     $sources = $aiResponse['sources'] ?? [];
@@ -160,11 +161,11 @@ class SearchController extends ActionController
                 ];
 
                 $apiResponse = $this->searchService->search($searchParams);
-                
+
                 if (isset($apiResponse['data'])) {
                     $results = $this->formatApiResults($apiResponse['data']);
                     $totalResults = $apiResponse['meta']['pagination']['total'] ?? count($results);
-                    
+
                     // Build pagination array
                     $totalPages = $apiResponse['meta']['pagination']['pages'] ?? 1;
                     if ($totalPages > 1) {
@@ -185,7 +186,7 @@ class SearchController extends ActionController
                 } else {
                     $message = 'Fehler bei der Suche. Bitte versuchen Sie es später erneut.';
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to local search if API fails
                 $allResults = [];
 
@@ -1129,17 +1130,17 @@ class SearchController extends ActionController
                 ];
 
                 $apiResponse = $this->searchService->search($searchParams);
-                
+
                 if (isset($apiResponse['data'])) {
                     $results = $this->formatApiResults($apiResponse['data']);
                     $meta = $apiResponse['meta']['pagination'] ?? $meta;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to local search if API fails
                 $allResults = $this->searchInPages($searchQuery);
                 $meta['total'] = count($allResults);
                 $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
-                
+
                 $offset = ($currentPage - 1) * $resultsPerPage;
                 $results = array_slice($allResults, $offset, $resultsPerPage);
             }
@@ -1192,16 +1193,16 @@ class SearchController extends ActionController
                 ];
 
                 $aiResponse = $this->searchService->ask($askParams);
-                
+
                 if ($aiResponse && isset($aiResponse['data'])) {
                     $answer = $aiResponse['data']['attributes']['text'] ?? '';
                     $sources = $aiResponse['included'] ?? [];
                     $meta['status'] = 'success';
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fallback to local AI answer method
                 $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-                
+
                 if ($aiResponse) {
                     $answer = $aiResponse['answer'] ?? '';
                     $sources = $aiResponse['sources'] ?? [];

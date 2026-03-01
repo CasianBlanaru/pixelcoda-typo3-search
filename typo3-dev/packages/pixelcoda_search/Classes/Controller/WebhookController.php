@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller;
 
+use PixelCoda\PixelcodaSearch\Service\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use PixelCoda\PixelcodaSearch\Service\AuthenticationService;
 
 /**
- * Webhook Controller for handling incoming webhooks
+ * Webhook Controller for handling incoming webhooks.
  */
 class WebhookController extends ActionController
 {
@@ -23,7 +24,7 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Handle incoming webhook from pixelcoda API
+     * Handle incoming webhook from pixelcoda API.
      */
     public function indexAction(): ResponseInterface
     {
@@ -55,23 +56,23 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Process webhook based on event type
+     * Process webhook based on event type.
      */
     private function processWebhook(string $eventType, array $data): array
     {
         switch ($eventType) {
             case 'indexing.completed':
                 return $this->handleIndexingCompleted($data);
-            
+
             case 'indexing.failed':
                 return $this->handleIndexingFailed($data);
-            
+
             case 'search.analytics':
                 return $this->handleSearchAnalytics($data);
-            
+
             case 'webhook.test':
                 return $this->handleWebhookTest($data);
-            
+
             default:
                 return [
                     'success' => false,
@@ -81,13 +82,13 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Handle indexing completed event
+     * Handle indexing completed event.
      */
     private function handleIndexingCompleted(array $data): array
     {
         $projectId = $data['project_id'] ?? '';
         $documentCount = $data['document_count'] ?? 0;
-        
+
         // Log the event
         GeneralUtility::sysLog(
             "Indexing completed for project {$projectId}: {$documentCount} documents",
@@ -105,13 +106,13 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Handle indexing failed event
+     * Handle indexing failed event.
      */
     private function handleIndexingFailed(array $data): array
     {
         $projectId = $data['project_id'] ?? '';
         $error = $data['error'] ?? 'Unknown error';
-        
+
         // Log the error
         GeneralUtility::sysLog(
             "Indexing failed for project {$projectId}: {$error}",
@@ -126,12 +127,12 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Handle search analytics event
+     * Handle search analytics event.
      */
     private function handleSearchAnalytics(array $data): array
     {
         $analytics = $data['analytics'] ?? [];
-        
+
         // Store analytics data (implement your storage logic)
         $this->storeAnalytics($analytics);
 
@@ -142,12 +143,12 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Handle webhook test event
+     * Handle webhook test event.
      */
     private function handleWebhookTest(array $data): array
     {
         $testMessage = $data['message'] ?? 'Test webhook received';
-        
+
         GeneralUtility::sysLog(
             "Webhook test received: {$testMessage}",
             'pixelcoda_search',
@@ -161,17 +162,17 @@ class WebhookController extends ActionController
     }
 
     /**
-     * Clear search cache
+     * Clear search cache.
      */
     private function clearSearchCache(): void
     {
         // Clear TYPO3 cache if needed
-        $cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $cacheManager->flushCachesInGroup('pages');
     }
 
     /**
-     * Store analytics data
+     * Store analytics data.
      */
     private function storeAnalytics(array $analytics): void
     {
