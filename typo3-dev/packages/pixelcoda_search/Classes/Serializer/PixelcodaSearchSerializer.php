@@ -31,7 +31,7 @@ class PixelcodaSearchSerializer
     }
 
     /**
-     * Serialize the pixelcoda Search plugin for JSON output
+     * Serialize the pixelcoda Search plugin for JSON output.
      * This method is called by the Headless extension for each content element.
      */
     public function serialize(array $contentElement, array $context = []): array
