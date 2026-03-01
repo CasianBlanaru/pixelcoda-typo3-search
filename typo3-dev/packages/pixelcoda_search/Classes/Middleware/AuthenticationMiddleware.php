@@ -74,7 +74,7 @@ class AuthenticationMiddleware implements MiddlewareInterface
 
         // Add authentication info to request attributes
         $request = $request->withAttribute('auth_type', $authResult['type'])
-                          ->withAttribute('api_key', $authResult['api_key']);
+            ->withAttribute('api_key', $authResult['api_key']);
 
         return $handler->handle($request);
     }

@@ -7,7 +7,6 @@ namespace PixelCoda\PixelcodaSearch\Controller\Backend;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -27,6 +26,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class SearchModuleController
 {
     protected ModuleTemplateFactory $moduleTemplateFactory;
+
     protected ConfigurationManager $configurationManager;
 
     public function __construct(
@@ -286,8 +286,8 @@ class SearchModuleController
      */
     protected function areModesSync(string $typo3Mode, string $pluginMode): bool
     {
-        return ('headless' === $typo3Mode && 'headless' === $pluginMode) ||
-               ('standard' === $typo3Mode && 'classic' === $pluginMode);
+        return ('headless' === $typo3Mode && 'headless' === $pluginMode)
+            || ('standard' === $typo3Mode && 'classic' === $pluginMode);
     }
 
     /**
