@@ -64,10 +64,10 @@ ExtensionManagementUtility::addModule(
     '',
     '',
     [
-        'routeTarget' => \PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController::class . '::handleRequest',
+        'routeTarget' => PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController::class . '::handleRequest',
         'access' => 'user,group',
         'name' => 'tools_PixelcodaSearchM1',
         'icon' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg',
-        'labels' => 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_mod.xlf'
+        'labels' => 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_mod.xlf',
     ]
 );

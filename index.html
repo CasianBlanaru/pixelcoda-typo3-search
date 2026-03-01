@@ -6,29 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pixelcoda Search – Die KI-Suchplattform für TYPO3</title>
     <meta name="description" content="Blitzschnelle, KI-gestützte Suche für TYPO3. Headless & Classic kompatibel, DSGVO-konform, mit Hybrid-Suche und SSE-Streaming-Chat.">
+    <!-- Inline theme initialisation: runs before first paint to avoid flash -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme');
+            var preferred = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', saved || preferred);
+        }());
+    </script>
     <style>
-        :root {
-            --color-bg: #0a0f1e;
-            --color-surface: #111827;
-            --color-surface-2: #1a2235;
-            --color-border: rgba(255, 255, 255, 0.07);
-            --color-primary: #7c3aed;
-            --color-primary-light: #a78bfa;
-            --color-accent: #06b6d4;
-            --color-accent-light: #67e8f9;
-            --color-text: #f1f5f9;
-            --color-text-muted: #94a3b8;
-            --color-text-subtle: #64748b;
-            --color-success: #10b981;
-            --radius-sm: 8px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
-            --radius-xl: 28px;
-            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
-            --shadow-glow: 0 0 60px rgba(124, 58, 237, 0.18);
+        /* ── Design tokens: Dark Mode (default) ── */
+        :root,
+        [data-theme="dark"] {
+            --color-bg: #000000;
+            --color-bg-secondary: #0a0a0a;
+            --color-surface: #1c1c1e;
+            --color-surface-2: #2c2c2e;
+            --color-border: rgba(255, 255, 255, 0.08);
+            --color-border-strong: rgba(255, 255, 255, 0.14);
+            --color-primary: #2997ff;
+            --color-primary-hover: #5ab5ff;
+            --color-accent: #30d158;
+            --color-accent-2: #64d2ff;
+            --color-text: #f5f5f7;
+            --color-text-muted: #a1a1a6;
+            --color-text-subtle: #6e6e73;
+            --color-success: #30d158;
+            --color-danger: #ff453a;
+            --color-warning: #ffd60a;
+            --nav-bg: rgba(0, 0, 0, 0.72);
+            --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 80px rgba(41, 151, 255, 0.12);
+            --gradient-hero: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(41, 151, 255, 0.18) 0%, transparent 70%);
+            --gradient-cta: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(41, 151, 255, 0.1) 0%, transparent 70%);
+            --color-focus-ring: rgba(41, 151, 255, 0.2);
         }
 
-        * {
+        /* ── Design tokens: Light Mode ── */
+        [data-theme="light"] {
+            --color-bg: #f5f5f7;
+            --color-bg-secondary: #ffffff;
+            --color-surface: #ffffff;
+            --color-surface-2: #f5f5f7;
+            --color-border: rgba(0, 0, 0, 0.08);
+            --color-border-strong: rgba(0, 0, 0, 0.14);
+            --color-primary: #0071e3;
+            --color-primary-hover: #0077ed;
+            --color-accent: #1d8348;
+            --color-accent-2: #005ea6;
+            --color-text: #1d1d1f;
+            --color-text-muted: #6e6e73;
+            --color-text-subtle: #98989d;
+            --color-success: #1d8348;
+            --color-danger: #d70015;
+            --color-warning: #9d6700;
+            --nav-bg: rgba(245, 245, 247, 0.72);
+            --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 80px rgba(0, 113, 227, 0.08);
+            --gradient-hero: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0, 113, 227, 0.1) 0%, transparent 70%);
+            --gradient-cta: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0, 113, 227, 0.07) 0%, transparent 70%);
+            --color-focus-ring: rgba(0, 113, 227, 0.2);
+        }
+
+        /* ── Reset ── */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -39,14 +80,36 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+                         'Helvetica Neue', Arial, sans-serif;
             background-color: var(--color-bg);
             color: var(--color-text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* ── Nav ── */
+        /* ── Scroll animations ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ── Navigation ── */
         nav {
             position: fixed;
             top: 0;
@@ -56,66 +119,107 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
-            height: 68px;
-            background: rgba(10, 15, 30, 0.85);
-            backdrop-filter: blur(16px);
+            padding: 0 48px;
+            height: 56px;
+            background: var(--nav-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 1px solid var(--color-border);
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.15rem;
-            font-weight: 700;
+            font-size: 1.05rem;
+            font-weight: 600;
             color: var(--color-text);
             text-decoration: none;
+            letter-spacing: -0.01em;
         }
 
         .nav-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-            border-radius: var(--radius-sm);
+            width: 28px;
+            height: 28px;
+            background: var(--color-primary);
+            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            transition: background 0.4s ease;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 28px;
             list-style: none;
         }
 
         .nav-links a {
             color: var(--color-text-muted);
             text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.2s ease;
         }
 
         .nav-links a:hover {
             color: var(--color-text);
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
         .nav-cta {
-            background: linear-gradient(135deg, var(--color-primary), #6d28d9);
+            background: var(--color-primary) !important;
             color: #fff !important;
-            padding: 9px 22px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            transition: box-shadow 0.2s, transform 0.2s !important;
+            padding: 7px 18px;
+            border-radius: 980px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.25s ease, opacity 0.25s ease, transform 0.2s ease !important;
         }
 
         .nav-cta:hover {
-            box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
-            transform: translateY(-1px);
+            opacity: 0.85;
+            transform: scale(1.02);
             color: #fff !important;
         }
+
+        /* Theme toggle */
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border-strong);
+            background: var(--color-surface);
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease,
+                        transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-surface-2);
+            color: var(--color-text);
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .theme-toggle .icon-sun  { display: none; }
+        .theme-toggle .icon-moon { display: block; }
+        [data-theme="light"] .theme-toggle .icon-sun  { display: block; }
+        [data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
         /* ── Hero ── */
         .hero {
@@ -125,7 +229,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 120px 24px 80px;
+            padding: 140px 24px 100px;
             position: relative;
             overflow: hidden;
         }
@@ -133,28 +237,26 @@
         .hero::before {
             content: '';
             position: absolute;
-            width: 900px;
-            height: 900px;
-            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-            top: -200px;
-            left: 50%;
-            transform: translateX(-50%);
+            inset: 0;
+            background: var(--gradient-hero);
             pointer-events: none;
+            transition: background 0.4s ease;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            color: var(--color-primary-light);
-            padding: 6px 16px;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 32px;
-            letter-spacing: 0.02em;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border-strong);
+            color: var(--color-primary);
+            padding: 6px 18px;
+            border-radius: 980px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+            letter-spacing: 0.01em;
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
 
         .hero-badge-dot {
@@ -162,103 +264,113 @@
             height: 7px;
             background: var(--color-success);
             border-radius: 50%;
-            animation: pulse-dot 2s infinite;
+            animation: pulse-dot 2.5s ease-in-out infinite;
         }
 
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
         }
 
         .hero h1 {
-            font-size: clamp(2.6rem, 5.5vw, 4.2rem);
-            font-weight: 800;
-            line-height: 1.12;
-            letter-spacing: -0.03em;
-            max-width: 820px;
-            margin-bottom: 24px;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.06;
+            letter-spacing: -0.04em;
+            max-width: 860px;
+            margin-bottom: 28px;
         }
 
-        .hero h1 .gradient-text {
-            background: linear-gradient(135deg, #a78bfa 0%, #67e8f9 60%, #a78bfa 100%);
+        .gradient-text {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent-2) 60%, var(--color-primary) 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shimmer 4s linear infinite;
+            background-clip: text;
+            animation: shimmer 5s linear infinite;
         }
 
         @keyframes shimmer {
-            0% { background-position: 0% center; }
+            0%   { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
 
         .hero-subtitle {
             color: var(--color-text-muted);
             font-size: clamp(1.05rem, 2vw, 1.25rem);
-            max-width: 640px;
-            margin-bottom: 44px;
+            max-width: 600px;
+            margin-bottom: 52px;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
         .hero-actions {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 72px;
+            margin-bottom: 80px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--color-primary) 0%, #6d28d9 100%);
+            background: var(--color-primary);
             color: #fff;
-            padding: 14px 32px;
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 980px;
+            font-size: 0.975rem;
+            font-weight: 500;
             text-decoration: none;
-            transition: box-shadow 0.25s, transform 0.25s;
-            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.35);
+            transition: background 0.25s ease, opacity 0.25s ease, transform 0.2s ease,
+                        box-shadow 0.25s ease;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
-            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.55);
-            transform: translateY(-2px);
+            opacity: 0.85;
+            transform: scale(1.02);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border-strong);
             color: var(--color-text);
-            padding: 14px 32px;
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 980px;
+            font-size: 0.975rem;
+            font-weight: 500;
             text-decoration: none;
-            transition: background 0.25s, border-color 0.25s, transform 0.25s;
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
+            background: var(--color-surface-2);
+            transform: scale(1.02);
         }
 
-        /* Hero demo search bar */
+        /* Hero search bar */
         .hero-search {
             width: 100%;
-            max-width: 680px;
+            max-width: 620px;
             background: var(--color-surface);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-border-strong);
+            border-radius: 980px;
             display: flex;
             align-items: center;
-            padding: 8px 12px 8px 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--shadow-glow);
-            gap: 12px;
+            padding: 6px 8px 6px 22px;
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+            gap: 10px;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-search:focus-within {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-focus-ring), var(--shadow-card);
         }
 
         .hero-search svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             color: var(--color-text-subtle);
             flex-shrink: 0;
         }
@@ -268,8 +380,9 @@
             background: transparent;
             border: none;
             outline: none;
-            font-size: 1rem;
+            font-size: 0.975rem;
             color: var(--color-text);
+            font-family: inherit;
         }
 
         .hero-search input::placeholder {
@@ -277,240 +390,272 @@
         }
 
         .hero-search-btn {
-            background: linear-gradient(135deg, var(--color-primary) 0%, #6d28d9 100%);
+            background: var(--color-primary);
             color: #fff;
             border: none;
-            padding: 10px 22px;
-            border-radius: var(--radius-md);
-            font-size: 0.95rem;
-            font-weight: 600;
+            padding: 9px 20px;
+            border-radius: 980px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: box-shadow 0.2s;
+            transition: opacity 0.2s ease, transform 0.2s ease;
             flex-shrink: 0;
+            font-family: inherit;
         }
 
         .hero-search-btn:hover {
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+            opacity: 0.85;
+            transform: scale(1.02);
         }
 
         /* ── Stats bar ── */
         .stats-bar {
             display: flex;
             justify-content: center;
-            gap: 56px;
+            gap: 0;
             flex-wrap: wrap;
-            padding: 40px 24px;
             border-top: 1px solid var(--color-border);
             border-bottom: 1px solid var(--color-border);
-            background: rgba(255, 255, 255, 0.015);
+            transition: border-color 0.4s ease;
         }
 
         .stat-item {
             text-align: center;
+            padding: 48px 52px;
+            border-right: 1px solid var(--color-border);
+            transition: border-color 0.4s ease;
+        }
+
+        .stat-item:last-child {
+            border-right: none;
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #a78bfa, #67e8f9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--color-primary);
+            transition: color 0.4s ease;
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--color-text-muted);
-            margin-top: 4px;
+            margin-top: 6px;
+            font-weight: 400;
         }
 
         /* ── Sections ── */
         section {
-            padding: 100px 24px;
+            padding: 120px 24px;
         }
 
         .section-inner {
-            max-width: 1140px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .section-eyebrow {
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--color-primary-light);
-            margin-bottom: 14px;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+            transition: color 0.4s ease;
         }
 
         .section-title {
-            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            line-height: 1.2;
-            margin-bottom: 16px;
+            font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 20px;
         }
 
         .section-subtitle {
             color: var(--color-text-muted);
             font-size: 1.1rem;
-            max-width: 580px;
-            margin-bottom: 64px;
+            max-width: 560px;
+            margin-bottom: 72px;
+            line-height: 1.7;
+            font-weight: 400;
         }
 
         /* ── Features grid ── */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
+            gap: 20px;
         }
 
         .feature-card {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            border-radius: 20px;
+            padding: 36px 32px;
+            transition: background 0.4s ease, border-color 0.25s ease,
+                        box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .feature-card:hover {
-            border-color: rgba(124, 58, 237, 0.3);
-            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.12);
-            transform: translateY(-4px);
+            border-color: var(--color-border-strong);
+            box-shadow: var(--shadow-card);
+            transform: translateY(-6px) scale(1.01);
         }
 
         .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-sm);
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            transition: background 0.4s ease;
         }
 
-        .icon-purple { background: rgba(124, 58, 237, 0.15); }
-        .icon-cyan   { background: rgba(6, 182, 212, 0.15); }
-        .icon-green  { background: rgba(16, 185, 129, 0.15); }
-        .icon-orange { background: rgba(245, 158, 11, 0.15); }
-        .icon-pink   { background: rgba(236, 72, 153, 0.15); }
-        .icon-blue   { background: rgba(59, 130, 246, 0.15); }
+        [data-theme="dark"] .icon-purple { background: rgba(94, 92, 230, 0.18); }
+        [data-theme="dark"] .icon-cyan   { background: rgba(100, 210, 255, 0.14); }
+        [data-theme="dark"] .icon-green  { background: rgba(48, 209, 88, 0.14); }
+        [data-theme="dark"] .icon-orange { background: rgba(255, 159, 10, 0.14); }
+        [data-theme="dark"] .icon-pink   { background: rgba(255, 55, 95, 0.14); }
+        [data-theme="dark"] .icon-blue   { background: rgba(41, 151, 255, 0.14); }
+
+        [data-theme="light"] .icon-purple { background: rgba(94, 92, 230, 0.1); }
+        [data-theme="light"] .icon-cyan   { background: rgba(0, 94, 166, 0.1); }
+        [data-theme="light"] .icon-green  { background: rgba(29, 131, 72, 0.1); }
+        [data-theme="light"] .icon-orange { background: rgba(160, 100, 0, 0.1); }
+        [data-theme="light"] .icon-pink   { background: rgba(215, 0, 21, 0.1); }
+        [data-theme="light"] .icon-blue   { background: rgba(0, 113, 227, 0.1); }
 
         .feature-card h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
         }
 
         .feature-card p {
             color: var(--color-text-muted);
-            font-size: 0.95rem;
-            line-height: 1.65;
+            font-size: 0.925rem;
+            line-height: 1.7;
         }
 
-        /* ── Comparison table ── */
+        /* ── Comparison section ── */
+        .comparison-section {
+            background: var(--color-bg-secondary);
+            transition: background 0.4s ease;
+        }
+
         .comparison-wrapper {
             overflow-x: auto;
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             border: 1px solid var(--color-border);
+            transition: border-color 0.4s ease;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.95rem;
+            font-size: 0.925rem;
         }
 
         thead tr {
             background: var(--color-surface-2);
+            transition: background 0.4s ease;
         }
 
         th {
-            padding: 18px 24px;
+            padding: 18px 28px;
             text-align: left;
-            font-weight: 700;
+            font-weight: 600;
             border-bottom: 1px solid var(--color-border);
             white-space: nowrap;
+            font-size: 0.875rem;
+            transition: border-color 0.4s ease;
         }
 
-        th:not(:first-child) {
-            text-align: center;
-        }
+        th:not(:first-child) { text-align: center; }
 
         td {
-            padding: 15px 24px;
+            padding: 15px 28px;
             border-bottom: 1px solid var(--color-border);
             color: var(--color-text-muted);
+            transition: border-color 0.4s ease;
         }
 
-        td:not(:first-child) {
-            text-align: center;
-        }
+        td:not(:first-child) { text-align: center; }
 
-        tr:last-child td {
-            border-bottom: none;
+        tr:last-child td { border-bottom: none; }
+
+        tbody tr {
+            transition: background 0.2s ease;
         }
 
         tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--color-surface-2);
         }
 
-        .th-highlight {
-            color: var(--color-primary-light);
-        }
+        .th-highlight { color: var(--color-primary); }
 
-        .check { color: var(--color-success); font-size: 1.1rem; }
-        .cross { color: #ef4444; font-size: 1.1rem; }
-        .partial { color: #f59e0b; font-size: 0.9rem; }
+        .check   { color: var(--color-success); font-size: 1.05rem; }
+        .cross   { color: var(--color-danger);  font-size: 1.05rem; }
+        .partial { color: var(--color-warning); font-size: 0.875rem; }
 
         /* ── Integration cards ── */
         .integration-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
         }
 
         .integration-card {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-lg);
-            padding: 28px;
-            transition: border-color 0.25s, transform 0.25s;
+            border-radius: 20px;
+            padding: 32px 28px;
+            transition: background 0.4s ease, border-color 0.25s ease,
+                        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .integration-card:hover {
-            border-color: rgba(6, 182, 212, 0.3);
-            transform: translateY(-3px);
+            border-color: var(--color-border-strong);
+            transform: translateY(-5px) scale(1.01);
         }
 
         .integration-card h4 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
         }
 
         .integration-card p {
             color: var(--color-text-muted);
             font-size: 0.9rem;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .tag {
             display: inline-block;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            color: var(--color-accent-light);
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.75rem;
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            color: var(--color-primary);
+            padding: 3px 11px;
+            border-radius: 980px;
+            font-size: 0.72rem;
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            letter-spacing: 0.02em;
+            transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
         }
 
         /* ── CTA section ── */
         .cta-section {
             text-align: center;
-            padding: 100px 24px;
+            padding: 140px 24px;
             position: relative;
             overflow: hidden;
         }
@@ -518,72 +663,71 @@
         .cta-section::before {
             content: '';
             position: absolute;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            inset: 0;
+            background: var(--gradient-cta);
             pointer-events: none;
+            transition: background 0.4s ease;
         }
 
         .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            margin-bottom: 20px;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
         }
 
         .cta-section p {
             color: var(--color-text-muted);
             font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto 44px;
+            max-width: 480px;
+            margin: 0 auto 52px;
+            line-height: 1.7;
         }
 
         /* ── Footer ── */
         footer {
             border-top: 1px solid var(--color-border);
-            padding: 60px 40px 40px;
+            padding: 72px 48px 48px;
+            transition: border-color 0.4s ease;
         }
 
         .footer-inner {
-            max-width: 1140px;
+            max-width: 1100px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 2fr repeat(3, 1fr);
-            gap: 48px;
+            gap: 56px;
         }
 
         .footer-brand p {
             color: var(--color-text-muted);
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             margin-top: 14px;
-            max-width: 280px;
-            line-height: 1.7;
+            max-width: 270px;
+            line-height: 1.75;
         }
 
         .footer-col h5 {
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--color-text-subtle);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .footer-col ul {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .footer-col ul a {
             color: var(--color-text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
         }
 
         .footer-col ul a:hover {
@@ -591,46 +735,40 @@
         }
 
         .footer-bottom {
-            max-width: 1140px;
-            margin: 40px auto 0;
-            padding-top: 24px;
+            max-width: 1100px;
+            margin: 48px auto 0;
+            padding-top: 28px;
             border-top: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: var(--color-text-subtle);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             flex-wrap: wrap;
             gap: 12px;
+            transition: border-color 0.4s ease;
         }
 
         /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .stat-item {
+                padding: 36px 32px;
+                border-right: none;
+                border-bottom: 1px solid var(--color-border);
+            }
+            .stat-item:last-child { border-bottom: none; }
+        }
+
         @media (max-width: 768px) {
-            nav {
-                padding: 0 20px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .footer-inner {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .footer-brand {
-                grid-column: 1 / -1;
-            }
-
-            .stats-bar {
-                gap: 32px;
-            }
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .footer-brand { grid-column: 1 / -1; }
         }
 
         @media (max-width: 480px) {
-            .footer-inner {
-                grid-template-columns: 1fr;
-            }
+            .footer-inner { grid-template-columns: 1fr; }
+            footer { padding: 48px 24px 32px; }
         }
 
         /* ── Utility ── */
@@ -640,7 +778,7 @@
             width: 1px;
             height: 1px;
             overflow: hidden;
-            clip: rect(0,0,0,0);
+            clip: rect(0, 0, 0, 0);
             white-space: nowrap;
         }
     </style>
@@ -659,35 +797,42 @@
             <li><a href="#comparison">Vergleich</a></li>
             <li><a href="#integrations">Integrationen</a></li>
             <li><a href="demo/index.html">Demo</a></li>
-            <li><a href="demo/index.html" class="nav-cta">Jetzt testen</a></li>
         </ul>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="Farbschema wechseln">
+                <span class="icon-moon" aria-hidden="true">🌙</span>
+                <span class="icon-sun"  aria-hidden="true">☀️</span>
+            </button>
+            <a href="demo/index.html" class="nav-cta">Jetzt testen</a>
+        </div>
     </nav>
 
     <!-- Hero -->
     <header class="hero" role="banner">
-        <div class="hero-badge" aria-label="Status: Live und bereit">
+        <div class="hero-badge reveal" aria-label="Status: Live und bereit">
             <span class="hero-badge-dot" aria-hidden="true"></span>
             v2.0 — Jetzt mit KI-Streaming-Chat
         </div>
 
-        <h1>
+        <h1 class="reveal reveal-delay-1">
             Die schnellste Suche<br>
             <span class="gradient-text">für TYPO3 &amp; Headless CMS</span>
         </h1>
 
-        <p class="hero-subtitle">
+        <p class="hero-subtitle reveal reveal-delay-2">
             Hybrid-Suche mit BM25 + Vektorsuche, KI-gestützte Antworten per SSE-Streaming,
             DSGVO-konform und in Minuten einsatzbereit.
         </p>
 
-        <div class="hero-actions">
+        <div class="hero-actions reveal reveal-delay-3">
             <a href="demo/index.html" class="btn-primary">Live-Demo ausprobieren</a>
-            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary"
+               target="_blank" rel="noopener noreferrer">
                 GitHub ansehen
             </a>
         </div>
 
-        <div class="hero-search" role="search" aria-label="Suchvorschau">
+        <div class="hero-search reveal reveal-delay-4" role="search" aria-label="Suchvorschau">
             <svg aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -702,23 +847,23 @@
 
     <!-- Stats bar -->
     <div class="stats-bar" aria-label="Kennzahlen">
-        <div class="stat-item">
+        <div class="stat-item reveal">
             <div class="stat-value">10×</div>
             <div class="stat-label">schneller als T3AS</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item reveal reveal-delay-1">
             <div class="stat-value">+86%</div>
             <div class="stat-label">höhere Klickrate</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item reveal reveal-delay-2">
             <div class="stat-value">23 ms</div>
             <div class="stat-label">Ø Response-Zeit</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item reveal reveal-delay-3">
             <div class="stat-value">100%</div>
             <div class="stat-label">DSGVO-konform</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item reveal reveal-delay-4">
             <div class="stat-value">−61%</div>
             <div class="stat-label">No-Results-Rate</div>
         </div>
@@ -727,45 +872,47 @@
     <!-- Features -->
     <section id="features" aria-labelledby="features-heading">
         <div class="section-inner">
-            <p class="section-eyebrow">Features</p>
-            <h2 class="section-title" id="features-heading">Alles, was moderne Suche braucht</h2>
-            <p class="section-subtitle">
+            <p class="section-eyebrow reveal">Features</p>
+            <h2 class="section-title reveal reveal-delay-1" id="features-heading">
+                Alles, was moderne Suche braucht
+            </h2>
+            <p class="section-subtitle reveal reveal-delay-2">
                 Von der Hybrid-Indizierung bis zum KI-gestützten Chat – pixelcoda Search liefert
                 jede Komponente, die Sie benötigen.
             </p>
 
             <div class="features-grid">
-                <article class="feature-card">
+                <article class="feature-card reveal">
                     <div class="feature-icon icon-purple" aria-hidden="true">🔀</div>
                     <h3>Hybrid Retrieval</h3>
                     <p>BM25 Keyword-Suche kombiniert mit semantischer Vektorsuche und Reciprocal Rank Fusion für optimale Relevanzbewertung.</p>
                 </article>
 
-                <article class="feature-card">
+                <article class="feature-card reveal reveal-delay-1">
                     <div class="feature-icon icon-cyan" aria-hidden="true">🤖</div>
                     <h3>KI-Streaming-Chat</h3>
                     <p>RAG-basierte Antworten per Server-Sent Events. Echtzeit-Streaming mit verifizierten Quellenangaben – kein Halluzinieren.</p>
                 </article>
 
-                <article class="feature-card">
+                <article class="feature-card reveal reveal-delay-2">
                     <div class="feature-icon icon-green" aria-hidden="true">📊</div>
                     <h3>Analytics &amp; Telemetrie</h3>
                     <p>Query-Tracking, Click-Through-Rate, No-Results-Analyse und automatisches Synonym-Mining aus echtem Suchverhalten.</p>
                 </article>
 
-                <article class="feature-card">
+                <article class="feature-card reveal reveal-delay-3">
                     <div class="feature-icon icon-orange" aria-hidden="true">🛡️</div>
                     <h3>DSGVO &amp; Security</h3>
                     <p>PII-Redaktion, HMAC-Webhook-Verifizierung, Audit-Logging und konfigurierbare Datenlöschfristen ab Werk.</p>
                 </article>
 
-                <article class="feature-card">
+                <article class="feature-card reveal reveal-delay-4">
                     <div class="feature-icon icon-pink" aria-hidden="true">⚙️</div>
                     <h3>Admin Console</h3>
                     <p>Synonym-Verwaltung, Performance-Rules (Pin / Boost / Bury), A/B-Tests und Blue/Green-Deployments ohne Ausfallzeit.</p>
                 </article>
 
-                <article class="feature-card">
+                <article class="feature-card reveal reveal-delay-5">
                     <div class="feature-icon icon-blue" aria-hidden="true">🔌</div>
                     <h3>Multi-Provider LLM</h3>
                     <p>Nahtlose Integration mit OpenAI, Azure OpenAI, Ollama und Hugging Face – Provider-agnostisch und jederzeit wechselbar.</p>
@@ -775,15 +922,18 @@
     </section>
 
     <!-- Comparison -->
-    <section id="comparison" style="background: var(--color-surface); padding: 100px 24px;" aria-labelledby="comparison-heading">
+    <section id="comparison" class="comparison-section" aria-labelledby="comparison-heading">
         <div class="section-inner">
-            <p class="section-eyebrow">Vergleich</p>
-            <h2 class="section-title" id="comparison-heading">Besser als TYPO3 Advanced Search</h2>
-            <p class="section-subtitle">
+            <p class="section-eyebrow reveal">Vergleich</p>
+            <h2 class="section-title reveal reveal-delay-1" id="comparison-heading">
+                Besser als TYPO3 Advanced Search
+            </h2>
+            <p class="section-subtitle reveal reveal-delay-2">
                 pixelcoda Search übertrifft T3AS in jedem entscheidenden Bereich.
             </p>
 
-            <div class="comparison-wrapper" role="region" aria-label="Vergleichstabelle T3AS vs. pixelcoda Search">
+            <div class="comparison-wrapper reveal reveal-delay-3"
+                 role="region" aria-label="Vergleichstabelle T3AS vs. pixelcoda Search">
                 <table>
                     <thead>
                         <tr>
@@ -847,33 +997,35 @@
     <!-- Integrations -->
     <section id="integrations" aria-labelledby="integrations-heading">
         <div class="section-inner">
-            <p class="section-eyebrow">Integrationen</p>
-            <h2 class="section-title" id="integrations-heading">Passt in jede Architektur</h2>
-            <p class="section-subtitle">
+            <p class="section-eyebrow reveal">Integrationen</p>
+            <h2 class="section-title reveal reveal-delay-1" id="integrations-heading">
+                Passt in jede Architektur
+            </h2>
+            <p class="section-subtitle reveal reveal-delay-2">
                 Classic TYPO3, Headless-Setup oder eigenes Frontend – pixelcoda Search fügt sich
                 nahtlos ein.
             </p>
 
             <div class="integration-grid">
-                <article class="integration-card">
+                <article class="integration-card reveal">
                     <span class="tag">Classic</span>
                     <h4>TYPO3 Extbase Plugin</h4>
                     <p>Drag-and-Drop-Integration via Fluid-Templates. Konfiguration per FlexForm, kein Custom-Code nötig.</p>
                 </article>
 
-                <article class="integration-card">
+                <article class="integration-card reveal reveal-delay-1">
                     <span class="tag">Headless</span>
                     <h4>nuxt-typo3 / Next.js</h4>
                     <p>JSON:API 1.0-kompatible REST-Endpunkte. Direkter Einsatz mit nuxt-typo3 und allen modernen Frameworks.</p>
                 </article>
 
-                <article class="integration-card">
+                <article class="integration-card reveal reveal-delay-2">
                     <span class="tag">React</span>
                     <h4>React Widgets</h4>
                     <p>BITV 2.0-konforme Komponenten: <code>SearchBox</code>, <code>AnswerPanel</code> und programmatischer Client.</p>
                 </article>
 
-                <article class="integration-card">
+                <article class="integration-card reveal reveal-delay-3">
                     <span class="tag">Vanilla JS</span>
                     <h4>CDN-Bundle</h4>
                     <p>Einzelne Script-Einbindung genügt. Kein Build-Step, sofort einsatzbereit auf jeder bestehenden Seite.</p>
@@ -884,13 +1036,14 @@
 
     <!-- CTA -->
     <section class="cta-section" aria-labelledby="cta-heading">
-        <h2 id="cta-heading">Bereit für die beste TYPO3-Suche?</h2>
-        <p>
+        <h2 id="cta-heading" class="reveal">Bereit für die beste TYPO3-Suche?</h2>
+        <p class="reveal reveal-delay-1">
             Starten Sie kostenlos mit der Live-Demo oder erkunden Sie den Quellcode auf GitHub.
         </p>
-        <div class="hero-actions">
+        <div class="hero-actions reveal reveal-delay-2">
             <a href="demo/index.html" class="btn-primary">Live-Demo starten</a>
-            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary"
+               target="_blank" rel="noopener noreferrer">
                 Quellcode ansehen
             </a>
         </div>
@@ -923,7 +1076,8 @@
             <nav class="footer-col" aria-label="Entwickler-Links">
                 <h5>Entwickler</h5>
                 <ul role="list">
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search"
+                           target="_blank" rel="noopener noreferrer">GitHub</a></li>
                     <li><a href="README.md">Dokumentation</a></li>
                     <li><a href="README_BETTER_THAN_T3AS.md">API-Referenz</a></li>
                     <li><a href="QUICKSTART.md">Quick Start</a></li>
@@ -934,8 +1088,10 @@
                 <h5>Rechtliches</h5>
                 <ul role="list">
                     <li><a href="SECURITY.md">Security</a></li>
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search/issues" target="_blank" rel="noopener noreferrer">Issues</a></li>
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search/discussions" target="_blank" rel="noopener noreferrer">Discussions</a></li>
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search/issues"
+                           target="_blank" rel="noopener noreferrer">Issues</a></li>
+                    <li><a href="https://github.com/CasianBlanaru/typo3-search/discussions"
+                           target="_blank" rel="noopener noreferrer">Discussions</a></li>
                 </ul>
             </nav>
         </div>
@@ -947,15 +1103,47 @@
     </footer>
 
     <script>
+        /* ── Demo search ── */
         function goToDemo() {
             const q = document.getElementById('heroSearch').value.trim();
-            const url = q ? `demo/index.html?q=${encodeURIComponent(q)}` : 'demo/index.html';
+            const url = q ? 'demo/index.html?q=' + encodeURIComponent(q) : 'demo/index.html';
             window.location.href = url;
         }
 
         document.getElementById('heroSearch').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') goToDemo();
         });
+
+        /* ── Theme toggle ── */
+        (function () {
+            var root = document.documentElement;
+            var btn  = document.getElementById('themeToggle');
+            btn.addEventListener('click', function () {
+                var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+            });
+        }());
+
+        /* ── Scroll-reveal (IntersectionObserver) ── */
+        (function () {
+            var els = document.querySelectorAll('.reveal');
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(function (el) { el.classList.add('visible'); });
+                return;
+            }
+            /* 12 % of the element must be visible before the reveal fires */
+            var REVEAL_THRESHOLD = 0.12;
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: REVEAL_THRESHOLD });
+            els.forEach(function (el) { observer.observe(el); });
+        }());
     </script>
 
 </body>

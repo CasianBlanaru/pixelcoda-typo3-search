@@ -101,4 +101,4 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest']
 
 // Register webhook endpoint
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_webhook']
-    = \PixelCoda\PixelcodaSearch\Controller\WebhookController::class . '::indexAction';
+    = PixelCoda\PixelcodaSearch\Controller\WebhookController::class . '::indexAction';
