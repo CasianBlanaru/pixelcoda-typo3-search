@@ -47,8 +47,8 @@ function jsonApiResponse(data, included = [], meta = {}) {
 
 // Request handler
 const server = createServer(async (req, res) => {
-    // CORS headers
-    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS || '*';
+    // CORS headers (support both names: standalone-api uses CORS_ORIGINS)
+    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ORIGINS || '*';
     res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
