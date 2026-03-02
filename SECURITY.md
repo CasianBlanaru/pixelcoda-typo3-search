@@ -244,6 +244,18 @@ grep -E "(union|select|script|javascript)" /var/log/pixelcoda-search/api.log
 - [ ] Security training
 - [ ] Backup testing
 
+## 📚 Weitere Dokumentation
+
+| Thema | Datei |
+|-------|--------|
+| Schnellstart & lokale Umgebung | [QUICKSTART.md](QUICKSTART.md) |
+| Hauptdokumentation | [README.md](README.md) |
+| Heroku Deployment | [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) |
+| TYPO3 Bootstrap Package | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |
+| TYPO3 DDEV | [typo3-dev/README.md](typo3-dev/README.md) |
+
+---
+
 ## 📞 Security Contact
 
 For security issues, please contact:

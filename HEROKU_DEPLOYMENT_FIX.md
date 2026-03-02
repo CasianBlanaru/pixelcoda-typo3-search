@@ -50,3 +50,14 @@ chmod +x fix-buildpacks.sh
 - ✅ Explizite Buildpack-Spezifikation
 
 Die Anwendung sollte jetzt erfolgreich auf Heroku deployen.
+
+---
+
+## 📚 Weitere Dokumentation
+
+| Thema | Datei |
+|-------|--------|
+| Schnellstart (lokal) | [QUICKSTART.md](QUICKSTART.md) |
+| Hauptdokumentation | [README.md](README.md) |
+| Sicherheit (API-Keys, Env) | [SECURITY.md](SECURITY.md) |
+| TYPO3 Bootstrap Package | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |

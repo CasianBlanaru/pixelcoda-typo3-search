@@ -180,6 +180,18 @@ Bei Fragen oder Problemen:
 
 ---
 
+## 📚 Weitere Dokumentation
+
+| Thema | Datei |
+|-------|--------|
+| Schnellstart & API | [QUICKSTART.md](QUICKSTART.md) |
+| Hauptprojekt & Architektur | [README.md](README.md) |
+| TYPO3 DDEV-Setup | [typo3-dev/README.md](typo3-dev/README.md) |
+| Heroku Deployment | [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) |
+| Sicherheit & API-Keys | [SECURITY.md](SECURITY.md) |
+
+---
+
 **Installation abgeschlossen!** 🎉
 
 Das Bootstrap Package ist jetzt vollständig in Ihr TYPO3-System integriert und bereit für die Verwendung.

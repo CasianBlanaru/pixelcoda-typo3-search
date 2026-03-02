@@ -50,7 +50,21 @@ A modern, API-first search platform with AI agents, designed for TYPO3 and other
 ### Development Environment
 - **`typo3-dev/`** - Complete DDEV TYPO3 setup for testing
 
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [QUICKSTART.md](QUICKSTART.md) | 5-minute setup: Simple API, full stack, TYPO3 with DDEV |
+| [typo3-dev/README.md](typo3-dev/README.md) | TYPO3 DDEV environment, composer, Install Tool |
+| [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) | TYPO3 Bootstrap Package installation and configuration |
+| [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) | Heroku buildpack and deployment troubleshooting |
+| [SECURITY.md](SECURITY.md) | API keys, HMAC, rate limiting, production checklist |
+
 ## 🛠️ Quick Start
+
+**Minimal (demo only):** `npm install` → `npm run dev` → API at http://localhost:8787. See [QUICKSTART.md](QUICKSTART.md).
+
+**Full setup:**
 
 ### 1. Clone Repository
 ```bash
@@ -60,7 +74,8 @@ cd typo3-search
 
 ### 2. Install Dependencies
 ```bash
-yarn install
+npm install
+# or: yarn install
 ```
 
 ### 3. Environment Setup
