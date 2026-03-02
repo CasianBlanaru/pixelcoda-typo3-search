@@ -53,8 +53,3 @@ AI_CACHE_ENABLED=true
 # Rate Limiting für KI
 AI_RATE_LIMIT_PER_MINUTE=20
 AI_RATE_LIMIT_PER_DAY=500
-#
-postgresql://neondb_owner:npg_tZ1Pr9DoJvTc@ep-old-tooth-a2yjjx4w-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-
-
-napi_f5wnq53zlby47e9iacyt0ns13tzvbwjzk809hh7fv9rji386ws1b8hfyyye3ufov
