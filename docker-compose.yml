@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  # PostgreSQL with pgvector extension
+  # PostgreSQL with pgvector extension (ARM64-friendly image)
   postgres:
-    image: pgvector/pgvector:pg16
+    image: oeway/postgresql-pgvector:17.0.0-pgvector-0.8.1-arm64
     environment:
       POSTGRES_DB: pixelcoda_search
       POSTGRES_USER: pixelcoda
