@@ -51,7 +51,7 @@ router.post('/webhook/typo3',
   verifyHmacSignature,
   async (c) => {
     try {
-      const webhook = c.req.bodyCache || await c.req.json();
+      const webhook: any = c.req.bodyCache || await c.req.json();
       
       console.log(`TYPO3 webhook received: ${webhook.action} ${webhook.type}:${webhook.id}`);
       console.log(`Webhook version: ${webhook.webhook_version || '1.0'}`);

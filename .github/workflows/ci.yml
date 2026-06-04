@@ -7,6 +7,20 @@ on:
     branches: [main]
 
 jobs:
+  repository-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate repository metadata
+        run: |
+          test ! -d vendor
+          test ! -f env.ai
+          test ! -f "env copy.ai"
+          ! git grep -n "github.com/CasianBlanaru/typo3-search" -- ':!.github/workflows/ci.yml'
+          ! git grep -n "pixelcoda/pixelcoda-search" -- ':!.github/workflows/ci.yml'
+
   javascript-tests:
     runs-on: ubuntu-latest
     steps:
@@ -21,9 +35,74 @@ jobs:
       - name: Install dependencies
         run: |
           cd typo3-dev/packages/pixelcoda_search
-          npm install
+          npm ci
 
       - name: Run ESLint
         run: |
           cd typo3-dev/packages/pixelcoda_search
           npm run lint -- --verbose
+
+      - name: Run JavaScript tests
+        run: |
+          cd typo3-dev/packages/pixelcoda_search
+          npm test -- --runInBand
+
+  typescript-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build TypeScript packages
+        run: npm run build
+
+  typo3-extension:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        typo3: ['^12.4', '^13.4', '^14.0']
+        php: ['8.2', '8.3', '8.4']
+        exclude:
+          - typo3: '^12.4'
+            php: '8.4'
+          - typo3: '^14.0'
+            php: '8.2'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+
+      - name: Validate extension package
+        working-directory: typo3-dev/packages/pixelcoda_search
+        run: composer validate --strict
+
+      - name: Select TYPO3 version
+        working-directory: typo3-dev/packages/pixelcoda_search
+        run: composer require "typo3/cms-core:${{ matrix.typo3 }}" --no-update --no-interaction
+
+      - name: Resolve TYPO3 compatibility
+        working-directory: typo3-dev/packages/pixelcoda_search
+        run: composer update --with-all-dependencies --no-interaction --no-progress --prefer-dist
+
+      - name: Audit resolved dependencies
+        working-directory: typo3-dev/packages/pixelcoda_search
+        run: composer audit
+
+      - name: Run PHP quality checks and tests
+        if: matrix.typo3 == '^13.4' && matrix.php == '8.3'
+        working-directory: typo3-dev/packages/pixelcoda_search
+        run: composer ci

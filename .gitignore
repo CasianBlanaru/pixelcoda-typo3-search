@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
+/vendor/
+.yarn/
+**/.yarn/
 .pnp
 .pnp.js
 
@@ -61,6 +64,7 @@ coverage/
 
 # Output of 'npm pack'
 *.tgz
+typo3-search-upgrade-pack.zip
 
 # Yarn Integrity file
 .yarn-integrity
@@ -171,6 +175,7 @@ typo3-dev/env.example
 # Ignore vendor inside our packages
 typo3-dev/packages/*/vendor/
 typo3-dev/packages/*/composer.lock
+typo3-dev/packages/*/Tests/Build/.phpunit.cache/
 
 # TYPO3 Database dumps (but keep structure files)
 typo3-dev/data/*.sql

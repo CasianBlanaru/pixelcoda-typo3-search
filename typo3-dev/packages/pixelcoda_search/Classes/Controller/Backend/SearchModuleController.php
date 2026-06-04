@@ -317,6 +317,7 @@ class SearchModuleController
         }
 
         $files = glob($cacheDir . '/*');
+
         return empty($files) ? 'empty' : 'populated';
     }
 

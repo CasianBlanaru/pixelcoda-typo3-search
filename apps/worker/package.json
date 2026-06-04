@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@pixelcoda/llm-adapter": "workspace:*",
+    "@pixelcoda/llm-adapter": "*",
     "dotenv": "^16.4.5",
     "node-html-parser": "^6.1.12",
     "undici": "^6.19.8"

@@ -25,6 +25,7 @@ class SearchController extends ActionController
     {
         $this->searchService = $searchService;
     }
+
     /**
      * Display search form.
      */
@@ -251,6 +252,154 @@ class SearchController extends ActionController
         );
 
         return $this->htmlResponse();
+    }
+
+    /**
+     * JSON:API compatible search endpoint.
+     */
+    public function apiSearchAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $searchQuery = trim($params['q'] ?? '');
+        $currentPage = (int) ($params['page'] ?? 1);
+        $resultsPerPage = (int) ($params['per_page'] ?? 10);
+
+        $results = [];
+        $meta = [
+            'total' => 0,
+            'page' => $currentPage,
+            'per_page' => $resultsPerPage,
+            'total_pages' => 0,
+        ];
+
+        if (strlen($searchQuery) >= 3) {
+            try {
+                // Use pixelcoda Search API
+                $searchParams = [
+                    'q' => $searchQuery,
+                    'page' => $currentPage,
+                    'per_page' => $resultsPerPage,
+                    'collections' => ['pages', 'tt_content'],
+                ];
+
+                $apiResponse = $this->searchService->search($searchParams);
+
+                if (isset($apiResponse['data'])) {
+                    $results = $this->formatApiResults($apiResponse['data']);
+                    $meta = $apiResponse['meta']['pagination'] ?? $meta;
+                }
+            } catch (Exception $e) {
+                // Fallback to local search if API fails
+                $allResults = $this->searchInPages($searchQuery);
+                $meta['total'] = count($allResults);
+                $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
+
+                $offset = ($currentPage - 1) * $resultsPerPage;
+                $results = array_slice($allResults, $offset, $resultsPerPage);
+            }
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => array_map(static function ($result) {
+                return [
+                    'type' => 'search-result',
+                    'id' => uniqid(),
+                    'attributes' => [
+                        'title' => $result['title'],
+                        'abstract' => $result['abstract'],
+                        'url' => $result['url'],
+                        'type' => $result['type'] ?? 'page',
+                    ],
+                ];
+            }, $results),
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * JSON:API compatible ask endpoint.
+     */
+    public function apiAskAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        $answer = '';
+        $sources = [];
+        $meta = ['status' => 'error'];
+
+        if (strlen($question) >= 3) {
+            try {
+                // Use pixelcoda Search API for AI answers
+                $askParams = [
+                    'q' => $question,
+                    'context' => $context,
+                    'max_passages' => $maxPassages,
+                ];
+
+                $aiResponse = $this->searchService->ask($askParams);
+
+                if ($aiResponse && isset($aiResponse['data'])) {
+                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
+                    $sources = $aiResponse['included'] ?? [];
+                    $meta['status'] = 'success';
+                }
+            } catch (Exception $e) {
+                // Fallback to local AI answer method
+                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+
+                if ($aiResponse) {
+                    $answer = $aiResponse['answer'] ?? '';
+                    $sources = $aiResponse['sources'] ?? [];
+                    $meta['status'] = 'success';
+                }
+            }
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => [
+                'type' => 'ai-answer',
+                'id' => uniqid(),
+                'attributes' => [
+                    'question' => $question,
+                    'answer' => $answer,
+                    'sources' => $sources,
+                ],
+            ],
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * SSE streaming endpoint for ask functionality.
+     */
+    public function apiAskStreamAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        if (strlen($question) < 3) {
+            return new JsonResponse(['error' => 'Question too short'], 400);
+        }
+
+        $this->getAiAnswerStream($question, $context, $maxPassages);
+        exit; // End execution after streaming
     }
 
     /**
@@ -1050,6 +1199,7 @@ class SearchController extends ActionController
         }
 
         $data = json_decode($response, true);
+
         return $data ?: null;
     }
 
@@ -1090,163 +1240,16 @@ class SearchController extends ActionController
             ],
             CURLOPT_TIMEOUT => 60,
             CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_WRITEFUNCTION => function ($ch, $data) {
+            CURLOPT_WRITEFUNCTION => static function ($ch, $data) {
                 echo $data;
                 flush();
+
                 return strlen($data);
             },
         ]);
 
         curl_exec($ch);
         curl_close($ch);
-    }
-
-    /**
-     * JSON:API compatible search endpoint.
-     */
-    public function apiSearchAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $searchQuery = trim($params['q'] ?? '');
-        $currentPage = (int) ($params['page'] ?? 1);
-        $resultsPerPage = (int) ($params['per_page'] ?? 10);
-
-        $results = [];
-        $meta = [
-            'total' => 0,
-            'page' => $currentPage,
-            'per_page' => $resultsPerPage,
-            'total_pages' => 0,
-        ];
-
-        if (strlen($searchQuery) >= 3) {
-            try {
-                // Use pixelcoda Search API
-                $searchParams = [
-                    'q' => $searchQuery,
-                    'page' => $currentPage,
-                    'per_page' => $resultsPerPage,
-                    'collections' => ['pages', 'tt_content'],
-                ];
-
-                $apiResponse = $this->searchService->search($searchParams);
-
-                if (isset($apiResponse['data'])) {
-                    $results = $this->formatApiResults($apiResponse['data']);
-                    $meta = $apiResponse['meta']['pagination'] ?? $meta;
-                }
-            } catch (Exception $e) {
-                // Fallback to local search if API fails
-                $allResults = $this->searchInPages($searchQuery);
-                $meta['total'] = count($allResults);
-                $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
-
-                $offset = ($currentPage - 1) * $resultsPerPage;
-                $results = array_slice($allResults, $offset, $resultsPerPage);
-            }
-        }
-
-        // Format as JSON:API 1.0
-        $jsonApiResponse = [
-            'data' => array_map(function ($result) {
-                return [
-                    'type' => 'search-result',
-                    'id' => uniqid(),
-                    'attributes' => [
-                        'title' => $result['title'],
-                        'abstract' => $result['abstract'],
-                        'url' => $result['url'],
-                        'type' => $result['type'] ?? 'page',
-                    ],
-                ];
-            }, $results),
-            'meta' => $meta,
-            'links' => [
-                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
-            ],
-        ];
-
-        return new JsonResponse($jsonApiResponse);
-    }
-
-    /**
-     * JSON:API compatible ask endpoint.
-     */
-    public function apiAskAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $question = trim($params['q'] ?? '');
-        $context = $params['context'] ?? '';
-        $maxPassages = (int) ($params['max_passages'] ?? 6);
-
-        $answer = '';
-        $sources = [];
-        $meta = ['status' => 'error'];
-
-        if (strlen($question) >= 3) {
-            try {
-                // Use pixelcoda Search API for AI answers
-                $askParams = [
-                    'q' => $question,
-                    'context' => $context,
-                    'max_passages' => $maxPassages,
-                ];
-
-                $aiResponse = $this->searchService->ask($askParams);
-
-                if ($aiResponse && isset($aiResponse['data'])) {
-                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
-                    $sources = $aiResponse['included'] ?? [];
-                    $meta['status'] = 'success';
-                }
-            } catch (Exception $e) {
-                // Fallback to local AI answer method
-                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-
-                if ($aiResponse) {
-                    $answer = $aiResponse['answer'] ?? '';
-                    $sources = $aiResponse['sources'] ?? [];
-                    $meta['status'] = 'success';
-                }
-            }
-        }
-
-        // Format as JSON:API 1.0
-        $jsonApiResponse = [
-            'data' => [
-                'type' => 'ai-answer',
-                'id' => uniqid(),
-                'attributes' => [
-                    'question' => $question,
-                    'answer' => $answer,
-                    'sources' => $sources,
-                ],
-            ],
-            'meta' => $meta,
-            'links' => [
-                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
-            ],
-        ];
-
-        return new JsonResponse($jsonApiResponse);
-    }
-
-    /**
-     * SSE streaming endpoint for ask functionality.
-     */
-    public function apiAskStreamAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $question = trim($params['q'] ?? '');
-        $context = $params['context'] ?? '';
-        $maxPassages = (int) ($params['max_passages'] ?? 6);
-
-        if (strlen($question) < 3) {
-            return new JsonResponse(['error' => 'Question too short'], 400);
-        }
-
-        $this->getAiAnswerStream($question, $context, $maxPassages);
-        exit; // End execution after streaming
     }
 
     /**
@@ -1264,6 +1267,7 @@ class SearchController extends ActionController
                 'score' => $item['attributes']['score'] ?? 0,
             ];
         }
+
         return $results;
     }
 
@@ -1282,6 +1286,7 @@ class SearchController extends ActionController
         if ($filters['searchIn']['news']) {
             $collections[] = 'news';
         }
+
         return $collections;
     }
 

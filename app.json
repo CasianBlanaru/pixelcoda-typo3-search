@@ -1,7 +1,7 @@
 {
   "name": "Pixelcoda Search Platform",
   "description": "Modern, API-first search platform with AI agents for TYPO3 and other CMS systems",
-  "repository": "https://github.com/CasianBlanaru/typo3-search",
+  "repository": "https://github.com/CasianBlanaru/pixelcoda-typo3-search",
   "logo": "https://avatars.githubusercontent.com/u/pixelcoda",
   "keywords": ["search", "api", "typo3", "cms", "ai", "vector-search"],
   "stack": "heroku-22",

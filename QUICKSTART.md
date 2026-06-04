@@ -1,4 +1,4 @@
-# 🚀 Pixelcoda Search Platform - Schnellstart
+# Pixelcoda Search for TYPO3 - Schnellstart
 
 Die Pixelcoda Search Platform ist eine moderne, API-basierte Suchplattform mit KI-Unterstützung für TYPO3 und andere CMS-Systeme.
 
@@ -6,8 +6,8 @@ Die Pixelcoda Search Platform ist eine moderne, API-basierte Suchplattform mit K
 
 ### 1. Repository klonen
 ```bash
-git clone git@github.com:CasianBlanaru/typo3-search.git
-cd typo3-search
+git clone git@github.com:CasianBlanaru/pixelcoda-typo3-search.git
+cd pixelcoda-typo3-search
 ```
 
 ### 2. Abhängigkeiten installieren
@@ -166,4 +166,4 @@ docker-compose logs -f postgres
 | Heroku Deployment | [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) |
 | Sicherheit & Keys | [SECURITY.md](SECURITY.md) |
 
-GitHub: https://github.com/CasianBlanaru/typo3-search
+GitHub: https://github.com/CasianBlanaru/pixelcoda-typo3-search

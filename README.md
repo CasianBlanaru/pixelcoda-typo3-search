@@ -1,6 +1,11 @@
-# pixelcoda Headless Search Platform
+# Pixelcoda Search for TYPO3
 
-A modern, API-first search platform with AI agents, designed for TYPO3 and other CMS systems.
+Accessible, API-first search for TYPO3 with classic and headless rendering,
+filters, suggestions, hybrid retrieval and optional AI-assisted answers.
+
+**TYPO3 support:** 12.4 LTS, 13.4 LTS and 14.x  
+**Composer package:** `pixelcoda/typo3-search`  
+**Extension key:** `pixelcoda_search`
 
 ## 🚀 Features
 
@@ -68,8 +73,8 @@ A modern, API-first search platform with AI agents, designed for TYPO3 and other
 
 ### 1. Clone Repository
 ```bash
-git clone git@github.com:CasianBlanaru/typo3-search.git
-cd typo3-search
+git clone git@github.com:CasianBlanaru/pixelcoda-typo3-search.git
+cd pixelcoda-typo3-search
 ```
 
 ### 2. Install Dependencies
@@ -106,6 +111,22 @@ node scripts/migrate.js
 ```
 
 ## 🔧 Development
+
+### Quality checks
+
+```bash
+npm ci
+npm run build
+npm run lint:extension
+npm test
+
+cd typo3-dev/packages/pixelcoda_search
+composer validate --strict
+```
+
+CI resolves the extension against TYPO3 12.4, 13.4 and 14.x. The full PHP
+quality suite runs against TYPO3 13.4; JavaScript linting, tests and every
+TypeScript production build run on each pull request.
 
 ### API Server
 ```bash
@@ -478,9 +499,9 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/CasianBlanaru/typo3-search/issues)
-- **Documentation**: [Wiki](https://github.com/CasianBlanaru/typo3-search/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/CasianBlanaru/typo3-search/discussions)
+- **Issues**: [GitHub Issues](https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues)
+- **Documentation**: [Wiki](https://github.com/CasianBlanaru/pixelcoda-typo3-search/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/CasianBlanaru/pixelcoda-typo3-search/discussions)
 
 ---
 

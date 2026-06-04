@@ -66,8 +66,12 @@ export async function crawl(url: string, options: CrawlOptions = {}): Promise<Cr
       html,
       url,
       statusCode: res.statusCode,
-      headers: Object.fromEntries(Object.entries(res.headers)),
-      finalUrl: res.context?.history?.[0]?.origin || url
+      headers: Object.fromEntries(
+        Object.entries(res.headers)
+          .filter((entry): entry is [string, string | string[]] => entry[1] !== undefined)
+          .map(([key, value]) => [key, Array.isArray(value) ? value.join(', ') : value])
+      ),
+      finalUrl: url
     };
 
     console.log(`Crawl successful: ${url} (${html.length} bytes, ${res.statusCode})`);

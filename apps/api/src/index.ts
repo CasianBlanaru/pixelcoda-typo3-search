@@ -16,6 +16,10 @@ import { router as askStreamRouter } from './routes/ask-stream.js';
 import { router as adminConsoleRouter } from './routes/admin-console.js';
 import { rateLimit, corsMiddleware, securityHeaders, requestLogger, inputSanitization } from './middleware/security.js';
 
+declare const Bun: {
+  serve(options: { fetch: typeof app.fetch; port: number }): void;
+} | undefined;
+
 const app = new Hono();
 
 // Security middleware

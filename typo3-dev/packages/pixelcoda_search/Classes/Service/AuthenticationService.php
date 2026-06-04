@@ -67,23 +67,6 @@ class AuthenticationService
     }
 
     /**
-     * Get valid API keys from configuration.
-     */
-    private function getValidApiKeys(): array
-    {
-        return [
-            'read' => [
-                $this->config['read_api_key'] ?? '',
-                'pc_read_dev_key', // Default development key
-            ],
-            'write' => [
-                $this->config['api_key'] ?? '',
-                'pc_write_dev_key', // Default development key
-            ],
-        ];
-    }
-
-    /**
      * Validate CORS origin.
      */
     public function validateCorsOrigin(string $origin): bool
@@ -95,28 +78,6 @@ class AuthenticationService
         }
 
         return in_array($origin, $allowedOrigins, true);
-    }
-
-    /**
-     * Get allowed CORS origins.
-     */
-    private function getAllowedOrigins(): array
-    {
-        $origins = $this->config['cors_origins'] ?? [];
-
-        if (is_string($origins)) {
-            $origins = array_map('trim', explode(',', $origins));
-        }
-
-        // Add common development origins
-        $origins = array_merge($origins, [
-            'http://localhost:3000',
-            'http://localhost:8080',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:8080',
-        ]);
-
-        return array_filter($origins);
     }
 
     /**
@@ -155,6 +116,7 @@ class AuthenticationService
                 $result['valid'] = true;
                 $result['type'] = 'api_key';
                 $result['api_key'] = $apiKey;
+
                 return $result;
             }
 
@@ -162,10 +124,12 @@ class AuthenticationService
                 $result['valid'] = true;
                 $result['type'] = 'api_key_write';
                 $result['api_key'] = $apiKey;
+
                 return $result;
             }
 
             $result['error'] = 'Invalid API key';
+
             return $result;
         }
 
@@ -175,14 +139,17 @@ class AuthenticationService
             if ($this->validateHmacSignature($body, $signature)) {
                 $result['valid'] = true;
                 $result['type'] = 'hmac';
+
                 return $result;
             }
 
             $result['error'] = 'Invalid HMAC signature';
+
             return $result;
         }
 
         $result['error'] = 'No valid authentication found';
+
         return $result;
     }
 
@@ -209,5 +176,44 @@ class AuthenticationService
             'pixelcoda_search',
             $success ? 0 : 2
         );
+    }
+
+    /**
+     * Get valid API keys from configuration.
+     */
+    private function getValidApiKeys(): array
+    {
+        return [
+            'read' => [
+                $this->config['read_api_key'] ?? '',
+                'pc_read_dev_key', // Default development key
+            ],
+            'write' => [
+                $this->config['api_key'] ?? '',
+                'pc_write_dev_key', // Default development key
+            ],
+        ];
+    }
+
+    /**
+     * Get allowed CORS origins.
+     */
+    private function getAllowedOrigins(): array
+    {
+        $origins = $this->config['cors_origins'] ?? [];
+
+        if (is_string($origins)) {
+            $origins = array_map('trim', explode(',', $origins));
+        }
+
+        // Add common development origins
+        $origins = array_merge($origins, [
+            'http://localhost:3000',
+            'http://localhost:8080',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:8080',
+        ]);
+
+        return array_filter($origins);
     }
 }

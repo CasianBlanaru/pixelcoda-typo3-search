@@ -11,7 +11,7 @@
         "@hono/node-server": "^1.12.0",
         "@hono/zod-validator": "^0.2.2",
         "@neondatabase/serverless": "^0.9.0",
-        "@pixelcoda/llm-adapter": "workspace:*",
+        "@pixelcoda/llm-adapter": "*",
         "dotenv": "^16.4.5",
         "hono": "^4.5.3",
         "jsonwebtoken": "^9.0.2",

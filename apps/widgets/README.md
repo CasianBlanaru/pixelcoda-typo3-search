@@ -399,8 +399,8 @@ MIT License - see LICENSE file for details.
 ## 🆘 Support
 
 For issues and questions:
-- GitHub Issues: [Report bugs](https://github.com/CasianBlanaru/typo3-search/issues)
-- Documentation: [Full API docs](https://github.com/CasianBlanaru/typo3-search/wiki)
+- GitHub Issues: [Report bugs](https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues)
+- Documentation: [Full API docs](https://github.com/CasianBlanaru/pixelcoda-typo3-search/wiki)
 
 ---
 

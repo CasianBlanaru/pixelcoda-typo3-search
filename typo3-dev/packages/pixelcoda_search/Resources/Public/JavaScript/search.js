@@ -361,7 +361,7 @@ class AskWidget {
         this.answerContent = container.querySelector('.answer-content');
         this.sourcesList = container.querySelector('.sources-list');
         this.sourcesContainer = container.querySelector('.answer-sources');
-        
+
         this.init();
     }
 
@@ -369,7 +369,7 @@ class AskWidget {
         if (this.form) {
             this.form.addEventListener('submit', (e) => this.handleSubmit(e));
         }
-        
+
         // Initialize if there's already a question in the URL
         const urlParams = new URLSearchParams(window.location.search);
         const question = urlParams.get('q');
@@ -380,18 +380,18 @@ class AskWidget {
 
     async handleSubmit(e) {
         e.preventDefault();
-        
+
         const question = this.questionInput.value.trim();
         const context = this.contextInput.value.trim();
-        
+
         if (question.length < 3) {
             this.showMessage('Please enter at least 3 characters', 'error');
             return;
         }
-        
+
         this.setLoading(true);
         this.showMessage('Processing your question...', 'info');
-        
+
         try {
             const response = await this.askQuestion(question, context);
             this.displayAnswer(question, response);
@@ -406,15 +406,15 @@ class AskWidget {
     async askQuestion(question, context = '') {
         const params = new URLSearchParams({
             q: question,
-            context: context
+            context
         });
-        
+
         const response = await fetch(`/index.php?type=1702&${params.toString()}`);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         return await response.json();
     }
 
@@ -422,14 +422,14 @@ class AskWidget {
         if (this.questionDisplay) {
             this.questionDisplay.textContent = question;
         }
-        
+
         if (response.data && response.data.attributes) {
             const { answer, sources } = response.data.attributes;
-            
+
             if (this.answerContent) {
                 this.answerContent.innerHTML = answer || 'No answer available.';
             }
-            
+
             if (sources && sources.length > 0 && this.sourcesList) {
                 this.sourcesList.innerHTML = '';
                 sources.forEach(source => {
@@ -443,16 +443,16 @@ class AskWidget {
                     `;
                     this.sourcesList.appendChild(li);
                 });
-                
+
                 if (this.sourcesContainer) {
                     this.sourcesContainer.style.display = 'block';
                 }
             }
-            
+
             if (this.resultsContainer) {
                 this.resultsContainer.style.display = 'block';
             }
-            
+
             this.showMessage('Answer generated successfully', 'success');
         } else {
             this.showMessage('No answer available', 'warning');
@@ -464,7 +464,7 @@ class AskWidget {
             this.messageContainer.textContent = message;
             this.messageContainer.className = `ask-message alert alert-${type}`;
             this.messageContainer.style.display = 'block';
-            
+
             // Auto-hide after 5 seconds for success messages
             if (type === 'success') {
                 setTimeout(() => {
@@ -478,7 +478,7 @@ class AskWidget {
         if (this.submitButton) {
             const btnText = this.submitButton.querySelector('.btn-text');
             const btnLoading = this.submitButton.querySelector('.btn-loading');
-            
+
             if (loading) {
                 this.submitButton.disabled = true;
                 if (btnText) btnText.style.display = 'none';
@@ -502,7 +502,7 @@ class AskStreamWidget {
         this.submitButton = container.querySelector('.ask-submit');
         this.resultsContainer = container.querySelector('.ask-results');
         this.answerContent = container.querySelector('.answer-content');
-        
+
         this.init();
     }
 
@@ -514,17 +514,17 @@ class AskStreamWidget {
 
     async handleSubmit(e) {
         e.preventDefault();
-        
+
         const question = this.questionInput.value.trim();
         const context = this.contextInput.value.trim();
-        
+
         if (question.length < 3) {
             return;
         }
-        
+
         this.setLoading(true);
         this.clearResults();
-        
+
         try {
             await this.streamAnswer(question, context);
         } catch (error) {
@@ -537,39 +537,39 @@ class AskStreamWidget {
     async streamAnswer(question, context = '') {
         const params = new URLSearchParams({
             q: question,
-            context: context
+            context
         });
-        
+
         const response = await fetch(`/index.php?type=1703&${params.toString()}`);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
-        
+
         if (this.resultsContainer) {
             this.resultsContainer.style.display = 'block';
         }
-        
+
         while (true) {
             const { done, value } = await reader.read();
-            
+
             if (done) break;
-            
+
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
             buffer = lines.pop(); // Keep incomplete line in buffer
-            
+
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
                     const data = line.slice(6);
                     if (data === '[DONE]') {
                         return;
                     }
-                    
+
                     try {
                         const parsed = JSON.parse(data);
                         this.updateAnswer(parsed);
@@ -605,13 +605,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize regular Ask widgets
     const askWidgets = document.querySelectorAll('.pixelcoda-ask, .pixelcoda-ask-content-element');
     askWidgets.forEach(widget => {
-        new AskWidget(widget);
+        widget.pixelcodaAskWidget = new AskWidget(widget);
     });
-    
+
     // Initialize streaming Ask widgets (if they have a specific class)
     const streamAskWidgets = document.querySelectorAll('.pixelcoda-ask-stream');
     streamAskWidgets.forEach(widget => {
-        new AskStreamWidget(widget);
+        widget.pixelcodaAskStreamWidget = new AskStreamWidget(widget);
     });
 });
 
