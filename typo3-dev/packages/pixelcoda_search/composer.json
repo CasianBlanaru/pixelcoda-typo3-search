@@ -58,7 +58,7 @@
         "fix:rector": "rector process",
         "check:php-cs": "php-cs-fixer fix --dry-run --diff",
         "check:rector": "rector process --dry-run",
-        "check:phpstan": "phpstan analyse -c phpstan.neon",
+        "check:phpstan": "phpstan analyse -c phpstan.neon --memory-limit=512M",
         "ci": [
             "@check:php-cs",
             "@check:rector",

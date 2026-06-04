@@ -148,6 +148,6 @@ class PixelcodaSearchSerializer
      */
     private function parseCollections(string $collections): array
     {
-        return array_map('trim', explode(',', $collections));
+        return array_map(trim(...), explode(',', $collections));
     }
 }

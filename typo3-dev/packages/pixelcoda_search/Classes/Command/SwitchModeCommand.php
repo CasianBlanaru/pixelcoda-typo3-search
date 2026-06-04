@@ -22,11 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SwitchModeCommand extends Command
 {
-    protected ConfigurationManager $configurationManager;
-
-    public function __construct(ConfigurationManager $configurationManager)
+    public function __construct(protected ConfigurationManager $configurationManager)
     {
-        $this->configurationManager = $configurationManager;
         parent::__construct();
     }
 
@@ -58,7 +55,7 @@ class SwitchModeCommand extends Command
 
         // Get current mode
         $currentMode = $this->getCurrentMode();
-        $io->text("Current mode: <info>{$currentMode}</info>");
+        $io->text(sprintf('Current mode: <info>%s</info>', $currentMode));
         $io->newLine();
 
         // Get target mode
@@ -82,7 +79,7 @@ class SwitchModeCommand extends Command
         }
 
         if ($currentMode === $targetMode) {
-            $io->success("Already in {$targetMode} mode. Nothing to do.");
+            $io->success(sprintf('Already in %s mode. Nothing to do.', $targetMode));
 
             return Command::SUCCESS;
         }
@@ -90,7 +87,7 @@ class SwitchModeCommand extends Command
         // Confirm switch
         if (!$input->getOption('force')) {
             $modeLabel = 'headless' === $targetMode ? 'Headless (JSON API)' : 'Standard (HTML Templates)';
-            if (!$io->confirm("Switch to {$modeLabel} mode?", true)) {
+            if (!$io->confirm(sprintf('Switch to %s mode?', $modeLabel), true)) {
                 $io->text('Mode switch cancelled.');
 
                 return Command::SUCCESS;
@@ -98,7 +95,7 @@ class SwitchModeCommand extends Command
         }
 
         try {
-            $io->section("🚀 Switching to {$targetMode} mode...");
+            $io->section(sprintf('🚀 Switching to %s mode...', $targetMode));
 
             // Step 1: Update site configuration
             $io->text('📝 Updating site configuration...');
@@ -125,7 +122,7 @@ class SwitchModeCommand extends Command
             $io->text('✅ All caches cleared');
 
             $io->newLine();
-            $io->success("✨ Successfully switched to {$targetMode} mode!");
+            $io->success(sprintf('✨ Successfully switched to %s mode!', $targetMode));
             $io->newLine();
 
             // Show mode-specific information
@@ -147,8 +144,8 @@ class SwitchModeCommand extends Command
 
             $io->note('🔄 Please reload your browser to see the changes!');
 
-        } catch (Exception $e) {
-            $io->error('Failed to switch mode: ' . $e->getMessage());
+        } catch (Exception $exception) {
+            $io->error('Failed to switch mode: ' . $exception->getMessage());
 
             return Command::FAILURE;
         }
@@ -187,7 +184,7 @@ class SwitchModeCommand extends Command
         }
 
         $content = file_get_contents($configPath);
-        $content = preg_replace('/renderingMode:\s*\w+/', "renderingMode: {$mode}", $content);
+        $content = preg_replace('/renderingMode:\s*\w+/', 'renderingMode: ' . $mode, $content);
 
         if (false === file_put_contents($configPath, $content)) {
             throw new Exception('Failed to update site configuration');
@@ -261,6 +258,7 @@ class SwitchModeCommand extends Command
             $path = $dir . '/' . $file;
             is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
+
         rmdir($dir);
     }
 }

@@ -60,25 +60,16 @@ class WebhookController extends ActionController
      */
     private function processWebhook(string $eventType, array $data): array
     {
-        switch ($eventType) {
-            case 'indexing.completed':
-                return $this->handleIndexingCompleted($data);
-
-            case 'indexing.failed':
-                return $this->handleIndexingFailed($data);
-
-            case 'search.analytics':
-                return $this->handleSearchAnalytics($data);
-
-            case 'webhook.test':
-                return $this->handleWebhookTest($data);
-
-            default:
-                return [
-                    'success' => false,
-                    'error' => 'Unknown event type: ' . $eventType,
-                ];
-        }
+        return match ($eventType) {
+            'indexing.completed' => $this->handleIndexingCompleted($data),
+            'indexing.failed' => $this->handleIndexingFailed($data),
+            'search.analytics' => $this->handleSearchAnalytics($data),
+            'webhook.test' => $this->handleWebhookTest($data),
+            default => [
+                'success' => false,
+                'error' => 'Unknown event type: ' . $eventType,
+            ],
+        };
     }
 
     /**

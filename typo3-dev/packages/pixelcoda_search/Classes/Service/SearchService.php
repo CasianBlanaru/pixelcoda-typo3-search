@@ -463,6 +463,7 @@ class SearchService
         if ([] !== $payload) {
             $options['body'] = json_encode($payload, JSON_THROW_ON_ERROR);
         }
+
         $response = $this->requestFactory->request(
             sprintf('%s/v1/index/%s/%s', $apiUrl, rawurlencode($projectId), rawurlencode($table)),
             $method,

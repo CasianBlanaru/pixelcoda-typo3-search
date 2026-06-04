@@ -24,13 +24,13 @@ class AuthenticationService
      */
     public function validateHmacSignature(string $payload, string $signature, ?string $secret = null): bool
     {
-        $secret = $secret ?? $this->config['hmac_secret'] ?? '';
+        $secret ??= $this->config['hmac_secret'] ?? '';
 
         if (empty($secret)) {
             return false;
         }
 
-        $expectedSignature = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+        $expectedSignature = 'sha256=' . hash_hmac('sha256', $payload, (string) $secret);
 
         return hash_equals($expectedSignature, $signature);
     }
@@ -40,13 +40,13 @@ class AuthenticationService
      */
     public function generateHmacSignature(string $payload, ?string $secret = null): string
     {
-        $secret = $secret ?? $this->config['hmac_secret'] ?? '';
+        $secret ??= $this->config['hmac_secret'] ?? '';
 
         if (empty($secret)) {
             return '';
         }
 
-        return 'sha256=' . hash_hmac('sha256', $payload, $secret);
+        return 'sha256=' . hash_hmac('sha256', $payload, (string) $secret);
     }
 
     /**
@@ -74,7 +74,7 @@ class AuthenticationService
     {
         $allowedOrigins = $this->getAllowedOrigins();
 
-        if (empty($allowedOrigins)) {
+        if ([] === $allowedOrigins) {
             return true; // Allow all if not configured
         }
 
@@ -86,7 +86,7 @@ class AuthenticationService
      */
     public function getAuthHeaders(?string $apiKey = null): array
     {
-        $apiKey = $apiKey ?? $this->config['api_key'] ?? '';
+        $apiKey ??= $this->config['api_key'] ?? '';
         $projectId = $this->config['project_id'] ?? '';
 
         return [
@@ -136,7 +136,7 @@ class AuthenticationService
 
         // Check for HMAC authentication
         $signature = $headers['X-Hub-Signature-256'] ?? $headers['x-hub-signature-256'] ?? '';
-        if (!empty($signature) && !empty($body)) {
+        if (!empty($signature) && ('' !== $body && '0' !== $body)) {
             if ($this->validateHmacSignature($body, $signature)) {
                 $result['valid'] = true;
                 $result['type'] = 'hmac';
@@ -199,7 +199,7 @@ class AuthenticationService
         $origins = $this->config['cors_origins'] ?? [];
 
         if (is_string($origins)) {
-            $origins = array_map('trim', explode(',', $origins));
+            $origins = array_map(trim(...), explode(',', $origins));
         }
 
         // Add common development origins

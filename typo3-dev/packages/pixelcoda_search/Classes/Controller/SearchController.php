@@ -19,11 +19,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class SearchController extends ActionController
 {
-    protected SearchService $searchService;
-
-    public function __construct(SearchService $searchService)
+    public function __construct(protected SearchService $searchService)
     {
-        $this->searchService = $searchService;
     }
 
     /**
@@ -86,7 +83,7 @@ class SearchController extends ActionController
                 } else {
                     $message = $this->getTranslation('ask.results.error');
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local AI answer method
                 $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
 
@@ -187,7 +184,7 @@ class SearchController extends ActionController
                 } else {
                     $message = 'Fehler bei der Suche. Bitte versuchen Sie es später erneut.';
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local search if API fails
                 $allResults = [];
 
@@ -283,7 +280,7 @@ class SearchController extends ActionController
                     $results = $this->formatApiResults($apiResponse['data']);
                     $meta = $apiResponse['meta']['pagination'] ?? $meta;
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local search if API fails
                 $allResults = $this->searchInPages($searchQuery);
                 $meta['total'] = count($allResults);
@@ -296,18 +293,16 @@ class SearchController extends ActionController
 
         // Format as JSON:API 1.0
         $jsonApiResponse = [
-            'data' => array_map(static function ($result) {
-                return [
-                    'type' => 'search-result',
-                    'id' => uniqid(),
-                    'attributes' => [
-                        'title' => $result['title'],
-                        'abstract' => $result['abstract'],
-                        'url' => $result['url'],
-                        'type' => $result['type'] ?? 'page',
-                    ],
-                ];
-            }, $results),
+            'data' => array_map(static fn (array $result): array => [
+                'type' => 'search-result',
+                'id' => uniqid(),
+                'attributes' => [
+                    'title' => $result['title'],
+                    'abstract' => $result['abstract'],
+                    'url' => $result['url'],
+                    'type' => $result['type'] ?? 'page',
+                ],
+            ], $results),
             'meta' => $meta,
             'links' => [
                 'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
@@ -347,7 +342,7 @@ class SearchController extends ActionController
                     $sources = $aiResponse['included'] ?? [];
                     $meta['status'] = 'success';
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local AI answer method
                 $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
 
@@ -621,7 +616,7 @@ class SearchController extends ActionController
             // Parse keywords as tags
             $tags = [];
             if ($row['keywords']) {
-                $tags = array_map('trim', explode(',', (string) $row['keywords']));
+                $tags = array_map(trim(...), explode(',', (string) $row['keywords']));
             }
 
             // Format date
@@ -1235,7 +1230,7 @@ class SearchController extends ActionController
             ],
             CURLOPT_TIMEOUT => 60,
             CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_WRITEFUNCTION => static function ($ch, $data) {
+            CURLOPT_WRITEFUNCTION => static function ($ch, $data): int {
                 echo $data;
                 flush();
 
@@ -1275,9 +1270,11 @@ class SearchController extends ActionController
         if ($filters['searchIn']['pages']) {
             $collections[] = 'pages';
         }
+
         if ($filters['searchIn']['content']) {
             $collections[] = 'tt_content';
         }
+
         if ($filters['searchIn']['news']) {
             $collections[] = 'news';
         }
