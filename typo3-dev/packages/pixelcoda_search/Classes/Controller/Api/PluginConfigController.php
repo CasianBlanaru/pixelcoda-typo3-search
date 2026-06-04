@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Controller\Api;
 
+use Doctrine\DBAL\ParameterType;
 use Exception;
-use PDO;
 use PixelCoda\PixelcodaSearch\Service\ConfigurationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -181,7 +181,7 @@ class PluginConfigController
             ->select('*')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, ParameterType::INTEGER)),
                 $queryBuilder->expr()->eq('deleted', 0),
                 $queryBuilder->expr()->eq('hidden', 0)
             )

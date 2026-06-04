@@ -416,7 +416,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('hidden', 0)
             )
             ->setMaxResults(20)
-            ->execute();
+            ->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -428,7 +428,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['uid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -486,7 +486,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('pages.hidden', 0)
             )
             ->setMaxResults(10)
-            ->execute();
+            ->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -501,7 +501,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -582,7 +582,7 @@ class SearchController extends ActionController
                 break;
         }
 
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -699,7 +699,7 @@ class SearchController extends ActionController
                 break;
         }
 
-        $statement = $queryBuilder->setMaxResults(20)->execute();
+        $statement = $queryBuilder->setMaxResults(20)->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -711,7 +711,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -780,7 +780,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('mm.uid_foreign', $pageUid),
                 $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('pages'))
             )
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -811,7 +811,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('mm.uid_foreign', $contentUid),
                 $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('tt_content'))
             )
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -875,7 +875,7 @@ class SearchController extends ActionController
         }
 
         $results = [];
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             // Build URL
@@ -952,7 +952,7 @@ class SearchController extends ActionController
         }
 
         $results = [];
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $abstract = strip_tags($row['bodytext'] ?? '');
@@ -1016,7 +1016,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('hidden', 0)
             )
             ->orderBy('title')
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -1054,7 +1054,7 @@ class SearchController extends ActionController
             )
             ->orderBy('title')
             ->setMaxResults($limit)
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $url = empty($row['slug']) ? '/index.php?id=' . $row['uid'] : $row['slug'];
@@ -1091,7 +1091,7 @@ class SearchController extends ActionController
                 )
                 ->orderBy('tt_content.header')
                 ->setMaxResults($limit - count($suggestions))
-                ->execute();
+                ->executeQuery();
 
             while ($row = $contentStatement->fetchAssociative()) {
                 $url = empty($row['slug']) ? '/index.php?id=' . $row['pid'] : $row['slug'];
