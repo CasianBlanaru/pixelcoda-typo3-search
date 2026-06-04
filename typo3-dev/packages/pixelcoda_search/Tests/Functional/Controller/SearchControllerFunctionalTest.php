@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PixelCoda\PixelcodaSearch\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -35,7 +35,7 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
             ['EXT:pixelcoda_search/Tests/Functional/Fixtures/TypoScript/setup.typoscript']
         );
 
-        GeneralUtility::makeInstance(SiteConfiguration::class)->write('test', [
+        $siteConfiguration = [
             'rootPageId' => 1,
             'base' => 'https://example.test/',
             'languages' => [
@@ -51,7 +51,10 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
             ],
             'errorHandling' => [],
             'routes' => [],
-        ]);
+        ];
+        $sitePath = $this->instancePath . '/typo3conf/sites/test';
+        GeneralUtility::mkdir_deep($sitePath);
+        GeneralUtility::writeFile($sitePath . '/config.yaml', Yaml::dump($siteConfiguration, 99, 2), true);
     }
 
     #[Test]
