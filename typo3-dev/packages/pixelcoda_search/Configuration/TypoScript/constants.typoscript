@@ -37,7 +37,7 @@ plugin.tx_pixelcodasearch_search {
         showDebug = 0
         
         # cat=plugin.tx_pixelcodasearch_search/basic; type=string; label=Collections to search (comma-separated)
-        collections = pages,news
+        collections = pages,tt_content
         
         # cat=plugin.tx_pixelcodasearch_search/basic; type=string; label=Search placeholder text
         placeholder = Website durchsuchen...

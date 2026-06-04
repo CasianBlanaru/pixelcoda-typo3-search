@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Log\LoggerInterface;
 
 /**
  * Authentication Service for HMAC and API Key validation.
@@ -13,8 +13,9 @@ class AuthenticationService
 {
     private array $config;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
         $this->config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
     }
 
@@ -158,7 +159,7 @@ class AuthenticationService
      */
     public function logAuthAttempt(string $ip, string $userAgent, bool $success, ?string $error = null): void
     {
-        if (!$this->config['enable_metrics'] ?? false) {
+        if (!($this->config['enable_metrics'] ?? false)) {
             return;
         }
 
@@ -170,12 +171,7 @@ class AuthenticationService
             'error' => $error,
         ];
 
-        // Log to TYPO3 log
-        GeneralUtility::sysLog(
-            json_encode($logData),
-            'pixelcoda_search',
-            $success ? 0 : 2
-        );
+        $this->logger->log($success ? 'info' : 'warning', 'Search authentication attempt', $logData);
     }
 
     /**

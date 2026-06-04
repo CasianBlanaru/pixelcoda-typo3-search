@@ -250,7 +250,7 @@ grep -E "(union|select|script|javascript)" /var/log/pixelcoda-search/api.log
 |-------|--------|
 | Schnellstart & lokale Umgebung | [QUICKSTART.md](QUICKSTART.md) |
 | Hauptdokumentation | [README.md](README.md) |
-| Heroku Deployment | [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) |
+| Railway Deployment | [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) |
 | TYPO3 Bootstrap Package | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |
 | TYPO3 DDEV | [typo3-dev/README.md](typo3-dev/README.md) |
 
@@ -259,7 +259,7 @@ grep -E "(union|select|script|javascript)" /var/log/pixelcoda-search/api.log
 ## 📞 Security Contact
 
 For security issues, please contact:
-- **Email**: security@pixelcoda.com
+- **Email**: security@pixelcoda.de
 - **PGP Key**: [Public key link]
 - **Response Time**: 24 hours for critical issues
 

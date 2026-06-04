@@ -316,4 +316,4 @@ ddev exec vendor/bin/typo3 cache:listgroups
 
 **Happy Coding!** 🎉
 
-Built with ❤️ by [pixelcoda](https://pixelcoda.com) for the TYPO3 community.
+Built with ❤️ by [pixelcoda](https://pixelcoda.de) for the TYPO3 community.

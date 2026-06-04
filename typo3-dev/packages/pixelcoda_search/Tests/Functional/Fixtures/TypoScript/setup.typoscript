@@ -1,0 +1,6 @@
+@import 'EXT:pixelcoda_search/Configuration/TypoScript/setup.typoscript'
+
+page = PAGE
+page {
+  10 =< styles.content.get
+}

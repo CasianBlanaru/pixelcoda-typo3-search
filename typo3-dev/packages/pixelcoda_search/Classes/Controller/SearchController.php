@@ -246,11 +246,6 @@ class SearchController extends ActionController
             'availableCategories' => $availableCategories,
         ]);
 
-        // Use the enhanced template with filters
-        $this->view->setTemplatePathAndFilename(
-            'EXT:pixelcoda_search/Resources/Private/Templates/Search/SearchWithFilters.html'
-        );
-
         return $this->htmlResponse();
     }
 

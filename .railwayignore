@@ -1,0 +1,9 @@
+.ddev/
+.git/
+.github/
+demo/
+docs/
+node_modules/
+typo3-dev/
+vendor/
+*.zip

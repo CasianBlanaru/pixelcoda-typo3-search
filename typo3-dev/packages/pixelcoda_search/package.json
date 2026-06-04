@@ -1,7 +1,7 @@
 {
     "name": "@pixelcoda/typo3-search-extension",
-    "version": "2.1.0",
-    "description": "PixelCoda Search Plugin for TYPO3",
+    "version": "2.2.0",
+    "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, headless rendering and optional AI answers",
     "main": "Resources/Public/JavaScript/search.js",
     "scripts": {
         "test": "jest",
@@ -17,7 +17,11 @@
         "typo3",
         "search",
         "autocomplete",
-        "filter"
+        "faceted-search",
+        "headless-search",
+        "meilisearch",
+        "ai-search",
+        "accessibility"
     ],
     "author": "PixelCoda",
     "license": "GPL-2.0-or-later",

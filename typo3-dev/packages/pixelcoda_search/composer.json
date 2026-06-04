@@ -1,8 +1,21 @@
 {
     "name": "pixelcoda/typo3-search",
-    "description": "Accessible search for TYPO3 with classic and headless rendering, suggestions, filters and optional AI-assisted answers.",
+    "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.",
     "type": "typo3-cms-extension",
     "license": "MIT",
+    "keywords": [
+        "typo3",
+        "typo3-extension",
+        "search",
+        "site-search",
+        "headless-search",
+        "autocomplete",
+        "faceted-search",
+        "meilisearch",
+        "ai-search",
+        "accessibility"
+    ],
+    "homepage": "https://pixelcoda.de",
     "require": {
         "php": "^8.1 || ^8.2 || ^8.3 || ^8.4 || ^8.5",
         "typo3/cms-core": "^12.4 || ^13.4 || ^14.0",
@@ -69,6 +82,7 @@
         }
     },
     "support": {
+        "docs": "https://github.com/CasianBlanaru/pixelcoda-typo3-search#readme",
         "issues": "https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues",
         "source": "https://github.com/CasianBlanaru/pixelcoda-typo3-search"
     }

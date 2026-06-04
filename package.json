@@ -1,6 +1,6 @@
 {
     "name": "pixelcoda-typo3-search",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
     "type": "module",
     "main": "simple-api.js",
@@ -27,7 +27,6 @@
         "build:widgets": "npm run build --workspace @pixelcoda/widgets",
         "build:llm-adapter": "npm run build --workspace @pixelcoda/llm-adapter",
         "build:standalone": "npm run build --workspace pixelcoda-search-api-standalone",
-        "heroku-postbuild": "echo 'Post-build complete'",
         "api:dev": "cd standalone-api && npm run dev",
         "api:start": "cd standalone-api && npm start",
         "widgets:dev": "cd apps/widgets && npm run dev",

@@ -5,10 +5,7 @@ declare(strict_types=1);
 use PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
 use PixelCoda\PixelcodaSearch\Eid\SuggestEid;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') || exit();
@@ -66,21 +63,6 @@ $extensionConfiguration['timeout'] ??= 30;
 $extensionConfiguration['debug_mode'] ??= false;
 
 // Static TypoScript files are now added in ext_tables.php
-
-// Add page TSconfig
-ExtensionManagementUtility::addPageTSConfig(
-    '@import "EXT:pixelcoda_search/Configuration/TsConfig/Page/All.tsconfig"'
-);
-
-// Register icon for backend module
-$iconRegistry = GeneralUtility::makeInstance(
-    IconRegistry::class
-);
-$iconRegistry->registerIcon(
-    'pixelcoda-search',
-    SvgIconProvider::class,
-    ['source' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg']
-);
 
 // Register the search plugin for the search results page
 ExtensionUtility::configurePlugin(

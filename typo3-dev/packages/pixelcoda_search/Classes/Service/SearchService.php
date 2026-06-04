@@ -7,6 +7,7 @@ namespace PixelCoda\PixelcodaSearch\Service;
 use Exception;
 use RuntimeException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -25,7 +26,8 @@ class SearchService
 
     public function __construct(
         ?RequestFactory $requestFactory = null,
-        ?ExtensionConfiguration $extensionConfiguration = null
+        ?ExtensionConfiguration $extensionConfiguration = null,
+        private readonly ?ConnectionPool $connectionPool = null
     ) {
         $this->requestFactory = $requestFactory ?? GeneralUtility::makeInstance(RequestFactory::class);
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
@@ -294,17 +296,17 @@ class SearchService
      */
     public function indexRecord(string $table, int $id, string $action = 'update', bool $force = false): bool
     {
-        // This is a placeholder - actual implementation would extract record data
-        // and send it to the indexing API
-        $this->logger->info('Indexing record', [
-            'table' => $table,
-            'id' => $id,
-            'action' => $action,
-            'force' => $force,
-        ]);
+        if ('delete' === $action) {
+            return $this->deleteRecord($table, $id);
+        }
 
-        // For now, just return true to avoid errors
-        // TODO: Implement actual record indexing
+        $records = $this->fetchRecords($table, $id);
+        if ([] === $records) {
+            return false;
+        }
+
+        $this->sendDocuments($table, $records);
+
         return true;
     }
 
@@ -313,14 +315,8 @@ class SearchService
      */
     public function deleteRecord(string $table, int $id): bool
     {
-        // This is a placeholder - actual implementation would call delete API
-        $this->logger->info('Deleting record from index', [
-            'table' => $table,
-            'id' => $id,
-        ]);
+        $this->requestIndexApi($table, 'DELETE', ['ids' => [(string) $id]]);
 
-        // For now, just return true to avoid errors
-        // TODO: Implement actual record deletion
         return true;
     }
 
@@ -329,16 +325,13 @@ class SearchService
      */
     public function indexTable(string $table, bool $force = false): int
     {
-        // This is a placeholder - actual implementation would fetch all records
-        // and index them
-        $this->logger->info('Indexing table', [
-            'table' => $table,
-            'force' => $force,
-        ]);
+        $records = $this->fetchRecords($table);
+        $batchSize = max(1, (int) ($this->config['batch_size'] ?? 50));
+        foreach (array_chunk($records, $batchSize) as $batch) {
+            $this->sendDocuments($table, $batch);
+        }
 
-        // For now, just return 0 to avoid errors
-        // TODO: Implement actual table indexing
-        return 0;
+        return count($records);
     }
 
     /**
@@ -346,14 +339,7 @@ class SearchService
      */
     public function getTableRecordCount(string $table): int
     {
-        // This is a placeholder - actual implementation would count records
-        $this->logger->info('Getting table record count', [
-            'table' => $table,
-        ]);
-
-        // For now, just return 0 to avoid errors
-        // TODO: Implement actual record counting
-        return 0;
+        return count($this->fetchRecords($table));
     }
 
     /**
@@ -361,13 +347,8 @@ class SearchService
      */
     public function clearTableIndex(string $table): bool
     {
-        // This is a placeholder - actual implementation would clear table index
-        $this->logger->info('Clearing table index', [
-            'table' => $table,
-        ]);
+        $this->requestIndexApi($table, 'DELETE', ['all' => true]);
 
-        // For now, just return true to avoid errors
-        // TODO: Implement actual index clearing
         return true;
     }
 
@@ -376,11 +357,10 @@ class SearchService
      */
     public function clearAllIndexes(): bool
     {
-        // This is a placeholder - actual implementation would clear all indexes
-        $this->logger->info('Clearing all indexes');
+        foreach ($this->getAllowedTables() as $table) {
+            $this->clearTableIndex($table);
+        }
 
-        // For now, just return true to avoid errors
-        // TODO: Implement actual index clearing
         return true;
     }
 
@@ -389,11 +369,109 @@ class SearchService
      */
     public function getIndexStatistics(): ?array
     {
-        // This is a placeholder - actual implementation would get stats from API
-        $this->logger->info('Getting index statistics');
+        $total = 0;
+        foreach ($this->getAllowedTables() as $table) {
+            $result = $this->requestIndexApi($table, 'GET');
+            $total += (int) ($result['documents'] ?? 0);
+        }
 
-        // For now, just return null to avoid errors
-        // TODO: Implement actual statistics retrieval
-        return null;
+        return ['total_documents' => $total];
+    }
+
+    private function getConnectionPool(): ConnectionPool
+    {
+        return $this->connectionPool ?? GeneralUtility::makeInstance(ConnectionPool::class);
+    }
+
+    private function getAllowedTables(): array
+    {
+        return ['pages', 'tt_content'];
+    }
+
+    private function fetchRecords(string $table, ?int $id = null): array
+    {
+        if (!in_array($table, $this->getAllowedTables(), true)) {
+            throw new RuntimeException('Unsupported index table: ' . $table);
+        }
+
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $fields = 'pages' === $table
+            ? ['uid', 'pid', 'title', 'slug', 'abstract', 'keywords', 'tstamp']
+            : ['uid', 'pid', 'header', 'bodytext', 'CType', 'tstamp'];
+        $queryBuilder->select(...$fields)
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq('deleted', 0),
+                $queryBuilder->expr()->eq('hidden', 0)
+            );
+        if (null !== $id) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id)));
+        }
+
+        return array_map(
+            fn (array $record): array => $this->mapRecord($table, $record),
+            $queryBuilder->executeQuery()->fetchAllAssociative()
+        );
+    }
+
+    private function mapRecord(string $table, array $record): array
+    {
+        if ('pages' === $table) {
+            return [
+                'id' => (string) $record['uid'],
+                'title' => (string) $record['title'],
+                'summary' => trim(strip_tags((string) $record['abstract'])),
+                'content' => trim(strip_tags((string) $record['abstract'])),
+                'keywords' => (string) $record['keywords'],
+                'url' => (string) ($record['slug'] ?: '/?id=' . $record['uid']),
+                'language' => 'de',
+            ];
+        }
+
+        return [
+            'id' => (string) $record['uid'],
+            'title' => (string) ($record['header'] ?: 'Inhalt ' . $record['uid']),
+            'summary' => trim(strip_tags((string) $record['bodytext'])),
+            'content' => trim(strip_tags((string) $record['bodytext'])),
+            'url' => '/?id=' . $record['pid'] . '#c' . $record['uid'],
+            'language' => 'de',
+        ];
+    }
+
+    private function sendDocuments(string $table, array $documents): void
+    {
+        $this->requestIndexApi($table, 'POST', ['documents' => $documents]);
+    }
+
+    private function requestIndexApi(string $table, string $method, array $payload = []): array
+    {
+        $apiUrl = rtrim((string) ($this->config['api_url'] ?? ''), '/');
+        $projectId = (string) ($this->config['project_id'] ?? 'typo3');
+        $apiKey = (string) ($this->config['api_key'] ?? '');
+        if ('' === $apiUrl || '' === $apiKey) {
+            throw new RuntimeException('pixelcoda Search write API is not configured');
+        }
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $apiKey,
+            ],
+            'timeout' => (int) ($this->config['timeout'] ?? 30),
+        ];
+        if ([] !== $payload) {
+            $options['body'] = json_encode($payload, JSON_THROW_ON_ERROR);
+        }
+        $response = $this->requestFactory->request(
+            sprintf('%s/v1/index/%s/%s', $apiUrl, rawurlencode($projectId), rawurlencode($table)),
+            $method,
+            $options
+        );
+        if ($response->getStatusCode() >= 300) {
+            throw new RuntimeException('Index API returned status ' . $response->getStatusCode());
+        }
+
+        return json_decode((string) $response->getBody(), true) ?: [];
     }
 }

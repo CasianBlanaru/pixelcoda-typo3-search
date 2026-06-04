@@ -11,9 +11,10 @@ ExtensionManagementUtility::addTcaSelectItem(
     'tt_content',
     'CType',
     [
-        'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:tt_content.CType.pixelcodasearch_search',
-        'pixelcodasearch_search',
-        'content-text',
+        'label' => 'LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:tt_content.CType.pixelcodasearch_search',
+        'value' => 'pixelcodasearch_search',
+        'icon' => 'pixelcoda-search',
+        'group' => 'plugins',
     ],
     'text',
     'after'

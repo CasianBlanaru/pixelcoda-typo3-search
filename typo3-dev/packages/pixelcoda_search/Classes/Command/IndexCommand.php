@@ -147,6 +147,11 @@ class IndexCommand extends Command
     {
         $config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
 
-        return $config['enabled_tables'] ?? ['pages', 'tt_content'];
+        $configuredTables = $config['enabled_tables'] ?? ['pages', 'tt_content'];
+        if (is_string($configuredTables)) {
+            $configuredTables = array_filter(array_map('trim', explode(',', $configuredTables)));
+        }
+
+        return array_values(array_intersect((array) $configuredTables, ['pages', 'tt_content']));
     }
 }

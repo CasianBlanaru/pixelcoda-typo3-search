@@ -230,4 +230,4 @@ For issues and questions:
 
 ---
 
-Built with ❤️ by [pixelcoda](https://pixelcoda.com)
+Built with ❤️ by [pixelcoda](https://pixelcoda.de)

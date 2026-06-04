@@ -92,6 +92,9 @@ plugin.tx_pixelcodasearch_search {
     }
     
     settings {
+        apiUrl = {$pixelcoda.search.apiUrl}
+        apiKey = {$pixelcoda.search.readApiKey}
+        project = {$pixelcoda.search.projectId}
         mode = {$plugin.tx_pixelcodasearch_search.settings.mode}
         resultsPerPage = {$plugin.tx_pixelcodasearch_search.settings.resultsPerPage}
         maxPassages = {$plugin.tx_pixelcodasearch_search.settings.maxPassages}

@@ -618,3 +618,210 @@ document.addEventListener('DOMContentLoaded', function () {
 // Export functions for global use
 window.toggleFilters = toggleFilters;
 window.resetFilters = resetFilters;
+
+function createSearchResult(result) {
+    const attributes = result.attributes || {};
+    const item = document.createElement('article');
+    item.className = 'pixelcoda-search-result';
+
+    const title = document.createElement('h3');
+    const link = document.createElement('a');
+    link.href = attributes.url || '#';
+    link.textContent = attributes.title || 'Ohne Titel';
+    title.appendChild(link);
+
+    const summary = document.createElement('p');
+    summary.textContent = attributes.summary || attributes.content || 'Keine Beschreibung verfügbar';
+
+    const meta = document.createElement('p');
+    meta.className = 'pixelcoda-search-result-meta';
+    const score = attributes.score ? ` · Score: ${Math.round(attributes.score * 100)}%` : '';
+    meta.textContent = `${attributes.collection || 'Unbekannt'}${score}`;
+
+    item.append(title, summary, meta);
+    return item;
+}
+
+function displayAiAnswer(container, payload) {
+    const answer = payload.data?.attributes || {};
+    const title = document.createElement('h4');
+    title.textContent = 'KI-Antwort';
+
+    const text = document.createElement('p');
+    text.textContent = answer.text || answer.answer || 'Für diese Frage ist keine Antwort verfügbar.';
+
+    container.replaceChildren(title, text);
+
+    if (Array.isArray(payload.included) && payload.included.length > 0) {
+        const sourcesTitle = document.createElement('h5');
+        sourcesTitle.textContent = 'Quellen';
+        const sources = document.createElement('ul');
+
+        payload.included.forEach(source => {
+            const attributes = source.attributes || {};
+            const item = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = attributes.url || '/';
+            link.textContent = attributes.title || 'Quelle';
+            item.appendChild(link);
+            sources.appendChild(item);
+        });
+
+        container.append(sourcesTitle, sources);
+    }
+
+    container.hidden = false;
+}
+
+function initContentElementSearch(container) {
+    if (container.dataset.searchInitialized === 'true') {
+        return;
+    }
+    container.dataset.searchInitialized = 'true';
+
+    const uid = container.dataset.uid;
+    const apiUrl = container.dataset.apiUrl || 'http://localhost:8787';
+    const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
+    const project = container.dataset.project || 'typo3';
+    const resultsPerPage = Number.parseInt(container.dataset.resultsPerPage, 10) || 10;
+    const collections = (container.dataset.collections || 'pages,tt_content').split(',');
+    const form = container.querySelector(`#search-form-${uid}`);
+    const input = container.querySelector(`#search-input-${uid}`);
+    const status = container.querySelector(`#search-status-${uid}`);
+    const results = container.querySelector(`#search-results-${uid}`);
+    const resultsContent = container.querySelector(`#results-content-${uid}`);
+    const apiStatus = container.querySelector(`#api-status-${uid}`);
+    const aiForm = container.querySelector(`#ai-form-${uid}`);
+    const aiInput = container.querySelector(`#ai-input-${uid}`);
+    const aiStatus = container.querySelector(`#ai-status-${uid}`);
+    const aiResult = container.querySelector(`#ai-result-${uid}`);
+
+    if (!form || !input || !status || !results || !resultsContent || !apiStatus) {
+        return;
+    }
+
+    fetch(`${apiUrl}/health`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('API not available');
+            }
+            apiStatus.textContent = 'Online';
+            apiStatus.className = 'pixelcoda-search-status is-online';
+        })
+        .catch(() => {
+            apiStatus.textContent = 'Offline';
+            apiStatus.className = 'pixelcoda-search-status is-offline';
+        });
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const query = input.value.trim();
+        if (!query) {
+            input.focus();
+            return;
+        }
+
+        status.hidden = false;
+        status.classList.remove('d-none');
+        results.hidden = true;
+        results.style.display = 'none';
+        resultsContent.replaceChildren();
+
+        try {
+            const response = await fetch(`${apiUrl}/v1/search/${encodeURIComponent(project)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    q: query,
+                    limit: resultsPerPage,
+                    collections
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Search API returned ${response.status}`);
+            }
+
+            const payload = await response.json();
+            const resultItems = Array.isArray(payload.data) ? payload.data : [];
+
+            if (resultItems.length === 0) {
+                const message = document.createElement('p');
+                message.className = 'pixelcoda-search-empty';
+                message.textContent = `Keine Ergebnisse für „${query}“ gefunden.`;
+                resultsContent.appendChild(message);
+            } else {
+                resultItems.forEach(result => resultsContent.appendChild(createSearchResult(result)));
+            }
+
+            results.hidden = false;
+            results.style.display = 'block';
+        } catch (error) {
+            const message = document.createElement('p');
+            message.className = 'pixelcoda-search-error';
+            message.textContent = 'Die Suche ist momentan nicht erreichbar. Bitte versuchen Sie es später erneut.';
+            resultsContent.appendChild(message);
+            results.hidden = false;
+            results.style.display = 'block';
+            console.error('Pixelcoda Search request failed:', error);
+        } finally {
+            status.hidden = true;
+            status.classList.add('d-none');
+        }
+    });
+
+    if (aiForm && aiInput && aiStatus && aiResult) {
+        aiForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            const question = aiInput.value.trim();
+            if (question.length < 3) {
+                aiInput.focus();
+                return;
+            }
+
+            aiStatus.hidden = false;
+            aiResult.hidden = true;
+
+            try {
+                const response = await fetch(`${apiUrl}/v1/ask/${encodeURIComponent(project)}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        q: question,
+                        maxPassages: 6,
+                        collections
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ask API returned ${response.status}`);
+                }
+
+                displayAiAnswer(aiResult, await response.json());
+            } catch (error) {
+                aiResult.textContent = 'Die KI-Antwort ist momentan nicht erreichbar. Bitte versuchen Sie es später erneut.';
+                aiResult.classList.add('is-error');
+                aiResult.hidden = false;
+                console.error('Pixelcoda AI request failed:', error);
+            } finally {
+                aiStatus.hidden = true;
+            }
+        });
+    }
+}
+
+function initContentElementSearchElements() {
+    document.querySelectorAll('.pixelcoda-search-container').forEach(initContentElementSearch);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContentElementSearchElements);
+} else {
+    initContentElementSearchElements();
+}

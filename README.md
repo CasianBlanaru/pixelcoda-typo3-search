@@ -62,12 +62,28 @@ filters, suggestions, hybrid retrieval and optional AI-assisted answers.
 | [QUICKSTART.md](QUICKSTART.md) | 5-minute setup: Simple API, full stack, TYPO3 with DDEV |
 | [typo3-dev/README.md](typo3-dev/README.md) | TYPO3 DDEV environment, composer, Install Tool |
 | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) | TYPO3 Bootstrap Package installation and configuration |
-| [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) | Heroku buildpack and deployment troubleshooting |
+| [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) | Production deployment on Railway |
 | [SECURITY.md](SECURITY.md) | API keys, HMAC, rate limiting, production checklist |
+| [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |
 
 ## 🛠️ Quick Start
 
-**Minimal (demo only):** `npm install` → `npm run dev` → API at http://localhost:8787. See [QUICKSTART.md](QUICKSTART.md).
+**Minimal persistent API:** `npm install` → `npm run dev` → API at
+http://localhost:8787. Indexed documents are stored in `.data/search-index.json`
+locally. See [QUICKSTART.md](QUICKSTART.md).
+
+After configuring the TYPO3 extension API URL and write key, index published
+pages and content elements:
+
+```bash
+vendor/bin/typo3 pixelcoda:search:reindex
+vendor/bin/typo3 pixelcoda:search:index --dry-run
+```
+
+The frontend content element provides keyword search and an optional
+source-grounded AI answer panel. The production API additionally supports
+Meilisearch, PostgreSQL/pgvector, hybrid retrieval, synonyms, metrics and
+OpenAI, Azure OpenAI, Ollama or Hugging Face through the LLM adapter.
 
 **Full setup:**
 
@@ -505,4 +521,4 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 ---
 
-Built with ❤️ by [pixelcoda](https://pixelcoda.com) for the TYPO3 community.
+Built with ❤️ by [pixelcoda](https://pixelcoda.de) for the TYPO3 community.

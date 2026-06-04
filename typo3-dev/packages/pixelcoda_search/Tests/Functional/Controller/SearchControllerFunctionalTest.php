@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Functional\Controller;
 
+use TYPO3\CMS\Core\Configuration\SiteConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * Functional test for SearchController.
+ * Functional tests for the classic frontend content element.
  */
-class SearchControllerFunctionalTest extends FunctionalTestCase
+final class SearchControllerFunctionalTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/pixelcoda_search',
@@ -27,197 +29,71 @@ class SearchControllerFunctionalTest extends FunctionalTestCase
 
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_category.csv');
-
         $this->setUpFrontendRootPage(
             1,
             ['EXT:pixelcoda_search/Tests/Functional/Fixtures/TypoScript/setup.typoscript']
         );
+
+        GeneralUtility::makeInstance(SiteConfiguration::class)
+            ->createNewBasicSite('test', 1, 'https://example.test/');
     }
 
     /**
      * @test
      */
-    public function searchFindsPagesByTitle(): void
+    public function searchContentElementRendersOnRootPage(): void
+    {
+        $content = $this->renderRootPage();
+
+        self::assertStringContainsString('pixelcoda-search-container', $content);
+        self::assertStringContainsString('Website durchsuchen', $content);
+        self::assertStringContainsString('Suchergebnisse', $content);
+    }
+
+    /**
+     * @test
+     */
+    public function searchContentElementExposesHeadlessApiConfiguration(): void
+    {
+        $content = $this->renderRootPage();
+
+        self::assertStringContainsString('data-api-url="http://localhost:8787"', $content);
+        self::assertStringContainsString('data-project="typo3"', $content);
+        self::assertStringContainsString('data-collections="pages,tt_content"', $content);
+    }
+
+    /**
+     * @test
+     */
+    public function searchContentElementRendersAccessibleControls(): void
+    {
+        $content = $this->renderRootPage();
+
+        self::assertStringContainsString('aria-label="Suchbegriff eingeben"', $content);
+        self::assertStringContainsString('role="status"', $content);
+        self::assertStringContainsString('aria-live="polite"', $content);
+        self::assertStringContainsString('<label for="ai-input-', $content);
+    }
+
+    /**
+     * @test
+     */
+    public function searchContentElementLoadsFrontendAssets(): void
+    {
+        $content = $this->renderRootPage();
+
+        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/Css/search.css', $content);
+        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/JavaScript/search.js', $content);
+    }
+
+    private function renderRootPage(): string
     {
         $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=test')
+            new InternalRequest('https://example.test/')
         );
 
-        $content = (string) $response->getBody();
+        self::assertSame(200, $response->getStatusCode());
 
-        self::assertStringContainsString('Test Page', $content);
-        self::assertStringContainsString('search-result-item', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function searchFindsContentElements(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=content')
-        );
-
-        $content = (string) $response->getBody();
-
-        self::assertStringContainsString('Test Content', $content);
-        self::assertStringContainsString('search-result-item', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function searchFiltersByCategory(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=test&category=1')
-        );
-
-        $content = (string) $response->getBody();
-
-        self::assertStringContainsString('Category Test Page', $content);
-        self::assertStringNotContainsString('Uncategorized Page', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function searchPaginationWorks(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=test&page=2')
-        );
-
-        $content = (string) $response->getBody();
-
-        self::assertStringContainsString('pagination', $content);
-        self::assertStringContainsString('page=1', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function suggestEndpointReturnsJson(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/index.php?eID=search_suggest&q=test')
-        );
-
-        $content = (string) $response->getBody();
-        $json = json_decode($content, true);
-
-        self::assertIsArray($json);
-        self::assertNotEmpty($json);
-        self::assertArrayHasKey('title', $json[0]);
-        self::assertArrayHasKey('url', $json[0]);
-        self::assertArrayHasKey('type', $json[0]);
-    }
-
-    /**
-     * @test
-     */
-    public function searchSortsResultsCorrectly(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=test&sort=title')
-        );
-
-        $content = (string) $response->getBody();
-
-        // Check if results are present and sorted
-        self::assertStringContainsString('search-result-item', $content);
-
-        // Extract titles and verify alphabetical order
-        preg_match_all('/<h2 class="search-result-title">(.*?)<\/h2>/s', $content, $matches);
-
-        if (count($matches[1]) > 1) {
-            $titles = array_map('strip_tags', $matches[1]);
-            $sortedTitles = $titles;
-            sort($sortedTitles);
-
-            self::assertEquals($sortedTitles, $titles);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function searchHandlesSpecialCharacters(): void
-    {
-        $specialQueries = [
-            'test&special',
-            'test<script>',
-            'test"quote',
-            "test'apostrophe",
-        ];
-
-        foreach ($specialQueries as $query) {
-            $response = $this->executeFrontendSubRequest(
-                $this->buildRequest('/search?q=' . urlencode($query))
-            );
-
-            $content = (string) $response->getBody();
-
-            // Should not break and should escape properly
-            self::assertStringNotContainsString('<script>', $content);
-            self::assertStringContainsString('search-results-container', $content);
-        }
-    }
-
-    /**
-     * @test
-     */
-    public function emptySearchShowsNoResults(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=')
-        );
-
-        $content = (string) $response->getBody();
-
-        self::assertStringContainsString('search-results-container', $content);
-        self::assertStringNotContainsString('search-result-item', $content);
-    }
-
-    /**
-     * @test
-     */
-    public function searchWithDateRangeFilter(): void
-    {
-        $response = $this->executeFrontendSubRequest(
-            $this->buildRequest('/search?q=test&date_from=2024-01-01&date_to=2024-12-31')
-        );
-
-        $content = (string) $response->getBody();
-
-        self::assertStringContainsString('search-results-container', $content);
-        self::assertStringContainsString('filter-tag', $content);
-    }
-
-    /**
-     * Build a frontend request.
-     */
-    protected function buildRequest(string $uri): InternalRequest
-    {
-        $request = new InternalRequest($uri);
-        $parsedUrl = parse_url($uri);
-        if (isset($parsedUrl['query']) && ('' !== $parsedUrl['query'] && '0' !== $parsedUrl['query'])) {
-            parse_str($parsedUrl['query'], $queryParams);
-            $request = $request->withQueryParameters($queryParams);
-        }
-
-        return $request;
-    }
-
-    /**
-     * Parse query string from URI.
-     */
-    protected function parseQueryString(string $uri): array
-    {
-        $parts = parse_url($uri);
-        parse_str($parts['query'] ?? '', $params);
-
-        return $params;
+        return (string) $response->getBody();
     }
 }

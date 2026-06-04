@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Pixelcoda Search',
-    'description' => 'Accessible TYPO3 search with classic and headless rendering, suggestions, filters and optional AI-assisted answers.',
+    'description' => 'Accessible TYPO3 site search with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.',
     'category' => 'plugin',
-    'version' => '2.1.0',
+    'version' => '2.2.0',
     'state' => 'stable',
     'author' => 'Casian Blanaru (Pixelcoda)',
     'author_email' => 'casianus@me.com',
