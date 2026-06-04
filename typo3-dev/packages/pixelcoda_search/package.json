@@ -1,17 +1,17 @@
 {
     "name": "@pixelcoda/typo3-search-extension",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, headless rendering and optional AI answers",
     "main": "Resources/Public/JavaScript/search.js",
     "scripts": {
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage",
-        "lint": "eslint Resources/Public/JavaScript/*.js",
-        "lint:fix": "eslint Resources/Public/JavaScript/*.js --fix",
-        "build:css": "echo 'CSS already exists, skipping build'",
-        "build:js": "echo 'JavaScript already exists, skipping build'",
-        "build": "yarn build:css && yarn build:js"
+        "lint": "eslint Resources/Public/JavaScript/search.js",
+        "lint:fix": "eslint Resources/Public/JavaScript/search.js --fix",
+        "build:css": "esbuild Resources/Public/Css/search.css --minify --outfile=Resources/Public/Css/search.min.css",
+        "build:js": "esbuild Resources/Public/JavaScript/search.js --minify --outfile=Resources/Public/JavaScript/search.min.js",
+        "build": "npm run build:css && npm run build:js"
     },
     "keywords": [
         "typo3",
@@ -34,6 +34,7 @@
         "eslint-plugin-import": "^2.28.0",
         "eslint-plugin-n": "^16.1.0",
         "eslint-plugin-promise": "^6.1.0",
+        "esbuild": "^0.28.0",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0"
     },

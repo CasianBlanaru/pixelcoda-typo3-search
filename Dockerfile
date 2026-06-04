@@ -1,0 +1,46 @@
+FROM php:8.3-apache-bookworm
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        default-mysql-client \
+        gettext-base \
+        libfreetype6-dev \
+        libicu-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+        libwebp-dev \
+        libzip-dev \
+        unzip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j"$(nproc)" gd intl mysqli opcache zip \
+    && a2enmod deflate expires headers rewrite \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www/html
+
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+COPY typo3-dev/composer.json typo3-dev/composer.lock ./
+COPY typo3-dev/packages ./packages
+
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist \
+    --optimize-autoloader
+
+COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
+COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
+COPY deployment/typo3/healthz.php public/healthz.php
+
+RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
+    && mkdir -p /data /var/www/html/public/fileadmin /var/www/html/var \
+    && chown -R www-data:www-data /data /var/www/html
+
+ENV PORT=8080 \
+    TYPO3_CONTEXT=Production
+
+EXPOSE 8080
+
+ENTRYPOINT ["pixelcoda-typo3-entrypoint"]
+CMD ["apache2-foreground"]

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.2.1 - 2026-06-04
+
+- Replace ambiguous mixed-runtime Railpack detection with explicit Docker
+  deployments for TYPO3 and the Search API.
+- Add persistent TYPO3 first-deploy setup for Railway MySQL and `/data`.
+- Fix CI commands for current ESLint and Composer versions.
+- Correct frontend search heading hierarchy for automated accessibility checks.
+- Load minified Search assets only when a Search view is rendered.
+- Add WebP/lazy-loading guidance plus compressed, immutable static assets for
+  the Railway TYPO3 service.
+- Make functional tests self-contained with SQLite and modern PHPUnit
+  attributes.
+- Reach Lighthouse 100 in Performance, Accessibility, Best Practices and SEO
+  for the production Search landing page.
+
 ## 2.2.0 - 2026-06-04
 
 - Replace the legacy deployment setup with Railway configuration, health

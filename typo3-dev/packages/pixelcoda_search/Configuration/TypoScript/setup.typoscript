@@ -249,25 +249,6 @@ pixelcoda_webhook {
     }
 }
 
-# Include CSS and JavaScript for classic mode
-page {
-    includeCSS {
-        pixelcodaSearch = EXT:pixelcoda_search/Resources/Public/Css/search.css
-        pixelcodaSearch {
-            media = all
-            disableCompression = 1
-        }
-    }
-    
-    includeJSFooter {
-        pixelcodaSearch = EXT:pixelcoda_search/Resources/Public/JavaScript/search.js
-        pixelcodaSearch {
-            async = 1
-            defer = 1
-        }
-    }
-}
-
 # AJAX endpoint for suggestions
 pixelcoda_suggest = PAGE
 pixelcoda_suggest {

@@ -1,6 +1,6 @@
 {
     "name": "pixelcoda-typo3-search",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
     "type": "module",
     "main": "simple-api.js",
@@ -21,7 +21,8 @@
         "test": "npm run test:extension",
         "test:extension": "npm --prefix typo3-dev/packages/pixelcoda_search test -- --runInBand",
         "lint:extension": "npm --prefix typo3-dev/packages/pixelcoda_search run lint",
-        "build": "npm run build:llm-adapter && npm run build:widgets && npm run build:worker && npm run build:api && npm run build:standalone",
+        "build": "npm run build:extension && npm run build:llm-adapter && npm run build:widgets && npm run build:worker && npm run build:api && npm run build:standalone",
+        "build:extension": "npm --prefix typo3-dev/packages/pixelcoda_search run build",
         "build:api": "npm run build --workspace @pixelcoda/api",
         "build:worker": "npm run build --workspace @pixelcoda/worker",
         "build:widgets": "npm run build --workspace @pixelcoda/widgets",

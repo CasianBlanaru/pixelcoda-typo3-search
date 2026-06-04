@@ -177,6 +177,7 @@ typo3-dev/env.example
 typo3-dev/packages/*/vendor/
 typo3-dev/packages/*/composer.lock
 typo3-dev/packages/*/Tests/Build/.phpunit.cache/
+**/cookies.txt
 
 # TYPO3 Database dumps (but keep structure files)
 typo3-dev/data/*.sql

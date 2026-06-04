@@ -14,13 +14,13 @@
         <!-- Search Form -->
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h2 class="card-title mb-0">
                     <i class="fas fa-search me-2"></i>
                     <f:if condition="{data.header}">
                         <f:then>{data.header}</f:then>
                         <f:else>Website durchsuchen</f:else>
                     </f:if>
-                </h5>
+                </h2>
             </div>
             <div class="card-body">
                 <form class="pixelcoda-search-form" id="search-form-{data.uid}">
@@ -55,7 +55,7 @@
             <section class="pixelcoda-ai-panel" aria-labelledby="ai-title-{data.uid}">
                 <div>
                     <span class="pixelcoda-ai-label">KI-gestützte Antwort</span>
-                    <h3 id="ai-title-{data.uid}">Frage zum Inhalt stellen</h3>
+                    <h2 id="ai-title-{data.uid}">Frage zum Inhalt stellen</h2>
                     <p>Erhalte eine zusammengefasste Antwort mit Quellen aus dem Suchindex.</p>
                 </div>
                 <form class="pixelcoda-ai-form" id="ai-form-{data.uid}">
@@ -74,10 +74,10 @@
         <div id="search-results-{data.uid}" class="mt-4" style="display: none;">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">
+                    <h2 class="card-title mb-0">
                         <i class="fas fa-list me-2"></i>
                         Suchergebnisse
-                    </h6>
+                    </h2>
                 </div>
                 <div class="card-body">
                     <div id="results-content-{data.uid}"></div>
@@ -278,11 +278,11 @@ Enable Suggestions: {settings.enableSuggestions}</code></pre>
                     data.data.forEach(function(result, index) {
                         html += '<div class="col-12 mb-3">';
                         html += '<div class="border-start border-primary border-3 ps-3">';
-                        html += '<h6 class="mb-1">';
+                        html += '<h3 class="mb-1">';
                         html += '<a href="' + (result.attributes.url || '#') + '" class="text-decoration-none">';
                         html += result.attributes.title || 'Ohne Titel';
                         html += '</a>';
-                        html += '</h6>';
+                        html += '</h3>';
                         html += '<p class="text-muted small mb-1">' + (result.attributes.summary || 'Keine Beschreibung verfügbar') + '</p>';
                         html += '<small class="text-muted">';
                         html += '<i class="fas fa-tag me-1"></i>';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -38,9 +39,7 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
             ->createNewBasicSite('test', 1, 'https://example.test/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchContentElementRendersOnRootPage(): void
     {
         $content = $this->renderRootPage();
@@ -50,9 +49,7 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
         self::assertStringContainsString('Suchergebnisse', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchContentElementExposesHeadlessApiConfiguration(): void
     {
         $content = $this->renderRootPage();
@@ -62,9 +59,7 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
         self::assertStringContainsString('data-collections="pages,tt_content"', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchContentElementRendersAccessibleControls(): void
     {
         $content = $this->renderRootPage();
@@ -75,15 +70,13 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
         self::assertStringContainsString('<label for="ai-input-', $content);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchContentElementLoadsFrontendAssets(): void
     {
         $content = $this->renderRootPage();
 
-        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/Css/search.css', $content);
-        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/JavaScript/search.js', $content);
+        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/Css/search.min.css', $content);
+        self::assertStringContainsString('/typo3conf/ext/pixelcoda_search/Resources/Public/JavaScript/search.min.js', $content);
     }
 
     private function renderRootPage(): string

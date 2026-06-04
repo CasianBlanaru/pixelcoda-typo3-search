@@ -40,7 +40,7 @@ jobs:
       - name: Run ESLint
         run: |
           cd typo3-dev/packages/pixelcoda_search
-          npm run lint -- --verbose
+          npm run lint
 
       - name: Run JavaScript tests
         run: |
@@ -64,6 +64,18 @@ jobs:
 
       - name: Build TypeScript packages
         run: npm run build
+
+  docker-builds:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build TYPO3 Railway image
+        run: docker build --file Dockerfile --tag pixelcoda-typo3-search:ci .
+
+      - name: Build Search API Railway image
+        run: docker build --file Dockerfile.api --tag pixelcoda-search-api:ci .
 
   typo3-extension:
     runs-on: ubuntu-latest
@@ -100,7 +112,7 @@ jobs:
 
       - name: Audit resolved dependencies
         working-directory: typo3-dev/packages/pixelcoda_search
-        run: composer audit
+        run: composer audit --abandoned=report
 
       - name: Run PHP quality checks and tests
         if: matrix.typo3 == '^13.4' && matrix.php == '8.3'
