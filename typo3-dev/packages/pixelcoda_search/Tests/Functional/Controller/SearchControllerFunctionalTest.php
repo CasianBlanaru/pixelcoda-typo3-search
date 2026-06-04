@@ -35,8 +35,23 @@ final class SearchControllerFunctionalTest extends FunctionalTestCase
             ['EXT:pixelcoda_search/Tests/Functional/Fixtures/TypoScript/setup.typoscript']
         );
 
-        GeneralUtility::makeInstance(SiteConfiguration::class)
-            ->createNewBasicSite('test', 1, 'https://example.test/');
+        GeneralUtility::makeInstance(SiteConfiguration::class)->write('test', [
+            'rootPageId' => 1,
+            'base' => 'https://example.test/',
+            'languages' => [
+                [
+                    'title' => 'English',
+                    'enabled' => true,
+                    'languageId' => 0,
+                    'base' => '/',
+                    'locale' => 'en_US.UTF-8',
+                    'navigationTitle' => 'English',
+                    'flag' => 'us',
+                ],
+            ],
+            'errorHandling' => [],
+            'routes' => [],
+        ]);
     }
 
     #[Test]
