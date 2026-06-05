@@ -31,6 +31,15 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader
 
+# TYPO3 14 scans packages/sysext during a fresh installation. Composer keeps
+# framework packages in vendor, so expose them at the expected scan location.
+RUN mkdir -p packages/ext packages/sysext \
+    && for package in vendor/typo3/cms-*; do \
+        if grep -q '"type": "typo3-cms-framework"' "${package}/composer.json"; then \
+            ln -s "../../${package}" "packages/sysext/$(basename "${package}")"; \
+        fi; \
+    done
+
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
 COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
