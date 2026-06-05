@@ -4,6 +4,19 @@ Accessible TYPO3 site search for TYPO3 12.4 LTS, 13.4 LTS and 14.x. The
 extension supports classic Fluid rendering and headless projects while keeping
 the same configuration and API contract.
 
+## Screenshots
+
+### Classic TYPO3 search
+
+![Pixelcoda Search frontend with an accessible search field](Documentation/Images/pixelcoda-search-demo.png)
+
+### AI-assisted answers
+
+![Pixelcoda AI Search interface with optional local AI provider](Documentation/Images/pixelcoda-search-ai.png)
+
+The complete platform overview and additional screenshots are available in the
+[project README](https://github.com/CasianBlanaru/pixelcoda-typo3-search#screenshots).
+
 ## Features
 
 - Autocomplete, suggestions, pagination and faceted filters

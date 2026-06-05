@@ -7,6 +7,20 @@ filters, suggestions, hybrid retrieval and optional AI-assisted answers.
 **Composer package:** `pixelcoda/typo3-search`  
 **Extension key:** `pixelcoda_search`
 
+## Screenshots
+
+### Pixelcoda Search for TYPO3 and headless projects
+
+![Pixelcoda Search overview with hybrid search and AI features](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-overview.png)
+
+### Classic search interface
+
+![Pixelcoda Search frontend demo with accessible search field](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-demo.png)
+
+### Optional AI-assisted search
+
+![Pixelcoda AI Search interface with local Ollama provider](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-ai.png)
+
 ## 🚀 Features
 
 - **Headless API-First Architecture** with REST endpoints
