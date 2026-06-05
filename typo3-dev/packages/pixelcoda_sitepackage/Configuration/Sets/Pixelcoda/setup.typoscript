@@ -1,0 +1,41 @@
+page = PAGE
+page {
+  typeNum = 0
+
+  10 = PAGEVIEW
+  10 {
+    paths.10 = EXT:pixelcoda_sitepackage/Resources/Private/PageView/
+  }
+
+  includeCSS {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/Css/site.css
+  }
+
+  includeJSFooter {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/JavaScript/site.js
+  }
+}
+
+lib.dynamicContent = COA
+lib.dynamicContent {
+  10 = LOAD_REGISTER
+  10 {
+    colPos.cObject = TEXT
+    colPos.cObject {
+      field = colPos
+      ifEmpty = 0
+    }
+  }
+
+  20 = CONTENT
+  20 {
+    table = tt_content
+    select {
+      orderBy = sorting
+      where = {#colPos}={register:colPos}
+      where.insertData = 1
+    }
+  }
+
+  90 = RESTORE_REGISTER
+}

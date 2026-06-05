@@ -1,0 +1,4 @@
+name: pixelcoda/sitepackage
+label: Pixelcoda Sitepackage
+dependencies:
+  - typo3/fluid-styled-content

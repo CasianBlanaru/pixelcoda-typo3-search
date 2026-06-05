@@ -76,7 +76,7 @@ filters, suggestions, hybrid retrieval and optional AI-assisted answers.
 | [QUICKSTART.md](QUICKSTART.md) | 5-minute setup: Simple API, full stack, TYPO3 with DDEV |
 | [typo3-dev/README.md](typo3-dev/README.md) | TYPO3 DDEV environment, composer, Install Tool |
 | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) | TYPO3 Bootstrap Package installation and configuration |
-| [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) | Docker-based TYPO3 website and Search API deployment on Railway |
+| [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) | Complete TYPO3 14 Pixelcoda suite and Search API deployment on Railway |
 | [PERFORMANCE.md](PERFORMANCE.md) | Lighthouse results, Core Web Vitals and verification scope |
 | [SECURITY.md](SECURITY.md) | API keys, HMAC, rate limiting, production checklist |
 | [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |

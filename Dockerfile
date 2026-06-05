@@ -12,15 +12,15 @@ RUN apt-get update \
         libzip-dev \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j"$(nproc)" gd intl mysqli opcache zip \
+    && docker-php-ext-install -j"$(nproc)" gd intl mysqli opcache pdo_mysql zip \
     && a2enmod deflate expires headers rewrite \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-COPY typo3-dev/composer.json typo3-dev/composer.lock ./
 COPY typo3-dev/packages ./packages
+COPY typo3-dev/composer.json typo3-dev/composer.lock ./
 
 RUN composer install \
     --no-dev \
@@ -31,7 +31,9 @@ RUN composer install \
 
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
+COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
 COPY deployment/typo3/healthz.php public/healthz.php
+COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
 
 RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && mkdir -p /data /var/www/html/public/fileadmin /var/www/html/var \

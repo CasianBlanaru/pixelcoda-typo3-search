@@ -1,0 +1,25 @@
+.. include:: Includes.txt
+
+
+.. _links:
+
+Links
+-----
+
+:Packagist:
+   https://packagist.org/packages/pixelcoda/content-gsap-animation
+
+:TER:
+   https://extensions.typo3.org/extension/content_gsap_animation/
+
+:Issues:
+   https://github.com/CasianBlanaru/pixelcoda-content-gsap-animation/issues
+
+:GitHub:
+   https://github.com/CasianBlanaru/pixelcoda-content-gsap-animation
+
+:Contact:
+   `@pixelcoda <https://twitter.com/pixelcoda>`__
+
+Thanks
+------

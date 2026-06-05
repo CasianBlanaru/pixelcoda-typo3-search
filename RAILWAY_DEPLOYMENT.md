@@ -1,47 +1,59 @@
 # Railway Deployment
 
-Pixelcoda Search uses two Railway services from this repository:
+This repository deploys the complete Pixelcoda TYPO3 suite on Railway:
 
-1. **TYPO3 website**: PHP/Apache application built with `Dockerfile`.
-2. **Search API**: lightweight persistent Node.js API built with
-   `Dockerfile.api`.
+- TYPO3 14.3 with the Pixelcoda sitepackage
+- Pixelcoda Search
+- Pixelcoda FE Editor
+- Pixelcoda Content GSAP Animation
+- A separate persistent Search API service
 
-Keeping both runtimes separate prevents Railpack from concurrently modifying
-PHP and Node dependencies and allows independent scaling and health checks.
+The TYPO3 and Search API services use separate containers and volumes so they
+can be updated, scaled and monitored independently.
 
-## TYPO3 Service
+## 1. Create The TYPO3 Service
 
 Create a Railway service from this GitHub repository. Keep the root directory
-at `/` and use `/railway.json` as the Railway configuration file.
+at `/` and select `/railway.json` as the configuration file.
 
-Add a Railway MySQL service and expose its variables to TYPO3. The entrypoint
-automatically supports Railway's `MYSQLHOST`, `MYSQLPORT`, `MYSQLDATABASE`,
-`MYSQLUSER` and `MYSQLPASSWORD` variables.
+Add a Railway MySQL service and make its variables available to the TYPO3
+service. The entrypoint reads Railway's `MYSQLHOST`, `MYSQLPORT`,
+`MYSQLDATABASE`, `MYSQLUSER` and `MYSQLPASSWORD` variables automatically.
 
-Add these TYPO3 variables before the first deployment:
+Attach a Railway volume at `/data`. It persists:
+
+- `config/system/settings.php` and the encryption key
+- the generated site configuration
+- uploaded files in `public/fileadmin`
+
+Add these variables before the first deployment:
 
 ```dotenv
 TYPO3_SETUP_ADMIN_USERNAME=admin
 TYPO3_SETUP_ADMIN_PASSWORD=<strong-random-password>
 TYPO3_SETUP_ADMIN_EMAIL=admin@example.com
-TYPO3_PROJECT_NAME=Pixelcoda TYPO3 Search
+TYPO3_PROJECT_NAME=Pixelcoda TYPO3 Suite
 ```
 
-Attach a Railway volume mounted at `/data`. It persists TYPO3 configuration,
-uploaded files and runtime data across deployments. A deployment without this
-volume is intentionally unsupported because TYPO3's encryption key and site
-configuration must remain stable.
+Optional FE Editor AI configuration:
 
-The container creates the TYPO3 installation and initial site on first start.
-Subsequent starts reuse the persisted configuration. Railway checks
-`/healthz.php`.
+```dotenv
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+```
 
-## Search API Service
+The first start waits for MySQL, installs TYPO3, creates the initial site,
+runs all extension database migrations and activates the Pixelcoda site sets.
+Every later deployment runs the extension migrations again before Apache
+starts. Railway checks `/healthz.php` and only receives HTTP 200 after TYPO3
+has a persisted installation.
 
-Create a second service from the same repository and use
+## 2. Create The Search API Service
+
+Create a second service from the same repository and select
 `/railway.api.json` as its Railway configuration file.
 
-Set:
+Attach a separate Railway volume at `/data` and configure:
 
 ```dotenv
 NODE_ENV=production
@@ -51,40 +63,13 @@ CORS_ALLOWED_ORIGINS=https://your-typo3-domain.example
 SEARCH_DATA_DIR=/data
 ```
 
-Attach a separate Railway volume mounted at `/data`. Railway checks `/health`.
-
 Generate strong keys locally:
 
 ```bash
 openssl rand -hex 32
 ```
 
-Production startup fails intentionally when either API key is missing.
-
-## Connect TYPO3 And Search API
-
-Expose the Search API with a Railway public domain. Configure the TYPO3
-extension with:
-
-```dotenv
-PIXELCODA_API_URL=https://your-search-api.up.railway.app
-PIXELCODA_API_KEY=<API_WRITE_KEY>
-PIXELCODA_READ_API_KEY=<API_READ_KEY>
-PIXELCODA_PROJECT_ID=typo3
-```
-
-After both services are running, open the TYPO3 service shell and index the
-published content:
-
-```bash
-vendor/bin/typo3 pixelcoda:search:reindex
-```
-
-## Optional Full Search Platform
-
-The API workspaces also support Meilisearch, PostgreSQL/pgvector, Redis and
-provider-based AI answers. Add separate Railway services when these features
-are required:
+Optional managed search and AI services:
 
 ```dotenv
 DATABASE_URL=
@@ -92,11 +77,28 @@ REDIS_URL=
 MEILI_URL=
 MEILI_KEY=
 OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-4.1-mini
 ```
 
-Azure OpenAI, Ollama and Hugging Face are supported by the LLM adapter. Never
-commit production credentials.
+## 3. Connect TYPO3 To The Search API
+
+Expose the Search API with a Railway public domain and add these variables to
+the TYPO3 service:
+
+```dotenv
+PIXELCODA_API_URL=https://your-search-api.up.railway.app
+PIXELCODA_API_KEY=<API_WRITE_KEY>
+PIXELCODA_READ_API_KEY=<API_READ_KEY>
+PIXELCODA_PROJECT_ID=typo3
+PIXELCODA_CORS_ORIGINS=https://your-typo3-domain.example
+```
+
+After both services are healthy, open the TYPO3 service shell and index the
+published content:
+
+```bash
+vendor/bin/typo3 pixelcoda:search:reindex
+```
 
 ## Verify
 
@@ -105,12 +107,8 @@ curl --fail https://your-typo3-domain.example/healthz.php
 curl --fail https://your-search-api.up.railway.app/health
 ```
 
-Both endpoints must return HTTP `200` and an `ok` value.
+Both endpoints must return HTTP 200 and an `ok` value.
 
-## Complete Pixelcoda TYPO3 Suite
-
-This repository deploys TYPO3 with the Pixelcoda Search extension. A production
-project containing Search, FE Editor, GSAP Animation and the Pixelcoda
-sitepackage should live in a dedicated TYPO3 distribution repository. Extension
-source repositories should remain independent so they can be versioned,
-tested and released without coupling all plugins to one deployment.
+For an existing Railway volume created with TYPO3 12, take a database backup
+before deploying this TYPO3 14 image. The startup migration updates the
+database schema, but a major-version migration should always be reversible.
