@@ -21,7 +21,7 @@ if ($installed && extension_loaded('mysqli')) {
     $connection->close();
 }
 
-$healthy = $installed && $databaseConnected;
+$healthy = $databaseConnected;
 
 http_response_code($healthy ? 200 : 503);
 echo json_encode([

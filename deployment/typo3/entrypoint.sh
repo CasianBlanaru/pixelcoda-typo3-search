@@ -13,7 +13,6 @@ export TYPO3_PROJECT_NAME="${TYPO3_PROJECT_NAME:-Pixelcoda TYPO3 Suite}"
 export TYPO3_SERVER_TYPE=apache
 export TYPO3_PATH_APP="${TYPO3_PATH_APP:-/var/www/html}"
 export TYPO3_PATH_ROOT="${TYPO3_PATH_ROOT:-/var/www/html/public}"
-setup_version=1
 
 envsubst '${PORT}' \
     < /etc/apache2/sites-available/000-default.conf.template \
@@ -60,10 +59,6 @@ until mysqladmin ping \
     sleep 2
 done
 
-if [[ "$(cat /data/config/.railway-setup-version 2>/dev/null || true)" != "${setup_version}" ]]; then
-    rm -f /data/config/.setup-complete /data/config/system/settings.php
-fi
-
 if [[ -f /data/config/system/settings.php && ! -f /data/config/.setup-complete ]]; then
     touch /data/config/.setup-complete
 fi
@@ -80,12 +75,14 @@ if [[ ! -f /data/config/system/settings.php ]]; then
         fi
     done
 
-    vendor/bin/typo3 setup --no-interaction --force
-    touch /data/config/.setup-complete
-    printf '%s\n' "${setup_version}" > /data/config/.railway-setup-version
+    if vendor/bin/typo3 setup --no-interaction --force -vvv; then
+        touch /data/config/.setup-complete
+    else
+        echo "TYPO3 first setup deferred; Apache will start for direct diagnostics." >&2
+    fi
 fi
 
-vendor/bin/typo3 extension:setup --no-interaction \
+vendor/bin/typo3 extension:setup --no-interaction -vvv \
     || echo "TYPO3 extension setup deferred until the application container is available." >&2
 php /usr/local/bin/pixelcoda-configure-site
 vendor/bin/typo3 cache:flush --group=system || true
