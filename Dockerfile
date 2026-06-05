@@ -26,12 +26,16 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY typo3-dev/packages ./packages
 COPY typo3-dev/composer.json typo3-dev/composer.lock ./
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer install \
     --no-dev \
     --no-interaction \
     --no-progress \
     --prefer-dist \
-    --optimize-autoloader
+    --optimize-autoloader \
+    && test -f vendor/typo3/PackageArtifact.php \
+    && test -f vendor/typo3/alias-loader-include.php
 
 # TYPO3 14 scans packages/sysext during a fresh installation. Composer already
 # registers framework packages, but Finder still requires a scanable directory.
