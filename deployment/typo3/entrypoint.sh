@@ -17,6 +17,8 @@ export TYPO3_PATH_ROOT="${TYPO3_PATH_ROOT:-/var/www/html/public}"
 envsubst '${PORT}' \
     < /etc/apache2/sites-available/000-default.conf.template \
     > /etc/apache2/sites-available/000-default.conf
+printf 'ServerName %s\n' "${RAILWAY_PUBLIC_DOMAIN:-localhost}" > /etc/apache2/conf-available/pixelcoda-server-name.conf
+a2enconf pixelcoda-server-name >/dev/null
 
 # Railway can retain Apache module state from an older service image. Enforce
 # the mod_php-compatible MPM before starting Apache.
