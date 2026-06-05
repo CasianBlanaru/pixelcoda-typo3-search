@@ -59,7 +59,11 @@ until mysqladmin ping \
     sleep 2
 done
 
-if [[ ! -f /data/config/.setup-complete ]]; then
+if [[ -f /data/config/system/settings.php && ! -f /data/config/.setup-complete ]]; then
+    touch /data/config/.setup-complete
+fi
+
+if [[ ! -f /data/config/system/settings.php ]]; then
     required_setup_variables=(
         TYPO3_SETUP_ADMIN_USERNAME
         TYPO3_SETUP_ADMIN_PASSWORD
@@ -75,7 +79,8 @@ if [[ ! -f /data/config/.setup-complete ]]; then
     touch /data/config/.setup-complete
 fi
 
-vendor/bin/typo3 extension:setup --no-interaction
+vendor/bin/typo3 extension:setup --no-interaction \
+    || echo "TYPO3 extension setup deferred until the application container is available." >&2
 php /usr/local/bin/pixelcoda-configure-site
 vendor/bin/typo3 cache:flush --group=system || true
 vendor/bin/typo3 cache:warmup || true
