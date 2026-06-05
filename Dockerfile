@@ -13,6 +13,8 @@ RUN apt-get update \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" gd intl mysqli opcache pdo_mysql zip \
+    && (a2dismod mpm_event mpm_worker || true) \
+    && a2enmod mpm_prefork \
     && a2enmod deflate expires headers rewrite \
     && rm -rf /var/lib/apt/lists/*
 
