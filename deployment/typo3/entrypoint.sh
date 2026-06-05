@@ -23,7 +23,12 @@ envsubst '${PORT}' \
 a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
 a2enmod mpm_prefork >/dev/null 2>&1
 
-mkdir -p /data/config /data/fileadmin /var/www/html/var
+mkdir -p \
+    /data/config \
+    /data/fileadmin \
+    /var/www/html/packages/ext \
+    /var/www/html/packages/sysext \
+    /var/www/html/var
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
 ln -s /data/fileadmin /var/www/html/public/fileadmin

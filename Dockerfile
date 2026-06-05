@@ -38,7 +38,12 @@ COPY deployment/typo3/healthz.php public/healthz.php
 COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
 
 RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
-    && mkdir -p /data /var/www/html/public/fileadmin /var/www/html/var \
+    && mkdir -p \
+        /data \
+        /var/www/html/packages/ext \
+        /var/www/html/packages/sysext \
+        /var/www/html/public/fileadmin \
+        /var/www/html/var \
     && chown -R www-data:www-data /data /var/www/html
 
 ENV PORT=8080 \
