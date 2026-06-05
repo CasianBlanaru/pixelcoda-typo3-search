@@ -25,16 +25,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class SearchModuleController
 {
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
-    protected ConfigurationManager $configurationManager;
-
-    public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
-        ConfigurationManager $configurationManager
-    ) {
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->configurationManager = $configurationManager;
+    public function __construct(protected ModuleTemplateFactory $moduleTemplateFactory, protected ConfigurationManager $configurationManager)
+    {
     }
 
     /**
@@ -131,7 +123,7 @@ class SearchModuleController
 
             $modeLabel = 'headless' === $newMode ? 'Headless' : 'Standard';
             $this->addFlashMessage(
-                "TYPO3 wurde erfolgreich auf {$modeLabel} Modus umgestellt.",
+                sprintf('TYPO3 wurde erfolgreich auf %s Modus umgestellt.', $modeLabel),
                 'Modus geändert',
                 ContextualFeedbackSeverity::OK
             );
@@ -142,9 +134,9 @@ class SearchModuleController
                 ContextualFeedbackSeverity::INFO
             );
 
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $this->addFlashMessage(
-                'Fehler beim Umschalten des Modus: ' . $e->getMessage(),
+                'Fehler beim Umschalten des Modus: ' . $exception->getMessage(),
                 'Fehler',
                 ContextualFeedbackSeverity::ERROR
             );
@@ -166,9 +158,9 @@ class SearchModuleController
                 'Caches geleert',
                 ContextualFeedbackSeverity::OK
             );
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $this->addFlashMessage(
-                'Fehler beim Leeren der Caches: ' . $e->getMessage(),
+                'Fehler beim Leeren der Caches: ' . $exception->getMessage(),
                 'Fehler',
                 ContextualFeedbackSeverity::ERROR
             );
@@ -199,7 +191,7 @@ class SearchModuleController
         try {
             $ch = curl_init();
             curl_setopt_array($ch, [
-                CURLOPT_URL => rtrim($apiUrl, '/') . '/v1/health',
+                CURLOPT_URL => rtrim((string) $apiUrl, '/') . '/v1/health',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_TIMEOUT => 10,
                 CURLOPT_HTTPHEADER => [
@@ -220,14 +212,14 @@ class SearchModuleController
                 );
             } else {
                 $this->addFlashMessage(
-                    "API-Verbindung fehlgeschlagen. HTTP Code: {$httpCode}",
+                    'API-Verbindung fehlgeschlagen. HTTP Code: ' . $httpCode,
                     'Verbindungsfehler',
                     ContextualFeedbackSeverity::ERROR
                 );
             }
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $this->addFlashMessage(
-                'Fehler beim Testen der API-Verbindung: ' . $e->getMessage(),
+                'Fehler beim Testen der API-Verbindung: ' . $exception->getMessage(),
                 'Verbindungsfehler',
                 ContextualFeedbackSeverity::ERROR
             );
@@ -276,7 +268,7 @@ class SearchModuleController
 
         try {
             return yaml_parse_file($configPath) ?: [];
-        } catch (Exception $e) {
+        } catch (Exception) {
             return [];
         }
     }
@@ -317,7 +309,8 @@ class SearchModuleController
         }
 
         $files = glob($cacheDir . '/*');
-        return empty($files) ? 'empty' : 'populated';
+
+        return [] === $files || false === $files ? 'empty' : 'populated';
     }
 
     /**
@@ -341,7 +334,7 @@ class SearchModuleController
         }
 
         $content = file_get_contents($configPath);
-        $content = preg_replace('/renderingMode:\s*\w+/', "renderingMode: {$mode}", $content);
+        $content = preg_replace('/renderingMode:\s*\w+/', 'renderingMode: ' . $mode, $content);
 
         if (false === file_put_contents($configPath, $content)) {
             throw new Exception('Failed to update site configuration');
@@ -371,10 +364,8 @@ class SearchModuleController
         $sourceFile = $configDir . '/PackageStates.php.' . $mode;
         $targetFile = $configDir . '/PackageStates.php';
 
-        if (file_exists($sourceFile)) {
-            if (!copy($sourceFile, $targetFile)) {
-                throw new Exception('Failed to switch PackageStates.php');
-            }
+        if (file_exists($sourceFile) && !copy($sourceFile, $targetFile)) {
+            throw new Exception('Failed to switch PackageStates.php');
         }
     }
 
@@ -414,6 +405,7 @@ class SearchModuleController
             $path = $dir . '/' . $file;
             is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
+
         rmdir($dir);
     }
 

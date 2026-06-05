@@ -158,7 +158,7 @@ router.post('/suggest/:project',
         if (hit.title) {
           // Extract words from title that start with the query
           const words = hit.title.toLowerCase().split(/\s+/);
-          words.forEach(word => {
+          words.forEach((word: string) => {
             if (word.startsWith(q.toLowerCase()) && word.length > q.length) {
               suggestions.add(word);
             }
@@ -185,6 +185,7 @@ router.post('/suggest/:project',
       const meta = {
         search: {
           query: q,
+          response_time_ms: 0,
           total_suggestions: suggestions.size,
           returned_suggestions: suggestionResources.length,
           collections: collections || []

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pixelcoda Search – Die KI-Suchplattform für TYPO3</title>
     <meta name="description" content="Blitzschnelle, KI-gestützte Suche für TYPO3. Headless & Classic kompatibel, DSGVO-konform, mit Hybrid-Suche und SSE-Streaming-Chat.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230071e3'/%3E%3Cpath d='m22 22-4.5-4.5m2.5-5A7.5 7.5 0 1 1 5 12.5a7.5 7.5 0 0 1 15 0Z' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
     <!-- Inline theme initialisation: runs before first paint to avoid flash -->
     <script>
         (function () {
@@ -24,13 +25,13 @@
             --color-surface-2: #2c2c2e;
             --color-border: rgba(255, 255, 255, 0.08);
             --color-border-strong: rgba(255, 255, 255, 0.14);
-            --color-primary: #2997ff;
+            --color-primary: #0071e3;
             --color-primary-hover: #5ab5ff;
             --color-accent: #30d158;
             --color-accent-2: #64d2ff;
             --color-text: #f5f5f7;
             --color-text-muted: #a1a1a6;
-            --color-text-subtle: #6e6e73;
+            --color-text-subtle: #8e8e93;
             --color-success: #30d158;
             --color-danger: #ff453a;
             --color-warning: #ffd60a;
@@ -110,7 +111,7 @@
         .reveal-delay-5 { transition-delay: 0.5s; }
 
         /* ── Navigation ── */
-        nav {
+        body > nav {
             position: fixed;
             top: 0;
             left: 0;
@@ -625,7 +626,7 @@
             transform: translateY(-5px) scale(1.01);
         }
 
-        .integration-card h4 {
+        .integration-card h3 {
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 10px;
@@ -707,7 +708,7 @@
             line-height: 1.75;
         }
 
-        .footer-col h5 {
+        .footer-col h2 {
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -724,6 +725,9 @@
         }
 
         .footer-col ul a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
             color: var(--color-text-muted);
             text-decoration: none;
             font-size: 0.875rem;
@@ -807,6 +811,7 @@
         </div>
     </nav>
 
+    <main>
     <!-- Hero -->
     <header class="hero" role="banner">
         <div class="hero-badge reveal" aria-label="Status: Live und bereit">
@@ -826,7 +831,7 @@
 
         <div class="hero-actions reveal reveal-delay-3">
             <a href="demo/index.html" class="btn-primary">Live-Demo ausprobieren</a>
-            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary"
+            <a href="https://github.com/CasianBlanaru/pixelcoda-typo3-search" class="btn-secondary"
                target="_blank" rel="noopener noreferrer">
                 GitHub ansehen
             </a>
@@ -839,7 +844,7 @@
             </svg>
             <input type="text" id="heroSearch" placeholder="TYPO3 Headless, Meilisearch, KI-Suche …"
                 aria-label="Suchbegriff eingeben" autocomplete="off">
-            <button class="hero-search-btn" onclick="goToDemo()" aria-label="Suche starten">
+            <button class="hero-search-btn" onclick="goToDemo()" aria-label="Suchen">
                 Suchen
             </button>
         </div>
@@ -1009,25 +1014,25 @@
             <div class="integration-grid">
                 <article class="integration-card reveal">
                     <span class="tag">Classic</span>
-                    <h4>TYPO3 Extbase Plugin</h4>
+                    <h3>TYPO3 Extbase Plugin</h3>
                     <p>Drag-and-Drop-Integration via Fluid-Templates. Konfiguration per FlexForm, kein Custom-Code nötig.</p>
                 </article>
 
                 <article class="integration-card reveal reveal-delay-1">
                     <span class="tag">Headless</span>
-                    <h4>nuxt-typo3 / Next.js</h4>
+                    <h3>nuxt-typo3 / Next.js</h3>
                     <p>JSON:API 1.0-kompatible REST-Endpunkte. Direkter Einsatz mit nuxt-typo3 und allen modernen Frameworks.</p>
                 </article>
 
                 <article class="integration-card reveal reveal-delay-2">
                     <span class="tag">React</span>
-                    <h4>React Widgets</h4>
+                    <h3>React Widgets</h3>
                     <p>BITV 2.0-konforme Komponenten: <code>SearchBox</code>, <code>AnswerPanel</code> und programmatischer Client.</p>
                 </article>
 
                 <article class="integration-card reveal reveal-delay-3">
                     <span class="tag">Vanilla JS</span>
-                    <h4>CDN-Bundle</h4>
+                    <h3>CDN-Bundle</h3>
                     <p>Einzelne Script-Einbindung genügt. Kein Build-Step, sofort einsatzbereit auf jeder bestehenden Seite.</p>
                 </article>
             </div>
@@ -1042,12 +1047,13 @@
         </p>
         <div class="hero-actions reveal reveal-delay-2">
             <a href="demo/index.html" class="btn-primary">Live-Demo starten</a>
-            <a href="https://github.com/CasianBlanaru/typo3-search" class="btn-secondary"
+            <a href="https://github.com/CasianBlanaru/pixelcoda-typo3-search" class="btn-secondary"
                target="_blank" rel="noopener noreferrer">
                 Quellcode ansehen
             </a>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer role="contentinfo">
@@ -1064,7 +1070,7 @@
             </div>
 
             <nav class="footer-col" aria-label="Produkt-Links">
-                <h5>Produkt</h5>
+                <h2>Produkt</h2>
                 <ul role="list">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#comparison">Vergleich</a></li>
@@ -1074,9 +1080,9 @@
             </nav>
 
             <nav class="footer-col" aria-label="Entwickler-Links">
-                <h5>Entwickler</h5>
+                <h2>Entwickler</h2>
                 <ul role="list">
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search"
+                    <li><a href="https://github.com/CasianBlanaru/pixelcoda-typo3-search"
                            target="_blank" rel="noopener noreferrer">GitHub</a></li>
                     <li><a href="README.md">Dokumentation</a></li>
                     <li><a href="README_BETTER_THAN_T3AS.md">API-Referenz</a></li>
@@ -1085,12 +1091,12 @@
             </nav>
 
             <nav class="footer-col" aria-label="Rechtliche Links">
-                <h5>Rechtliches</h5>
+                <h2>Rechtliches</h2>
                 <ul role="list">
                     <li><a href="SECURITY.md">Security</a></li>
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search/issues"
+                    <li><a href="https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues"
                            target="_blank" rel="noopener noreferrer">Issues</a></li>
-                    <li><a href="https://github.com/CasianBlanaru/typo3-search/discussions"
+                    <li><a href="https://github.com/CasianBlanaru/pixelcoda-typo3-search/discussions"
                            target="_blank" rel="noopener noreferrer">Discussions</a></li>
                 </ul>
             </nav>

@@ -4,27 +4,23 @@
 
 <f:section name="Header">
     <f:if condition="{data.header}">
-        <f:render partial="Header/Header" arguments="{
-            header: data.header,
-            layout: data.header_layout,
-            positionClass: '{f:if(condition: data.header_position, then: \'ce-headline-{data.header_position}\')}'
-        }" />
+        <h2 class="{f:if(condition: data.header_position, then: 'ce-headline-{data.header_position}')}">{data.header}</h2>
     </f:if>
 </f:section>
 
 <f:section name="Main">
-    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}">
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-project="{settings.project}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}">
 
         <!-- Search Form -->
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">
+                <h2 class="card-title mb-0">
                     <i class="fas fa-search me-2"></i>
                     <f:if condition="{data.header}">
                         <f:then>{data.header}</f:then>
                         <f:else>Website durchsuchen</f:else>
                     </f:if>
-                </h5>
+                </h2>
             </div>
             <div class="card-body">
                 <form class="pixelcoda-search-form" id="search-form-{data.uid}">
@@ -55,14 +51,33 @@
             </div>
         </div>
 
+        <f:if condition="{settings.enableAsk}">
+            <section class="pixelcoda-ai-panel" aria-labelledby="ai-title-{data.uid}">
+                <div>
+                    <span class="pixelcoda-ai-label">KI-gestützte Antwort</span>
+                    <h2 id="ai-title-{data.uid}">Frage zum Inhalt stellen</h2>
+                    <p>Erhalte eine zusammengefasste Antwort mit Quellen aus dem Suchindex.</p>
+                </div>
+                <form class="pixelcoda-ai-form" id="ai-form-{data.uid}">
+                    <label for="ai-input-{data.uid}">Ihre Frage</label>
+                    <div class="pixelcoda-ai-input-row">
+                        <input type="text" id="ai-input-{data.uid}" name="question" minlength="3" placeholder="Was bietet Pixelcoda Search?" autocomplete="off">
+                        <button type="submit">KI fragen</button>
+                    </div>
+                </form>
+                <div id="ai-status-{data.uid}" class="pixelcoda-ai-status" role="status" hidden>Antwort wird erstellt...</div>
+                <div id="ai-result-{data.uid}" class="pixelcoda-ai-result" aria-live="polite" hidden></div>
+            </section>
+        </f:if>
+
         <!-- Search Results -->
         <div id="search-results-{data.uid}" class="mt-4" style="display: none;">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">
+                    <h2 class="card-title mb-0">
                         <i class="fas fa-list me-2"></i>
                         Suchergebnisse
-                    </h6>
+                    </h2>
                 </div>
                 <div class="card-body">
                     <div id="results-content-{data.uid}"></div>
@@ -108,7 +123,8 @@ Enable Suggestions: {settings.enableSuggestions}</code></pre>
             // Get configuration from data attributes
             const uid = container.dataset.uid;
             const apiUrl = container.dataset.apiUrl || 'http://localhost:8787';
-            const apiKey = container.dataset.apiKey || 'pc_write_dev_key';
+            const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
+            const project = container.dataset.project || 'typo3';
             const resultsPerPage = parseInt(container.dataset.resultsPerPage) || 10;
             const collections = (container.dataset.collections || 'pages,tt_content').split(',');
             const enableAsk = container.dataset.enableAsk === '1';
@@ -174,7 +190,7 @@ Enable Suggestions: {settings.enableSuggestions}</code></pre>
                 resultsElement.style.display = 'none';
 
                 // Try API search first, fallback to demo
-                fetch(apiUrl + '/v1/search/demo', {
+                fetch(apiUrl + '/v1/search/' + encodeURIComponent(project), {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -262,11 +278,11 @@ Enable Suggestions: {settings.enableSuggestions}</code></pre>
                     data.data.forEach(function(result, index) {
                         html += '<div class="col-12 mb-3">';
                         html += '<div class="border-start border-primary border-3 ps-3">';
-                        html += '<h6 class="mb-1">';
+                        html += '<h3 class="mb-1">';
                         html += '<a href="' + (result.attributes.url || '#') + '" class="text-decoration-none">';
                         html += result.attributes.title || 'Ohne Titel';
                         html += '</a>';
-                        html += '</h6>';
+                        html += '</h3>';
                         html += '<p class="text-muted small mb-1">' + (result.attributes.summary || 'Keine Beschreibung verfügbar') + '</p>';
                         html += '<small class="text-muted">';
                         html += '<i class="fas fa-tag me-1"></i>';

@@ -34,8 +34,15 @@ export interface Typo3Resource {
   type: string;
   id: string;
   attributes: Record<string, any>;
-  relationships?: Record<string, any>;
+  relationships?: Record<string, {
+    data?: Typo3ResourceReference | Typo3ResourceReference[];
+  }>;
   links?: Record<string, string>;
+}
+
+interface Typo3ResourceReference {
+  type: string;
+  id: string;
 }
 
 /**
@@ -98,7 +105,7 @@ async function pullTypo3Type(
   type: string,
   options: Typo3PullOptions
 ): Promise<{ processed: number; errors: number }> {
-  const { baseUrl, apiKey, timeout, batchSize, language } = options;
+  const { baseUrl, apiKey, timeout, batchSize = 50, language } = options;
   
   let processed = 0;
   let errors = 0;
@@ -475,7 +482,8 @@ async function indexSearchDocument(
     body: JSON.stringify({
       documents: [searchDoc]
     }),
-    timeout: 30000
+    headersTimeout: 30000,
+    bodyTimeout: 30000
   });
 
   if (response.statusCode >= 400) {
@@ -578,7 +586,8 @@ export async function deleteTypo3Resource(
       body: JSON.stringify({
         ids: [`${type}:${id}`]
       }),
-      timeout: 30000
+      headersTimeout: 30000,
+      bodyTimeout: 30000
     });
 
     if (response.statusCode >= 400) {

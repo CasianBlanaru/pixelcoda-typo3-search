@@ -254,7 +254,7 @@ Antwort:`;
       );
 
       // Create meta information
-      const meta = {
+      const meta: Record<string, unknown> = {
         query: {
           text: q,
           language: lang,

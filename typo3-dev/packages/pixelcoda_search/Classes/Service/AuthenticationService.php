@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Service;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Log\LoggerInterface;
 
 /**
  * Authentication Service for HMAC and API Key validation.
@@ -13,8 +13,9 @@ class AuthenticationService
 {
     private array $config;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
         $this->config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [];
     }
 
@@ -23,13 +24,13 @@ class AuthenticationService
      */
     public function validateHmacSignature(string $payload, string $signature, ?string $secret = null): bool
     {
-        $secret = $secret ?? $this->config['hmac_secret'] ?? '';
+        $secret ??= $this->config['hmac_secret'] ?? '';
 
         if (empty($secret)) {
             return false;
         }
 
-        $expectedSignature = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+        $expectedSignature = 'sha256=' . hash_hmac('sha256', $payload, (string) $secret);
 
         return hash_equals($expectedSignature, $signature);
     }
@@ -39,13 +40,13 @@ class AuthenticationService
      */
     public function generateHmacSignature(string $payload, ?string $secret = null): string
     {
-        $secret = $secret ?? $this->config['hmac_secret'] ?? '';
+        $secret ??= $this->config['hmac_secret'] ?? '';
 
         if (empty($secret)) {
             return '';
         }
 
-        return 'sha256=' . hash_hmac('sha256', $payload, $secret);
+        return 'sha256=' . hash_hmac('sha256', $payload, (string) $secret);
     }
 
     /**
@@ -67,30 +68,13 @@ class AuthenticationService
     }
 
     /**
-     * Get valid API keys from configuration.
-     */
-    private function getValidApiKeys(): array
-    {
-        return [
-            'read' => [
-                $this->config['read_api_key'] ?? '',
-                'pc_read_dev_key', // Default development key
-            ],
-            'write' => [
-                $this->config['api_key'] ?? '',
-                'pc_write_dev_key', // Default development key
-            ],
-        ];
-    }
-
-    /**
      * Validate CORS origin.
      */
     public function validateCorsOrigin(string $origin): bool
     {
         $allowedOrigins = $this->getAllowedOrigins();
 
-        if (empty($allowedOrigins)) {
+        if ([] === $allowedOrigins) {
             return true; // Allow all if not configured
         }
 
@@ -98,33 +82,11 @@ class AuthenticationService
     }
 
     /**
-     * Get allowed CORS origins.
-     */
-    private function getAllowedOrigins(): array
-    {
-        $origins = $this->config['cors_origins'] ?? [];
-
-        if (is_string($origins)) {
-            $origins = array_map('trim', explode(',', $origins));
-        }
-
-        // Add common development origins
-        $origins = array_merge($origins, [
-            'http://localhost:3000',
-            'http://localhost:8080',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:8080',
-        ]);
-
-        return array_filter($origins);
-    }
-
-    /**
      * Get authentication headers for outgoing requests.
      */
     public function getAuthHeaders(?string $apiKey = null): array
     {
-        $apiKey = $apiKey ?? $this->config['api_key'] ?? '';
+        $apiKey ??= $this->config['api_key'] ?? '';
         $projectId = $this->config['project_id'] ?? '';
 
         return [
@@ -155,6 +117,7 @@ class AuthenticationService
                 $result['valid'] = true;
                 $result['type'] = 'api_key';
                 $result['api_key'] = $apiKey;
+
                 return $result;
             }
 
@@ -162,27 +125,32 @@ class AuthenticationService
                 $result['valid'] = true;
                 $result['type'] = 'api_key_write';
                 $result['api_key'] = $apiKey;
+
                 return $result;
             }
 
             $result['error'] = 'Invalid API key';
+
             return $result;
         }
 
         // Check for HMAC authentication
         $signature = $headers['X-Hub-Signature-256'] ?? $headers['x-hub-signature-256'] ?? '';
-        if (!empty($signature) && !empty($body)) {
+        if (!empty($signature) && ('' !== $body && '0' !== $body)) {
             if ($this->validateHmacSignature($body, $signature)) {
                 $result['valid'] = true;
                 $result['type'] = 'hmac';
+
                 return $result;
             }
 
             $result['error'] = 'Invalid HMAC signature';
+
             return $result;
         }
 
         $result['error'] = 'No valid authentication found';
+
         return $result;
     }
 
@@ -191,7 +159,7 @@ class AuthenticationService
      */
     public function logAuthAttempt(string $ip, string $userAgent, bool $success, ?string $error = null): void
     {
-        if (!$this->config['enable_metrics'] ?? false) {
+        if (!($this->config['enable_metrics'] ?? false)) {
             return;
         }
 
@@ -203,11 +171,45 @@ class AuthenticationService
             'error' => $error,
         ];
 
-        // Log to TYPO3 log
-        GeneralUtility::sysLog(
-            json_encode($logData),
-            'pixelcoda_search',
-            $success ? 0 : 2
-        );
+        $this->logger->log($success ? 'info' : 'warning', 'Search authentication attempt', $logData);
+    }
+
+    /**
+     * Get valid API keys from configuration.
+     */
+    private function getValidApiKeys(): array
+    {
+        return [
+            'read' => [
+                $this->config['read_api_key'] ?? '',
+                'pc_read_dev_key', // Default development key
+            ],
+            'write' => [
+                $this->config['api_key'] ?? '',
+                'pc_write_dev_key', // Default development key
+            ],
+        ];
+    }
+
+    /**
+     * Get allowed CORS origins.
+     */
+    private function getAllowedOrigins(): array
+    {
+        $origins = $this->config['cors_origins'] ?? [];
+
+        if (is_string($origins)) {
+            $origins = array_map(trim(...), explode(',', $origins));
+        }
+
+        // Add common development origins
+        $origins = array_merge($origins, [
+            'http://localhost:3000',
+            'http://localhost:8080',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:8080',
+        ]);
+
+        return array_filter($origins);
     }
 }

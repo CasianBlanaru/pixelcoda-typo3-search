@@ -58,7 +58,7 @@ class SuggestEid
             )
             ->orderBy('title')
             ->setMaxResults($limit)
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $url = empty($row['slug']) ? '/index.php?id=' . $row['uid'] : $row['slug'];
@@ -95,7 +95,7 @@ class SuggestEid
                 )
                 ->orderBy('tt_content.header')
                 ->setMaxResults($limit - count($suggestions))
-                ->execute();
+                ->executeQuery();
 
             while ($row = $contentStatement->fetchAssociative()) {
                 $url = empty($row['slug']) ? '/index.php?id=' . $row['pid'] : $row['slug'];

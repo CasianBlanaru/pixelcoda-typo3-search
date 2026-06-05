@@ -1,14 +1,18 @@
 {
     "name": "pixelcoda/search-platform",
-    "description": "Modern, API-first search platform with AI agents for TYPO3 and other CMS systems",
+    "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
             "name": "Pixelcoda",
-            "email": "info@pixelcoda.com"
+            "email": "info@pixelcoda.de"
         }
     ],
+    "support": {
+        "issues": "https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues",
+        "source": "https://github.com/CasianBlanaru/pixelcoda-typo3-search"
+    },
     "require": {
         "php": ">=8.0"
     },

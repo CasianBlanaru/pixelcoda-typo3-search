@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { authMiddleware } from '../middleware/auth.js';
-import { synonymsSchema } from '../schemas.js';
+import { synonymsSchema, type SynonymsUpdate } from '../schemas.js';
 
 export const router = new Hono();
 
@@ -12,7 +12,7 @@ router.post('/synonyms/:project',
   async (c) => {
     try {
       const { project } = c.req.param();
-      const { add, remove } = await c.req.json();
+      const { add, remove } = await c.req.json<SynonymsUpdate>();
       
       // TODO: Persist to database
       // For now, just validate and echo back

@@ -11,7 +11,12 @@ import { getTelemetryService } from '../lib/telemetry.js';
 import { getDb } from '../db.js';
 import { MeiliEngine } from '../engines/meili.js';
 
-export const router = new Hono();
+type AdminVariables = {
+  apiKey: { id?: string };
+  projectId?: string;
+};
+
+export const router = new Hono<{ Variables: AdminVariables }>();
 
 const telemetryService = getTelemetryService();
 const meiliEngine = new MeiliEngine(
@@ -174,7 +179,7 @@ router.post('/admin/:project/synonyms',
         data.type,
         data.language,
         data.enabled,
-        c.get('userId') || 'admin'
+        c.get('apiKey')?.id || 'admin'
       ]);
       
       // Apply to search engine
@@ -223,7 +228,7 @@ router.post('/admin/:project/synonyms/apply/:id',
       `, [
         project,
         JSON.stringify([synonym.term1, synonym.term2]),
-        c.get('userId') || 'admin',
+        c.get('apiKey')?.id || 'admin',
         synonym.confidence
       ]);
       
@@ -443,7 +448,7 @@ router.post('/admin/:project/ab-tests',
         data.start_date,
         data.end_date,
         data.enabled,
-        c.get('userId') || 'admin'
+        c.get('apiKey')?.id || 'admin'
       ]);
       
       return c.json({

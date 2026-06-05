@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Tests\Unit\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
 use ReflectionClass;
@@ -41,9 +43,7 @@ class SearchControllerTest extends UnitTestCase
         $this->inject($this->subject, 'request', $this->requestMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function indexActionReturnsHtmlResponse(): void
     {
         $this->subject->expects($this->once())
@@ -52,41 +52,32 @@ class SearchControllerTest extends UnitTestCase
         $this->subject->indexAction();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function suggestActionReturnsEmptyJsonForShortQuery(): void
     {
         $this->markTestSkipped('Needs refactoring - suggestAction uses request directly');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function suggestActionCallsGetSuggestionsForValidQuery(): void
     {
         $this->markTestSkipped('Needs refactoring - suggestAction uses request directly');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchActionHandlesPagination(): void
     {
         $this->markTestSkipped('Needs refactoring to avoid LocalizationUtility dependencies');
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterDataProvider
-     */
+    #[Test]
+    #[DataProvider('filterDataProvider')]
     public function searchActionProcessesFiltersCorrectly(array $params, array $expectedFilters): void
     {
         $this->markTestSkipped('Needs refactoring to avoid LocalizationUtility dependencies');
     }
 
-    public function filterDataProvider(): array
+    public static function filterDataProvider(): array
     {
         return [
             'with category filter' => [

@@ -5,10 +5,7 @@ declare(strict_types=1);
 use PixelCoda\PixelcodaSearch\Controller\Api\PluginConfigController;
 use PixelCoda\PixelcodaSearch\Controller\SearchController;
 use PixelCoda\PixelcodaSearch\Eid\SuggestEid;
-use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') || exit();
@@ -46,41 +43,26 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['pixelcoda_config']
 // Register page type for JSON API (headless mode)
 $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 
-// Extension configuration with environment fallbacks
-$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = [
-    'api_url' => $_ENV['PIXELCODA_API_URL'] ?? 'http://localhost:8787',
-    'api_key' => $_ENV['PIXELCODA_API_KEY'] ?? 'pc_write_dev_key',
-    'read_api_key' => $_ENV['PIXELCODA_READ_API_KEY'] ?? 'pc_read_dev_key',
-    'hmac_secret' => $_ENV['PIXELCODA_HMAC_SECRET'] ?? 'dev_hmac_secret_key',
-    'project_id' => $_ENV['PIXELCODA_PROJECT_ID'] ?? 'typo3-dev',
-    'typo3_headless_url' => $_ENV['TYPO3_HEADLESS_URL'] ?? 'http://localhost:8080/api',
-    'cors_origins' => $_ENV['PIXELCODA_CORS_ORIGINS'] ?? '',
-    'enabled_tables' => ['pages', 'tt_content', 'tx_news_domain_model_news'],
-    'default_mode' => 'classic', // classic|headless
-    'enable_auto_index' => true,
-    'enable_vector_search' => true,
-    'enable_metrics' => true,
-    'batch_size' => 50,
-    'timeout' => 30,
-    'debug_mode' => true,
-];
+// Environment variables provide defaults without overwriting values configured
+// through TYPO3's extension configuration.
+$extensionConfiguration = &$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'];
+$extensionConfiguration['api_url'] ??= $_ENV['PIXELCODA_API_URL'] ?? 'http://localhost:8787';
+$extensionConfiguration['api_key'] ??= $_ENV['PIXELCODA_API_KEY'] ?? '';
+$extensionConfiguration['read_api_key'] ??= $_ENV['PIXELCODA_READ_API_KEY'] ?? '';
+$extensionConfiguration['hmac_secret'] ??= $_ENV['PIXELCODA_HMAC_SECRET'] ?? '';
+$extensionConfiguration['project_id'] ??= $_ENV['PIXELCODA_PROJECT_ID'] ?? 'typo3';
+$extensionConfiguration['typo3_headless_url'] ??= $_ENV['TYPO3_HEADLESS_URL'] ?? '';
+$extensionConfiguration['cors_origins'] ??= $_ENV['PIXELCODA_CORS_ORIGINS'] ?? '';
+$extensionConfiguration['enabled_tables'] ??= ['pages', 'tt_content', 'tx_news_domain_model_news'];
+$extensionConfiguration['default_mode'] ??= 'classic';
+$extensionConfiguration['enable_auto_index'] ??= true;
+$extensionConfiguration['enable_vector_search'] ??= true;
+$extensionConfiguration['enable_metrics'] ??= false;
+$extensionConfiguration['batch_size'] ??= 50;
+$extensionConfiguration['timeout'] ??= 30;
+$extensionConfiguration['debug_mode'] ??= false;
 
 // Static TypoScript files are now added in ext_tables.php
-
-// Add page TSconfig
-ExtensionManagementUtility::addPageTSConfig(
-    '@import "EXT:pixelcoda_search/Configuration/TsConfig/Page/All.tsconfig"'
-);
-
-// Register icon for backend module
-$iconRegistry = GeneralUtility::makeInstance(
-    IconRegistry::class
-);
-$iconRegistry->registerIcon(
-    'pixelcoda-search',
-    SvgIconProvider::class,
-    ['source' => 'EXT:pixelcoda_search/Resources/Public/Icons/Extension.svg']
-);
 
 // Register the search plugin for the search results page
 ExtensionUtility::configurePlugin(

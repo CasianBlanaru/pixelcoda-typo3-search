@@ -7,6 +7,16 @@ Das Pixelcoda Search Plugin unterstützt zwei Rendering-Modi:
 1. **Headless Mode** - JSON-Output für moderne JavaScript-Frontends
 2. **Standard Mode** - Traditionelles TYPO3 mit Fluid Templates
 
+## Screenshots
+
+### Standard Mode
+
+![Pixelcoda Search in classic frontend mode](Images/pixelcoda-search-demo.png)
+
+### Optional AI Search
+
+![Pixelcoda AI Search interface](Images/pixelcoda-search-ai.png)
+
 ## Konfiguration
 
 ### Mode auswählen

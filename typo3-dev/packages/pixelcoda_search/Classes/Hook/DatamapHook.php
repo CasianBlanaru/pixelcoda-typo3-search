@@ -21,8 +21,6 @@ class DatamapHook implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public $logger;
-
     private SearchService $searchService;
 
     public function __construct()

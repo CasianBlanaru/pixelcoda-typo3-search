@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AuthenticationMiddleware implements MiddlewareInterface
 {
-    private AuthenticationService $authService;
+    private readonly AuthenticationService $authService;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class AuthenticationMiddleware implements MiddlewareInterface
         $headers = $request->getHeaders();
         $headersArray = [];
         foreach ($headers as $name => $values) {
-            $headersArray[strtolower($name)] = $values[0] ?? '';
+            $headersArray[strtolower((string) $name)] = $values[0] ?? '';
         }
 
         // Get request body

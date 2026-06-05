@@ -3,20 +3,18 @@
 declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'pixelcoda Search',
-    'description' => 'AI-powered search platform for TYPO3. Supports both headless (JSON:API) and classic (Fluid) modes with vector search, RAG answers, and real-time indexing.',
+    'title' => 'Pixelcoda Search',
+    'description' => 'Accessible TYPO3 site search with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.',
     'category' => 'plugin',
-    'version' => '2.0.0',
+    'version' => '2.2.1',
     'state' => 'stable',
-    'author' => 'pixelcoda GmbH',
-    'author_email' => 'dev@pixelcoda.com',
-    'author_company' => 'pixelcoda GmbH',
+    'author' => 'Casian Blanaru (Pixelcoda)',
+    'author_email' => 'casianus@me.com',
+    'author_company' => 'Pixelcoda',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.0-12.4.99',
-            'php' => '8.1.0-8.3.99',
-            'extbase' => '12.4.0-12.4.99',
-            'fluid' => '12.4.0-12.4.99',
+            'typo3' => '12.4.0-14.9.99',
+            'php' => '8.1.0-8.5.99',
         ],
         'conflicts' => [],
         'suggests' => [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PixelCoda\PixelcodaSearch\Serializer;
 
-use FriendsOfTypo3\Headless\Json\JsonEncoder;
 use PixelCoda\PixelcodaSearch\Service\ConfigurationService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -18,14 +17,10 @@ class PixelcodaSearchSerializer
 
     protected FlexFormService $flexFormService;
 
-    protected JsonEncoder $encoder;
-
     public function __construct(
-        JsonEncoder $encoder,
         ?ConfigurationService $configurationService = null,
         ?FlexFormService $flexFormService = null
     ) {
-        $this->encoder = $encoder;
         $this->configurationService = $configurationService ?? GeneralUtility::makeInstance(ConfigurationService::class);
         $this->flexFormService = $flexFormService ?? GeneralUtility::makeInstance(FlexFormService::class);
     }
@@ -153,6 +148,6 @@ class PixelcodaSearchSerializer
      */
     private function parseCollections(string $collections): array
     {
-        return array_map('trim', explode(',', $collections));
+        return array_map(trim(...), explode(',', $collections));
     }
 }

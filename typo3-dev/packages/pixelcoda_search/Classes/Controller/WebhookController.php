@@ -6,9 +6,9 @@ namespace PixelCoda\PixelcodaSearch\Controller;
 
 use PixelCoda\PixelcodaSearch\Service\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -16,11 +16,11 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class WebhookController extends ActionController
 {
-    private AuthenticationService $authService;
-
-    public function __construct()
-    {
-        $this->authService = GeneralUtility::makeInstance(AuthenticationService::class);
+    public function __construct(
+        private readonly AuthenticationService $authService,
+        private readonly CacheManager $cacheManager,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     /**
@@ -28,7 +28,7 @@ class WebhookController extends ActionController
      */
     public function indexAction(): ResponseInterface
     {
-        $request = $this->request->getServerRequest();
+        $request = $this->request;
         $headers = $request->getHeaders();
         $body = (string) $request->getBody();
 
@@ -40,7 +40,7 @@ class WebhookController extends ActionController
 
         // Parse webhook data
         $data = json_decode($body, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             return new JsonResponse(['error' => 'Invalid JSON'], 400);
         }
 
@@ -60,25 +60,16 @@ class WebhookController extends ActionController
      */
     private function processWebhook(string $eventType, array $data): array
     {
-        switch ($eventType) {
-            case 'indexing.completed':
-                return $this->handleIndexingCompleted($data);
-
-            case 'indexing.failed':
-                return $this->handleIndexingFailed($data);
-
-            case 'search.analytics':
-                return $this->handleSearchAnalytics($data);
-
-            case 'webhook.test':
-                return $this->handleWebhookTest($data);
-
-            default:
-                return [
-                    'success' => false,
-                    'error' => 'Unknown event type: ' . $eventType,
-                ];
-        }
+        return match ($eventType) {
+            'indexing.completed' => $this->handleIndexingCompleted($data),
+            'indexing.failed' => $this->handleIndexingFailed($data),
+            'search.analytics' => $this->handleSearchAnalytics($data),
+            'webhook.test' => $this->handleWebhookTest($data),
+            default => [
+                'success' => false,
+                'error' => 'Unknown event type: ' . $eventType,
+            ],
+        };
     }
 
     /**
@@ -90,11 +81,10 @@ class WebhookController extends ActionController
         $documentCount = $data['document_count'] ?? 0;
 
         // Log the event
-        GeneralUtility::sysLog(
-            "Indexing completed for project {$projectId}: {$documentCount} documents",
-            'pixelcoda_search',
-            0
-        );
+        $this->logger->info('Search indexing completed', [
+            'projectId' => $projectId,
+            'documentCount' => $documentCount,
+        ]);
 
         // Optionally trigger cache clearing or other actions
         $this->clearSearchCache();
@@ -114,11 +104,10 @@ class WebhookController extends ActionController
         $error = $data['error'] ?? 'Unknown error';
 
         // Log the error
-        GeneralUtility::sysLog(
-            "Indexing failed for project {$projectId}: {$error}",
-            'pixelcoda_search',
-            2
-        );
+        $this->logger->error('Search indexing failed', [
+            'projectId' => $projectId,
+            'error' => $error,
+        ]);
 
         return [
             'success' => true,
@@ -149,11 +138,7 @@ class WebhookController extends ActionController
     {
         $testMessage = $data['message'] ?? 'Test webhook received';
 
-        GeneralUtility::sysLog(
-            "Webhook test received: {$testMessage}",
-            'pixelcoda_search',
-            0
-        );
+        $this->logger->info('Search webhook test received', ['message' => $testMessage]);
 
         return [
             'success' => true,
@@ -167,8 +152,7 @@ class WebhookController extends ActionController
     private function clearSearchCache(): void
     {
         // Clear TYPO3 cache if needed
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cacheManager->flushCachesInGroup('pages');
+        $this->cacheManager->flushCachesInGroup('pages');
     }
 
     /**
@@ -178,10 +162,6 @@ class WebhookController extends ActionController
     {
         // Implement analytics storage logic
         // This could store to database, file, or external service
-        GeneralUtility::sysLog(
-            'Analytics data received: ' . json_encode($analytics),
-            'pixelcoda_search',
-            0
-        );
+        $this->logger->info('Search analytics received', ['analytics' => $analytics]);
     }
 }

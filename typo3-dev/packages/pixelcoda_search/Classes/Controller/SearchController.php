@@ -19,12 +19,10 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class SearchController extends ActionController
 {
-    protected SearchService $searchService;
-
-    public function __construct(SearchService $searchService)
+    public function __construct(protected SearchService $searchService)
     {
-        $this->searchService = $searchService;
     }
+
     /**
      * Display search form.
      */
@@ -85,7 +83,7 @@ class SearchController extends ActionController
                 } else {
                     $message = $this->getTranslation('ask.results.error');
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local AI answer method
                 $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
 
@@ -186,7 +184,7 @@ class SearchController extends ActionController
                 } else {
                     $message = 'Fehler bei der Suche. Bitte versuchen Sie es später erneut.';
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Fallback to local search if API fails
                 $allResults = [];
 
@@ -245,12 +243,153 @@ class SearchController extends ActionController
             'availableCategories' => $availableCategories,
         ]);
 
-        // Use the enhanced template with filters
-        $this->view->setTemplatePathAndFilename(
-            'EXT:pixelcoda_search/Resources/Private/Templates/Search/SearchWithFilters.html'
-        );
-
         return $this->htmlResponse();
+    }
+
+    /**
+     * JSON:API compatible search endpoint.
+     */
+    public function apiSearchAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $searchQuery = trim($params['q'] ?? '');
+        $currentPage = (int) ($params['page'] ?? 1);
+        $resultsPerPage = (int) ($params['per_page'] ?? 10);
+
+        $results = [];
+        $meta = [
+            'total' => 0,
+            'page' => $currentPage,
+            'per_page' => $resultsPerPage,
+            'total_pages' => 0,
+        ];
+
+        if (strlen($searchQuery) >= 3) {
+            try {
+                // Use pixelcoda Search API
+                $searchParams = [
+                    'q' => $searchQuery,
+                    'page' => $currentPage,
+                    'per_page' => $resultsPerPage,
+                    'collections' => ['pages', 'tt_content'],
+                ];
+
+                $apiResponse = $this->searchService->search($searchParams);
+
+                if (isset($apiResponse['data'])) {
+                    $results = $this->formatApiResults($apiResponse['data']);
+                    $meta = $apiResponse['meta']['pagination'] ?? $meta;
+                }
+            } catch (Exception) {
+                // Fallback to local search if API fails
+                $allResults = $this->searchInPages($searchQuery);
+                $meta['total'] = count($allResults);
+                $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
+
+                $offset = ($currentPage - 1) * $resultsPerPage;
+                $results = array_slice($allResults, $offset, $resultsPerPage);
+            }
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => array_map(static fn (array $result): array => [
+                'type' => 'search-result',
+                'id' => uniqid(),
+                'attributes' => [
+                    'title' => $result['title'],
+                    'abstract' => $result['abstract'],
+                    'url' => $result['url'],
+                    'type' => $result['type'] ?? 'page',
+                ],
+            ], $results),
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * JSON:API compatible ask endpoint.
+     */
+    public function apiAskAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        $answer = '';
+        $sources = [];
+        $meta = ['status' => 'error'];
+
+        if (strlen($question) >= 3) {
+            try {
+                // Use pixelcoda Search API for AI answers
+                $askParams = [
+                    'q' => $question,
+                    'context' => $context,
+                    'max_passages' => $maxPassages,
+                ];
+
+                $aiResponse = $this->searchService->ask($askParams);
+
+                if ($aiResponse && isset($aiResponse['data'])) {
+                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
+                    $sources = $aiResponse['included'] ?? [];
+                    $meta['status'] = 'success';
+                }
+            } catch (Exception) {
+                // Fallback to local AI answer method
+                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
+
+                if ($aiResponse) {
+                    $answer = $aiResponse['answer'] ?? '';
+                    $sources = $aiResponse['sources'] ?? [];
+                    $meta['status'] = 'success';
+                }
+            }
+        }
+
+        // Format as JSON:API 1.0
+        $jsonApiResponse = [
+            'data' => [
+                'type' => 'ai-answer',
+                'id' => uniqid(),
+                'attributes' => [
+                    'question' => $question,
+                    'answer' => $answer,
+                    'sources' => $sources,
+                ],
+            ],
+            'meta' => $meta,
+            'links' => [
+                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
+            ],
+        ];
+
+        return new JsonResponse($jsonApiResponse);
+    }
+
+    /**
+     * SSE streaming endpoint for ask functionality.
+     */
+    public function apiAskStreamAction(): ResponseInterface
+    {
+        $params = $this->request->getQueryParams();
+        $question = trim($params['q'] ?? '');
+        $context = $params['context'] ?? '';
+        $maxPassages = (int) ($params['max_passages'] ?? 6);
+
+        if (strlen($question) < 3) {
+            return new JsonResponse(['error' => 'Question too short'], 400);
+        }
+
+        $this->getAiAnswerStream($question, $context, $maxPassages);
+        exit; // End execution after streaming
     }
 
     /**
@@ -277,7 +416,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('hidden', 0)
             )
             ->setMaxResults(20)
-            ->execute();
+            ->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -289,7 +428,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['uid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -347,7 +486,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('pages.hidden', 0)
             )
             ->setMaxResults(10)
-            ->execute();
+            ->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -362,7 +501,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -443,7 +582,7 @@ class SearchController extends ActionController
                 break;
         }
 
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -477,7 +616,7 @@ class SearchController extends ActionController
             // Parse keywords as tags
             $tags = [];
             if ($row['keywords']) {
-                $tags = array_map('trim', explode(',', (string) $row['keywords']));
+                $tags = array_map(trim(...), explode(',', (string) $row['keywords']));
             }
 
             // Format date
@@ -560,7 +699,7 @@ class SearchController extends ActionController
                 break;
         }
 
-        $statement = $queryBuilder->setMaxResults(20)->execute();
+        $statement = $queryBuilder->setMaxResults(20)->executeQuery();
 
         $results = [];
         while ($row = $statement->fetchAssociative()) {
@@ -572,7 +711,7 @@ class SearchController extends ActionController
                 ->select('slug')
                 ->from('pages')
                 ->where($slugQuery->expr()->eq('uid', $row['pid']))
-                ->execute()
+                ->executeQuery()
                 ->fetchAssociative();
 
             if ($slugResult && !empty($slugResult['slug'])) {
@@ -641,7 +780,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('mm.uid_foreign', $pageUid),
                 $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('pages'))
             )
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -672,7 +811,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('mm.uid_foreign', $contentUid),
                 $queryBuilder->expr()->eq('mm.tablenames', $queryBuilder->createNamedParameter('tt_content'))
             )
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -736,7 +875,7 @@ class SearchController extends ActionController
         }
 
         $results = [];
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             // Build URL
@@ -813,7 +952,7 @@ class SearchController extends ActionController
         }
 
         $results = [];
-        $statement = $queryBuilder->execute();
+        $statement = $queryBuilder->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $abstract = strip_tags($row['bodytext'] ?? '');
@@ -877,7 +1016,7 @@ class SearchController extends ActionController
                 $queryBuilder->expr()->eq('hidden', 0)
             )
             ->orderBy('title')
-            ->execute();
+            ->executeQuery();
 
         $categories = [];
         while ($row = $statement->fetchAssociative()) {
@@ -915,7 +1054,7 @@ class SearchController extends ActionController
             )
             ->orderBy('title')
             ->setMaxResults($limit)
-            ->execute();
+            ->executeQuery();
 
         while ($row = $statement->fetchAssociative()) {
             $url = empty($row['slug']) ? '/index.php?id=' . $row['uid'] : $row['slug'];
@@ -952,7 +1091,7 @@ class SearchController extends ActionController
                 )
                 ->orderBy('tt_content.header')
                 ->setMaxResults($limit - count($suggestions))
-                ->execute();
+                ->executeQuery();
 
             while ($row = $contentStatement->fetchAssociative()) {
                 $url = empty($row['slug']) ? '/index.php?id=' . $row['pid'] : $row['slug'];
@@ -1050,6 +1189,7 @@ class SearchController extends ActionController
         }
 
         $data = json_decode($response, true);
+
         return $data ?: null;
     }
 
@@ -1090,163 +1230,16 @@ class SearchController extends ActionController
             ],
             CURLOPT_TIMEOUT => 60,
             CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_WRITEFUNCTION => function ($ch, $data) {
+            CURLOPT_WRITEFUNCTION => static function ($ch, $data): int {
                 echo $data;
                 flush();
+
                 return strlen($data);
             },
         ]);
 
         curl_exec($ch);
         curl_close($ch);
-    }
-
-    /**
-     * JSON:API compatible search endpoint.
-     */
-    public function apiSearchAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $searchQuery = trim($params['q'] ?? '');
-        $currentPage = (int) ($params['page'] ?? 1);
-        $resultsPerPage = (int) ($params['per_page'] ?? 10);
-
-        $results = [];
-        $meta = [
-            'total' => 0,
-            'page' => $currentPage,
-            'per_page' => $resultsPerPage,
-            'total_pages' => 0,
-        ];
-
-        if (strlen($searchQuery) >= 3) {
-            try {
-                // Use pixelcoda Search API
-                $searchParams = [
-                    'q' => $searchQuery,
-                    'page' => $currentPage,
-                    'per_page' => $resultsPerPage,
-                    'collections' => ['pages', 'tt_content'],
-                ];
-
-                $apiResponse = $this->searchService->search($searchParams);
-
-                if (isset($apiResponse['data'])) {
-                    $results = $this->formatApiResults($apiResponse['data']);
-                    $meta = $apiResponse['meta']['pagination'] ?? $meta;
-                }
-            } catch (Exception $e) {
-                // Fallback to local search if API fails
-                $allResults = $this->searchInPages($searchQuery);
-                $meta['total'] = count($allResults);
-                $meta['total_pages'] = ceil($meta['total'] / $resultsPerPage);
-
-                $offset = ($currentPage - 1) * $resultsPerPage;
-                $results = array_slice($allResults, $offset, $resultsPerPage);
-            }
-        }
-
-        // Format as JSON:API 1.0
-        $jsonApiResponse = [
-            'data' => array_map(function ($result) {
-                return [
-                    'type' => 'search-result',
-                    'id' => uniqid(),
-                    'attributes' => [
-                        'title' => $result['title'],
-                        'abstract' => $result['abstract'],
-                        'url' => $result['url'],
-                        'type' => $result['type'] ?? 'page',
-                    ],
-                ];
-            }, $results),
-            'meta' => $meta,
-            'links' => [
-                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
-            ],
-        ];
-
-        return new JsonResponse($jsonApiResponse);
-    }
-
-    /**
-     * JSON:API compatible ask endpoint.
-     */
-    public function apiAskAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $question = trim($params['q'] ?? '');
-        $context = $params['context'] ?? '';
-        $maxPassages = (int) ($params['max_passages'] ?? 6);
-
-        $answer = '';
-        $sources = [];
-        $meta = ['status' => 'error'];
-
-        if (strlen($question) >= 3) {
-            try {
-                // Use pixelcoda Search API for AI answers
-                $askParams = [
-                    'q' => $question,
-                    'context' => $context,
-                    'max_passages' => $maxPassages,
-                ];
-
-                $aiResponse = $this->searchService->ask($askParams);
-
-                if ($aiResponse && isset($aiResponse['data'])) {
-                    $answer = $aiResponse['data']['attributes']['text'] ?? '';
-                    $sources = $aiResponse['included'] ?? [];
-                    $meta['status'] = 'success';
-                }
-            } catch (Exception $e) {
-                // Fallback to local AI answer method
-                $aiResponse = $this->getAiAnswer($question, $context, $maxPassages);
-
-                if ($aiResponse) {
-                    $answer = $aiResponse['answer'] ?? '';
-                    $sources = $aiResponse['sources'] ?? [];
-                    $meta['status'] = 'success';
-                }
-            }
-        }
-
-        // Format as JSON:API 1.0
-        $jsonApiResponse = [
-            'data' => [
-                'type' => 'ai-answer',
-                'id' => uniqid(),
-                'attributes' => [
-                    'question' => $question,
-                    'answer' => $answer,
-                    'sources' => $sources,
-                ],
-            ],
-            'meta' => $meta,
-            'links' => [
-                'self' => $this->request->getUri()->getPath() . '?' . http_build_query($params),
-            ],
-        ];
-
-        return new JsonResponse($jsonApiResponse);
-    }
-
-    /**
-     * SSE streaming endpoint for ask functionality.
-     */
-    public function apiAskStreamAction(): ResponseInterface
-    {
-        $params = $this->request->getQueryParams();
-        $question = trim($params['q'] ?? '');
-        $context = $params['context'] ?? '';
-        $maxPassages = (int) ($params['max_passages'] ?? 6);
-
-        if (strlen($question) < 3) {
-            return new JsonResponse(['error' => 'Question too short'], 400);
-        }
-
-        $this->getAiAnswerStream($question, $context, $maxPassages);
-        exit; // End execution after streaming
     }
 
     /**
@@ -1264,6 +1257,7 @@ class SearchController extends ActionController
                 'score' => $item['attributes']['score'] ?? 0,
             ];
         }
+
         return $results;
     }
 
@@ -1276,12 +1270,15 @@ class SearchController extends ActionController
         if ($filters['searchIn']['pages']) {
             $collections[] = 'pages';
         }
+
         if ($filters['searchIn']['content']) {
             $collections[] = 'tt_content';
         }
+
         if ($filters['searchIn']['news']) {
             $collections[] = 'news';
         }
+
         return $collections;
     }
 

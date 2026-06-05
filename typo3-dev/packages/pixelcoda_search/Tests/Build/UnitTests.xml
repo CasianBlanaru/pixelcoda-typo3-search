@@ -16,22 +16,6 @@
         </testsuite>
     </testsuites>
     
-    <coverage>
-        <include>
-            <directory suffix=".php">../../Classes</directory>
-        </include>
-        <exclude>
-            <directory>../../Tests</directory>
-            <directory>../../Resources</directory>
-            <directory>../../Configuration</directory>
-        </exclude>
-        <report>
-            <html outputDirectory="../Coverage/Unit"/>
-            <text outputFile="php://stdout"/>
-            <clover outputFile="../Coverage/Unit/clover.xml"/>
-        </report>
-    </coverage>
-    
     <php>
         <ini name="date.timezone" value="UTC"/>
         <ini name="error_reporting" value="-1"/>

@@ -38,4 +38,26 @@ export class MeiliEngine implements SearchEngine {
     });
     return res.json();
   }
+
+  async switchIndex(project: string, indexName: string): Promise<void> {
+    const response = await fetch(`${this.url}/swap-indexes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(this.key ? { 'Authorization': `Bearer ${this.key}` } : {}) },
+      body: JSON.stringify([{ indexes: [project, indexName] }])
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to switch Meilisearch index: HTTP ${response.status}`);
+    }
+  }
+
+  async updateSynonyms(project: string, synonyms: Record<string, string[]>): Promise<void> {
+    const response = await fetch(`${this.idx(project)}/settings/synonyms`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...(this.key ? { 'Authorization': `Bearer ${this.key}` } : {}) },
+      body: JSON.stringify(synonyms)
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to update Meilisearch synonyms: HTTP ${response.status}`);
+    }
+  }
 }

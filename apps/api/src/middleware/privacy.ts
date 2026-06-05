@@ -4,6 +4,7 @@
  */
 
 import { Context, Next } from 'hono';
+import { getCookie } from 'hono/cookie';
 import crypto from 'crypto';
 
 /**
@@ -221,8 +222,7 @@ export function dataRetention() {
 export function consentManagement() {
   return async (c: Context, next: Next) => {
     // Check for consent header or cookie
-    const consent = c.req.header('x-user-consent') || 
-                   c.req.cookie('gdpr_consent');
+    const consent = c.req.header('x-user-consent') || getCookie(c, 'gdpr_consent');
     
     // Skip consent check for public endpoints
     const publicPaths = ['/health', '/v1/search', '/v1/suggest'];

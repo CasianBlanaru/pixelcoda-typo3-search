@@ -1,6 +1,25 @@
-# pixelcoda Headless Search Platform
+# Pixelcoda Search for TYPO3
 
-A modern, API-first search platform with AI agents, designed for TYPO3 and other CMS systems.
+Accessible, API-first search for TYPO3 with classic and headless rendering,
+filters, suggestions, hybrid retrieval and optional AI-assisted answers.
+
+**TYPO3 support:** 12.4 LTS, 13.4 LTS and 14.x  
+**Composer package:** `pixelcoda/typo3-search`  
+**Extension key:** `pixelcoda_search`
+
+## Screenshots
+
+### Pixelcoda Search for TYPO3 and headless projects
+
+![Pixelcoda Search overview with hybrid search and AI features](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-overview.png)
+
+### Classic search interface
+
+![Pixelcoda Search frontend demo with accessible search field](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-demo.png)
+
+### Optional AI-assisted search
+
+![Pixelcoda AI Search interface with local Ollama provider](typo3-dev/packages/pixelcoda_search/Documentation/Images/pixelcoda-search-ai.png)
 
 ## 🚀 Features
 
@@ -57,19 +76,36 @@ A modern, API-first search platform with AI agents, designed for TYPO3 and other
 | [QUICKSTART.md](QUICKSTART.md) | 5-minute setup: Simple API, full stack, TYPO3 with DDEV |
 | [typo3-dev/README.md](typo3-dev/README.md) | TYPO3 DDEV environment, composer, Install Tool |
 | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) | TYPO3 Bootstrap Package installation and configuration |
-| [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) | Heroku buildpack and deployment troubleshooting |
+| [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) | Docker-based TYPO3 website and Search API deployment on Railway |
+| [PERFORMANCE.md](PERFORMANCE.md) | Lighthouse results, Core Web Vitals and verification scope |
 | [SECURITY.md](SECURITY.md) | API keys, HMAC, rate limiting, production checklist |
+| [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |
 
 ## 🛠️ Quick Start
 
-**Minimal (demo only):** `npm install` → `npm run dev` → API at http://localhost:8787. See [QUICKSTART.md](QUICKSTART.md).
+**Minimal persistent API:** `npm install` → `npm run dev` → API at
+http://localhost:8787. Indexed documents are stored in `.data/search-index.json`
+locally. See [QUICKSTART.md](QUICKSTART.md).
+
+After configuring the TYPO3 extension API URL and write key, index published
+pages and content elements:
+
+```bash
+vendor/bin/typo3 pixelcoda:search:reindex
+vendor/bin/typo3 pixelcoda:search:index --dry-run
+```
+
+The frontend content element provides keyword search and an optional
+source-grounded AI answer panel. The production API additionally supports
+Meilisearch, PostgreSQL/pgvector, hybrid retrieval, synonyms, metrics and
+OpenAI, Azure OpenAI, Ollama or Hugging Face through the LLM adapter.
 
 **Full setup:**
 
 ### 1. Clone Repository
 ```bash
-git clone git@github.com:CasianBlanaru/typo3-search.git
-cd typo3-search
+git clone git@github.com:CasianBlanaru/pixelcoda-typo3-search.git
+cd pixelcoda-typo3-search
 ```
 
 ### 2. Install Dependencies
@@ -106,6 +142,22 @@ node scripts/migrate.js
 ```
 
 ## 🔧 Development
+
+### Quality checks
+
+```bash
+npm ci
+npm run build
+npm run lint:extension
+npm test
+
+cd typo3-dev/packages/pixelcoda_search
+composer validate --strict
+```
+
+CI resolves the extension against TYPO3 12.4, 13.4 and 14.x. The full PHP
+quality suite runs against TYPO3 13.4; JavaScript linting, tests and every
+TypeScript production build run on each pull request.
 
 ### API Server
 ```bash
@@ -478,10 +530,10 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/CasianBlanaru/typo3-search/issues)
-- **Documentation**: [Wiki](https://github.com/CasianBlanaru/typo3-search/wiki)
-- **Discussions**: [GitHub Discussions](https://github.com/CasianBlanaru/typo3-search/discussions)
+- **Issues**: [GitHub Issues](https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues)
+- **Documentation**: [Wiki](https://github.com/CasianBlanaru/pixelcoda-typo3-search/wiki)
+- **Discussions**: [GitHub Discussions](https://github.com/CasianBlanaru/pixelcoda-typo3-search/discussions)
 
 ---
 
-Built with ❤️ by [pixelcoda](https://pixelcoda.com) for the TYPO3 community.
+Built with ❤️ by [pixelcoda](https://pixelcoda.de) for the TYPO3 community.

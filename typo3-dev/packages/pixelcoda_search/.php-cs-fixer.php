@@ -2,12 +2,18 @@
 declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
+    ->in([
+        __DIR__ . '/Classes',
+        __DIR__ . '/Configuration',
+        __DIR__ . '/Tests',
+    ])
+    ->append([
+        __DIR__ . '/ext_emconf.php',
+        __DIR__ . '/ext_localconf.php',
+        __DIR__ . '/ext_tables.php',
+    ])
     ->exclude('Resources')
     ->exclude('Tests/Functional/Fixtures')
-    ->exclude('var')
-    ->exclude('vendor')
-    ->exclude('.build')
     ->name('*.php')
     ->notName('*.tpl.php')
     ->ignoreDotFiles(true)

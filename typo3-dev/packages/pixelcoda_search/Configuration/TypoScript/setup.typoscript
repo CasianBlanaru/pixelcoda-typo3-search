@@ -92,6 +92,9 @@ plugin.tx_pixelcodasearch_search {
     }
     
     settings {
+        apiUrl = {$pixelcoda.search.apiUrl}
+        apiKey = {$pixelcoda.search.readApiKey}
+        project = {$pixelcoda.search.projectId}
         mode = {$plugin.tx_pixelcodasearch_search.settings.mode}
         resultsPerPage = {$plugin.tx_pixelcodasearch_search.settings.resultsPerPage}
         maxPassages = {$plugin.tx_pixelcodasearch_search.settings.maxPassages}
@@ -243,25 +246,6 @@ pixelcoda_webhook {
     10 = USER
     10 {
         userFunc = PixelCoda\PixelcodaSearch\Controller\WebhookController->indexAction
-    }
-}
-
-# Include CSS and JavaScript for classic mode
-page {
-    includeCSS {
-        pixelcodaSearch = EXT:pixelcoda_search/Resources/Public/Css/search.css
-        pixelcodaSearch {
-            media = all
-            disableCompression = 1
-        }
-    }
-    
-    includeJSFooter {
-        pixelcodaSearch = EXT:pixelcoda_search/Resources/Public/JavaScript/search.js
-        pixelcodaSearch {
-            async = 1
-            defer = 1
-        }
     }
 }
 

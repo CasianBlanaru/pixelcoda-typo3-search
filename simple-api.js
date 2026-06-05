@@ -1,285 +1,40 @@
 #!/usr/bin/env node
 
-/**
- * pixelcoda Search API - Simple Working Version
- * No dependencies, pure Node.js for immediate testing
- */
-
-import {
-    createServer
-} from 'http';
-import {
-    URL,
-    fileURLToPath
-} from 'url';
-import {
-    readFile
-} from 'fs/promises';
-import {
-    dirname,
-    join
-} from 'path';
+import { createServer } from 'http';
+import { mkdir, readFile, writeFile } from 'fs/promises';
+import { dirname, join } from 'path';
+import { URL, fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const PORT = process.env.PORT || 8787;
-const API_READ_KEY = process.env.API_READ_KEY || 'pc_read_dev_key';
-const API_WRITE_KEY = process.env.API_WRITE_KEY || 'pc_write_dev_key';
+const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
+const API_READ_KEY = process.env.API_READ_KEY || (IS_DEVELOPMENT ? 'pc_read_dev_key' : '');
+const API_WRITE_KEY = process.env.API_WRITE_KEY || (IS_DEVELOPMENT ? 'pc_write_dev_key' : '');
+const DATA_DIR = process.env.SEARCH_DATA_DIR || join(__dirname, '.data');
+const INDEX_FILE = join(DATA_DIR, 'search-index.json');
+const MAX_REQUEST_BYTES = 2 * 1024 * 1024;
+let searchIndex = {};
 
-// Simple auth check
-function checkAuth(req, requiredKey = API_READ_KEY) {
+function checkAuth(req, requiredKey) {
     const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
     const providedKey = authHeader.replace('Bearer ', '').replace('ApiKey ', '');
-    return providedKey === requiredKey || process.env.NODE_ENV === 'development';
+    return (requiredKey && providedKey === requiredKey) || IS_DEVELOPMENT;
 }
 
-// Simple JSON:API response helper
 function jsonApiResponse(data, included = [], meta = {}) {
-    return {
-        data,
-        included,
-        meta,
-        jsonapi: {
-            version: '1.0'
-        }
-    };
+    return { data, included, meta, jsonapi: { version: '1.0' } };
 }
 
-// Request handler
-const server = createServer(async (req, res) => {
-    // CORS headers (support both names: standalone-api uses CORS_ORIGINS)
-    const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ORIGINS || '*';
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
-    res.setHeader('Content-Type', 'application/vnd.api+json');
-
-    // Handle preflight
-    if (req.method === 'OPTIONS') {
-        res.writeHead(204);
-        res.end();
-        return;
-    }
-
-    const url = new URL(req.url, `http://localhost:${PORT}`);
-    const path = url.pathname;
-    const method = req.method;
-
-    console.log(`${new Date().toISOString()} ${method} ${path}`);
-
-    try {
-        // Home landing page
-        if (path === '/' && method === 'GET') {
-            try {
-                const html = await readFile(join(__dirname, 'index.html'), 'utf8');
-                res.setHeader('Content-Type', 'text/html; charset=utf-8');
-                res.writeHead(200);
-                res.end(html);
-            } catch {
-                res.setHeader('Content-Type', 'text/plain');
-                res.writeHead(500);
-                res.end('Could not load landing page');
-            }
-            return;
-        }
-
-        // Health endpoint
-        if (path === '/health' && method === 'GET') {
-            res.writeHead(200);
-            res.end(JSON.stringify({
-                ok: true,
-                service: 'pixelcoda-search-api',
-                version: '2.0.0',
-                timestamp: new Date().toISOString()
-            }));
-            return;
-        }
-
-        // Search endpoint
-        if (path.match(/^\/v1\/search\//) && method === 'POST') {
-            if (!checkAuth(req, API_READ_KEY)) {
-                res.writeHead(401);
-                res.end(JSON.stringify({
-                    errors: [{
-                        status: '401',
-                        title: 'Unauthorized',
-                        detail: 'Valid API key required'
-                    }]
-                }));
-                return;
-            }
-
-            const project = path.split('/')[3];
-            const body = await getRequestBody(req);
-            const query = body.q || '';
-
-            const searchResults = jsonApiResponse([{
-                    type: 'searchResult',
-                    id: 'demo-result-1',
-                    attributes: {
-                        title: 'pixelcoda Search Platform',
-                        content: 'A modern, API-first search platform with AI agents, designed for TYPO3 and other CMS systems.',
-                        summary: 'Modern search platform with AI capabilities',
-                        url: '/platform',
-                        collection: 'pages',
-                        language: 'en',
-                        score: 0.95
-                    },
-                    meta: {
-                        relevance: 0.95,
-                        collection: 'pages'
-                    }
-                },
-                {
-                    type: 'searchResult',
-                    id: 'demo-result-2',
-                    attributes: {
-                        title: 'TYPO3 Integration Guide',
-                        content: 'Complete guide for integrating pixelcoda Search with TYPO3. Supports both classic and headless modes.',
-                        summary: 'TYPO3 integration documentation',
-                        url: '/docs/typo3',
-                        collection: 'docs',
-                        language: 'en',
-                        score: 0.87
-                    },
-                    meta: {
-                        relevance: 0.87,
-                        collection: 'docs'
-                    }
-                }
-            ], [], {
-                pagination: {
-                    page: body.page || 1,
-                    pages: 1,
-                    count: 2,
-                    total: 2
-                },
-                search: {
-                    query: query,
-                    response_time_ms: 45,
-                    collections: body.collections || [],
-                    language: body.lang || 'en'
-                }
-            });
-
-            res.writeHead(200);
-            res.end(JSON.stringify(searchResults, null, 2));
-            return;
-        }
-
-        // Ask endpoint
-        if (path.match(/^\/v1\/ask\//) && method === 'POST') {
-            const project = path.split('/')[3];
-            const body = await getRequestBody(req);
-            const question = body.q || '';
-
-            const askResult = jsonApiResponse({
-                type: 'answer',
-                id: `answer-${Date.now()}`,
-                attributes: {
-                    text: `Based on your question "${question}", I can tell you that pixelcoda Search is a modern, AI-powered search platform designed for TYPO3. It combines traditional keyword search with vector search and provides AI-generated answers with proper source citations.`,
-                    query: question,
-                    language: body.lang || 'en',
-                    generated_at: new Date().toISOString(),
-                    confidence: 0.89,
-                    search_method: 'demo'
-                },
-                relationships: {
-                    citations: {
-                        data: [{
-                                type: 'citation',
-                                id: 'citation-0'
-                            },
-                            {
-                                type: 'citation',
-                                id: 'citation-1'
-                            }
-                        ]
-                    }
-                }
-            }, [{
-                    type: 'citation',
-                    id: 'citation-0',
-                    attributes: {
-                        title: 'pixelcoda Search Documentation',
-                        url: '/docs',
-                        snippet: 'pixelcoda Search is a modern, API-first search platform...',
-                        collection: 'docs',
-                        reference: '[1]'
-                    }
-                },
-                {
-                    type: 'citation',
-                    id: 'citation-1',
-                    attributes: {
-                        title: 'TYPO3 Integration',
-                        url: '/docs/typo3',
-                        snippet: 'The platform supports both classic TYPO3 plugins and headless...',
-                        collection: 'docs',
-                        reference: '[2]'
-                    }
-                }
-            ], {
-                query: {
-                    text: question,
-                    language: body.lang || 'en',
-                    max_passages: body.maxPassages || 6
-                },
-                generation: {
-                    response_time_ms: 1200,
-                    search_method: 'demo',
-                    passages_found: 2,
-                    passages_used: 2,
-                    citations_count: 2
-                }
-            });
-
-            res.writeHead(200);
-            res.end(JSON.stringify(askResult, null, 2));
-            return;
-        }
-
-        // Index endpoint (stub)
-        if (path.match(/^\/v1\/index\//) && method === 'POST') {
-            const body = await getRequestBody(req);
-
-            res.writeHead(200);
-            res.end(JSON.stringify({
-                success: true,
-                processed: body.documents?.length || 0,
-                message: 'Documents indexed successfully (demo mode)'
-            }));
-            return;
-        }
-
-        // 404 for other routes
-        res.writeHead(404);
-        res.end(JSON.stringify({
-            errors: [{
-                status: '404',
-                title: 'Not Found',
-                detail: `Route ${path} not found`
-            }]
-        }));
-
-    } catch (error) {
-        console.error('Request error:', error);
-        res.writeHead(500);
-        res.end(JSON.stringify({
-            errors: [{
-                status: '500',
-                title: 'Internal Server Error',
-                detail: error.message
-            }]
-        }));
-    }
-});
-
-// Helper to read request body
 function getRequestBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
-        req.on('data', chunk => body += chunk);
+        req.on('data', chunk => {
+            body += chunk;
+            if (Buffer.byteLength(body) > MAX_REQUEST_BYTES) {
+                reject(new Error('Request body exceeds 2 MB limit'));
+                req.destroy();
+            }
+        });
         req.on('end', () => {
             try {
                 resolve(body ? JSON.parse(body) : {});
@@ -291,28 +46,246 @@ function getRequestBody(req) {
     });
 }
 
-// Start server
+async function loadIndex() {
+    try {
+        searchIndex = JSON.parse(await readFile(INDEX_FILE, 'utf8'));
+    } catch {
+        searchIndex = {};
+    }
+}
+
+async function persistIndex() {
+    await mkdir(DATA_DIR, { recursive: true });
+    await writeFile(INDEX_FILE, JSON.stringify(searchIndex, null, 2));
+}
+
+function tokenize(value) {
+    return String(value || '')
+        .toLocaleLowerCase()
+        .normalize('NFKD')
+        .replace(/\p{Diacritic}/gu, '')
+        .split(/[^\p{Letter}\p{Number}]+/u)
+        .filter(Boolean);
+}
+
+function getProjectDocuments(project) {
+    return Object.values(searchIndex[project] || {}).flatMap(collection => Object.values(collection));
+}
+
+function scoreDocument(document, queryTokens) {
+    const titleTokens = tokenize(document.title);
+    const contentTokens = tokenize(`${document.summary || ''} ${document.content || ''} ${document.keywords || ''}`);
+    return queryTokens.reduce((score, token) => {
+        const titleMatches = titleTokens.filter(word => word.includes(token)).length;
+        const contentMatches = contentTokens.filter(word => word.includes(token)).length;
+        return score + (titleMatches * 5) + contentMatches;
+    }, 0);
+}
+
+function searchDocuments(project, payload) {
+    const queryTokens = tokenize(payload.q);
+    const collections = Array.isArray(payload.collections) ? payload.collections : [];
+    const limit = Math.max(1, Math.min(Number(payload.limit) || 10, 100));
+    return getProjectDocuments(project)
+        .filter(document => collections.length === 0 || collections.includes(document.collection))
+        .map(document => ({ document, score: scoreDocument(document, queryTokens) }))
+        .filter(result => queryTokens.length === 0 || result.score > 0)
+        .sort((a, b) => b.score - a.score || String(a.document.title).localeCompare(String(b.document.title)))
+        .slice(0, limit);
+}
+
+function normalizeScore(score, query) {
+    return Math.min(1, score / Math.max(5, tokenize(query).length * 5));
+}
+
+function sendJson(res, status, payload) {
+    res.writeHead(status);
+    res.end(JSON.stringify(payload, null, 2));
+}
+
+function setCorsHeaders(req, res) {
+    const configuredOrigins = (process.env.CORS_ALLOWED_ORIGINS || process.env.CORS_ORIGINS || '*')
+        .split(',')
+        .map(origin => origin.trim())
+        .filter(Boolean);
+    const requestOrigin = req.headers.origin;
+    if (configuredOrigins.includes('*')) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    } else if (requestOrigin && configuredOrigins.includes(requestOrigin)) {
+        res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+        res.setHeader('Vary', 'Origin');
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
+}
+
+const server = createServer(async (req, res) => {
+    setCorsHeaders(req, res);
+    res.setHeader('Content-Type', 'application/vnd.api+json');
+
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204);
+        res.end();
+        return;
+    }
+
+    const url = new URL(req.url, `http://localhost:${PORT}`);
+    const path = url.pathname;
+    const method = req.method;
+    const pathParts = path.split('/');
+    console.log(`${new Date().toISOString()} ${method} ${path}`);
+
+    try {
+        if (path === '/' && method === 'GET') {
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.writeHead(200);
+            res.end(await readFile(join(__dirname, 'index.html'), 'utf8'));
+            return;
+        }
+
+        if (path === '/health' && method === 'GET') {
+            sendJson(res, 200, {
+                ok: true,
+                service: 'pixelcoda-search-api',
+                mode: 'persistent-local',
+                documents: getProjectDocuments('typo3').length,
+                timestamp: new Date().toISOString()
+            });
+            return;
+        }
+
+        if (path.match(/^\/v1\/search\//) && method === 'POST') {
+            if (!checkAuth(req, API_READ_KEY)) {
+                sendJson(res, 401, { error: 'Valid read API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const body = await getRequestBody(req);
+            const matches = searchDocuments(project, body);
+            sendJson(res, 200, jsonApiResponse(matches.map(({ document, score }) => ({
+                type: 'searchResult',
+                id: document.id,
+                attributes: { ...document, score: normalizeScore(score, body.q) },
+                meta: { relevance: normalizeScore(score, body.q), collection: document.collection }
+            })), [], {
+                pagination: { page: 1, pages: 1, count: matches.length, total: matches.length },
+                search: { query: body.q || '', collections: body.collections || [] }
+            }));
+            return;
+        }
+
+        if (path.match(/^\/v1\/ask\//) && method === 'POST') {
+            if (!checkAuth(req, API_READ_KEY)) {
+                sendJson(res, 401, { error: 'Valid read API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const body = await getRequestBody(req);
+            const question = body.q || '';
+            const matches = searchDocuments(project, { ...body, q: question, limit: body.maxPassages || 6 });
+            const citations = matches.map(({ document }, index) => ({
+                type: 'citation',
+                id: `citation-${index}`,
+                attributes: {
+                    title: document.title,
+                    url: document.url || '/',
+                    snippet: String(document.summary || document.content || '').slice(0, 240),
+                    collection: document.collection,
+                    reference: `[${index + 1}]`
+                }
+            }));
+            const answer = matches.length > 0
+                ? `Zu "${question}" wurden ${matches.length} relevante Inhalte gefunden: ${matches.map(({ document }, index) => `[${index + 1}] ${document.title}: ${String(document.summary || document.content || '').slice(0, 180)}`).join(' ')}`
+                : `Zu "${question}" wurden im aktuellen Suchindex keine relevanten Inhalte gefunden.`;
+            sendJson(res, 200, jsonApiResponse({
+                type: 'answer',
+                id: `answer-${Date.now()}`,
+                attributes: {
+                    text: answer,
+                    query: question,
+                    generated_at: new Date().toISOString(),
+                    confidence: matches.length > 0 ? 0.8 : 0,
+                    search_method: 'local-keyword'
+                },
+                relationships: {
+                    citations: { data: citations.map(citation => ({ type: citation.type, id: citation.id })) }
+                }
+            }, citations, {
+                generation: { search_method: 'local-keyword', passages_found: matches.length, citations_count: citations.length }
+            }));
+            return;
+        }
+
+        if (path.match(/^\/v1\/index\//) && method === 'POST') {
+            if (!checkAuth(req, API_WRITE_KEY)) {
+                sendJson(res, 401, { error: 'Valid write API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const collection = pathParts[4];
+            const body = await getRequestBody(req);
+            searchIndex[project] ||= {};
+            searchIndex[project][collection] ||= {};
+            for (const document of body.documents || []) {
+                searchIndex[project][collection][String(document.id)] = {
+                    ...document,
+                    id: String(document.id),
+                    collection,
+                    updated_at: new Date().toISOString()
+                };
+            }
+            await persistIndex();
+            sendJson(res, 200, { success: true, processed: body.documents?.length || 0 });
+            return;
+        }
+
+        if (path.match(/^\/v1\/index\//) && method === 'DELETE') {
+            if (!checkAuth(req, API_WRITE_KEY)) {
+                sendJson(res, 401, { error: 'Valid write API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const collection = pathParts[4];
+            const body = await getRequestBody(req);
+            if (body.all === true) {
+                searchIndex[project] ||= {};
+                searchIndex[project][collection] = {};
+            } else {
+                for (const id of body.ids || []) {
+                    delete searchIndex[project]?.[collection]?.[String(id)];
+                }
+            }
+            await persistIndex();
+            sendJson(res, 200, { success: true });
+            return;
+        }
+
+        if (path.match(/^\/v1\/index\//) && method === 'GET') {
+            const project = pathParts[3];
+            const collection = pathParts[4];
+            const documents = Object.values(searchIndex[project]?.[collection] || {});
+            sendJson(res, 200, { project, collection, documents: documents.length });
+            return;
+        }
+
+        sendJson(res, 404, { error: `Route ${path} not found` });
+    } catch (error) {
+        console.error('Request error:', error);
+        sendJson(res, 500, { error: error.message });
+    }
+});
+
+if (!IS_DEVELOPMENT && (!API_READ_KEY || !API_WRITE_KEY)) {
+    throw new Error('API_READ_KEY and API_WRITE_KEY are required in production');
+}
+
+await loadIndex();
 server.listen(PORT, () => {
-    console.log(`🚀 pixelcoda Search API running on http://localhost:${PORT}`);
-    console.log(`📋 Available endpoints:`);
-    console.log(`   GET  /health`);
-    console.log(`   POST /v1/search/:project`);
-    console.log(`   POST /v1/ask/:project`);
-    console.log(`   POST /v1/index/:project/:collection`);
-    console.log(``);
-    console.log(`🧪 Test with:`);
-    console.log(`   curl http://localhost:${PORT}/health`);
-    console.log(`   curl -X POST http://localhost:${PORT}/v1/search/demo -H "Content-Type: application/json" -d '{"q":"test"}'`);
+    console.log(`pixelcoda Search API running on http://localhost:${PORT}`);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('🛑 Shutting down pixelcoda Search API');
-    server.close();
-});
-
+process.on('SIGTERM', () => server.close());
 process.on('SIGINT', () => {
-    console.log('🛑 Shutting down pixelcoda Search API');
     server.close();
     process.exit(0);
 });

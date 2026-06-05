@@ -1,4 +1,4 @@
-# 🚀 Pixelcoda Search Platform - Schnellstart
+# Pixelcoda Search for TYPO3 - Schnellstart
 
 Die Pixelcoda Search Platform ist eine moderne, API-basierte Suchplattform mit KI-Unterstützung für TYPO3 und andere CMS-Systeme.
 
@@ -6,8 +6,8 @@ Die Pixelcoda Search Platform ist eine moderne, API-basierte Suchplattform mit K
 
 ### 1. Repository klonen
 ```bash
-git clone git@github.com:CasianBlanaru/typo3-search.git
-cd typo3-search
+git clone git@github.com:CasianBlanaru/pixelcoda-typo3-search.git
+cd pixelcoda-typo3-search
 ```
 
 ### 2. Abhängigkeiten installieren
@@ -26,6 +26,19 @@ Die API läuft unter **http://localhost:8787**. Öffne z. B. `http://localhost
 open index.html
 # oder: open demo/index.html
 ```
+
+Der lokale Dienst speichert indexierte Dokumente persistent unter
+`.data/search-index.json`. Verbinde TYPO3 mit der API und indexiere anschließend
+reale Inhalte:
+
+```bash
+vendor/bin/typo3 pixelcoda:search:reindex
+vendor/bin/typo3 pixelcoda:search:index --dry-run
+```
+
+In DDEV muss die serverseitige API-URL normalerweise
+`http://host.docker.internal:8787` lauten. Browserseitig bleibt sie
+`http://localhost:8787`.
 
 ---
 
@@ -152,7 +165,7 @@ docker-compose logs -f postgres
 1. **Umgebungsvariablen**: `.env` aus `env.example` anlegen (siehe [SECURITY.md](SECURITY.md) für sichere Keys).
 2. **Inhalte indexieren**: Dokumente über die API hinzufügen.
 3. **KI-Provider**: OpenAI/Ollama in `.env` konfigurieren.
-4. **Deployment**: Heroku-Setup siehe [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md).
+4. **Deployment**: Railway-Setup siehe [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md).
 
 ---
 
@@ -163,7 +176,7 @@ docker-compose logs -f postgres
 | Hauptdokumentation | [README.md](README.md) |
 | TYPO3 DDEV-Setup | [typo3-dev/README.md](typo3-dev/README.md) |
 | Bootstrap Package (TYPO3) | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |
-| Heroku Deployment | [HEROKU_DEPLOYMENT_FIX.md](HEROKU_DEPLOYMENT_FIX.md) |
+| Railway Deployment | [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) |
 | Sicherheit & Keys | [SECURITY.md](SECURITY.md) |
 
-GitHub: https://github.com/CasianBlanaru/typo3-search
+GitHub: https://github.com/CasianBlanaru/pixelcoda-typo3-search
