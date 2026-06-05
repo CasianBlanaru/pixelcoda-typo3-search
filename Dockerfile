@@ -31,14 +31,9 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader
 
-# TYPO3 14 scans packages/sysext during a fresh installation. Composer keeps
-# framework packages in vendor, so expose them at the expected scan location.
-RUN mkdir -p packages/ext packages/sysext \
-    && for package in vendor/typo3/cms-*; do \
-        if grep -q '"type": "typo3-cms-framework"' "${package}/composer.json"; then \
-            ln -s "../../${package}" "packages/sysext/$(basename "${package}")"; \
-        fi; \
-    done
+# TYPO3 14 scans packages/sysext during a fresh installation. Composer already
+# registers framework packages, but Finder still requires a scanable directory.
+RUN mkdir -p packages/ext packages/sysext/placeholder
 
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
@@ -51,7 +46,7 @@ RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && mkdir -p \
         /data \
         /var/www/html/packages/ext \
-        /var/www/html/packages/sysext \
+        /var/www/html/packages/sysext/placeholder \
         /var/www/html/public/fileadmin \
         /var/www/html/var \
     && chown -R www-data:www-data /data /var/www/html

@@ -28,7 +28,7 @@ mkdir -p \
     /data/config/system \
     /data/fileadmin \
     /var/www/html/packages/ext \
-    /var/www/html/packages/sysext \
+    /var/www/html/packages/sysext/placeholder \
     /var/www/html/var
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
