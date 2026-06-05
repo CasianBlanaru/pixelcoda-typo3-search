@@ -10,8 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -31,7 +31,8 @@ class SearchModuleController
         protected ConfigurationManager $configurationManager,
         protected UriBuilder $uriBuilder,
         protected RequestFactory $requestFactory,
-    ) {}
+    ) {
+    }
 
     /**
      * Main entry point for the backend module.
@@ -392,7 +393,7 @@ class SearchModuleController
 
     protected function redirectToModule(): RedirectResponse
     {
-        return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('tools_PixelcodaSearchM1'));
+        return new RedirectResponse((string) $this->uriBuilder->buildUriFromRoute('tools_PixelcodaSearchM1'));
     }
 
     /**
