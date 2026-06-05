@@ -40,6 +40,7 @@ RUN mkdir -p packages/ext packages/sysext/placeholder
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
 COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
+COPY deployment/typo3/diagnose-bootstrap.php /usr/local/bin/pixelcoda-diagnose-bootstrap
 COPY deployment/typo3/additional.php /usr/local/share/pixelcoda-typo3-additional.php
 COPY typo3-dev/public/index.php public/index.php
 COPY deployment/typo3/backend-index.php public/typo3/index.php
