@@ -35,7 +35,8 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader \
     && test -f vendor/typo3/PackageArtifact.php \
-    && test -f vendor/typo3/alias-loader-include.php
+    && test -f vendor/typo3/alias-loader-include.php \
+    && cp vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess public/.htaccess
 
 # TYPO3 14 scans packages/sysext during a fresh installation. Composer already
 # registers framework packages, but Finder still requires a scanable directory.
