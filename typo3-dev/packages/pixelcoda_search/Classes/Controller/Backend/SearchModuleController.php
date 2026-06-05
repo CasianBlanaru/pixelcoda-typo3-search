@@ -7,27 +7,31 @@ namespace PixelCoda\PixelcodaSearch\Controller\Backend;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Backend module controller for pixelcoda Search administration.
  */
 class SearchModuleController
 {
-    public function __construct(protected ModuleTemplateFactory $moduleTemplateFactory, protected ConfigurationManager $configurationManager)
-    {
-    }
+    public function __construct(
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected ConfigurationManager $configurationManager,
+        protected UriBuilder $uriBuilder,
+        protected RequestFactory $requestFactory,
+    ) {}
 
     /**
      * Main entry point for the backend module.
@@ -50,7 +54,6 @@ class SearchModuleController
     protected function indexAction(ServerRequestInterface $request): ResponseInterface
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($request);
-        $view = $this->createStandaloneView('Index');
 
         // Get current configuration
         $config = $this->getCurrentConfiguration();
@@ -66,7 +69,7 @@ class SearchModuleController
         // Get system status
         $systemStatus = $this->getSystemStatus();
 
-        $view->assignMultiple([
+        $moduleTemplate->assignMultiple([
             'config' => $config,
             'siteConfig' => $siteConfig,
             'currentMode' => $currentMode,
@@ -83,10 +86,9 @@ class SearchModuleController
             ],
         ]);
 
-        $moduleTemplate->setContent($view->render());
         $moduleTemplate->setTitle('pixelcoda Search - Administration');
 
-        return new HtmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Backend/Index');
     }
 
     /**
@@ -104,7 +106,7 @@ class SearchModuleController
                 ContextualFeedbackSeverity::ERROR
             );
 
-            return new RedirectResponse($request->getUri()->getPath());
+            return $this->redirectToModule();
         }
 
         try {
@@ -142,7 +144,7 @@ class SearchModuleController
             );
         }
 
-        return new RedirectResponse($request->getUri()->getPath());
+        return $this->redirectToModule();
     }
 
     /**
@@ -166,7 +168,7 @@ class SearchModuleController
             );
         }
 
-        return new RedirectResponse($request->getUri()->getPath());
+        return $this->redirectToModule();
     }
 
     /**
@@ -185,26 +187,23 @@ class SearchModuleController
                 ContextualFeedbackSeverity::WARNING
             );
 
-            return new RedirectResponse($request->getUri()->getPath());
+            return $this->redirectToModule();
         }
 
         try {
-            $ch = curl_init();
-            curl_setopt_array($ch, [
-                CURLOPT_URL => rtrim((string) $apiUrl, '/') . '/v1/health',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_TIMEOUT => 10,
-                CURLOPT_HTTPHEADER => [
-                    'Authorization: Bearer ' . $apiKey,
-                    'Content-Type: application/json',
-                ],
-            ]);
+            $response = $this->requestFactory->request(
+                rtrim((string) $apiUrl, '/') . '/health',
+                'GET',
+                [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $apiKey,
+                        'Accept' => 'application/json',
+                    ],
+                    'timeout' => 10,
+                ]
+            );
 
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            if (false !== $response && 200 === $httpCode) {
+            if (200 === $response->getStatusCode()) {
                 $this->addFlashMessage(
                     'API-Verbindung erfolgreich getestet.',
                     'Verbindung OK',
@@ -212,20 +211,20 @@ class SearchModuleController
                 );
             } else {
                 $this->addFlashMessage(
-                    'API-Verbindung fehlgeschlagen. HTTP Code: ' . $httpCode,
+                    'API-Verbindung fehlgeschlagen. HTTP Code: ' . $response->getStatusCode(),
                     'Verbindungsfehler',
                     ContextualFeedbackSeverity::ERROR
                 );
             }
         } catch (Exception $exception) {
             $this->addFlashMessage(
-                'Fehler beim Testen der API-Verbindung: ' . $exception->getMessage(),
+                'API nicht erreichbar: ' . $exception->getMessage(),
                 'Verbindungsfehler',
                 ContextualFeedbackSeverity::ERROR
             );
         }
 
-        return new RedirectResponse($request->getUri()->getPath());
+        return $this->redirectToModule();
     }
 
     /**
@@ -267,7 +266,7 @@ class SearchModuleController
         }
 
         try {
-            return yaml_parse_file($configPath) ?: [];
+            return GeneralUtility::makeInstance(YamlFileLoader::class)->load($configPath);
         } catch (Exception) {
             return [];
         }
@@ -391,6 +390,11 @@ class SearchModuleController
         }
     }
 
+    protected function redirectToModule(): RedirectResponse
+    {
+        return new RedirectResponse((string)$this->uriBuilder->buildUriFromRoute('tools_PixelcodaSearchM1'));
+    }
+
     /**
      * Remove directory recursively.
      */
@@ -407,25 +411,6 @@ class SearchModuleController
         }
 
         rmdir($dir);
-    }
-
-    /**
-     * Create standalone view for templates.
-     */
-    protected function createStandaloneView(string $templateName): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename(
-            'EXT:pixelcoda_search/Resources/Private/Templates/Backend/' . $templateName . '.html'
-        );
-        $view->setLayoutRootPaths([
-            'EXT:pixelcoda_search/Resources/Private/Layouts/Backend/',
-        ]);
-        $view->setPartialRootPaths([
-            'EXT:pixelcoda_search/Resources/Private/Partials/Backend/',
-        ]);
-
-        return $view;
     }
 
     /**

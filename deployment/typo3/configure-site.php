@@ -11,6 +11,7 @@ $requiredSets = [
     'typo3/fluid-styled-content',
     'pixelcoda/sitepackage',
     'pixelcoda/content-gsap-animation',
+    'pixelcoda/fe-editor',
     'pixelcoda/typo3-search',
 ];
 

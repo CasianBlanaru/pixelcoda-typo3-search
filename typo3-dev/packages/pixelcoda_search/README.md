@@ -40,7 +40,7 @@ the **Pixelcoda Search** content element to a page.
 Full documentation and development setup:
 [github.com/CasianBlanaru/pixelcoda-typo3-search](https://github.com/CasianBlanaru/pixelcoda-typo3-search)
 
-Maintained by [Pixelcoda](https://pixelcoda.de).
+Maintained by [Pixelcoda by Casian Blanaru](https://pixelcoda.de).
 
 ## Index TYPO3 content
 
@@ -58,3 +58,17 @@ contracts remain available.
 
 For DDEV installations, use `http://host.docker.internal:8787` as the
 server-side API URL when the API runs on the host machine.
+
+## Backend module and API check
+
+Open **Administration > pixelcoda Search** to inspect the active rendering
+mode and API configuration. **API-Verbindung testen** checks the API's
+`/health` endpoint. TYPO3 14 uses the current backend module rendering API;
+TYPO3 12.4 and 13.4 remain supported.
+
+The API must be running before the connection test:
+
+```bash
+npm run api:dev
+curl --fail http://localhost:8787/health
+```

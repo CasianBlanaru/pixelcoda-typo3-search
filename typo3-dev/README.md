@@ -50,7 +50,11 @@ yarn -w apps/api run dev
 ### 4. Access TYPO3
 - **Frontend**: https://pixelcoda-typo3-dev.ddev.site
 - **Backend**: https://pixelcoda-typo3-dev.ddev.site/typo3
-- **Login**: admin / admin
+- **Login**: use the administrator credentials created during `install:setup`
+
+Do not reuse the development administrator account for testers. Create a
+restricted backend user under **Administration > Users** and assign only the
+required page mounts and modules.
 
 ## 🔧 Development
 

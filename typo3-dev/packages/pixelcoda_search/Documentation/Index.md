@@ -49,3 +49,13 @@ vendor/bin/typo3 pixelcoda:search:index --dry-run
 
 For DDEV installations, use `http://host.docker.internal:8787` as the
 server-side API URL when the API runs on the host machine.
+
+## Backend administration
+
+The module at **Administration > pixelcoda Search** is compatible with TYPO3
+12.4 LTS, 13.4 LTS and 14.x. It reads site configuration with TYPO3's YAML
+loader, so no optional PHP YAML extension is required.
+
+Use **API-Verbindung testen** to call the configured Search API `/health`
+endpoint. A failed check reports the network error in a TYPO3 flash message
+without opening a nested backend frame.

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.2.2 - 2026-06-05
+
+- Restore the Pixelcoda Search backend module on TYPO3 14 using the current
+  `ModuleTemplateFactory` rendering API.
+- Remove the optional PHP YAML extension requirement by using TYPO3's
+  `YamlFileLoader`.
+- Test the Search API against its real `/health` endpoint and return actionable
+  connection errors.
+- Redirect backend actions to the module route to prevent nested backend frames.
+- Persist frontend editor ordering through TYPO3 DataHandler move commands and
+  announce save results accessibly.
+
 ## 2.2.1 - 2026-06-04
 
 - Replace ambiguous mixed-runtime Railpack detection with explicit Docker

@@ -536,4 +536,4 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 ---
 
-Built with ❤️ by [pixelcoda](https://pixelcoda.de) for the TYPO3 community.
+Built by [Pixelcoda by Casian Blanaru](https://pixelcoda.de) for the TYPO3 community.

@@ -48,6 +48,14 @@ Every later deployment runs the extension migrations again before Apache
 starts. Railway checks `/healthz.php` and only receives HTTP 200 after TYPO3
 has a persisted installation.
 
+### TYPO3 backend login
+
+Open `https://your-typo3-domain.example/typo3/`. Log in with the values from
+`TYPO3_SETUP_ADMIN_USERNAME` and `TYPO3_SETUP_ADMIN_PASSWORD`. Never commit or
+display the password in the repository or login screen. Create restricted
+editor accounts in **Administration > Users** for testers and grant only the
+required page mounts and modules.
+
 ## 2. Create The Search API Service
 
 Create a second service from the same repository and select
@@ -108,6 +116,10 @@ curl --fail https://your-search-api.up.railway.app/health
 ```
 
 Both endpoints must return HTTP 200 and an `ok` value.
+
+In TYPO3, open **Administration > pixelcoda Search** and run
+**API-Verbindung testen**. The check calls the same Search API `/health`
+endpoint.
 
 For an existing Railway volume created with TYPO3 12, take a database backup
 before deploying this TYPO3 14 image. The startup migration updates the
