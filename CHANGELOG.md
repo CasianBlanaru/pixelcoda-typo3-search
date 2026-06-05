@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.2.3 - 2026-06-05
+
+- Prevent nested TYPO3 backend frames after Search module actions by
+  redirecting to the current direct module path.
+- Run the persistent Search API inside the Railway TYPO3 service and expose it
+  same-origin under `/search-api`.
+- Replace production browser requests to `localhost:8787` with the same-origin
+  Search API endpoint.
+- Remove duplicate inline Search JavaScript and use the tested bundled asset.
+- Rebuild public TYPO3 assets after deployment and flush stale imported page
+  caches to prevent CSS MIME-type errors.
+
 ## 2.2.2 - 2026-06-05
 
 - Restore the Pixelcoda Search backend module on TYPO3 14 using the current

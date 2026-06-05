@@ -13,6 +13,13 @@ export TYPO3_PROJECT_NAME="${TYPO3_PROJECT_NAME:-Pixelcoda TYPO3 Suite}"
 export TYPO3_SERVER_TYPE=apache
 export TYPO3_PATH_APP="${TYPO3_PATH_APP:-/var/www/html}"
 export TYPO3_PATH_ROOT="${TYPO3_PATH_ROOT:-/var/www/html/public}"
+export PIXELCODA_API_URL="${PIXELCODA_API_URL:-http://127.0.0.1:8787}"
+export PIXELCODA_API_KEY="${PIXELCODA_API_KEY:-${API_WRITE_KEY:-pc_write_dev_key}}"
+export PIXELCODA_READ_API_KEY="${PIXELCODA_READ_API_KEY:-${API_READ_KEY:-pc_read_dev_key}}"
+export API_WRITE_KEY="${API_WRITE_KEY:-${PIXELCODA_API_KEY}}"
+export API_READ_KEY="${API_READ_KEY:-${PIXELCODA_READ_API_KEY}}"
+export SEARCH_DATA_DIR="${SEARCH_DATA_DIR:-/data/search-api}"
+export NODE_ENV=production
 
 envsubst '${PORT}' \
     < /etc/apache2/sites-available/000-default.conf.template \
@@ -31,11 +38,12 @@ mkdir -p \
     /data/fileadmin \
     /var/www/html/packages/ext \
     /var/www/html/packages/sysext/placeholder \
+    /var/www/html/public/typo3temp/assets \
     /var/www/html/var
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
 ln -s /data/fileadmin /var/www/html/public/fileadmin
-chown -R www-data:www-data /data /var/www/html/var
+chown -R www-data:www-data /data /var/www/html/public/typo3temp /var/www/html/var
 
 required_database_variables=(
     TYPO3_DB_HOST
@@ -110,7 +118,9 @@ vendor/bin/typo3 extension:setup --no-interaction -vvv \
         find /var/www/html/var/log -maxdepth 1 -type f -print -exec tail -n 120 {} \; 2>/dev/null || true
     }
 php /usr/local/bin/pixelcoda-configure-site
-vendor/bin/typo3 cache:flush --group=system || true
+vendor/bin/typo3 cache:flush || true
 vendor/bin/typo3 cache:warmup || true
+
+node /opt/pixelcoda-search-api/simple-api.js &
 
 exec "$@"

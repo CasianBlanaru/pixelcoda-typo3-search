@@ -7,7 +7,6 @@ namespace PixelCoda\PixelcodaSearch\Controller\Backend;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -29,7 +28,6 @@ class SearchModuleController
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
         protected ConfigurationManager $configurationManager,
-        protected UriBuilder $uriBuilder,
         protected RequestFactory $requestFactory,
     ) {
     }
@@ -107,7 +105,7 @@ class SearchModuleController
                 ContextualFeedbackSeverity::ERROR
             );
 
-            return $this->redirectToModule();
+            return $this->redirectToModule($request);
         }
 
         try {
@@ -145,7 +143,7 @@ class SearchModuleController
             );
         }
 
-        return $this->redirectToModule();
+        return $this->redirectToModule($request);
     }
 
     /**
@@ -169,7 +167,7 @@ class SearchModuleController
             );
         }
 
-        return $this->redirectToModule();
+        return $this->redirectToModule($request);
     }
 
     /**
@@ -188,7 +186,7 @@ class SearchModuleController
                 ContextualFeedbackSeverity::WARNING
             );
 
-            return $this->redirectToModule();
+            return $this->redirectToModule($request);
         }
 
         try {
@@ -225,7 +223,7 @@ class SearchModuleController
             );
         }
 
-        return $this->redirectToModule();
+        return $this->redirectToModule($request);
     }
 
     /**
@@ -391,9 +389,9 @@ class SearchModuleController
         }
     }
 
-    protected function redirectToModule(): RedirectResponse
+    protected function redirectToModule(ServerRequestInterface $request): RedirectResponse
     {
-        return new RedirectResponse((string) $this->uriBuilder->buildUriFromRoute('tools_PixelcodaSearchM1'));
+        return new RedirectResponse($request->getUri()->getPath());
     }
 
     /**

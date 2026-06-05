@@ -680,7 +680,18 @@ function initContentElementSearch(container) {
     container.dataset.searchInitialized = 'true';
 
     const uid = container.dataset.uid;
-    const apiUrl = container.dataset.apiUrl || 'http://localhost:8787';
+    const configuredApiUrl = container.dataset.apiUrl || '';
+    const configuredApiHost = (() => {
+        try {
+            return new URL(configuredApiUrl).hostname;
+        } catch {
+            return '';
+        }
+    })();
+    const isLocalBrowser = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+    const apiUrl = !isLocalBrowser && ['localhost', '127.0.0.1', '::1'].includes(configuredApiHost)
+        ? '/search-api'
+        : configuredApiUrl || (isLocalBrowser ? 'http://localhost:8787' : '/search-api');
     const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
     const project = container.dataset.project || 'typo3';
     const resultsPerPage = Number.parseInt(container.dataset.resultsPerPage, 10) || 10;

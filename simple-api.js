@@ -18,7 +18,8 @@ let searchIndex = {};
 function checkAuth(req, requiredKey) {
     const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
     const providedKey = authHeader.replace('Bearer ', '').replace('ApiKey ', '');
-    return (requiredKey && providedKey === requiredKey) || IS_DEVELOPMENT;
+    const acceptedKeys = Array.isArray(requiredKey) ? requiredKey : [requiredKey];
+    return acceptedKeys.filter(Boolean).includes(providedKey) || IS_DEVELOPMENT;
 }
 
 function jsonApiResponse(data, included = [], meta = {}) {
@@ -155,7 +156,7 @@ const server = createServer(async (req, res) => {
         }
 
         if (path.match(/^\/v1\/search\//) && method === 'POST') {
-            if (!checkAuth(req, API_READ_KEY)) {
+            if (!checkAuth(req, [API_READ_KEY, API_WRITE_KEY])) {
                 sendJson(res, 401, { error: 'Valid read API key required' });
                 return;
             }
@@ -175,7 +176,7 @@ const server = createServer(async (req, res) => {
         }
 
         if (path.match(/^\/v1\/ask\//) && method === 'POST') {
-            if (!checkAuth(req, API_READ_KEY)) {
+            if (!checkAuth(req, [API_READ_KEY, API_WRITE_KEY])) {
                 sendJson(res, 401, { error: 'Valid read API key required' });
                 return;
             }

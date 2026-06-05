@@ -90,8 +90,19 @@ OPENAI_MODEL=gpt-4.1-mini
 
 ## 3. Connect TYPO3 To The Search API
 
-Expose the Search API with a Railway public domain and add these variables to
-the TYPO3 service:
+The TYPO3 Docker image includes the persistent Search API and exposes it on the
+same public domain below `/search-api`. This default is suitable for a complete
+single-service demo and avoids browser requests to `localhost`.
+
+For production, override the default read and write keys on the TYPO3 service:
+
+```dotenv
+PIXELCODA_API_KEY=<API_WRITE_KEY>
+PIXELCODA_READ_API_KEY=<API_READ_KEY>
+```
+
+To use a separately deployed Search API service instead, expose that service
+with a Railway public domain and add these variables to the TYPO3 service:
 
 ```dotenv
 PIXELCODA_API_URL=https://your-search-api.up.railway.app
@@ -112,10 +123,12 @@ vendor/bin/typo3 pixelcoda:search:reindex
 
 ```bash
 curl --fail https://your-typo3-domain.example/healthz.php
+curl --fail https://your-typo3-domain.example/search-api/health
+# Only required when using a separate Search API service:
 curl --fail https://your-search-api.up.railway.app/health
 ```
 
-Both endpoints must return HTTP 200 and an `ok` value.
+The relevant endpoints must return HTTP 200 and an `ok` value.
 
 In TYPO3, open **Administration > pixelcoda Search** and run
 **API-Verbindung testen**. The check calls the same Search API `/health`

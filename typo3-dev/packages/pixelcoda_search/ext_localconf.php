@@ -46,13 +46,13 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 // Environment variables provide defaults without overwriting values configured
 // through TYPO3's extension configuration.
 $extensionConfiguration = &$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'];
-$extensionConfiguration['api_url'] ??= $_ENV['PIXELCODA_API_URL'] ?? 'http://localhost:8787';
-$extensionConfiguration['api_key'] ??= $_ENV['PIXELCODA_API_KEY'] ?? '';
-$extensionConfiguration['read_api_key'] ??= $_ENV['PIXELCODA_READ_API_KEY'] ?? '';
-$extensionConfiguration['hmac_secret'] ??= $_ENV['PIXELCODA_HMAC_SECRET'] ?? '';
-$extensionConfiguration['project_id'] ??= $_ENV['PIXELCODA_PROJECT_ID'] ?? 'typo3';
-$extensionConfiguration['typo3_headless_url'] ??= $_ENV['TYPO3_HEADLESS_URL'] ?? '';
-$extensionConfiguration['cors_origins'] ??= $_ENV['PIXELCODA_CORS_ORIGINS'] ?? '';
+$extensionConfiguration['api_url'] ??= getenv('PIXELCODA_API_URL') ?: 'http://localhost:8787';
+$extensionConfiguration['api_key'] ??= getenv('PIXELCODA_API_KEY') ?: '';
+$extensionConfiguration['read_api_key'] ??= getenv('PIXELCODA_READ_API_KEY') ?: '';
+$extensionConfiguration['hmac_secret'] ??= getenv('PIXELCODA_HMAC_SECRET') ?: '';
+$extensionConfiguration['project_id'] ??= getenv('PIXELCODA_PROJECT_ID') ?: 'typo3';
+$extensionConfiguration['typo3_headless_url'] ??= getenv('TYPO3_HEADLESS_URL') ?: '';
+$extensionConfiguration['cors_origins'] ??= getenv('PIXELCODA_CORS_ORIGINS') ?: '';
 $extensionConfiguration['enabled_tables'] ??= ['pages', 'tt_content', 'tx_news_domain_model_news'];
 $extensionConfiguration['default_mode'] ??= 'classic';
 $extensionConfiguration['enable_auto_index'] ??= true;

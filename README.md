@@ -81,6 +81,9 @@ filters, suggestions, hybrid retrieval and optional AI-assisted answers.
 | [SECURITY.md](SECURITY.md) | API keys, HMAC, rate limiting, production checklist |
 | [CHANGELOG.md](CHANGELOG.md) | Release history and notable changes |
 
+The Railway TYPO3 image includes a same-origin persistent Search API at
+`/search-api`, so frontend browsers never need to connect to `localhost`.
+
 ## 🛠️ Quick Start
 
 **Minimal persistent API:** `npm install` → `npm run dev` → API at

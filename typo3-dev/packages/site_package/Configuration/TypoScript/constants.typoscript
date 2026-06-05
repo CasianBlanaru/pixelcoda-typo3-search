@@ -128,7 +128,7 @@ plugin.tx_pixelcodasearch_search {
         
         # API Configuration
         apiUrl = http://localhost:8787
-        apiKey = pc_write_dev_key
+        apiKey = pc_read_dev_key
         projectId = typo3-dev
     }
 }

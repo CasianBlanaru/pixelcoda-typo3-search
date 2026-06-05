@@ -12,12 +12,13 @@ RUN apt-get update \
         libwebp-dev \
         libxml2-dev \
         libzip-dev \
+        nodejs \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" dom gd intl mbstring mysqli opcache pdo_mysql xml zip \
     && (a2dismod -f mpm_event mpm_worker || true) \
     && a2enmod mpm_prefork \
-    && a2enmod deflate expires headers rewrite \
+    && a2enmod deflate expires headers proxy proxy_http rewrite \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
@@ -52,6 +53,7 @@ COPY deployment/typo3/backend-index.php public/typo3/index.php
 COPY deployment/typo3/install-index.php public/typo3/install.php
 COPY deployment/typo3/healthz.php public/healthz.php
 COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
+COPY simple-api.js index.html /opt/pixelcoda-search-api/
 
 RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && mkdir -p \
@@ -59,7 +61,9 @@ RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
         /var/www/html/packages/ext \
         /var/www/html/packages/sysext/placeholder \
         /var/www/html/public/fileadmin \
+        /var/www/html/public/typo3temp/assets \
         /var/www/html/var \
+        /data/search-api \
     && chown -R www-data:www-data /data /var/www/html
 
 ENV PORT=8080 \
