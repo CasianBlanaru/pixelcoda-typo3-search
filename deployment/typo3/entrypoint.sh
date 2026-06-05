@@ -33,7 +33,6 @@ mkdir -p \
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
 ln -s /data/fileadmin /var/www/html/public/fileadmin
-cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 chown -R www-data:www-data /data /var/www/html/var
 
 required_database_variables=(
@@ -75,12 +74,30 @@ if [[ ! -f /data/config/system/settings.php ]]; then
         fi
     done
 
-    if vendor/bin/typo3 setup --no-interaction --force -vvv; then
+    rm -f /data/config/system/additional.php
+    if vendor/bin/typo3 setup \
+        --driver="${TYPO3_DB_DRIVER}" \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --dbname="${TYPO3_DB_DBNAME}" \
+        --username="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        --admin-username="${TYPO3_SETUP_ADMIN_USERNAME}" \
+        --admin-user-password="${TYPO3_SETUP_ADMIN_PASSWORD}" \
+        --admin-email="${TYPO3_SETUP_ADMIN_EMAIL:-}" \
+        --project-name="${TYPO3_PROJECT_NAME}" \
+        --create-site="${TYPO3_SETUP_CREATE_SITE}" \
+        --server-type="${TYPO3_SERVER_TYPE}" \
+        --no-interaction \
+        --force \
+        -vvv; then
         touch /data/config/.setup-complete
     else
         echo "TYPO3 first setup deferred; Apache will start for direct diagnostics." >&2
     fi
 fi
+
+cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
 vendor/bin/typo3 extension:setup --no-interaction -vvv \
     || echo "TYPO3 extension setup deferred until the application container is available." >&2
