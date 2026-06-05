@@ -4,6 +4,9 @@ Pixelcoda Search provides accessible site search for classic TYPO3 frontends
 and headless projects. The same content element supports autocomplete, faceted
 filters, JSON output and optional source-grounded AI answers.
 
+Test the complete TYPO3 Suite and Search demo at
+https://web-production-e607a.up.railway.app/.
+
 ## Frontend search
 
 ![Pixelcoda Search frontend with an accessible search field](Images/pixelcoda-search-demo.png)

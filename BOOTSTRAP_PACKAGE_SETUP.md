@@ -187,7 +187,7 @@ Bei Fragen oder Problemen:
 | Schnellstart & API | [QUICKSTART.md](QUICKSTART.md) |
 | Hauptprojekt & Architektur | [README.md](README.md) |
 | TYPO3 DDEV-Setup | [typo3-dev/README.md](typo3-dev/README.md) |
-| Railway Deployment | [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) |
+| Railway Deployment | [railway.json](railway.json) |
 | Sicherheit & API-Keys | [SECURITY.md](SECURITY.md) |
 
 ---

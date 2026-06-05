@@ -250,7 +250,7 @@ grep -E "(union|select|script|javascript)" /var/log/pixelcoda-search/api.log
 |-------|--------|
 | Schnellstart & lokale Umgebung | [QUICKSTART.md](QUICKSTART.md) |
 | Hauptdokumentation | [README.md](README.md) |
-| Railway Deployment | [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) |
+| Railway Deployment | [railway.json](railway.json) |
 | TYPO3 Bootstrap Package | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |
 | TYPO3 DDEV | [typo3-dev/README.md](typo3-dev/README.md) |
 

@@ -165,7 +165,7 @@ docker-compose logs -f postgres
 1. **Umgebungsvariablen**: `.env` aus `env.example` anlegen (siehe [SECURITY.md](SECURITY.md) für sichere Keys).
 2. **Inhalte indexieren**: Dokumente über die API hinzufügen.
 3. **KI-Provider**: OpenAI/Ollama in `.env` konfigurieren.
-4. **Deployment**: Railway-Setup siehe [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md).
+4. **Deployment**: Railway nutzt die versionierte Konfiguration im Repository.
 
 ---
 
@@ -176,7 +176,7 @@ docker-compose logs -f postgres
 | Hauptdokumentation | [README.md](README.md) |
 | TYPO3 DDEV-Setup | [typo3-dev/README.md](typo3-dev/README.md) |
 | Bootstrap Package (TYPO3) | [BOOTSTRAP_PACKAGE_SETUP.md](BOOTSTRAP_PACKAGE_SETUP.md) |
-| Railway Deployment | [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md) |
+| Railway Deployment | [railway.json](railway.json) |
 | Sicherheit & Keys | [SECURITY.md](SECURITY.md) |
 
 GitHub: https://github.com/CasianBlanaru/pixelcoda-typo3-search
