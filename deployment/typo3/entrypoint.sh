@@ -16,6 +16,11 @@ envsubst '${PORT}' \
     < /etc/apache2/sites-available/000-default.conf.template \
     > /etc/apache2/sites-available/000-default.conf
 
+# Railway can retain Apache module state from an older service image. Enforce
+# the mod_php-compatible MPM before starting Apache.
+a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
+a2enmod mpm_prefork >/dev/null 2>&1
+
 mkdir -p /data/config /data/fileadmin /var/www/html/var
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config

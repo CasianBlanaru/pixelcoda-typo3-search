@@ -5,7 +5,7 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "apache2-foreground",
+    "startCommand": "pixelcoda-typo3-entrypoint apache2-foreground",
     "healthcheckPath": "/healthz.php",
     "healthcheckTimeout": 180,
     "restartPolicyType": "ON_FAILURE",
