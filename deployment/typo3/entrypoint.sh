@@ -94,13 +94,17 @@ if [[ ! -f /data/config/system/settings.php ]]; then
         touch /data/config/.setup-complete
     else
         echo "TYPO3 first setup deferred; Apache will start for direct diagnostics." >&2
+        find /var/www/html/var/log -maxdepth 1 -type f -print -exec tail -n 120 {} \; 2>/dev/null || true
     fi
 fi
 
 cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
 vendor/bin/typo3 extension:setup --no-interaction -vvv \
-    || echo "TYPO3 extension setup deferred until the application container is available." >&2
+    || {
+        echo "TYPO3 extension setup deferred until the application container is available." >&2
+        find /var/www/html/var/log -maxdepth 1 -type f -print -exec tail -n 120 {} \; 2>/dev/null || true
+    }
 php /usr/local/bin/pixelcoda-configure-site
 vendor/bin/typo3 cache:flush --group=system || true
 vendor/bin/typo3 cache:warmup || true
