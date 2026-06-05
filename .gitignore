@@ -127,6 +127,7 @@ temp/
 # TYPO3 Vendor & Dependencies
 typo3-dev/vendor/
 typo3-dev/composer.lock
+!typo3-dev/composer.lock
 
 # TYPO3 Public folder - generated files
 typo3-dev/public/index.php
@@ -172,6 +173,9 @@ typo3-dev/env.example
 !typo3-dev/packages/
 !typo3-dev/packages/pixelcoda_search/
 !typo3-dev/packages/site_package/
+!typo3-dev/packages/content_gsap_animation/
+!typo3-dev/packages/pixelcoda_fe_editor/
+!typo3-dev/packages/pixelcoda_sitepackage/
 
 # Ignore vendor inside our packages
 typo3-dev/packages/*/vendor/
@@ -208,6 +212,9 @@ apps/*/node_modules/
 !typo3-dev/config/sites/
 !typo3-dev/packages/pixelcoda_search/**
 !typo3-dev/packages/site_package/**
+!typo3-dev/packages/content_gsap_animation/**
+!typo3-dev/packages/pixelcoda_fe_editor/**
+!typo3-dev/packages/pixelcoda_sitepackage/**
 
 # Ignore lock files in packages
 typo3-dev/packages/pixelcoda_search/composer.lock
