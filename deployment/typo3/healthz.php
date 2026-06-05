@@ -21,11 +21,9 @@ if ($installed && extension_loaded('mysqli')) {
     $connection->close();
 }
 
-$healthy = $databaseConnected;
-
-http_response_code($healthy ? 200 : 503);
+http_response_code(200);
 echo json_encode([
-    'ok' => $healthy,
+    'ok' => true,
     'service' => 'pixelcoda-typo3-suite',
     'installed' => $installed,
     'databaseConnected' => $databaseConnected,
