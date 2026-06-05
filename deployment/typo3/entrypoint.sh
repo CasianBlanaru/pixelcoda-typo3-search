@@ -25,6 +25,7 @@ a2enmod mpm_prefork >/dev/null 2>&1
 
 mkdir -p \
     /data/config \
+    /data/config/system \
     /data/fileadmin \
     /var/www/html/packages/ext \
     /var/www/html/packages/sysext \
@@ -32,6 +33,7 @@ mkdir -p \
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
 ln -s /data/fileadmin /var/www/html/public/fileadmin
+cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 chown -R www-data:www-data /data /var/www/html/var
 
 required_database_variables=(
@@ -57,7 +59,7 @@ until mysqladmin ping \
     sleep 2
 done
 
-if [[ ! -f /data/config/system/settings.php ]]; then
+if [[ ! -f /data/config/.setup-complete ]]; then
     required_setup_variables=(
         TYPO3_SETUP_ADMIN_USERNAME
         TYPO3_SETUP_ADMIN_PASSWORD
@@ -70,6 +72,7 @@ if [[ ! -f /data/config/system/settings.php ]]; then
     done
 
     vendor/bin/typo3 setup --no-interaction --force
+    touch /data/config/.setup-complete
 fi
 
 vendor/bin/typo3 extension:setup --no-interaction

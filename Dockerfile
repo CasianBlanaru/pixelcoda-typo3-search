@@ -43,6 +43,7 @@ RUN mkdir -p packages/ext packages/sysext \
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
 COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
+COPY deployment/typo3/additional.php /usr/local/share/pixelcoda-typo3-additional.php
 COPY deployment/typo3/healthz.php public/healthz.php
 COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
 
