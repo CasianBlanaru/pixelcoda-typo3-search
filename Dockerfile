@@ -7,12 +7,14 @@ RUN apt-get update \
         libfreetype6-dev \
         libicu-dev \
         libjpeg62-turbo-dev \
+        libonig-dev \
         libpng-dev \
         libwebp-dev \
+        libxml2-dev \
         libzip-dev \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j"$(nproc)" gd intl mysqli opcache pdo_mysql zip \
+    && docker-php-ext-install -j"$(nproc)" dom gd intl mbstring mysqli opcache pdo_mysql xml zip \
     && (a2dismod -f mpm_event mpm_worker || true) \
     && a2enmod mpm_prefork \
     && a2enmod deflate expires headers rewrite \
