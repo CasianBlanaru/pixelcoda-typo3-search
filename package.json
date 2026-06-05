@@ -1,6 +1,6 @@
 {
     "name": "pixelcoda-typo3-search",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
     "type": "module",
     "main": "simple-api.js",

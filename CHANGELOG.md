@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.2.4 - 2026-06-05
+
+- Redesign the TYPO3 Search administration as a responsive premium dashboard.
+- Replace decorative emoji with accessible TYPO3 Core icons.
+- Improve rendering mode, API status, configuration and quick-action hierarchy.
+- Add automatic light and dark mode styling for the backend module.
+- Point public demo links to the working Railway TYPO3 Suite entry page.
+- Remove obsolete deployment and migration documents.
+
 ## 2.2.3 - 2026-06-05
 
 - Prevent nested TYPO3 backend frames after Search module actions by
