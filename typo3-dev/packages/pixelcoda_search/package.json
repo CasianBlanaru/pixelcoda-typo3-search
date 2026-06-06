@@ -1,6 +1,6 @@
 {
     "name": "@pixelcoda/typo3-search-extension",
-    "version": "2.2.6",
+    "version": "2.2.7",
     "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, headless rendering and optional AI answers",
     "main": "Resources/Public/JavaScript/search.js",
     "scripts": {

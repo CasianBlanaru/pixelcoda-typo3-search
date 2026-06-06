@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.7 - 2026-06-06
+
+- Bind the local Search API to `0.0.0.0` by default so DDEV can reach it via
+  `host.docker.internal` while browsers continue to use `localhost:8787`.
+
 ## 2.2.6 - 2026-06-06
 
 - Remove the hardcoded demo editor password and require
