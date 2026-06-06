@@ -22,6 +22,7 @@ export PIXELCODA_DEMO_EDITOR_EMAIL="${PIXELCODA_DEMO_EDITOR_EMAIL:-demo@pixelcod
 export API_WRITE_KEY="${API_WRITE_KEY:-${PIXELCODA_API_KEY}}"
 export API_READ_KEY="${API_READ_KEY:-${PIXELCODA_READ_API_KEY}}"
 export SEARCH_DATA_DIR="${SEARCH_DATA_DIR:-/data/search-api}"
+export SEARCH_API_PORT="${SEARCH_API_PORT:-8787}"
 export NODE_ENV=production
 
 envsubst '${PORT}' \

@@ -3,14 +3,11 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
                     <sheetTitle>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.tab.general</sheetTitle>
-                </TCEforms>
                 <type>array</type>
                 <el>
                     <!-- Plugin Mode -->
                     <settings.mode>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.mode</label>
                             <config>
                                 <type>select</type>
@@ -27,12 +24,10 @@
                                 </items>
                                 <default>classic</default>
                             </config>
-                        </TCEforms>
                     </settings.mode>
                     
                     <!-- Template Variant -->
                     <settings.template>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template</label>
                             <config>
                                 <type>select</type>
@@ -57,12 +52,10 @@
                                 </items>
                                 <default>Default</default>
                             </config>
-                        </TCEforms>
                     </settings.template>
                     
                     <!-- Search Collections -->
                     <settings.collections>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.collections</label>
                             <config>
                                 <type>select</type>
@@ -83,24 +76,20 @@
                                 </items>
                                 <default>pages,news,tt_content</default>
                             </config>
-                        </TCEforms>
                     </settings.collections>
                     
                     <!-- Placeholder Text -->
                     <settings.placeholder>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.placeholder</label>
                             <config>
                                 <type>input</type>
                                 <size>30</size>
                                 <default>Website durchsuchen...</default>
                             </config>
-                        </TCEforms>
                     </settings.placeholder>
                     
                     <!-- Results per Page -->
                     <settings.resultsPerPage>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.resultsPerPage</label>
                             <config>
                                 <type>select</type>
@@ -137,51 +126,42 @@
                                 </items>
                                 <default>10</default>
                             </config>
-                        </TCEforms>
                     </settings.resultsPerPage>
                     
                     <!-- Show Images -->
                     <settings.showImages>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showImages</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.showImages>
                     
                     <!-- Show Tags -->
                     <settings.showTags>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showTags</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.showTags>
                     
                     <!-- Show Date -->
                     <settings.showDate>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showDate</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.showDate>
                     
                     <!-- Show Categories -->
                     <settings.showCategories>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showCategories</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.showCategories>
                 </el>
             </ROOT>
@@ -190,36 +170,29 @@
         <!-- Advanced Settings Tab -->
         <advanced>
             <ROOT>
-                <TCEforms>
                     <sheetTitle>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.tab.advanced</sheetTitle>
-                </TCEforms>
                 <type>array</type>
                 <el>
                     <!-- Enable Suggestions -->
                     <settings.enableSuggestions>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableSuggestions</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.enableSuggestions>
                     
                     <!-- Enable Ask Feature -->
                     <settings.enableAsk>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableAsk</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.enableAsk>
                     
                     <!-- Min Query Length -->
                     <settings.minQueryLength>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.minQueryLength</label>
                             <config>
                                 <type>input</type>
@@ -227,23 +200,19 @@
                                 <eval>int</eval>
                                 <default>3</default>
                             </config>
-                        </TCEforms>
                     </settings.minQueryLength>
                     
                     <!-- CSS Class -->
                     <settings.cssClass>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.cssClass</label>
                             <config>
                                 <type>input</type>
                                 <size>30</size>
                             </config>
-                        </TCEforms>
                     </settings.cssClass>
                     
                     <!-- Sort Order -->
                     <settings.sortOrder>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder</label>
                             <config>
                                 <type>select</type>
@@ -268,45 +237,37 @@
                                 </items>
                                 <default>relevance</default>
                             </config>
-                        </TCEforms>
                     </settings.sortOrder>
                     
                     <!-- Highlight Search Terms -->
                     <settings.highlightTerms>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.highlightTerms</label>
                             <config>
                                 <type>check</type>
                                 <default>1</default>
                             </config>
-                        </TCEforms>
                     </settings.highlightTerms>
                     
                     <!-- Show Breadcrumb -->
                     <settings.showBreadcrumb>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showBreadcrumb</label>
                             <config>
                                 <type>check</type>
                                 <default>0</default>
                             </config>
-                        </TCEforms>
                     </settings.showBreadcrumb>
                     
                     <!-- Enable Faceted Search -->
                     <settings.enableFacets>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableFacets</label>
                             <config>
                                 <type>check</type>
                                 <default>0</default>
                             </config>
-                        </TCEforms>
                     </settings.enableFacets>
                     
                     <!-- Image Size -->
                     <settings.imageSize>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize</label>
                             <config>
                                 <type>select</type>
@@ -327,18 +288,15 @@
                                 </items>
                                 <default>medium</default>
                             </config>
-                        </TCEforms>
                     </settings.imageSize>
                     
                     <!-- Enable Search History -->
                     <settings.enableHistory>
-                        <TCEforms>
                             <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableHistory</label>
                             <config>
                                 <type>check</type>
                                 <default>0</default>
                             </config>
-                        </TCEforms>
                     </settings.enableHistory>
                 </el>
             </ROOT>

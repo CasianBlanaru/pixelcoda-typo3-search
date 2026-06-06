@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.9 - 2026-06-06
+
+- Fix TYPO3 13/14 FlexForm rendering for the Search content element plugin
+  settings tab.
+- Separate Railway's Apache `PORT` from the internal Search API port so the
+  API reliably runs on `8787` behind `/search-api`.
+- Write Search API credentials from Railway environment variables into TYPO3
+  extension configuration.
+- Repair orphaned Railway site configurations automatically and seed dedicated
+  demo pages for Search, GSAP and Frontend Editing.
+
 ## 2.2.8 - 2026-06-06
 
 - Hide the public demo login notice when a TYPO3 backend user is already

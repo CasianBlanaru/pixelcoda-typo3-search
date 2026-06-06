@@ -28,3 +28,22 @@ $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'] = [
     'port' => (int)(getenv('TYPO3_DB_PORT') ?: 3306),
     'user' => (string)getenv('TYPO3_DB_USERNAME'),
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = array_replace(
+    $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] ?? [],
+    [
+        'api_url' => (string)(getenv('PIXELCODA_API_URL') ?: 'http://127.0.0.1:8787'),
+        'api_key' => (string)(getenv('PIXELCODA_API_KEY') ?: getenv('API_WRITE_KEY') ?: 'pc_write_dev_key'),
+        'read_api_key' => (string)(getenv('PIXELCODA_READ_API_KEY') ?: getenv('API_READ_KEY') ?: 'pc_read_dev_key'),
+        'project_id' => (string)(getenv('PIXELCODA_PROJECT_ID') ?: 'typo3'),
+        'cors_origins' => (string)(getenv('PIXELCODA_CORS_ORIGINS') ?: '*'),
+        'default_mode' => (string)(getenv('PIXELCODA_DEFAULT_MODE') ?: 'classic'),
+        'enable_auto_index' => true,
+        'enabled_tables' => 'pages,tt_content',
+        'enable_vector_search' => true,
+        'batch_size' => 50,
+        'timeout' => 30,
+        'enable_metrics' => false,
+        'debug_mode' => false,
+    ],
+);
