@@ -689,8 +689,10 @@ function initContentElementSearch(container) {
         }
     })();
     const isLocalBrowser = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
-    const apiUrl = !isLocalBrowser && ['localhost', '127.0.0.1', '::1'].includes(configuredApiHost)
-        ? '/search-api'
+    const localApiHosts = ['localhost', '127.0.0.1', '::1', 'host.docker.internal'];
+    const isInternalApiUrl = localApiHosts.includes(configuredApiHost);
+    const apiUrl = isInternalApiUrl
+        ? (isLocalBrowser ? 'http://localhost:8787' : '/search-api')
         : configuredApiUrl || (isLocalBrowser ? 'http://localhost:8787' : '/search-api');
     const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
     const project = container.dataset.project || 'typo3';

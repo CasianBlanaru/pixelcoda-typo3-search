@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.2.6 - 2026-06-06
+
+- Remove the hardcoded demo editor password and require
+  `PIXELCODA_DEMO_EDITOR_PASSWORD` for Railway demo account creation.
+- Fix local and Railway frontend API detection for `localhost`,
+  `127.0.0.1`, and `host.docker.internal`.
+- Add seeded demo search documents for autocomplete, suggestions,
+  pagination, faceted filters, headless output, AI answers and Railway demos.
+- Return pagination and facet metadata from the Search API demo endpoint.
+- Fix the TYPO3 backend footer override to avoid Fluid array-to-string
+  warnings.
+- Add a favicon redirect and deployment favicon asset for the Railway demo.
+
+## 2.2.5 - 2026-06-06
+
+- Prevent nested TYPO3 backend frames after Search module actions by using
+  tokenized backend module URLs and direct module redirects.
+- Recreate TYPO3 runtime cache directories after cache clearing to avoid
+  missing temporary cache file errors on Railway.
+- Add a non-admin demo editor account during Railway bootstrap for extension
+  testing.
+- Add a public demo login notice with editor username and role for
+  unauthenticated visitors.
+- Generate preview site configurations for additional TYPO3 root pages so both
+  demo page trees can be previewed.
+
 ## 2.2.4 - 2026-06-05
 
 - Redesign the TYPO3 Search administration as a responsive premium dashboard.

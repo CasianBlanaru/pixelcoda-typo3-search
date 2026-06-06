@@ -151,6 +151,27 @@
                         <span class="results-count">{totalResults} Ergebnisse gefunden</span>
                     </div>
 
+                    <f:if condition="{facets}">
+                        <div class="pixelcoda-search-facets" aria-label="Suchfacetten">
+                            <f:if condition="{facets.collections}">
+                                <div class="pixelcoda-search-facet-group">
+                                    <span class="pixelcoda-search-facet-title">Bereiche</span>
+                                    <f:for each="{facets.collections}" as="count" key="collection">
+                                        <span class="pixelcoda-search-facet">{collection}: {count}</span>
+                                    </f:for>
+                                </div>
+                            </f:if>
+                            <f:if condition="{facets.categories}">
+                                <div class="pixelcoda-search-facet-group">
+                                    <span class="pixelcoda-search-facet-title">Kategorien</span>
+                                    <f:for each="{facets.categories}" as="count" key="category">
+                                        <span class="pixelcoda-search-facet">{category}: {count}</span>
+                                    </f:for>
+                                </div>
+                            </f:if>
+                        </div>
+                    </f:if>
+
                     <f:for each="{results}" as="result">
                         <article class="search-result-item">
                             <div class="result-header">

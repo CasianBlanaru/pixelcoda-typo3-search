@@ -542,6 +542,42 @@ img {
     font-weight: 600;
 }
 
+.pixelcoda-search-facets {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 16px;
+    border: 1px solid #d9e2ec;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffffff 0%, #f7f5ff 100%);
+}
+
+.pixelcoda-search-facet-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.pixelcoda-search-facet-title {
+    margin-right: 4px;
+    color: #101828;
+    font-weight: 800;
+}
+
+.pixelcoda-search-facet {
+    display: inline-flex;
+    min-height: 30px;
+    align-items: center;
+    padding: 4px 10px;
+    color: #34216f;
+    background: #eee9ff;
+    border: 1px solid #d8cdfd;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
 /* Result Meta Information */
 .result-header {
     display: flex;

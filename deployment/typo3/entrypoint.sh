@@ -16,6 +16,9 @@ export TYPO3_PATH_ROOT="${TYPO3_PATH_ROOT:-/var/www/html/public}"
 export PIXELCODA_API_URL="${PIXELCODA_API_URL:-http://127.0.0.1:8787}"
 export PIXELCODA_API_KEY="${PIXELCODA_API_KEY:-${API_WRITE_KEY:-pc_write_dev_key}}"
 export PIXELCODA_READ_API_KEY="${PIXELCODA_READ_API_KEY:-${API_READ_KEY:-pc_read_dev_key}}"
+export PIXELCODA_DEMO_EDITOR_USERNAME="${PIXELCODA_DEMO_EDITOR_USERNAME:-pixelcoda-editor}"
+export PIXELCODA_DEMO_EDITOR_PASSWORD="${PIXELCODA_DEMO_EDITOR_PASSWORD:-}"
+export PIXELCODA_DEMO_EDITOR_EMAIL="${PIXELCODA_DEMO_EDITOR_EMAIL:-demo@pixelcoda.de}"
 export API_WRITE_KEY="${API_WRITE_KEY:-${PIXELCODA_API_KEY}}"
 export API_READ_KEY="${API_READ_KEY:-${PIXELCODA_READ_API_KEY}}"
 export SEARCH_DATA_DIR="${SEARCH_DATA_DIR:-/data/search-api}"
@@ -38,7 +41,12 @@ mkdir -p \
     /data/fileadmin \
     /var/www/html/packages/ext \
     /var/www/html/packages/sysext/placeholder \
+    /var/www/html/public/typo3temp \
     /var/www/html/public/typo3temp/assets \
+    /var/www/html/public/typo3temp/assets/css \
+    /var/www/html/public/typo3temp/assets/js \
+    /var/www/html/var/cache/code/core/tmp \
+    /var/www/html/var/cache/data/database_schema/tmp \
     /var/www/html/var
 rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
@@ -117,8 +125,48 @@ vendor/bin/typo3 extension:setup --no-interaction -vvv \
         php /usr/local/bin/pixelcoda-diagnose-bootstrap || true
         find /var/www/html/var/log -maxdepth 1 -type f -print -exec tail -n 120 {} \; 2>/dev/null || true
     }
+
+vendor/bin/typo3 setup:begroups:default --groups=Both --no-interaction || true
+if [[ -z "${PIXELCODA_DEMO_EDITOR_PASSWORD}" ]]; then
+    echo "Demo editor password not configured. Set PIXELCODA_DEMO_EDITOR_PASSWORD to create the redakteur test account." >&2
+elif ! mysql \
+    --host="${TYPO3_DB_HOST}" \
+    --port="${TYPO3_DB_PORT}" \
+    --user="${TYPO3_DB_USERNAME}" \
+    --password="${TYPO3_DB_PASSWORD}" \
+    --batch \
+    --skip-column-names \
+    "${TYPO3_DB_DBNAME}" \
+    -e "SELECT uid FROM be_users WHERE username='${PIXELCODA_DEMO_EDITOR_USERNAME}' AND deleted=0 LIMIT 1" \
+    | grep -q '[0-9]'; then
+    editor_group_ids="$(
+        mysql \
+            --host="${TYPO3_DB_HOST}" \
+            --port="${TYPO3_DB_PORT}" \
+            --user="${TYPO3_DB_USERNAME}" \
+            --password="${TYPO3_DB_PASSWORD}" \
+            --batch \
+            --skip-column-names \
+            "${TYPO3_DB_DBNAME}" \
+            -e "SELECT GROUP_CONCAT(uid ORDER BY uid SEPARATOR ',') FROM be_groups WHERE title IN ('Editor','Advanced Editor') AND deleted=0"
+    )"
+    vendor/bin/typo3 backend:user:create \
+        --username="${PIXELCODA_DEMO_EDITOR_USERNAME}" \
+        --password="${PIXELCODA_DEMO_EDITOR_PASSWORD}" \
+        --email="${PIXELCODA_DEMO_EDITOR_EMAIL}" \
+        --groups="${editor_group_ids}" \
+        --language=de \
+        --no-interaction || true
+fi
+
 php /usr/local/bin/pixelcoda-configure-site
 vendor/bin/typo3 cache:flush || true
+mkdir -p \
+    /var/www/html/public/typo3temp/assets/css \
+    /var/www/html/public/typo3temp/assets/js \
+    /var/www/html/var/cache/code/core/tmp \
+    /var/www/html/var/cache/data/database_schema/tmp
+chown -R www-data:www-data /var/www/html/public/typo3temp /var/www/html/var
 vendor/bin/typo3 cache:warmup || true
 
 node /opt/pixelcoda-search-api/simple-api.js &

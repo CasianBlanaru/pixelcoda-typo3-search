@@ -28,3 +28,107 @@ body {
 a {
     color: var(--pc-accent);
 }
+
+.pixelcoda-demo-login-notice {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    margin: 0 0 32px;
+    padding: 24px;
+    color: #111827;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(89, 57, 246, 0.12), transparent 28%),
+        linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
+    border: 1px solid #d8e0f0;
+    border-radius: 22px;
+    box-shadow: 0 18px 48px rgba(31, 41, 55, 0.10);
+}
+
+.pixelcoda-demo-login-notice__eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    color: #3f2db8;
+    background: #ece8ff;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.pixelcoda-demo-login-notice h2 {
+    margin: 0 0 8px;
+    font-size: clamp(1.35rem, 2vw, 2rem);
+    line-height: 1.15;
+}
+
+.pixelcoda-demo-login-notice p {
+    max-width: 760px;
+    margin: 0 0 18px;
+    color: #4b5563;
+}
+
+.pixelcoda-demo-login-notice dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+}
+
+.pixelcoda-demo-login-notice dl div {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 8px 12px;
+    background: #ffffff;
+    border: 1px solid #d9deea;
+    border-radius: 999px;
+}
+
+.pixelcoda-demo-login-notice dt {
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.pixelcoda-demo-login-notice dd {
+    margin: 0;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.pixelcoda-demo-login-notice__button {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    color: #ffffff;
+    background: #111827;
+    border-radius: 999px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 12px 28px rgba(17, 24, 39, 0.18);
+}
+
+.pixelcoda-demo-login-notice__button:focus-visible {
+    outline: 3px solid #ff8a00;
+    outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+    .pixelcoda-demo-login-notice {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .pixelcoda-demo-login-notice__button {
+        width: 100%;
+    }
+}

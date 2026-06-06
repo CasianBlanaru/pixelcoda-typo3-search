@@ -7,6 +7,7 @@ namespace PixelCoda\PixelcodaSearch\Controller\Backend;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -25,8 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SearchModuleController
 {
+    private const MODULE_ROUTE = 'tools_PixelcodaSearchM1';
+
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected UriBuilder $backendUriBuilder,
         protected ConfigurationManager $configurationManager,
         protected RequestFactory $requestFactory,
     ) {
@@ -83,6 +87,7 @@ class SearchModuleController
                 'headless' => 'Headless Mode',
                 'classic' => 'Classic Mode',
             ],
+            'moduleUrls' => $this->getModuleUrls(),
         ]);
 
         $moduleTemplate->setTitle('pixelcoda Search - Administration');
@@ -372,6 +377,8 @@ class SearchModuleController
      */
     protected function clearAllCaches(): void
     {
+        $this->ensureRuntimeDirectories();
+
         // Clear TYPO3 caches
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         $cacheManager->flushCaches();
@@ -387,11 +394,47 @@ class SearchModuleController
         if (is_dir($tempDir)) {
             $this->removeDirectory($tempDir . '/var');
         }
+
+        $this->ensureRuntimeDirectories();
     }
 
     protected function redirectToModule(ServerRequestInterface $request): RedirectResponse
     {
-        return new RedirectResponse($request->getUri()->getPath());
+        return new RedirectResponse((string) $this->backendUriBuilder->buildUriFromRoute(self::MODULE_ROUTE));
+    }
+
+    protected function getModuleUrls(): array
+    {
+        return [
+            'index' => (string) $this->backendUriBuilder->buildUriFromRoute(self::MODULE_ROUTE),
+            'switchMode' => (string) $this->backendUriBuilder->buildUriFromRoute(self::MODULE_ROUTE, ['action' => 'switchMode']),
+            'testConnection' => (string) $this->backendUriBuilder->buildUriFromRoute(self::MODULE_ROUTE, ['action' => 'testConnection']),
+            'clearCache' => (string) $this->backendUriBuilder->buildUriFromRoute(self::MODULE_ROUTE, ['action' => 'clearCache']),
+        ];
+    }
+
+    protected function ensureRuntimeDirectories(): void
+    {
+        $directories = [
+            Environment::getVarPath(),
+            Environment::getVarPath() . '/cache',
+            Environment::getVarPath() . '/cache/code',
+            Environment::getVarPath() . '/cache/code/core',
+            Environment::getVarPath() . '/cache/code/core/tmp',
+            Environment::getVarPath() . '/cache/data',
+            Environment::getVarPath() . '/cache/data/database_schema',
+            Environment::getVarPath() . '/cache/data/database_schema/tmp',
+            Environment::getPublicPath() . '/typo3temp',
+            Environment::getPublicPath() . '/typo3temp/assets',
+            Environment::getPublicPath() . '/typo3temp/assets/css',
+            Environment::getPublicPath() . '/typo3temp/assets/js',
+        ];
+
+        foreach ($directories as $directory) {
+            if (!is_dir($directory)) {
+                GeneralUtility::mkdir_deep($directory);
+            }
+        }
     }
 
     /**

@@ -15,6 +15,113 @@ const INDEX_FILE = join(DATA_DIR, 'search-index.json');
 const MAX_REQUEST_BYTES = 2 * 1024 * 1024;
 let searchIndex = {};
 
+const DEMO_DOCUMENTS = [
+    {
+        id: 'demo-page-search',
+        collection: 'pages',
+        title: 'Pixelcoda Search Administration',
+        summary: 'Premium TYPO3 Suche mit Autocomplete, Facetten, Pagination, Headless API und KI-gestuetzten Antworten.',
+        content: 'Verwalte Suchindex, Rendering-Modus, API-Verbindung, Headless JSON und TYPO3 Standardausgabe zentral im Backend.',
+        keywords: 'search suche autocomplete facets pagination headless typo3 api ki',
+        url: '/',
+        language: 'de',
+        categories: ['Suche', 'Backend', 'Headless'],
+        type: 'page',
+        date: '2026-06-06'
+    },
+    {
+        id: 'demo-content-autocomplete',
+        collection: 'tt_content',
+        title: 'Autocomplete und Suggestions',
+        summary: 'Schnelle Suchvorschlaege waehrend der Eingabe mit Tastatursteuerung und barrierearmen Listbox-Rollen.',
+        content: 'Autocomplete liefert Treffer aus Seiten und Inhaltselementen. Suggestions helfen Redakteuren und Besuchern, relevante Inhalte schneller zu finden.',
+        keywords: 'autocomplete suggestions suchvorschlaege tastatur accessibility',
+        url: '/#autocomplete',
+        language: 'de',
+        categories: ['UX', 'Accessibility'],
+        type: 'content',
+        date: '2026-06-05'
+    },
+    {
+        id: 'demo-content-filters',
+        collection: 'tt_content',
+        title: 'Faceted Filters fuer TYPO3 Inhalte',
+        summary: 'Filter nach Seiten, Inhaltstypen, Kategorien und Datum fuer praezise Suchergebnisse.',
+        content: 'Faceted Search reduziert Rauschen und macht umfangreiche TYPO3 Websites schneller durchsuchbar.',
+        keywords: 'faceted filters kategorien datum inhaltstyp',
+        url: '/#filters',
+        language: 'de',
+        categories: ['Filter', 'UX'],
+        type: 'content',
+        date: '2026-06-04'
+    },
+    {
+        id: 'demo-page-pagination',
+        collection: 'pages',
+        title: 'Pagination und Core Web Vitals',
+        summary: 'Serverseitige Pagination haelt Payloads klein, stabilisiert INP und verbessert die wahrgenommene Geschwindigkeit.',
+        content: 'Pixelcoda Search liefert Seiteninformationen und limitierte Ergebnislisten fuer performante Frontends.',
+        keywords: 'pagination performance lighthouse core web vitals',
+        url: '/#pagination',
+        language: 'de',
+        categories: ['Performance', 'SEO'],
+        type: 'page',
+        date: '2026-06-03'
+    },
+    {
+        id: 'demo-page-headless',
+        collection: 'pages',
+        title: 'Headless JSON Output',
+        summary: 'Stabile JSON API fuer React, Vue, Next.js und klassische TYPO3 Frontends.',
+        content: 'Der Headless-Modus liefert strukturierte Suchdaten ohne das klassische Fluid Rendering zu brechen.',
+        keywords: 'headless json api react vue nextjs typo3',
+        url: '/#headless',
+        language: 'de',
+        categories: ['Headless', 'API'],
+        type: 'page',
+        date: '2026-06-02'
+    },
+    {
+        id: 'demo-content-ai',
+        collection: 'tt_content',
+        title: 'KI-gestuetzte Antworten mit Quellen',
+        summary: 'Antworten werden aus dem Suchindex erzeugt und mit Quellen aus TYPO3 Inhalten belegt.',
+        content: 'Die Ask-Funktion nutzt relevante Passagen aus dem Index und bleibt DSGVO-freundlich konfigurierbar.',
+        keywords: 'ki ai antwort quellen citations dsgvo',
+        url: '/#ai-answer',
+        language: 'de',
+        categories: ['AI', 'Privacy'],
+        type: 'content',
+        date: '2026-06-01'
+    },
+    {
+        id: 'demo-page-bitv',
+        collection: 'pages',
+        title: 'BITV und Accessibility',
+        summary: 'Semantische Suche, sichtbare Fokuszustaende, reduzierte Bewegung und Tastaturbedienung.',
+        content: 'Die Oberflaeche ist auf Accessibility, reduzierte Bewegung und klare Screenreader-Strukturen ausgelegt.',
+        keywords: 'bitv accessibility screenreader tastatur reduced motion',
+        url: '/#accessibility',
+        language: 'de',
+        categories: ['Accessibility', 'BITV'],
+        type: 'page',
+        date: '2026-05-31'
+    },
+    {
+        id: 'demo-content-railway',
+        collection: 'tt_content',
+        title: 'Railway Demo Deployment',
+        summary: 'TYPO3 Suite mit Search API, GSAP Animation und Frontend Editing in einer Testumgebung.',
+        content: 'Railway startet TYPO3, MySQL-Anbindung, Such-API und Demo-Redakteur automatisch.',
+        keywords: 'railway deployment typo3 demo redakteur',
+        url: '/#railway',
+        language: 'de',
+        categories: ['Deployment', 'Demo'],
+        type: 'content',
+        date: '2026-05-30'
+    }
+];
+
 function checkAuth(req, requiredKey) {
     const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
     const providedKey = authHeader.replace('Bearer ', '').replace('ApiKey ', '');
@@ -53,6 +160,22 @@ async function loadIndex() {
     } catch {
         searchIndex = {};
     }
+
+    searchIndex.typo3 ||= {};
+    for (const document of DEMO_DOCUMENTS) {
+        searchIndex.typo3[document.collection] ||= {};
+        searchIndex.typo3[document.collection][document.id] ||= {
+            ...document,
+            updated_at: new Date().toISOString()
+        };
+    }
+
+    const hasAllDemoDocuments = DEMO_DOCUMENTS.every(
+        document => searchIndex.typo3?.[document.collection]?.[document.id]
+    );
+    if (hasAllDemoDocuments) {
+        await persistIndex();
+    }
 }
 
 async function persistIndex() {
@@ -86,13 +209,52 @@ function scoreDocument(document, queryTokens) {
 function searchDocuments(project, payload) {
     const queryTokens = tokenize(payload.q);
     const collections = Array.isArray(payload.collections) ? payload.collections : [];
-    const limit = Math.max(1, Math.min(Number(payload.limit) || 10, 100));
-    return getProjectDocuments(project)
+    const category = String(payload.category || '').toLocaleLowerCase();
+    const contentType = String(payload.content_type || payload.contentType || 'all');
+    const sort = String(payload.sort || 'relevance');
+    const page = Math.max(1, Number(payload.page) || 1);
+    const perPage = Math.max(1, Math.min(Number(payload.per_page || payload.limit) || 10, 100));
+    const ranked = getProjectDocuments(project)
         .filter(document => collections.length === 0 || collections.includes(document.collection))
+        .filter(document => !category || (document.categories || []).some(item => String(item).toLocaleLowerCase() === category))
+        .filter(document => contentType === 'all' || !contentType || document.type === contentType || document.collection === contentType)
         .map(document => ({ document, score: scoreDocument(document, queryTokens) }))
         .filter(result => queryTokens.length === 0 || result.score > 0)
-        .sort((a, b) => b.score - a.score || String(a.document.title).localeCompare(String(b.document.title)))
-        .slice(0, limit);
+        .sort((a, b) => {
+            if (sort === 'date_desc') {
+                return String(b.document.date || '').localeCompare(String(a.document.date || ''));
+            }
+            if (sort === 'date_asc') {
+                return String(a.document.date || '').localeCompare(String(b.document.date || ''));
+            }
+            if (sort === 'title') {
+                return String(a.document.title).localeCompare(String(b.document.title));
+            }
+
+            return b.score - a.score || String(a.document.title).localeCompare(String(b.document.title));
+        });
+    const total = ranked.length;
+    const pages = Math.max(1, Math.ceil(total / perPage));
+    const offset = (Math.min(page, pages) - 1) * perPage;
+
+    return {
+        results: ranked.slice(offset, offset + perPage),
+        pagination: { page: Math.min(page, pages), pages, count: Math.min(perPage, Math.max(total - offset, 0)), total },
+        facets: buildFacets(ranked.map(result => result.document))
+    };
+}
+
+function buildFacets(documents) {
+    const collections = {};
+    const categories = {};
+    for (const document of documents) {
+        collections[document.collection] = (collections[document.collection] || 0) + 1;
+        for (const category of document.categories || []) {
+            categories[category] = (categories[category] || 0) + 1;
+        }
+    }
+
+    return { collections, categories };
 }
 
 function normalizeScore(score, query) {
@@ -163,15 +325,41 @@ const server = createServer(async (req, res) => {
             const project = pathParts[3];
             const body = await getRequestBody(req);
             const matches = searchDocuments(project, body);
-            sendJson(res, 200, jsonApiResponse(matches.map(({ document, score }) => ({
+            sendJson(res, 200, jsonApiResponse(matches.results.map(({ document, score }) => ({
                 type: 'searchResult',
                 id: document.id,
                 attributes: { ...document, score: normalizeScore(score, body.q) },
                 meta: { relevance: normalizeScore(score, body.q), collection: document.collection }
             })), [], {
-                pagination: { page: 1, pages: 1, count: matches.length, total: matches.length },
+                pagination: matches.pagination,
+                facets: matches.facets,
                 search: { query: body.q || '', collections: body.collections || [] }
             }));
+            return;
+        }
+
+        if (path.match(/^\/v1\/suggest\//) && method === 'POST') {
+            if (!checkAuth(req, [API_READ_KEY, API_WRITE_KEY])) {
+                sendJson(res, 401, { error: 'Valid read API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const body = await getRequestBody(req);
+            const queryTokens = tokenize(body.q);
+            const limit = Math.max(1, Math.min(Number(body.limit) || 8, 20));
+            const suggestions = getProjectDocuments(project)
+                .map(document => ({ document, score: scoreDocument(document, queryTokens) }))
+                .filter(result => queryTokens.length === 0 || result.score > 0)
+                .sort((a, b) => b.score - a.score || String(a.document.title).localeCompare(String(b.document.title)))
+                .slice(0, limit)
+                .map(({ document }) => ({
+                    type: document.collection === 'pages' ? 'page' : 'content',
+                    id: document.id,
+                    title: document.title,
+                    subtitle: document.summary,
+                    url: document.url || '/'
+                }));
+            sendJson(res, 200, jsonApiResponse(suggestions));
             return;
         }
 
@@ -183,8 +371,8 @@ const server = createServer(async (req, res) => {
             const project = pathParts[3];
             const body = await getRequestBody(req);
             const question = body.q || '';
-            const matches = searchDocuments(project, { ...body, q: question, limit: body.maxPassages || 6 });
-            const citations = matches.map(({ document }, index) => ({
+            const matches = searchDocuments(project, { ...body, q: question, per_page: body.maxPassages || 6 });
+            const citations = matches.results.map(({ document }, index) => ({
                 type: 'citation',
                 id: `citation-${index}`,
                 attributes: {
@@ -195,8 +383,8 @@ const server = createServer(async (req, res) => {
                     reference: `[${index + 1}]`
                 }
             }));
-            const answer = matches.length > 0
-                ? `Zu "${question}" wurden ${matches.length} relevante Inhalte gefunden: ${matches.map(({ document }, index) => `[${index + 1}] ${document.title}: ${String(document.summary || document.content || '').slice(0, 180)}`).join(' ')}`
+            const answer = matches.results.length > 0
+                ? `Zu "${question}" wurden ${matches.results.length} relevante Inhalte gefunden: ${matches.results.map(({ document }, index) => `[${index + 1}] ${document.title}: ${String(document.summary || document.content || '').slice(0, 180)}`).join(' ')}`
                 : `Zu "${question}" wurden im aktuellen Suchindex keine relevanten Inhalte gefunden.`;
             sendJson(res, 200, jsonApiResponse({
                 type: 'answer',
@@ -212,7 +400,7 @@ const server = createServer(async (req, res) => {
                     citations: { data: citations.map(citation => ({ type: citation.type, id: citation.id })) }
                 }
             }, citations, {
-                generation: { search_method: 'local-keyword', passages_found: matches.length, citations_count: citations.length }
+                generation: { search_method: 'local-keyword', passages_found: matches.results.length, citations_count: citations.length }
             }));
             return;
         }

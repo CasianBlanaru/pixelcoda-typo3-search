@@ -46,13 +46,27 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['PageTypesToNoCache'][1699] = true;
 // Environment variables provide defaults without overwriting values configured
 // through TYPO3's extension configuration.
 $extensionConfiguration = &$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'];
-$extensionConfiguration['api_url'] ??= getenv('PIXELCODA_API_URL') ?: 'http://localhost:8787';
-$extensionConfiguration['api_key'] ??= getenv('PIXELCODA_API_KEY') ?: '';
-$extensionConfiguration['read_api_key'] ??= getenv('PIXELCODA_READ_API_KEY') ?: '';
-$extensionConfiguration['hmac_secret'] ??= getenv('PIXELCODA_HMAC_SECRET') ?: '';
-$extensionConfiguration['project_id'] ??= getenv('PIXELCODA_PROJECT_ID') ?: 'typo3';
-$extensionConfiguration['typo3_headless_url'] ??= getenv('TYPO3_HEADLESS_URL') ?: '';
-$extensionConfiguration['cors_origins'] ??= getenv('PIXELCODA_CORS_ORIGINS') ?: '';
+$extensionConfiguration['api_url'] = trim((string)($extensionConfiguration['api_url'] ?? '')) !== ''
+    ? $extensionConfiguration['api_url']
+    : (getenv('PIXELCODA_API_URL') ?: 'http://127.0.0.1:8787');
+$extensionConfiguration['api_key'] = trim((string)($extensionConfiguration['api_key'] ?? '')) !== ''
+    ? $extensionConfiguration['api_key']
+    : (getenv('PIXELCODA_API_KEY') ?: getenv('API_WRITE_KEY') ?: 'pc_write_dev_key');
+$extensionConfiguration['read_api_key'] = trim((string)($extensionConfiguration['read_api_key'] ?? '')) !== ''
+    ? $extensionConfiguration['read_api_key']
+    : (getenv('PIXELCODA_READ_API_KEY') ?: getenv('API_READ_KEY') ?: 'pc_read_dev_key');
+$extensionConfiguration['hmac_secret'] = trim((string)($extensionConfiguration['hmac_secret'] ?? '')) !== ''
+    ? $extensionConfiguration['hmac_secret']
+    : (getenv('PIXELCODA_HMAC_SECRET') ?: '');
+$extensionConfiguration['project_id'] = trim((string)($extensionConfiguration['project_id'] ?? '')) !== ''
+    ? $extensionConfiguration['project_id']
+    : (getenv('PIXELCODA_PROJECT_ID') ?: 'typo3');
+$extensionConfiguration['typo3_headless_url'] = trim((string)($extensionConfiguration['typo3_headless_url'] ?? '')) !== ''
+    ? $extensionConfiguration['typo3_headless_url']
+    : (getenv('TYPO3_HEADLESS_URL') ?: '');
+$extensionConfiguration['cors_origins'] = trim((string)($extensionConfiguration['cors_origins'] ?? '')) !== ''
+    ? $extensionConfiguration['cors_origins']
+    : (getenv('PIXELCODA_CORS_ORIGINS') ?: '');
 $extensionConfiguration['enabled_tables'] ??= ['pages', 'tt_content', 'tx_news_domain_model_news'];
 $extensionConfiguration['default_mode'] ??= 'classic';
 $extensionConfiguration['enable_auto_index'] ??= true;

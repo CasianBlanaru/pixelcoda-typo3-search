@@ -70,7 +70,7 @@
                         </f:else>
                     </f:if>
 
-                    <form method="post" action="?action=switchMode" class="pc-search-mode-form">
+                    <form method="post" action="{moduleUrls.switchMode}" class="pc-search-mode-form">
                         <div class="form-group">
                             <label class="form-label" for="mode">Neuen Modus auswählen</label>
                             <select name="mode" id="mode" class="form-select">
@@ -198,11 +198,11 @@
                         </li>
                     </ul>
                     <div class="pc-search-actions">
-                        <a href="?action=testConnection" class="btn btn-primary">
+                        <a href="{moduleUrls.testConnection}" class="btn btn-primary">
                             <core:icon identifier="actions-link" size="small" />
                             API-Verbindung testen
                         </a>
-                        <a href="?action=clearCache" class="btn btn-default">
+                        <a href="{moduleUrls.clearCache}" class="btn btn-default">
                             <core:icon identifier="actions-system-cache-clear-impact-low" size="small" />
                             Cache leeren
                         </a>

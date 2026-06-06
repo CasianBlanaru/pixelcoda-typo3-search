@@ -145,6 +145,7 @@ class SearchController extends ActionController
         $message = '';
         $totalResults = 0;
         $pagination = [];
+        $facets = [];
 
         if (strlen($searchQuery) < $minQueryLength) {
             $message = sprintf($this->getTranslation('search.results.minlength'), $minQueryLength);
@@ -156,6 +157,9 @@ class SearchController extends ActionController
                     'page' => $currentPage,
                     'per_page' => $resultsPerPage,
                     'collections' => $this->getEnabledCollections($filters),
+                    'category' => $filters['category'],
+                    'content_type' => $filters['contentType'],
+                    'sort' => $filters['sort'],
                 ];
 
                 $apiResponse = $this->searchService->search($searchParams);
@@ -163,9 +167,11 @@ class SearchController extends ActionController
                 if (isset($apiResponse['data'])) {
                     $results = $this->formatApiResults($apiResponse['data']);
                     $totalResults = $apiResponse['meta']['pagination']['total'] ?? count($results);
+                    $facets = $apiResponse['meta']['facets'] ?? [];
 
                     // Build pagination array
-                    $totalPages = $apiResponse['meta']['pagination']['pages'] ?? 1;
+                    $currentPage = (int)($apiResponse['meta']['pagination']['page'] ?? $currentPage);
+                    $totalPages = (int)($apiResponse['meta']['pagination']['pages'] ?? 1);
                     if ($totalPages > 1) {
                         $pagination = [
                             'current' => $currentPage,
@@ -237,6 +243,7 @@ class SearchController extends ActionController
             'results' => $results,
             'message' => $message,
             'pagination' => $pagination,
+            'facets' => $facets,
             'totalResults' => $totalResults,
             'settings' => $this->settings,
             'filters' => $filters,
@@ -1251,9 +1258,11 @@ class SearchController extends ActionController
         foreach ($apiData as $item) {
             $results[] = [
                 'title' => $item['attributes']['title'] ?? '',
-                'abstract' => $item['attributes']['content'] ?? $item['attributes']['summary'] ?? '',
+                'abstract' => $item['attributes']['summary'] ?? $item['attributes']['content'] ?? '',
                 'url' => $item['attributes']['url'] ?? '',
-                'type' => $item['attributes']['collection'] ?? 'page',
+                'type' => $item['attributes']['type'] ?? $item['attributes']['collection'] ?? 'page',
+                'date' => $item['attributes']['date'] ?? null,
+                'categories' => $item['attributes']['categories'] ?? [],
                 'score' => $item['attributes']['score'] ?? 0,
             ];
         }
