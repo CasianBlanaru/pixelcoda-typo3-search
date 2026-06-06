@@ -131,10 +131,11 @@ class ConfigurationService
             'resultsPerPage' => 10,
             'maxPassages' => 6,
             'enableSuggestions' => true,
+            'enableFacets' => true,
             'enableAsk' => true,
             'showDebug' => false,
             'enableMetrics' => true,
-            'collections' => ['pages', 'news'],
+            'collections' => 'pages,tt_content',
             'placeholder' => 'Website durchsuchen...',
             'noResultsText' => 'Keine Ergebnisse gefunden.',
             'searchButtonText' => 'Suchen',
@@ -146,6 +147,7 @@ class ConfigurationService
             'enableAutoComplete' => true,
             'minQueryLength' => 2,
             'debounceMs' => 300,
+            'sortOrder' => 'relevance',
         ];
     }
 
@@ -162,12 +164,16 @@ class ConfigurationService
             'settings.resultsPerPage' => 'resultsPerPage',
             'settings.maxPassages' => 'maxPassages',
             'settings.enableSuggestions' => 'enableSuggestions',
+            'settings.enableFacets' => 'enableFacets',
             'settings.enableAsk' => 'enableAsk',
             'settings.showDebug' => 'showDebug',
             'settings.collections' => 'collections',
             'settings.placeholder' => 'placeholder',
             'settings.template' => 'template',
             'settings.cssClass' => 'cssClass',
+            'settings.minQueryLength' => 'minQueryLength',
+            'settings.debounceMs' => 'debounceMs',
+            'settings.sortOrder' => 'sortOrder',
         ];
 
         foreach ($fieldMapping as $flexFormKey => $settingKey) {
@@ -183,7 +189,7 @@ class ConfigurationService
         }
 
         // Convert string booleans
-        $booleanFields = ['enableSuggestions', 'enableAsk', 'showDebug', 'enableMetrics'];
+        $booleanFields = ['enableSuggestions', 'enableFacets', 'enableAsk', 'showDebug', 'enableMetrics'];
         foreach ($booleanFields as $field) {
             if (isset($normalized[$field])) {
                 $normalized[$field] = (bool) $normalized[$field];

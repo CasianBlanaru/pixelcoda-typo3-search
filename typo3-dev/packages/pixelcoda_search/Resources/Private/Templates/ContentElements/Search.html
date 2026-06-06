@@ -9,7 +9,7 @@
 </f:section>
 
 <f:section name="Main">
-    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-project="{settings.project}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}">
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-project="{settings.project}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}" data-enable-facets="{settings.enableFacets}" data-sort-order="{settings.sortOrder}">
 
         <!-- Search Form -->
         <div class="card">
@@ -80,7 +80,9 @@
                     </h2>
                 </div>
                 <div class="card-body">
+                    <div id="facets-content-{data.uid}" class="pixelcoda-search-facets" hidden></div>
                     <div id="results-content-{data.uid}"></div>
+                    <nav id="pagination-content-{data.uid}" class="pagination-wrapper" aria-label="Suchergebnisseiten" hidden></nav>
                 </div>
             </div>
         </div>

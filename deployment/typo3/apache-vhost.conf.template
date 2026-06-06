@@ -2,7 +2,11 @@ Listen ${PORT}
 
 <VirtualHost *:${PORT}>
     DocumentRoot /var/www/html/public
+    ProxyPreserveHost On
     SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on
+    RequestHeader set X-Forwarded-Proto "https" env=HTTPS
+    RequestHeader set X-Forwarded-Port "443" env=HTTPS
+    RequestHeader set X-Forwarded-Ssl "on" env=HTTPS
 
     <Directory /var/www/html/public>
         AllowOverride All
@@ -11,9 +15,8 @@ Listen ${PORT}
         DirectoryIndex index.php
     </Directory>
 
-    ProxyPass "/search-api/" "http://127.0.0.1:8787/"
-    ProxyPassReverse "/search-api/" "http://127.0.0.1:8787/"
-    RedirectMatch 302 ^/favicon\.ico$ /favicon.svg
+    ProxyPass "/search-api/" "http://127.0.0.1:${SEARCH_API_PORT}/"
+    ProxyPassReverse "/search-api/" "http://127.0.0.1:${SEARCH_API_PORT}/"
 
     Header always set X-Content-Type-Options "nosniff"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"

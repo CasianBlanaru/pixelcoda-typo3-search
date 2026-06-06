@@ -7,7 +7,7 @@ import { URL, fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.SEARCH_API_PORT || 8787;
-const HOST = process.env.SEARCH_API_HOST || process.env.HOST || '0.0.0.0';
+const HOST = process.env.SEARCH_API_HOST || '127.0.0.1';
 const IS_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 const API_READ_KEY = process.env.API_READ_KEY || (IS_DEVELOPMENT ? 'pc_read_dev_key' : '');
 const API_WRITE_KEY = process.env.API_WRITE_KEY || (IS_DEVELOPMENT ? 'pc_write_dev_key' : '');

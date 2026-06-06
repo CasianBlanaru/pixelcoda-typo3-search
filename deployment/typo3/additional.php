@@ -14,6 +14,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = sprintf(
         $trustedHosts,
     )),
 );
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';
 
 $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'] = [
     'charset' => 'utf8mb4',
@@ -45,5 +48,14 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = array_replace(
         'timeout' => 30,
         'enable_metrics' => false,
         'debug_mode' => false,
+    ],
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['content_gsap_animation'] = array_replace(
+    $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['content_gsap_animation'] ?? [],
+    [
+        'disableAddAnimationsTab' => false,
+        'extendedAnimationSettings' => true,
+        'hideFooterAnimationLabel' => false,
     ],
 );

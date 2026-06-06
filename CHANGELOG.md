@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.10 - 2026-06-06
+
+- Fix Railway Search API startup by shipping the ESM package metadata with the
+  standalone API runtime.
+- Fail fast with readable Search API startup logs instead of serving a broken
+  `/search-api` proxy.
+- Preserve HTTPS and host metadata behind Railway's reverse proxy to avoid
+  mixed-content favicon and asset URLs.
+- Rewrite existing TYPO3 site configuration base URLs to the current Railway
+  public domain during container bootstrap.
+
 ## 2.2.9 - 2026-06-06
 
 - Fix TYPO3 13/14 FlexForm rendering for the Search content element plugin

@@ -70,16 +70,18 @@ img {
 }
 
 .pixelcoda-search-container .card {
-    padding: 1.25rem;
-    border: 1px solid #d9e2ec;
-    border-radius: 0.75rem;
-    background: #fff;
+    padding: clamp(1.25rem, 2vw, 2rem);
+    border: 1px solid #d8e0ef;
+    border-radius: 1.5rem;
+    background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: 0 24px 70px rgba(28, 39, 76, 0.08);
 }
 
 .pixelcoda-search-container .card-title {
     margin: 0 0 1rem;
     color: #101828;
-    font-size: 1.15rem;
+    font-size: clamp(1.25rem, 2vw, 2rem);
+    font-weight: 850;
 }
 
 .pixelcoda-search-container .input-group {
@@ -90,9 +92,9 @@ img {
 
 .pixelcoda-search-container .form-control,
 .pixelcoda-search-container .btn {
-    min-height: 3rem;
+    min-height: 3.5rem;
     border: 1px solid #b8c3d1;
-    border-radius: 0.5rem;
+    border-radius: 0.9rem;
     font: inherit;
 }
 
@@ -107,12 +109,13 @@ img {
 }
 
 .pixelcoda-search-container .btn {
-    padding: 0.75rem 1.25rem;
+    padding: 0.75rem 1.5rem;
     border-color: #5b3df5;
-    background: #5b3df5;
+    background: linear-gradient(135deg, #643df6 0%, #4926d9 100%);
     color: #fff;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 850;
+    box-shadow: 0 12px 30px rgba(91, 61, 245, 0.28);
 }
 
 .pixelcoda-search-container .d-none {
@@ -142,12 +145,19 @@ img {
 }
 
 .pixelcoda-search-result {
-    padding: 1rem 0;
-    border-bottom: 1px solid #d9e2ec;
+    padding: 1.25rem;
+    border: 1px solid #e4e9f2;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(28, 39, 76, 0.05);
+}
+
+.pixelcoda-search-result + .pixelcoda-search-result {
+    margin-top: 0.85rem;
 }
 
 .pixelcoda-search-result:last-child {
-    border-bottom: 0;
+    border-bottom: 1px solid #e4e9f2;
 }
 
 .pixelcoda-search-result h3,
@@ -544,12 +554,24 @@ img {
 
 .pixelcoda-search-facets {
     display: grid;
-    gap: 12px;
+    gap: 14px;
     margin: 0 0 24px;
-    padding: 16px;
+    padding: clamp(1rem, 2vw, 1.35rem);
     border: 1px solid #d9e2ec;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #ffffff 0%, #f7f5ff 100%);
+    border-radius: 1.2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f6ff 50%, #f7f3ff 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.pixelcoda-search-facets[hidden] {
+    display: none;
+}
+
+.pixelcoda-search-facets-heading {
+    margin: 0;
+    color: #101828;
+    font-size: 1rem;
+    font-weight: 850;
 }
 
 .pixelcoda-search-facet-group {
@@ -567,15 +589,34 @@ img {
 
 .pixelcoda-search-facet {
     display: inline-flex;
-    min-height: 30px;
+    min-height: 36px;
     align-items: center;
-    padding: 4px 10px;
+    padding: 6px 14px;
     color: #34216f;
-    background: #eee9ff;
+    background: #ffffff;
     border: 1px solid #d8cdfd;
     border-radius: 999px;
     font-size: 0.875rem;
-    font-weight: 700;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.pixelcoda-search-facet:hover {
+    border-color: #5b3df5;
+    color: #21104f;
+}
+
+.pixelcoda-search-facet:focus-visible,
+.page-link:focus-visible {
+    outline: 3px solid #5b3df5;
+    outline-offset: 2px;
+}
+
+.pixelcoda-search-facet.is-active {
+    border-color: #5b3df5;
+    background: #5b3df5;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(91, 61, 245, 0.22);
 }
 
 /* Result Meta Information */
@@ -809,19 +850,24 @@ mark {
 
 /* Pagination Styles */
 .pagination-wrapper {
-    margin-top: 40px;
-    padding: 20px 0;
-    border-top: 1px solid #e0e0e0;
+    margin-top: 28px;
+    padding: 20px 0 0;
+    border-top: 1px solid #e0e7f2;
+}
+
+.pagination-wrapper[hidden] {
+    display: none;
 }
 
 .pagination {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     list-style: none;
     padding: 0;
     margin: 0 0 20px;
-    gap: 5px;
+    gap: 8px;
 }
 
 .page-item {
@@ -830,24 +876,35 @@ mark {
 
 .page-link {
     display: block;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    color: #333;
+    min-height: 40px;
+    padding: 9px 14px;
+    background: #fff;
+    color: #101828;
+    border: 1px solid #d8e0ef;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 999px;
     transition: all 0.3s ease;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
 }
 
-.page-link:hover {
-    background: #ff8700;
+.page-link:hover:not(:disabled) {
+    background: #5b3df5;
     color: white;
 }
 
 .page-item.active .page-link,
 .page-link.current {
-    background: #ff8700;
+    background: #101828;
+    border-color: #101828;
     color: white;
     cursor: default;
+}
+
+.page-link:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .pagination-info {

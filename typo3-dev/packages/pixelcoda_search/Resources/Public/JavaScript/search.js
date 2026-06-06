@@ -642,6 +642,142 @@ function createSearchResult(result) {
     return item;
 }
 
+function parseCsv(value, fallback = []) {
+    const parsed = String(value || '')
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item && item !== 'Array');
+
+    return parsed.length > 0 ? parsed : fallback;
+}
+
+function isEnabled(value, fallback = true) {
+    if (value === undefined) {
+        return fallback;
+    }
+
+    return !['0', 'false', 'off', 'no'].includes(String(value).toLowerCase());
+}
+
+function createFacetButton(label, count, active, onClick) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = active ? 'pixelcoda-search-facet is-active' : 'pixelcoda-search-facet';
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    button.textContent = `${label} ${count}`;
+    button.addEventListener('click', onClick);
+    return button;
+}
+
+function renderFacetGroup(title, values, activeValue, onSelect) {
+    const group = document.createElement('div');
+    group.className = 'pixelcoda-search-facet-group';
+
+    const label = document.createElement('strong');
+    label.className = 'pixelcoda-search-facet-title';
+    label.textContent = title;
+    group.appendChild(label);
+
+    group.appendChild(createFacetButton('Alle', Object.values(values).reduce((sum, count) => sum + count, 0), !activeValue, () => onSelect('')));
+
+    Object.entries(values)
+        .sort(([labelA], [labelB]) => labelA.localeCompare(labelB))
+        .forEach(([facetLabel, count]) => {
+            group.appendChild(createFacetButton(facetLabel, count, activeValue === facetLabel, () => onSelect(facetLabel)));
+        });
+
+    return group;
+}
+
+function renderFacets(container, facets, state, onChange) {
+    if (!container) {
+        return;
+    }
+
+    const collections = facets?.collections || {};
+    const categories = facets?.categories || {};
+    container.replaceChildren();
+
+    if (Object.keys(collections).length === 0 && Object.keys(categories).length === 0) {
+        container.hidden = true;
+        return;
+    }
+
+    const heading = document.createElement('h3');
+    heading.className = 'pixelcoda-search-facets-heading';
+    heading.textContent = 'Ergebnisse filtern';
+    container.appendChild(heading);
+
+    if (Object.keys(collections).length > 0) {
+        container.appendChild(renderFacetGroup('Typ', collections, state.collection, value => {
+            state.collection = value;
+            state.page = 1;
+            onChange();
+        }));
+    }
+
+    if (Object.keys(categories).length > 0) {
+        container.appendChild(renderFacetGroup('Kategorie', categories, state.category, value => {
+            state.category = value;
+            state.page = 1;
+            onChange();
+        }));
+    }
+
+    container.hidden = false;
+}
+
+function renderPagination(container, pagination, state, onChange) {
+    if (!container) {
+        return;
+    }
+
+    const pages = Number(pagination?.pages || 1);
+    const current = Number(pagination?.page || state.page || 1);
+    const total = Number(pagination?.total || 0);
+    container.replaceChildren();
+
+    if (pages <= 1) {
+        container.hidden = true;
+        return;
+    }
+
+    const list = document.createElement('ul');
+    list.className = 'pagination';
+
+    const addPageButton = (label, page, active = false, disabled = false) => {
+        const item = document.createElement('li');
+        item.className = active ? 'page-item active' : 'page-item';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = active ? 'page-link current' : 'page-link';
+        button.textContent = label;
+        button.disabled = disabled || active;
+        if (active) {
+            button.setAttribute('aria-current', 'page');
+        }
+        button.addEventListener('click', () => {
+            state.page = page;
+            onChange();
+        });
+        item.appendChild(button);
+        list.appendChild(item);
+    };
+
+    addPageButton('Zurück', Math.max(1, current - 1), false, current <= 1);
+    for (let page = 1; page <= pages; page += 1) {
+        addPageButton(String(page), page, page === current);
+    }
+    addPageButton('Weiter', Math.min(pages, current + 1), false, current >= pages);
+
+    const info = document.createElement('p');
+    info.className = 'pagination-info';
+    info.textContent = `Seite ${current} von ${pages} · ${total} Treffer`;
+
+    container.append(list, info);
+    container.hidden = false;
+}
+
 function displayAiAnswer(container, payload) {
     const answer = payload.data?.attributes || {};
     const title = document.createElement('h4');
@@ -688,7 +824,8 @@ function initContentElementSearch(container) {
             return '';
         }
     })();
-    const isLocalBrowser = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+    const browserHostname = window.location.hostname;
+    const isLocalBrowser = ['localhost', '127.0.0.1', '::1'].includes(browserHostname) || browserHostname.endsWith('.localhost');
     const localApiHosts = ['localhost', '127.0.0.1', '::1', 'host.docker.internal'];
     const isInternalApiUrl = localApiHosts.includes(configuredApiHost);
     const apiUrl = isInternalApiUrl
@@ -697,12 +834,22 @@ function initContentElementSearch(container) {
     const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
     const project = container.dataset.project || 'typo3';
     const resultsPerPage = Number.parseInt(container.dataset.resultsPerPage, 10) || 10;
-    const collections = (container.dataset.collections || 'pages,tt_content').split(',');
+    const collections = parseCsv(container.dataset.collections, ['pages', 'tt_content']);
+    const enableFacets = isEnabled(container.dataset.enableFacets, true);
+    const state = {
+        page: 1,
+        query: '',
+        category: '',
+        collection: '',
+        sort: container.dataset.sortOrder || 'relevance'
+    };
     const form = container.querySelector(`#search-form-${uid}`);
     const input = container.querySelector(`#search-input-${uid}`);
     const status = container.querySelector(`#search-status-${uid}`);
     const results = container.querySelector(`#search-results-${uid}`);
     const resultsContent = container.querySelector(`#results-content-${uid}`);
+    const facetsContent = container.querySelector(`#facets-content-${uid}`);
+    const paginationContent = container.querySelector(`#pagination-content-${uid}`);
     const apiStatus = container.querySelector(`#api-status-${uid}`);
     const aiForm = container.querySelector(`#ai-form-${uid}`);
     const aiInput = container.querySelector(`#ai-input-${uid}`);
@@ -726,21 +873,23 @@ function initContentElementSearch(container) {
             apiStatus.className = 'pixelcoda-search-status is-offline';
         });
 
-    form.addEventListener('submit', async event => {
-        event.preventDefault();
-        const query = input.value.trim();
-        if (!query) {
-            input.focus();
-            return;
-        }
-
+    const runSearch = async () => {
         status.hidden = false;
         status.classList.remove('d-none');
         results.hidden = true;
         results.style.display = 'none';
         resultsContent.replaceChildren();
+        if (facetsContent) {
+            facetsContent.replaceChildren();
+            facetsContent.hidden = true;
+        }
+        if (paginationContent) {
+            paginationContent.replaceChildren();
+            paginationContent.hidden = true;
+        }
 
         try {
+            const requestCollections = state.collection ? [state.collection] : collections;
             const response = await fetch(`${apiUrl}/v1/search/${encodeURIComponent(project)}`, {
                 method: 'POST',
                 headers: {
@@ -748,9 +897,13 @@ function initContentElementSearch(container) {
                     Authorization: `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    q: query,
+                    q: state.query,
                     limit: resultsPerPage,
-                    collections
+                    per_page: resultsPerPage,
+                    page: state.page,
+                    category: state.category,
+                    sort: state.sort,
+                    collections: requestCollections
                 })
             });
 
@@ -760,15 +913,21 @@ function initContentElementSearch(container) {
 
             const payload = await response.json();
             const resultItems = Array.isArray(payload.data) ? payload.data : [];
+            const meta = payload.meta || {};
 
             if (resultItems.length === 0) {
                 const message = document.createElement('p');
                 message.className = 'pixelcoda-search-empty';
-                message.textContent = `Keine Ergebnisse für „${query}“ gefunden.`;
+                message.textContent = `Keine Ergebnisse für „${state.query}“ gefunden.`;
                 resultsContent.appendChild(message);
             } else {
                 resultItems.forEach(result => resultsContent.appendChild(createSearchResult(result)));
             }
+
+            if (enableFacets) {
+                renderFacets(facetsContent, meta.facets, state, runSearch);
+            }
+            renderPagination(paginationContent, meta.pagination, state, runSearch);
 
             results.hidden = false;
             results.style.display = 'block';
@@ -784,6 +943,20 @@ function initContentElementSearch(container) {
             status.hidden = true;
             status.classList.add('d-none');
         }
+    };
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+        state.query = input.value.trim();
+        state.page = 1;
+        state.category = '';
+        state.collection = '';
+        if (!state.query) {
+            input.focus();
+            return;
+        }
+
+        await runSearch();
     });
 
     if (aiForm && aiInput && aiStatus && aiResult) {

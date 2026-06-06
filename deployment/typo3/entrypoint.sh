@@ -23,9 +23,10 @@ export API_WRITE_KEY="${API_WRITE_KEY:-${PIXELCODA_API_KEY}}"
 export API_READ_KEY="${API_READ_KEY:-${PIXELCODA_READ_API_KEY}}"
 export SEARCH_DATA_DIR="${SEARCH_DATA_DIR:-/data/search-api}"
 export SEARCH_API_PORT="${SEARCH_API_PORT:-8787}"
+export SEARCH_API_HOST="${SEARCH_API_HOST:-127.0.0.1}"
 export NODE_ENV=production
 
-envsubst '${PORT}' \
+envsubst '${PORT} ${SEARCH_API_PORT}' \
     < /etc/apache2/sites-available/000-default.conf.template \
     > /etc/apache2/sites-available/000-default.conf
 printf 'ServerName %s\n' "${RAILWAY_PUBLIC_DOMAIN:-localhost}" > /etc/apache2/conf-available/pixelcoda-server-name.conf
@@ -53,6 +54,35 @@ rm -rf /var/www/html/config /var/www/html/public/fileadmin
 ln -s /data/config /var/www/html/config
 ln -s /data/fileadmin /var/www/html/public/fileadmin
 chown -R www-data:www-data /data /var/www/html/public/typo3temp /var/www/html/var
+
+start_search_api() {
+    if pgrep -f '/opt/pixelcoda-search-api/simple-api.js' >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo "Starting pixelcoda Search API on ${SEARCH_API_HOST}:${SEARCH_API_PORT}..."
+    node /opt/pixelcoda-search-api/simple-api.js >/tmp/pixelcoda-search-api.log 2>&1 &
+    search_api_pid=$!
+
+    for _attempt in $(seq 1 30); do
+        if ! kill -0 "${search_api_pid}" >/dev/null 2>&1; then
+            echo "pixelcoda Search API stopped during startup." >&2
+            tail -n 80 /tmp/pixelcoda-search-api.log >&2 || true
+            return 1
+        fi
+        if curl -fsS "http://127.0.0.1:${SEARCH_API_PORT}/health" >/dev/null 2>&1; then
+            echo "pixelcoda Search API is ready."
+            return 0
+        fi
+        sleep 1
+    done
+
+    echo "pixelcoda Search API did not become ready before Apache startup." >&2
+    tail -n 80 /tmp/pixelcoda-search-api.log >&2 || true
+    return 1
+}
+
+start_search_api
 
 required_database_variables=(
     TYPO3_DB_HOST
@@ -169,7 +199,5 @@ mkdir -p \
     /var/www/html/var/cache/data/database_schema/tmp
 chown -R www-data:www-data /var/www/html/public/typo3temp /var/www/html/var
 vendor/bin/typo3 cache:warmup || true
-
-node /opt/pixelcoda-search-api/simple-api.js &
 
 exec "$@"

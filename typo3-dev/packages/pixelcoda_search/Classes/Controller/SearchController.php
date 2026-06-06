@@ -170,8 +170,8 @@ class SearchController extends ActionController
                     $facets = $apiResponse['meta']['facets'] ?? [];
 
                     // Build pagination array
-                    $currentPage = (int)($apiResponse['meta']['pagination']['page'] ?? $currentPage);
-                    $totalPages = (int)($apiResponse['meta']['pagination']['pages'] ?? 1);
+                    $currentPage = (int) ($apiResponse['meta']['pagination']['page'] ?? $currentPage);
+                    $totalPages = (int) ($apiResponse['meta']['pagination']['pages'] ?? 1);
                     if ($totalPages > 1) {
                         $pagination = [
                             'current' => $currentPage,

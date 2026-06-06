@@ -12,6 +12,7 @@ RUN apt-get update \
         libwebp-dev \
         libxml2-dev \
         libzip-dev \
+        curl \
         nodejs \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
@@ -53,8 +54,9 @@ COPY deployment/typo3/backend-index.php public/typo3/index.php
 COPY deployment/typo3/install-index.php public/typo3/install.php
 COPY deployment/typo3/healthz.php public/healthz.php
 COPY deployment/typo3/favicon.svg public/favicon.svg
+COPY deployment/typo3/favicon.svg public/favicon.ico
 COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
-COPY simple-api.js index.html /opt/pixelcoda-search-api/
+COPY simple-api.js index.html package.json /opt/pixelcoda-search-api/
 
 RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && mkdir -p \

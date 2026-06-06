@@ -14,6 +14,22 @@ $requiredSets = [
     'pixelcoda/fe-editor',
     'pixelcoda/typo3-search',
 ];
+$siteBase = normalizeSiteBase();
+
+function normalizeSiteBase(): string
+{
+    $base = (string)(getenv('TYPO3_SITE_BASE') ?: '');
+    if ('' === $base) {
+        $railwayDomain = (string)(getenv('RAILWAY_PUBLIC_DOMAIN') ?: '');
+        $base = '' !== $railwayDomain ? 'https://' . $railwayDomain : '/';
+    }
+
+    if ('/' !== $base && !str_ends_with($base, '/')) {
+        $base .= '/';
+    }
+
+    return $base;
+}
 
 function writeSiteConfiguration(string $siteConfigurationFile, array $configuration): void
 {
@@ -77,13 +93,17 @@ if ('' !== $databaseHost && '' !== $databaseName && '' !== $databaseUser) {
             $configuredRootPageId = (int)($configuration['rootPageId'] ?? 0);
             if (!in_array($configuredRootPageId, $activeRootPageIds, true)) {
                 $configuration['rootPageId'] = $primaryRootPageId;
-                $configuration['base'] = $configuration['base'] ?? '/';
                 $configuration['dependencies'] = array_values(array_unique([
                     ...(is_array($configuration['dependencies'] ?? null) ? $configuration['dependencies'] : []),
                     ...$requiredSets,
                 ]));
-                writeSiteConfiguration($siteConfigurationFile, $configuration);
             }
+
+            if ((int)($configuration['rootPageId'] ?? 0) === $primaryRootPageId) {
+                $configuration['base'] = $siteBase;
+            }
+
+            writeSiteConfiguration($siteConfigurationFile, $configuration);
         }
 
         $configuredRootPageIds = [];
@@ -194,6 +214,8 @@ function createDemoPages(PDO $pdo): void
 
     $pageDefinitions = [
         ['title' => 'Search Demo', 'slug' => '/search-demo', 'header' => 'Pixelcoda Search Demo', 'body' => 'Suche mit Autocomplete, Suggestions, Facetten, Ergebnissen und Pagination testen.', 'ctype' => 'pixelcodasearch_search'],
+        ['title' => 'Facetten Suche', 'slug' => '/search-facets-demo', 'header' => 'Facetten und Filter testen', 'body' => 'Demo-Suche mit Kategorien, Inhaltstypen, Ergebnislisten und Seitenwechsel.', 'ctype' => 'pixelcodasearch_search'],
+        ['title' => 'KI Antwort Suche', 'slug' => '/search-ai-demo', 'header' => 'KI-Antworten mit Quellen testen', 'body' => 'Fragen an den TYPO3 Suchindex stellen und Antworten mit Quellen pruefen.', 'ctype' => 'pixelcodasearch_search'],
         ['title' => 'GSAP Demo', 'slug' => '/gsap-demo', 'header' => 'Pixelcoda GSAP Demo', 'body' => 'ScrollTrigger, Reduced Motion und Headless-ready Animationsdaten testen.', 'ctype' => 'textmedia'],
         ['title' => 'Frontend Editing Demo', 'slug' => '/frontend-editing-demo', 'header' => 'Pixelcoda Frontend Editing Demo', 'body' => 'Inline Editing, Drag-and-drop und Redakteur-Workflow testen.', 'ctype' => 'pc_demo'],
     ];
