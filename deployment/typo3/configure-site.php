@@ -54,6 +54,49 @@ if ('' !== $databaseHost && '' !== $databaseName && '' !== $databaseUser) {
         $databasePassword,
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
+
+    if ((string)(getenv('PIXELCODA_PRUNE_DUPLICATE_ROOTS') ?: '1') === '1') {
+        $rootPages = $pdo->query(
+            'SELECT uid, title, slug FROM pages WHERE pid = 0 AND is_siteroot = 1 AND deleted = 0 ORDER BY uid ASC'
+        )->fetchAll(PDO::FETCH_ASSOC);
+        $seenRootKeys = [];
+        foreach ($rootPages as $rootPage) {
+            $rootPageId = (int)$rootPage['uid'];
+            $rootKey = (string)($rootPage['title'] ?? '') . "\n" . (string)($rootPage['slug'] ?? '');
+            if (!isset($seenRootKeys[$rootKey])) {
+                $seenRootKeys[$rootKey] = $rootPageId;
+                continue;
+            }
+
+            if (in_array($rootPageId, $configuredRootPageIds, true)) {
+                $previousRootPageId = $seenRootKeys[$rootKey];
+                $pdo->prepare('UPDATE pages SET deleted = 1, hidden = 1 WHERE uid = :uid')
+                    ->execute(['uid' => $previousRootPageId]);
+                $pdo->prepare('UPDATE tt_content SET deleted = 1 WHERE pid = :pid')
+                    ->execute(['pid' => $previousRootPageId]);
+                $seenRootKeys[$rootKey] = $rootPageId;
+                continue;
+            }
+
+            $pdo->prepare('UPDATE pages SET deleted = 1, hidden = 1 WHERE uid = :uid')
+                ->execute(['uid' => $rootPageId]);
+            $pdo->prepare('UPDATE tt_content SET deleted = 1 WHERE pid = :pid')
+                ->execute(['pid' => $rootPageId]);
+        }
+    }
+
+    if ((string)(getenv('PIXELCODA_CREATE_PREVIEW_SITES') ?: '0') !== '1') {
+        foreach (glob('/var/www/html/config/sites/preview-root-*', GLOB_ONLYDIR) ?: [] as $previewSiteDirectory) {
+            foreach (glob($previewSiteDirectory . '/*') ?: [] as $previewSiteFile) {
+                if (is_file($previewSiteFile)) {
+                    unlink($previewSiteFile);
+                }
+            }
+            rmdir($previewSiteDirectory);
+        }
+        exit(0);
+    }
+
     $rootPages = $pdo->query(
         'SELECT uid, title FROM pages WHERE pid = 0 AND is_siteroot = 1 AND deleted = 0 ORDER BY uid ASC'
     )->fetchAll(PDO::FETCH_ASSOC);

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.8 - 2026-06-06
+
+- Hide the public demo login notice when a TYPO3 backend user is already
+  logged in.
+- Stop creating duplicate preview site configurations by default and prune
+  duplicate demo root pages during Railway bootstrap.
+
 ## 2.2.7 - 2026-06-06
 
 - Bind the local Search API to `0.0.0.0` by default so DDEV can reach it via

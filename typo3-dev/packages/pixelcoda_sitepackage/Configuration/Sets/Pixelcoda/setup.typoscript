@@ -32,6 +32,10 @@ lib.pixelcodaDemoLoginNotice.value (
   </section>
 )
 
+[backend.user.isLoggedIn]
+lib.pixelcodaDemoLoginNotice >
+[END]
+
 lib.dynamicContent = COA
 lib.dynamicContent {
   10 = LOAD_REGISTER
