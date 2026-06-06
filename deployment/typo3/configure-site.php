@@ -212,6 +212,8 @@ function createDemoPages(PDO $pdo): void
         return;
     }
 
+    ensurePixelcodaPageTemplate($pdo, $rootPageId);
+
     $pageDefinitions = [
         ['title' => 'Search Demo', 'slug' => '/search-demo', 'header' => 'Pixelcoda Search Demo', 'body' => 'Suche mit Autocomplete, Suggestions, Facetten, Ergebnissen und Pagination testen.', 'ctype' => 'pixelcodasearch_search'],
         ['title' => 'Facetten Suche', 'slug' => '/search-facets-demo', 'header' => 'Facetten und Filter testen', 'body' => 'Demo-Suche mit Kategorien, Inhaltstypen, Ergebnislisten und Seitenwechsel.', 'ctype' => 'pixelcodasearch_search'],
@@ -260,4 +262,134 @@ function createDemoPages(PDO $pdo): void
             'bodytext' => $definition['body'],
         ]);
     }
+}
+
+function ensurePixelcodaPageTemplate(PDO $pdo, int $rootPageId): void
+{
+    $constants = <<<'TYPOSCRIPT'
+pixelcoda.search.apiUrl = /search-api
+pixelcoda.search.readApiKey = pc_read_dev_key
+pixelcoda.search.projectId = typo3
+plugin.tx_pixelcodasearch_search.settings.mode = classic
+plugin.tx_pixelcodasearch_search.settings.placeholder = Website durchsuchen...
+plugin.tx_pixelcodasearch_search.settings.resultsPerPage = 10
+plugin.tx_pixelcodasearch_search.settings.collections = pages,tt_content
+plugin.tx_pixelcodasearch_search.settings.enableSuggestions = 1
+plugin.tx_pixelcodasearch_search.settings.enableAsk = 1
+plugin.tx_pixelcodasearch_search.settings.enableFacets = 1
+TYPOSCRIPT;
+
+    $setup = <<<'TYPOSCRIPT'
+page = PAGE
+page {
+  typeNum = 0
+
+  config {
+    doctype = html5
+    admPanel = 1
+    removeDefaultJS = 0
+    prefixLocalAnchors = all
+  }
+
+  meta {
+    viewport = width=device-width, initial-scale=1
+    robots = index,follow
+    description = Pixelcoda TYPO3 Suite Demo mit Search, Frontend Editing und GSAP Animation.
+  }
+
+  10 = PAGEVIEW
+  10 {
+    paths.10 = EXT:pixelcoda_sitepackage/Resources/Private/PageView/
+  }
+
+  includeCSS {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/Css/site.css
+  }
+
+  includeJSFooter {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/JavaScript/site.js
+  }
+}
+
+lib.pixelcodaDemoLoginNotice = TEXT
+lib.pixelcodaDemoLoginNotice.value (
+  <section class="pixelcoda-demo-login-notice" aria-labelledby="pixelcoda-demo-login-title">
+    <div>
+      <span class="pixelcoda-demo-login-notice__eyebrow">Demo-Modus</span>
+      <h2 id="pixelcoda-demo-login-title">Plugins im TYPO3 Backend testen</h2>
+      <p>Melde dich als Redakteur an, um pixelcoda Search, Frontend Editing und GSAP-Animationen direkt in der Testumgebung auszuprobieren.</p>
+      <dl>
+        <div><dt>Benutzer</dt><dd>pixelcoda-editor</dd></div>
+        <div><dt>Rolle</dt><dd>Redakteur, kein Admin</dd></div>
+      </dl>
+    </div>
+    <a href="/typo3/login?redirect=tools_PixelcodaSearchM1" class="pixelcoda-demo-login-notice__button">Zum TYPO3 Login</a>
+  </section>
+)
+
+[backend.user.isLoggedIn]
+lib.pixelcodaDemoLoginNotice >
+[END]
+
+lib.dynamicContent = COA
+lib.dynamicContent {
+  10 = LOAD_REGISTER
+  10 {
+    colPos.cObject = TEXT
+    colPos.cObject {
+      field = colPos
+      ifEmpty = 0
+    }
+  }
+
+  20 = CONTENT
+  20 {
+    table = tt_content
+    select {
+      orderBy = sorting
+      where = {#colPos}={register:colPos}
+      where.insertData = 1
+    }
+  }
+
+  90 = RESTORE_REGISTER
+}
+TYPOSCRIPT;
+
+    $statement = $pdo->prepare(
+        'SELECT uid FROM sys_template WHERE pid = :pid AND deleted = 0 ORDER BY root DESC, uid ASC LIMIT 1'
+    );
+    $statement->execute(['pid' => $rootPageId]);
+    $templateId = (int)$statement->fetchColumn();
+
+    if ($templateId > 0) {
+        $update = $pdo->prepare(
+            'UPDATE sys_template
+             SET title = :title, sitetitle = :sitetitle, root = 1, clear = 3, constants = :constants,
+                 config = :config, include_static_file = :includeStaticFile, tstamp = UNIX_TIMESTAMP()
+             WHERE uid = :uid'
+        );
+        $update->execute([
+            'title' => 'Pixelcoda TYPO3 Suite',
+            'sitetitle' => 'Pixelcoda TYPO3 Suite',
+            'constants' => $constants,
+            'config' => $setup,
+            'includeStaticFile' => 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript/,EXT:content_gsap_animation/Configuration/TypoScript/FluidStyledContent/',
+            'uid' => $templateId,
+        ]);
+        return;
+    }
+
+    $insert = $pdo->prepare(
+        'INSERT INTO sys_template (pid, title, sitetitle, root, clear, constants, config, include_static_file, hidden, deleted, crdate, tstamp)
+         VALUES (:pid, :title, :sitetitle, 1, 3, :constants, :config, :includeStaticFile, 0, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())'
+    );
+    $insert->execute([
+        'pid' => $rootPageId,
+        'title' => 'Pixelcoda TYPO3 Suite',
+        'sitetitle' => 'Pixelcoda TYPO3 Suite',
+        'constants' => $constants,
+        'config' => $setup,
+        'includeStaticFile' => 'EXT:fluid_styled_content/Configuration/TypoScript/,EXT:pixelcoda_search/Configuration/TypoScript/,EXT:content_gsap_animation/Configuration/TypoScript/FluidStyledContent/',
+    ]);
 }
