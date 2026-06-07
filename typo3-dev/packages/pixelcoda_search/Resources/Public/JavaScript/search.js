@@ -636,9 +636,17 @@ function createSearchResult(result) {
     const meta = document.createElement('p');
     meta.className = 'pixelcoda-search-result-meta';
     const score = attributes.score ? ` · Score: ${Math.round(attributes.score * 100)}%` : '';
-    meta.textContent = `${attributes.collection || 'Unbekannt'}${score}`;
+    const categories = Array.isArray(attributes.categories) && attributes.categories.length > 0
+        ? ` · ${attributes.categories.join(', ')}`
+        : '';
+    meta.textContent = `${attributes.collection || 'Unbekannt'}${categories}${score}`;
 
-    item.append(title, summary, meta);
+    const action = document.createElement('a');
+    action.className = 'pixelcoda-search-result-action';
+    action.href = attributes.url || '#';
+    action.textContent = 'Detailseite öffnen';
+
+    item.append(title, summary, meta, action);
     return item;
 }
 
@@ -855,9 +863,18 @@ function initContentElementSearch(container) {
     const aiInput = container.querySelector(`#ai-input-${uid}`);
     const aiStatus = container.querySelector(`#ai-status-${uid}`);
     const aiResult = container.querySelector(`#ai-result-${uid}`);
+    let suggestionsPanel = container.querySelector(`#suggestions-content-${uid}`);
 
     if (!form || !input || !status || !results || !resultsContent || !apiStatus) {
         return;
+    }
+
+    if (!suggestionsPanel && isEnabled(container.dataset.enableSuggestions, true)) {
+        suggestionsPanel = document.createElement('div');
+        suggestionsPanel.id = `suggestions-content-${uid}`;
+        suggestionsPanel.className = 'pixelcoda-search-suggestions';
+        suggestionsPanel.hidden = true;
+        form.appendChild(suggestionsPanel);
     }
 
     fetch(`${apiUrl}/health`)
@@ -959,6 +976,62 @@ function initContentElementSearch(container) {
         await runSearch();
     });
 
+    if (suggestionsPanel) {
+        let suggestionTimeout = 0;
+        input.addEventListener('input', () => {
+            window.clearTimeout(suggestionTimeout);
+            const query = input.value.trim();
+            suggestionsPanel.replaceChildren();
+            suggestionsPanel.hidden = true;
+
+            if (query.length < 2) {
+                return;
+            }
+
+            suggestionTimeout = window.setTimeout(async () => {
+                try {
+                    const response = await fetch(`${apiUrl}/v1/suggest/${encodeURIComponent(project)}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({ q: query, limit: 6, collections })
+                    });
+                    if (!response.ok) {
+                        throw new Error(`Suggest API returned ${response.status}`);
+                    }
+                    const payload = await response.json();
+                    const suggestions = Array.isArray(payload.data) ? payload.data : [];
+                    if (suggestions.length === 0) {
+                        return;
+                    }
+                    const list = document.createElement('ul');
+                    list.setAttribute('aria-label', 'Suchvorschläge');
+                    suggestions.forEach(suggestion => {
+                        const item = document.createElement('li');
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.textContent = suggestion.title || 'Vorschlag';
+                        button.addEventListener('click', async () => {
+                            input.value = suggestion.title || query;
+                            state.query = input.value.trim();
+                            state.page = 1;
+                            suggestionsPanel.hidden = true;
+                            await runSearch();
+                        });
+                        item.appendChild(button);
+                        list.appendChild(item);
+                    });
+                    suggestionsPanel.appendChild(list);
+                    suggestionsPanel.hidden = false;
+                } catch (error) {
+                    console.error('Pixelcoda Suggest request failed:', error);
+                }
+            }, 180);
+        });
+    }
+
     if (aiForm && aiInput && aiStatus && aiResult) {
         aiForm.addEventListener('submit', async event => {
             event.preventDefault();
@@ -999,6 +1072,15 @@ function initContentElementSearch(container) {
                 aiStatus.hidden = true;
             }
         });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q');
+    const demoSearchPages = ['/search-demo', '/search-facets-demo', '/search-ai-demo'];
+    if (initialQuery || demoSearchPages.includes(window.location.pathname)) {
+        state.query = initialQuery || 'search';
+        input.value = state.query;
+        runSearch();
     }
 }
 

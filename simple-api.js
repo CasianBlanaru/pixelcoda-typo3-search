@@ -24,7 +24,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Premium TYPO3 Suche mit Autocomplete, Facetten, Pagination, Headless API und KI-gestuetzten Antworten.',
         content: 'Verwalte Suchindex, Rendering-Modus, API-Verbindung, Headless JSON und TYPO3 Standardausgabe zentral im Backend.',
         keywords: 'search suche autocomplete facets pagination headless typo3 api ki',
-        url: '/',
+        url: '/search-demo',
         language: 'de',
         categories: ['Suche', 'Backend', 'Headless'],
         type: 'page',
@@ -37,7 +37,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Schnelle Suchvorschlaege waehrend der Eingabe mit Tastatursteuerung und barrierearmen Listbox-Rollen.',
         content: 'Autocomplete liefert Treffer aus Seiten und Inhaltselementen. Suggestions helfen Redakteuren und Besuchern, relevante Inhalte schneller zu finden.',
         keywords: 'autocomplete suggestions suchvorschlaege tastatur accessibility',
-        url: '/#autocomplete',
+        url: '/search-autocomplete',
         language: 'de',
         categories: ['UX', 'Accessibility'],
         type: 'content',
@@ -50,7 +50,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Filter nach Seiten, Inhaltstypen, Kategorien und Datum fuer praezise Suchergebnisse.',
         content: 'Faceted Search reduziert Rauschen und macht umfangreiche TYPO3 Websites schneller durchsuchbar.',
         keywords: 'faceted filters kategorien datum inhaltstyp',
-        url: '/#filters',
+        url: '/search-facets-demo',
         language: 'de',
         categories: ['Filter', 'UX'],
         type: 'content',
@@ -63,7 +63,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Serverseitige Pagination haelt Payloads klein, stabilisiert INP und verbessert die wahrgenommene Geschwindigkeit.',
         content: 'Pixelcoda Search liefert Seiteninformationen und limitierte Ergebnislisten fuer performante Frontends.',
         keywords: 'pagination performance lighthouse core web vitals',
-        url: '/#pagination',
+        url: '/search-pagination',
         language: 'de',
         categories: ['Performance', 'SEO'],
         type: 'page',
@@ -76,7 +76,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Stabile JSON API fuer React, Vue, Next.js und klassische TYPO3 Frontends.',
         content: 'Der Headless-Modus liefert strukturierte Suchdaten ohne das klassische Fluid Rendering zu brechen.',
         keywords: 'headless json api react vue nextjs typo3',
-        url: '/#headless',
+        url: '/headless-api',
         language: 'de',
         categories: ['Headless', 'API'],
         type: 'page',
@@ -89,7 +89,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Antworten werden aus dem Suchindex erzeugt und mit Quellen aus TYPO3 Inhalten belegt.',
         content: 'Die Ask-Funktion nutzt relevante Passagen aus dem Index und bleibt DSGVO-freundlich konfigurierbar.',
         keywords: 'ki ai antwort quellen citations dsgvo',
-        url: '/#ai-answer',
+        url: '/search-ai-demo',
         language: 'de',
         categories: ['AI', 'Privacy'],
         type: 'content',
@@ -102,7 +102,7 @@ const DEMO_DOCUMENTS = [
         summary: 'Semantische Suche, sichtbare Fokuszustaende, reduzierte Bewegung und Tastaturbedienung.',
         content: 'Die Oberflaeche ist auf Accessibility, reduzierte Bewegung und klare Screenreader-Strukturen ausgelegt.',
         keywords: 'bitv accessibility screenreader tastatur reduced motion',
-        url: '/#accessibility',
+        url: '/bitv-accessibility',
         language: 'de',
         categories: ['Accessibility', 'BITV'],
         type: 'page',
@@ -115,7 +115,7 @@ const DEMO_DOCUMENTS = [
         summary: 'TYPO3 Suite mit Search API, GSAP Animation und Frontend Editing in einer Testumgebung.',
         content: 'Railway startet TYPO3, MySQL-Anbindung, Such-API und Demo-Redakteur automatisch.',
         keywords: 'railway deployment typo3 demo redakteur',
-        url: '/#railway',
+        url: '/railway-demo',
         language: 'de',
         categories: ['Deployment', 'Demo'],
         type: 'content',
@@ -165,7 +165,8 @@ async function loadIndex() {
     searchIndex.typo3 ||= {};
     for (const document of DEMO_DOCUMENTS) {
         searchIndex.typo3[document.collection] ||= {};
-        searchIndex.typo3[document.collection][document.id] ||= {
+        searchIndex.typo3[document.collection][document.id] = {
+            ...searchIndex.typo3[document.collection][document.id],
             ...document,
             updated_at: new Date().toISOString()
         };
@@ -364,6 +365,26 @@ const server = createServer(async (req, res) => {
             return;
         }
 
+        if (path.match(/^\/v1\/documents\//) && method === 'GET') {
+            if (!checkAuth(req, [API_READ_KEY, API_WRITE_KEY])) {
+                sendJson(res, 401, { error: 'Valid read API key required' });
+                return;
+            }
+            const project = pathParts[3];
+            const id = decodeURIComponent(pathParts.slice(4).join('/'));
+            const document = getProjectDocuments(project).find(item => String(item.id) === id);
+            if (!document) {
+                sendJson(res, 404, { error: 'Document not found' });
+                return;
+            }
+            sendJson(res, 200, jsonApiResponse({
+                type: 'document',
+                id: document.id,
+                attributes: document
+            }));
+            return;
+        }
+
         if (path.match(/^\/v1\/ask\//) && method === 'POST') {
             if (!checkAuth(req, [API_READ_KEY, API_WRITE_KEY])) {
                 sendJson(res, 401, { error: 'Valid read API key required' });
@@ -394,7 +415,7 @@ const server = createServer(async (req, res) => {
                     text: answer,
                     query: question,
                     generated_at: new Date().toISOString(),
-                    confidence: matches.length > 0 ? 0.8 : 0,
+                    confidence: matches.results.length > 0 ? 0.8 : 0,
                     search_method: 'local-keyword'
                 },
                 relationships: {
