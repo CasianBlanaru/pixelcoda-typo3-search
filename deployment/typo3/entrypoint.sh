@@ -198,6 +198,7 @@ else
 fi
 
 php /usr/local/bin/pixelcoda-configure-site
+php /usr/local/bin/pixelcoda-set-permissions
 vendor/bin/typo3 cache:flush || true
 mkdir -p \
     /var/www/html/public/typo3temp/assets/css \
