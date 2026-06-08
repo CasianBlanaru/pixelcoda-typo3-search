@@ -841,7 +841,11 @@ function initContentElementSearch(container) {
         : configuredApiUrl || (isLocalBrowser ? 'http://localhost:8787' : '/search-api');
     const apiKey = container.dataset.apiKey || 'pc_read_dev_key';
     const project = container.dataset.project || 'typo3';
-    const resultsPerPage = Number.parseInt(container.dataset.resultsPerPage, 10) || 10;
+    const configuredResultsPerPage = Number.parseInt(container.dataset.resultsPerPage, 10) || 10;
+    const demoSearchPages = ['/', '/search-demo', '/search-facets-demo', '/search-ai-demo', '/search-pagination'];
+    const resultsPerPage = demoSearchPages.includes(window.location.pathname)
+        ? Math.min(configuredResultsPerPage, 2)
+        : configuredResultsPerPage;
     const collections = parseCsv(container.dataset.collections, ['pages', 'tt_content']);
     const enableFacets = isEnabled(container.dataset.enableFacets, true);
     const state = {
@@ -1076,8 +1080,8 @@ function initContentElementSearch(container) {
 
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q');
-    const demoSearchPages = ['/search-demo', '/search-facets-demo', '/search-ai-demo'];
-    if (initialQuery || demoSearchPages.includes(window.location.pathname)) {
+    const autoSearchPages = ['/search-demo', '/search-facets-demo', '/search-ai-demo'];
+    if (initialQuery || autoSearchPages.includes(window.location.pathname)) {
         state.query = initialQuery || 'search';
         input.value = state.query;
         runSearch();

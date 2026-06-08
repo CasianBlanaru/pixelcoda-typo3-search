@@ -17,7 +17,7 @@ export PIXELCODA_API_URL="${PIXELCODA_API_URL:-http://127.0.0.1:8787}"
 export PIXELCODA_API_KEY="${PIXELCODA_API_KEY:-${API_WRITE_KEY:-pc_write_dev_key}}"
 export PIXELCODA_READ_API_KEY="${PIXELCODA_READ_API_KEY:-${API_READ_KEY:-pc_read_dev_key}}"
 export PIXELCODA_DEMO_EDITOR_USERNAME="${PIXELCODA_DEMO_EDITOR_USERNAME:-pixelcoda-editor}"
-export PIXELCODA_DEMO_EDITOR_PASSWORD="${PIXELCODA_DEMO_EDITOR_PASSWORD:-}"
+export PIXELCODA_DEMO_EDITOR_PASSWORD="${PIXELCODA_DEMO_EDITOR_PASSWORD:-PixelcodaDemo2026!}"
 export PIXELCODA_DEMO_EDITOR_EMAIL="${PIXELCODA_DEMO_EDITOR_EMAIL:-demo@pixelcoda.de}"
 export API_WRITE_KEY="${API_WRITE_KEY:-${PIXELCODA_API_KEY}}"
 export API_READ_KEY="${API_READ_KEY:-${PIXELCODA_READ_API_KEY}}"
@@ -158,9 +158,7 @@ vendor/bin/typo3 extension:setup --no-interaction -vvv \
     }
 
 vendor/bin/typo3 setup:begroups:default --groups=Both --no-interaction || true
-if [[ -z "${PIXELCODA_DEMO_EDITOR_PASSWORD}" ]]; then
-    echo "Demo editor password not configured. Set PIXELCODA_DEMO_EDITOR_PASSWORD to create the redakteur test account." >&2
-elif ! mysql \
+if ! mysql \
     --host="${TYPO3_DB_HOST}" \
     --port="${TYPO3_DB_PORT}" \
     --user="${TYPO3_DB_USERNAME}" \
@@ -188,6 +186,15 @@ elif ! mysql \
         --groups="${editor_group_ids}" \
         --language=de \
         --no-interaction || true
+else
+    demo_password_hash="$(php -r 'echo password_hash($argv[1], PASSWORD_ARGON2ID);' "${PIXELCODA_DEMO_EDITOR_PASSWORD}")"
+    mysql \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --user="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        "${TYPO3_DB_DBNAME}" \
+        -e "UPDATE be_users SET password='${demo_password_hash}', admin=0, disable=0 WHERE username='${PIXELCODA_DEMO_EDITOR_USERNAME}' AND deleted=0" || true
 fi
 
 php /usr/local/bin/pixelcoda-configure-site

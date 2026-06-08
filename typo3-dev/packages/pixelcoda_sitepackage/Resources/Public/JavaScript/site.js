@@ -32,6 +32,7 @@ document.documentElement.classList.add('js');
                 <p>Melde dich als Redakteur an, um pixelcoda Search, Frontend Editing und GSAP-Animationen direkt in der Testumgebung auszuprobieren.</p>
                 <dl>
                     <div><dt>Benutzer</dt><dd>pixelcoda-editor</dd></div>
+                    <div><dt>Passwort</dt><dd>PixelcodaDemo2026!</dd></div>
                     <div><dt>Rolle</dt><dd>Redakteur, kein Admin</dd></div>
                 </dl>
             </div>
