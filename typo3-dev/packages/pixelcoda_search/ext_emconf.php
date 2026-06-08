@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Pixelcoda Search',
     'description' => 'Premium TYPO3 Search extension with autocomplete, suggestions, pagination, faceted filters, Meilisearch integration, headless JSON API, React-ready widgets, accessibility-first markup and optional AI/RAG answers for TYPO3 12, 13 and 14.',
