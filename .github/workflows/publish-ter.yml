@@ -102,7 +102,7 @@ jobs:
         if: env.TYPO3_API_TOKEN != '' && steps.ter-version.outcome == 'failure'
         run: |
           ~/.composer/vendor/bin/tailor ter:publish "${{ steps.version.outputs.value }}" "$EXTENSION_KEY" \
-            --artefact="$EXTENSION_PATH/tailor-version-artefact/${EXTENSION_KEY}_${{ steps.version.outputs.value }}.zip" \
+            --artefact="tailor-version-artefact/${EXTENSION_KEY}_${{ steps.version.outputs.value }}.zip" \
             --comment="Stable Pixelcoda Search release ${{ steps.version.outputs.value }}"
 
       - name: Update TER resource links
