@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Pixelcoda Search',
-    'description' => 'Accessible TYPO3 site search with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.',
+    'description' => 'Premium TYPO3 Search extension with autocomplete, suggestions, pagination, faceted filters, Meilisearch integration, headless JSON API, React-ready widgets, accessibility-first markup and optional AI/RAG answers for TYPO3 12, 13 and 14.',
     'category' => 'plugin',
-    'version' => '2.2.10',
+    'version' => '2.2.11',
     'state' => 'stable',
     'author' => 'Casian Blanaru',
     'author_email' => 'casianus@me.com',

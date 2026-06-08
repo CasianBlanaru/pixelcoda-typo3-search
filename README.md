@@ -1,10 +1,14 @@
 # Pixelcoda Search for TYPO3
 
-Accessible, API-first search for TYPO3 with classic and headless rendering,
-filters, suggestions, hybrid retrieval and optional AI-assisted answers.
+AI-powered Search & Answers platform for TYPO3, Headless CMS and React apps
+with Meilisearch, pgvector, autocomplete, faceted search, pagination,
+analytics, Docker and optional RAG answers.
+
+![Pixelcoda Search AI-powered Search and Answers platform for TYPO3](Documentation/Images/pixelcoda-search-platform.png)
 
 **TYPO3 support:** 12.4 LTS, 13.4 LTS and 14.x  
 **Composer package:** `pixelcoda/typo3-search`  
+**Platform package:** `pixelcoda/search-platform`  
 **Extension key:** `pixelcoda_search`
 
 ## Screenshots
@@ -23,6 +27,8 @@ filters, suggestions, hybrid retrieval and optional AI-assisted answers.
 
 ## 🚀 Features
 
+- **TYPO3 Search** for classic Fluid websites and modern headless projects
+- **Search result pages** with pagination, facets, filters and suggestions
 - **Headless API-First Architecture** with REST endpoints
 - **Hybrid Search**: Keyword search (Meilisearch) + Vector search (pgvector)
 - **AI-powered Answers** with RAG (Retrieval-Augmented Generation)

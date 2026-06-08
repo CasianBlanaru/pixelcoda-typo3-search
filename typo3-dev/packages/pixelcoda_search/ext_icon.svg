@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+    <title id="title">Pixelcoda Search</title>
+    <desc id="desc">Pixelcoda Search TYPO3 extension icon</desc>
+    <defs>
+        <linearGradient id="bg" x1="6" x2="58" y1="8" y2="58" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#15103a"/>
+            <stop offset="1" stop-color="#5b3df5"/>
+        </linearGradient>
+        <linearGradient id="accent" x1="18" x2="46" y1="17" y2="48" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ff9b21"/>
+            <stop offset="1" stop-color="#6ee7b7"/>
+        </linearGradient>
+    </defs>
+    <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+    <circle cx="29" cy="28" r="13" fill="none" stroke="#ffffff" stroke-width="5"/>
+    <path d="m39 39 9 9" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="6"/>
+    <circle cx="29" cy="28" r="6" fill="url(#accent)"/>
+    <path d="M12 16c7-7 15-8 25-5-8 3-14 8-18 16-4-3-6-7-7-11Z" fill="#ff8a00"/>
+</svg>

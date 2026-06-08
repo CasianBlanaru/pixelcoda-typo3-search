@@ -1,8 +1,10 @@
 # Pixelcoda Search for TYPO3
 
-Accessible TYPO3 site search for TYPO3 12.4 LTS, 13.4 LTS and 14.x. The
-extension supports classic Fluid rendering and headless projects while keeping
-the same configuration and API contract.
+Premium TYPO3 Search extension for TYPO3 12.4 LTS, 13.4 LTS and 14.x with
+autocomplete, suggestions, pagination, faceted filters, classic Fluid rendering,
+headless JSON output, Meilisearch integration and optional AI/RAG answers.
+
+![Pixelcoda Search AI-powered Search and Answers platform for TYPO3](../../../Documentation/Images/pixelcoda-search-platform.png)
 
 ## Screenshots
 

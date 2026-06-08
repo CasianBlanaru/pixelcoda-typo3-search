@@ -1,8 +1,27 @@
 {
     "name": "pixelcoda/search-platform",
-    "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
+    "description": "AI-powered Search & Answers platform for TYPO3, Headless CMS and React apps with Meilisearch, pgvector, autocomplete, faceted search, pagination, analytics, Docker and optional RAG answers.",
     "type": "project",
     "license": "MIT",
+    "keywords": [
+        "typo3",
+        "typo3-search",
+        "typo3-ai-search",
+        "typo3-rag",
+        "typo3-vector-search",
+        "typo3-meilisearch",
+        "typo3-semantic-search",
+        "headless-search",
+        "ai-search",
+        "rag",
+        "meilisearch",
+        "pgvector",
+        "react-search",
+        "autocomplete",
+        "faceted-search",
+        "pagination"
+    ],
+    "homepage": "https://pixelcoda.de",
     "authors": [
         {
             "name": "Pixelcoda",

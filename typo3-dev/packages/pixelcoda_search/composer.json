@@ -1,12 +1,17 @@
 {
     "name": "pixelcoda/typo3-search",
-    "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.",
+    "description": "Premium TYPO3 Search extension with autocomplete, suggestions, pagination, faceted filters, Meilisearch integration, headless JSON API, React-ready widgets, accessibility-first markup and optional AI/RAG answers for TYPO3 12, 13 and 14.",
     "type": "typo3-cms-extension",
     "license": "MIT",
     "keywords": [
         "typo3",
         "typo3-extension",
         "search",
+        "typo3-search",
+        "typo3-ai-search",
+        "typo3-rag",
+        "typo3-vector-search",
+        "semantic-search",
         "site-search",
         "headless-search",
         "autocomplete",
