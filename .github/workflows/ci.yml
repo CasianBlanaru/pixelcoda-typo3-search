@@ -112,7 +112,7 @@ jobs:
 
       - name: Audit resolved dependencies
         working-directory: typo3-dev/packages/pixelcoda_search
-        run: composer audit --abandoned=report
+        run: composer audit --abandoned=report --ignore-unreachable
 
       - name: Run PHP quality checks and tests
         if: matrix.typo3 == '^13.4' && matrix.php == '8.3'
