@@ -54,6 +54,8 @@ if (empty($groups)) {
     exit(0);
 }
 
+$firstGroupUid = (int)$groups[0]['uid'];
+
 foreach ($groups as $group) {
     echo "Updating group: " . $group['title'] . " (UID: " . $group['uid'] . ")\n";
 
@@ -61,7 +63,7 @@ foreach ($groups as $group) {
 
     // Modules
     $modules = array_filter(explode(',', $group['modules'] ?? ''));
-    $requiredModules = ['web_layout', 'web_list', 'file_FilelistList', 'tools_PixelcodaSearchM1'];
+    $requiredModules = ['web_layout', 'web_list', 'file_FilelistList', 'tools_PixelcodaSearchM1', 'help_AboutAbout'];
     $modules = array_unique(array_merge($modules, $requiredModules));
 
     // Tables
@@ -88,6 +90,13 @@ foreach ($groups as $group) {
         $dbMounts[] = (string)$rootPageId;
     }
 
+    // File Mounts (ensure access to default storage)
+    $fileMounts = array_filter(explode(',', $group['file_mountpoints'] ?? ''));
+    $defaultStorageId = (int)$pdo->query('SELECT uid FROM sys_file_storage LIMIT 1')->fetchColumn();
+    if ($defaultStorageId > 0 && !in_array((string)$defaultStorageId, $fileMounts)) {
+        $fileMounts[] = (string)$defaultStorageId;
+    }
+
     // Non-exclude fields (ensure GSAP fields and other important ones are there)
     $nonExcludeFields = array_filter(explode(',', $group['non_exclude_fields'] ?? ''));
     $requiredFields = [
@@ -105,6 +114,9 @@ foreach ($groups as $group) {
     ];
     $nonExcludeFields = array_unique(array_merge($nonExcludeFields, $requiredFields));
 
+    // File permissions
+    $filePermissions = 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,copyFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile';
+
     $update = $pdo->prepare('
         UPDATE be_groups
         SET modules = :modules,
@@ -112,6 +124,8 @@ foreach ($groups as $group) {
             tables_modify = :tables_modify,
             explicit_allowdeny = :explicit_allowdeny,
             db_mountpoints = :db_mountpoints,
+            file_mountpoints = :file_mountpoints,
+            file_permissions = :file_permissions,
             non_exclude_fields = :non_exclude_fields
         WHERE uid = :uid
     ');
@@ -122,9 +136,16 @@ foreach ($groups as $group) {
         'tables_modify' => implode(',', $tablesModify),
         'explicit_allowdeny' => implode(',', $explicitAllowDeny),
         'db_mountpoints' => implode(',', $dbMounts),
+        'file_mountpoints' => implode(',', $fileMounts),
+        'file_permissions' => $filePermissions,
         'non_exclude_fields' => implode(',', $nonExcludeFields),
         'uid' => $uid
     ]);
 }
 
-echo "Permissions updated successfully.\n";
+// 3. Update Page Permissions (ACLs)
+// Set group to the first editor group and grant all permissions (31)
+$pdo->prepare('UPDATE pages SET perms_groupid = :groupid, perms_group = 31 WHERE deleted = 0')
+    ->execute(['groupid' => $firstGroupUid]);
+
+echo "Permissions and Page ACLs updated successfully.\n";
