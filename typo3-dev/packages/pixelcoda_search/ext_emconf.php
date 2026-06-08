@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Pixelcoda Search',
     'description' => 'Premium TYPO3 Search extension with autocomplete, suggestions, pagination, faceted filters, Meilisearch integration, headless JSON API, React-ready widgets, accessibility-first markup and optional AI/RAG answers for TYPO3 12, 13 and 14.',
@@ -11,6 +9,7 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Casian Blanaru',
     'author_email' => 'casianus@me.com',
     'author_company' => 'Pixelcoda by Casian Blanaru',
+    'icon' => 'EXT:pixelcoda_search/ext_icon.svg',
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.0-14.9.99',
@@ -21,11 +20,6 @@ $EM_CONF[$_EXTKEY] = [
             'headless' => '4.0.0-4.99.99',
             'news' => '11.0.0-11.99.99',
             'form' => '12.4.0-12.4.99',
-        ],
-    ],
-    'autoload' => [
-        'psr-4' => [
-            'PixelCoda\\PixelcodaSearch\\' => 'Classes/',
         ],
     ],
 ];

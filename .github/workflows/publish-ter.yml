@@ -27,6 +27,7 @@ jobs:
       EXTENSION_KEY: pixelcoda_search
       EXTENSION_PATH: typo3-dev/packages/pixelcoda_search
       TYPO3_API_TOKEN: ${{ secrets.TYPO3SAERCH }}
+      TYPO3_EXCLUDE_FROM_PACKAGING: typo3-dev/packages/pixelcoda_search/Build/ExcludeFromPackaging.php
 
     steps:
       - name: Checkout repository
@@ -101,7 +102,7 @@ jobs:
         if: env.TYPO3_API_TOKEN != '' && steps.ter-version.outcome == 'failure'
         run: |
           ~/.composer/vendor/bin/tailor ter:publish "${{ steps.version.outputs.value }}" "$EXTENSION_KEY" \
-            --path="$EXTENSION_PATH" \
+            --artefact="$EXTENSION_PATH/tailor-version-artefact/${EXTENSION_KEY}_${{ steps.version.outputs.value }}.zip" \
             --comment="Stable Pixelcoda Search release ${{ steps.version.outputs.value }}"
 
       - name: Update TER resource links
