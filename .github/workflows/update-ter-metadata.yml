@@ -1,0 +1,34 @@
+name: Update TER metadata
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      EXTENSION_KEY: pixelcoda_search
+      TYPO3_API_TOKEN: ${{ secrets.TYPO3SAERCH }}
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: intl, mbstring, zip, curl
+          tools: composer:v2
+
+      - name: Install TYPO3 Tailor
+        run: composer global require typo3/tailor:^1.7 --prefer-dist --no-progress --no-interaction
+
+      - name: Update TER resource links
+        run: |
+          ~/.composer/vendor/bin/tailor ter:update "$EXTENSION_KEY" \
+            --composer="pixelcoda/typo3-search" \
+            --issues="https://github.com/CasianBlanaru/pixelcoda-typo3-search/issues" \
+            --repository="https://github.com/CasianBlanaru/pixelcoda-typo3-search" \
+            --manual="https://github.com/CasianBlanaru/pixelcoda-typo3-search/blob/main/typo3-dev/packages/pixelcoda_search/Documentation/Index.md" \
+            --tags="typo3,search,meilisearch,ai,rag,headless,autocomplete,semantic-search,faceted-search"
