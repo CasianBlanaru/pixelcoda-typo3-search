@@ -31,7 +31,6 @@ $rootPageId = (int)$pdo->query(
 )->fetchColumn();
 
 if ($rootPageId <= 0) {
-    // Fallback to first page if no siteroot is defined yet
     $rootPageId = (int)$pdo->query(
         'SELECT uid FROM pages WHERE pid = 0 AND deleted = 0 ORDER BY uid ASC LIMIT 1'
     )->fetchColumn();
@@ -39,7 +38,7 @@ if ($rootPageId <= 0) {
 
 if ($rootPageId <= 0) {
     echo "No root page found.\n";
-    exit(0); // Not a fatal error, maybe setup is not yet complete
+    exit(0);
 }
 
 echo "Found root page with UID: $rootPageId\n";
@@ -63,7 +62,7 @@ foreach ($groups as $group) {
 
     // Modules
     $modules = array_filter(explode(',', $group['modules'] ?? ''));
-    $requiredModules = ['web_layout', 'web_list', 'file_FilelistList', 'tools_PixelcodaSearchM1', 'help_AboutAbout'];
+    $requiredModules = ['web_layout', 'web_list', 'file_FilelistList', 'tools_PixelcodaSearchM1', 'help_AboutAbout', 'dashboard_main'];
     $modules = array_unique(array_merge($modules, $requiredModules));
 
     // Tables
@@ -80,7 +79,11 @@ foreach ($groups as $group) {
         'tt_content:CType:pc_demo:ALLOW',
         'tt_content:CType:textmedia:ALLOW',
         'tt_content:CType:text:ALLOW',
-        'tt_content:CType:image:ALLOW'
+        'tt_content:CType:image:ALLOW',
+        'tt_content:CType:bullets:ALLOW',
+        'tt_content:CType:table:ALLOW',
+        'tt_content:CType:uploads:ALLOW',
+        'tt_content:CType:header:ALLOW'
     ];
     $explicitAllowDeny = array_unique(array_merge($explicitAllowDeny, $requiredAllow));
 
@@ -90,18 +93,18 @@ foreach ($groups as $group) {
         $dbMounts[] = (string)$rootPageId;
     }
 
-    // File Mounts (ensure access to default storage)
+    // File Mounts
     $fileMounts = array_filter(explode(',', $group['file_mountpoints'] ?? ''));
     $defaultStorageId = (int)$pdo->query('SELECT uid FROM sys_file_storage LIMIT 1')->fetchColumn();
     if ($defaultStorageId > 0 && !in_array((string)$defaultStorageId, $fileMounts)) {
         $fileMounts[] = (string)$defaultStorageId;
     }
 
-    // Non-exclude fields (ensure GSAP fields and other important ones are there)
+    // Non-exclude fields
     $nonExcludeFields = array_filter(explode(',', $group['non_exclude_fields'] ?? ''));
     $requiredFields = [
-        'pages:title', 'pages:nav_title', 'pages:slug', 'pages:hidden', 'pages:starttime', 'pages:endtime',
-        'tt_content:CType', 'tt_content:header', 'tt_content:bodytext', 'tt_content:image', 'tt_content:pi_flexform',
+        'pages:title', 'pages:nav_title', 'pages:slug', 'pages:hidden', 'pages:starttime', 'pages:endtime', 'pages:subtitle', 'pages:nav_hide', 'pages:description', 'pages:abstract', 'pages:keywords', 'pages:media',
+        'tt_content:CType', 'tt_content:header', 'tt_content:bodytext', 'tt_content:image', 'tt_content:pi_flexform', 'tt_content:subheader', 'tt_content:hidden', 'tt_content:starttime', 'tt_content:endtime', 'tt_content:colPos', 'tt_content:sys_language_uid',
         'tt_content:tx_content_gsap_animation_animation',
         'tt_content:tx_content_gsap_animation_duration',
         'tt_content:tx_content_gsap_animation_delay',
@@ -110,11 +113,11 @@ foreach ($groups as $group) {
         'tt_content:tx_content_gsap_animation_once',
         'tt_content:tx_content_gsap_animation_mirror',
         'tt_content:tx_content_gsap_animation_easing',
-        'sys_file_reference:title', 'sys_file_reference:alternative', 'sys_file_reference:description'
+        'sys_file_reference:title', 'sys_file_reference:alternative', 'sys_file_reference:description', 'sys_file_reference:crop', 'sys_file_reference:autoplay',
+        'tx_news_domain_model_news:title', 'tx_news_domain_model_news:teaser', 'tx_news_domain_model_news:bodytext', 'tx_news_domain_model_news:datetime', 'tx_news_domain_model_news:categories'
     ];
     $nonExcludeFields = array_unique(array_merge($nonExcludeFields, $requiredFields));
 
-    // File permissions
     $filePermissions = 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,copyFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile';
 
     $update = $pdo->prepare('
@@ -144,8 +147,11 @@ foreach ($groups as $group) {
 }
 
 // 3. Update Page Permissions (ACLs)
-// Set group to the first editor group and grant all permissions (31)
+// Grant all permissions to the first editor group (31 = 1+2+4+8+16)
 $pdo->prepare('UPDATE pages SET perms_groupid = :groupid, perms_group = 31 WHERE deleted = 0')
     ->execute(['groupid' => $firstGroupUid]);
+
+// Grant read permissions to others (optional but good for consistency)
+$pdo->query('UPDATE pages SET perms_everybody = 1 WHERE deleted = 0');
 
 echo "Permissions and Page ACLs updated successfully.\n";
