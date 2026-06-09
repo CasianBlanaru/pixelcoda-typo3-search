@@ -1,0 +1,16 @@
+- main [ref=e2]:
+  - img "TYPO3" [ref=e3]:
+    - img [ref=e4]
+  - article:
+    - text: GSAP ScrollTrigger
+    - generic:
+      - heading "Pixelcoda Content GSAP Animation" [level=2]
+    - generic:
+      - paragraph: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+    - generic:
+      - img "Pixelcoda GSAP Animation backend preview"
+  - article [ref=e7]:
+    - text: Headless ready
+    - heading "Headless-ready animation settings" [level=2] [ref=e9]
+    - paragraph [ref=e11]: Editors configure the motion once. Fluid templates and headless frontends can consume stable animationSettingsData.
+    - img "Pixelcoda GSAP Animation frontend and backend overview" [ref=e13]

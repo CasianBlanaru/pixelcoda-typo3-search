@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                    <sheetTitle>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.tab.general</sheetTitle>
+                <type>array</type>
+                <el>
+                    <!-- Plugin Mode -->
+                    <settings.mode>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.mode</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.mode.classic</numIndex>
+                                        <numIndex index="1">classic</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.mode.headless</numIndex>
+                                        <numIndex index="1">headless</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>classic</default>
+                            </config>
+                    </settings.mode>
+                    
+                    <!-- Template Variant -->
+                    <settings.template>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template.default</numIndex>
+                                        <numIndex index="1">Default</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template.minimal</numIndex>
+                                        <numIndex index="1">Minimal</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template.advanced</numIndex>
+                                        <numIndex index="1">Advanced</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.template.cards</numIndex>
+                                        <numIndex index="1">Cards</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>Default</default>
+                            </config>
+                    </settings.template>
+                    
+                    <!-- Search Collections -->
+                    <settings.collections>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.collections</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectCheckBox</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.collections.pages</numIndex>
+                                        <numIndex index="1">pages</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.collections.news</numIndex>
+                                        <numIndex index="1">news</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.collections.tt_content</numIndex>
+                                        <numIndex index="1">tt_content</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>pages,news,tt_content</default>
+                            </config>
+                    </settings.collections>
+                    
+                    <!-- Placeholder Text -->
+                    <settings.placeholder>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.placeholder</label>
+                            <config>
+                                <type>input</type>
+                                <size>30</size>
+                                <default>Website durchsuchen...</default>
+                            </config>
+                    </settings.placeholder>
+                    
+                    <!-- Results per Page -->
+                    <settings.resultsPerPage>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.resultsPerPage</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">5</numIndex>
+                                        <numIndex index="1">5</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">10</numIndex>
+                                        <numIndex index="1">10</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">15</numIndex>
+                                        <numIndex index="1">15</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <numIndex index="0">20</numIndex>
+                                        <numIndex index="1">20</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4">
+                                        <numIndex index="0">25</numIndex>
+                                        <numIndex index="1">25</numIndex>
+                                    </numIndex>
+                                    <numIndex index="5">
+                                        <numIndex index="0">50</numIndex>
+                                        <numIndex index="1">50</numIndex>
+                                    </numIndex>
+                                    <numIndex index="6">
+                                        <numIndex index="0">100</numIndex>
+                                        <numIndex index="1">100</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>10</default>
+                            </config>
+                    </settings.resultsPerPage>
+                    
+                    <!-- Show Images -->
+                    <settings.showImages>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showImages</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.showImages>
+                    
+                    <!-- Show Tags -->
+                    <settings.showTags>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showTags</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.showTags>
+                    
+                    <!-- Show Date -->
+                    <settings.showDate>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showDate</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.showDate>
+                    
+                    <!-- Show Categories -->
+                    <settings.showCategories>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showCategories</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.showCategories>
+                </el>
+            </ROOT>
+        </sDEF>
+        
+        <!-- Advanced Settings Tab -->
+        <advanced>
+            <ROOT>
+                    <sheetTitle>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.tab.advanced</sheetTitle>
+                <type>array</type>
+                <el>
+                    <!-- Enable Suggestions -->
+                    <settings.enableSuggestions>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableSuggestions</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.enableSuggestions>
+                    
+                    <!-- Enable Ask Feature -->
+                    <settings.enableAsk>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableAsk</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.enableAsk>
+                    
+                    <!-- Min Query Length -->
+                    <settings.minQueryLength>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.minQueryLength</label>
+                            <config>
+                                <type>input</type>
+                                <size>5</size>
+                                <eval>int</eval>
+                                <default>3</default>
+                            </config>
+                    </settings.minQueryLength>
+                    
+                    <!-- CSS Class -->
+                    <settings.cssClass>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.cssClass</label>
+                            <config>
+                                <type>input</type>
+                                <size>30</size>
+                            </config>
+                    </settings.cssClass>
+                    
+                    <!-- Sort Order -->
+                    <settings.sortOrder>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.relevance</numIndex>
+                                        <numIndex index="1">relevance</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.date_desc</numIndex>
+                                        <numIndex index="1">date_desc</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.date_asc</numIndex>
+                                        <numIndex index="1">date_asc</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.sortOrder.title</numIndex>
+                                        <numIndex index="1">title</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>relevance</default>
+                            </config>
+                    </settings.sortOrder>
+                    
+                    <!-- Highlight Search Terms -->
+                    <settings.highlightTerms>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.highlightTerms</label>
+                            <config>
+                                <type>check</type>
+                                <default>1</default>
+                            </config>
+                    </settings.highlightTerms>
+                    
+                    <!-- Show Breadcrumb -->
+                    <settings.showBreadcrumb>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.showBreadcrumb</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                    </settings.showBreadcrumb>
+                    
+                    <!-- Enable Faceted Search -->
+                    <settings.enableFacets>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableFacets</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                    </settings.enableFacets>
+                    
+                    <!-- Image Size -->
+                    <settings.imageSize>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.small</numIndex>
+                                        <numIndex index="1">small</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.medium</numIndex>
+                                        <numIndex index="1">medium</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.imageSize.large</numIndex>
+                                        <numIndex index="1">large</numIndex>
+                                    </numIndex>
+                                </items>
+                                <default>medium</default>
+                            </config>
+                    </settings.imageSize>
+                    
+                    <!-- Enable Search History -->
+                    <settings.enableHistory>
+                            <label>LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:flexform.settings.enableHistory</label>
+                            <config>
+                                <type>check</type>
+                                <default>0</default>
+                            </config>
+                    </settings.enableHistory>
+                </el>
+            </ROOT>
+        </advanced>
+    </sheets>
+</T3DataStructure>

@@ -1,0 +1,22 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - img "TYPO3" [ref=e3]:
+      - img [ref=e4]
+    - article [ref=e7]:
+      - text: GSAP ScrollTrigger
+      - heading "Pixelcoda Content GSAP Animation" [level=2] [ref=e9]
+      - paragraph [ref=e11]: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+    - article [ref=e13]:
+      - text: Headless ready
+      - heading "Headless-ready animation settings" [level=2] [ref=e15]
+      - paragraph [ref=e17]: Editors configure the motion once. Fluid templates and headless frontends can consume stable animationSettingsData.
+  - toolbar "Frontend Editing" [ref=e19]:
+    - generic [ref=e20]:
+      - button "Edit" [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: Edit
+      - button "Save" [disabled] [ref=e23]:
+        - generic [ref=e24]: Save
+      - button "AI" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: AI
+      - button "Neues Element hinzufuegen" [ref=e28] [cursor=pointer]
+    - generic [ref=e30]: Editieren aktivieren

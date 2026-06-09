@@ -1,0 +1,94 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - img "TYPO3" [ref=e3]:
+      - img [ref=e4]
+    - article [ref=e12]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e69]:
+        - button "Element per Drag-and-drop verschieben" [ref=e70]:
+          - generic [ref=e71]: ⠿
+        - button "Nach oben verschieben" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: ↑
+        - button "Nach unten verschieben" [ref=e74] [cursor=pointer]:
+          - generic [ref=e75]: ↓
+        - button "Elementaktionen öffnen" [ref=e76] [cursor=pointer]:
+          - generic [ref=e77]: •••
+      - heading "Pixelcoda Content GSAP Animation Yeah" [level=2] [ref=e14]
+      - paragraph [ref=e16]: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+      - button "Bild" [ref=e78] [cursor=pointer]
+    - article [ref=e7]:
+      - text: Headless ready
+      - generic [ref=e60]:
+        - button "Element per Drag-and-drop verschieben" [ref=e61]:
+          - generic [ref=e62]: ⠿
+        - button "Nach oben verschieben" [ref=e63] [cursor=pointer]:
+          - generic [ref=e64]: ↑
+        - button "Nach unten verschieben" [active] [ref=e65] [cursor=pointer]:
+          - generic [ref=e66]: ↓
+        - button "Elementaktionen öffnen" [ref=e67] [cursor=pointer]:
+          - generic [ref=e68]: •••
+      - heading "Neues Element" [level=2] [ref=e9]
+      - paragraph [ref=e11]: Hier können Sie Ihren Text eingeben...
+    - article [ref=e18]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e79]:
+        - button "Element per Drag-and-drop verschieben" [ref=e80]:
+          - generic [ref=e81]: ⠿
+        - button "Nach oben verschieben" [ref=e82] [cursor=pointer]:
+          - generic [ref=e83]: ↑
+        - button "Nach unten verschieben" [ref=e84] [cursor=pointer]:
+          - generic [ref=e85]: ↓
+        - button "Elementaktionen öffnen" [ref=e86] [cursor=pointer]:
+          - generic [ref=e87]: •••
+      - heading "Headless-ready animation settings" [level=2] [ref=e20]
+      - paragraph [ref=e22]: Editors configure the motion once. Fluid templates and headless frontends can consume stable animationSettingsData.
+      - button "Bild" [ref=e88] [cursor=pointer]
+    - generic [ref=e24]:
+      - text: Headless ready
+      - generic [ref=e89]:
+        - button "Element per Drag-and-drop verschieben" [ref=e90]:
+          - generic [ref=e91]: ⠿
+        - button "Nach oben verschieben" [ref=e92] [cursor=pointer]:
+          - generic [ref=e93]: ↑
+        - button "Nach unten verschieben" [ref=e94] [cursor=pointer]:
+          - generic [ref=e95]: ↓
+        - button "Elementaktionen öffnen" [ref=e96] [cursor=pointer]:
+          - generic [ref=e97]: •••
+      - heading "Pixelcoda Search" [level=2] [ref=e25]
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading "Pixelcoda Search" [level=2] [ref=e29]: Pixelcoda Search
+          - generic [ref=e30]:
+            - generic [ref=e32]:
+              - textbox "Suchbegriff eingeben" [ref=e33]:
+                - /placeholder: Website durchsuchen...
+              - button "Suchen" [ref=e34] [cursor=pointer]: Suchen
+            - generic [ref=e36]:
+              - text: "API Status:"
+              - generic [ref=e37]: Offline
+        - region "Frage zum Inhalt stellen" [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: KI-gestützte Antwort
+            - heading "Frage zum Inhalt stellen" [level=2] [ref=e41]
+            - paragraph [ref=e42]: Erhalte eine zusammengefasste Antwort mit Quellen aus dem Suchindex.
+          - generic [ref=e43]:
+            - generic [ref=e44]: Ihre Frage
+            - generic [ref=e45]:
+              - textbox "Ihre Frage" [ref=e46]:
+                - /placeholder: Was bietet Pixelcoda Search?
+              - button "KI fragen" [ref=e47] [cursor=pointer]
+  - toolbar "Frontend Editing" [ref=e48]:
+    - generic [ref=e49]:
+      - button "Frontend Editing deaktivieren" [pressed] [ref=e98] [cursor=pointer]:
+        - text: Frontend Editing deaktivieren
+        - generic [ref=e51]: Edit
+      - button "Keine ungespeicherten Änderungen" [disabled] [ref=e52]:
+        - text: Keine ungespeicherten Änderungen
+        - generic [ref=e53]: Save
+      - 'button "AI konfigurieren: OPENAI_API_KEY fehlt" [ref=e55] [cursor=pointer]':
+        - text: "AI konfigurieren: OPENAI_API_KEY fehlt"
+        - generic [ref=e56]: AI
+      - button "Neues Element hinzufügen" [ref=e57] [cursor=pointer]
+    - generic [ref=e58]:
+      - generic [ref=e59]: Textfeld auswählen
+      - generic [ref=e99]: Reihenfolge gespeichert

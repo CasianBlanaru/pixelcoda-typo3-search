@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2024-10-02T12:00:00Z" product-name="site_package">
+        <header/>
+        <body>
+            <!-- Header Class Field -->
+            <trans-unit id="tt_content.header_class">
+                <source>Header CSS Class</source>
+                <target>Überschrift CSS-Klasse</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.default">
+                <source>Default</source>
+                <target>Standard</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h1">
+                <source>H1 - Main Heading</source>
+                <target>H1 - Hauptüberschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h2">
+                <source>H2 - Section Heading</source>
+                <target>H2 - Abschnittsüberschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h3">
+                <source>H3 - Subsection Heading</source>
+                <target>H3 - Unterabschnittsüberschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h4">
+                <source>H4 - Minor Heading</source>
+                <target>H4 - Kleinere Überschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h5">
+                <source>H5 - Small Heading</source>
+                <target>H5 - Kleine Überschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h6">
+                <source>H6 - Smallest Heading</source>
+                <target>H6 - Kleinste Überschrift</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-1">
+                <source>Display 1 - Largest Display</source>
+                <target>Display 1 - Größte Anzeige</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-2">
+                <source>Display 2 - Large Display</source>
+                <target>Display 2 - Große Anzeige</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-3">
+                <source>Display 3 - Medium Display</source>
+                <target>Display 3 - Mittlere Anzeige</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-4">
+                <source>Display 4 - Small Display</source>
+                <target>Display 4 - Kleine Anzeige</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.lead">
+                <source>Lead - Emphasized Text</source>
+                <target>Lead - Hervorgehobener Text</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-muted">
+                <source>Muted Text</source>
+                <target>Gedämpfter Text</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-primary">
+                <source>Primary Color</source>
+                <target>Primärfarbe</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-secondary">
+                <source>Secondary Color</source>
+                <target>Sekundärfarbe</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-success">
+                <source>Success Color</source>
+                <target>Erfolgsfarbe</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-info">
+                <source>Info Color</source>
+                <target>Informationsfarbe</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-warning">
+                <source>Warning Color</source>
+                <target>Warnfarbe</target>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-danger">
+                <source>Danger Color</source>
+                <target>Gefahrenfarbe</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

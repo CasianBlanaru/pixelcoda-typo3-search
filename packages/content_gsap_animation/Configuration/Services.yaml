@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Pixelcoda\ContentGsapAnimation\:
+    resource: '../Classes/*'
+
+  Pixelcoda\ContentGsapAnimation\ContentObject\FileContentContentObject:
+    tags:
+      - name: frontend.contentobject
+        identifier: 'FILECONTENT'

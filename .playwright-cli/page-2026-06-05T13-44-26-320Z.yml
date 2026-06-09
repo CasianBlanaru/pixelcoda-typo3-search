@@ -1,0 +1,1293 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - button "Collapse sidebar" [ref=e6] [cursor=pointer]:
+        - img [ref=e10]
+      - link "Pixelcoda TYPO3 Test 14.3.2" [ref=e13] [cursor=pointer]:
+        - /url: ./
+        - img [ref=e15]
+        - generic [ref=e16]:
+          - generic [ref=e17]: Pixelcoda TYPO3 Test
+          - generic [ref=e18]: 14.3.2
+    - list [ref=e21]:
+      - listitem [ref=e22]:
+        - button "Search" [ref=e23] [cursor=pointer]:
+          - generic "Search" [ref=e24]:
+            - img [ref=e27]
+          - generic [ref=e29]: Search
+      - listitem [ref=e30]:
+        - button "Clear cache" [ref=e31] [cursor=pointer]:
+          - generic "Clear cache" [ref=e32]:
+            - img [ref=e35]
+          - generic [ref=e37]: Clear cache
+      - listitem [ref=e38]:
+        - button "System Information 13" [ref=e39] [cursor=pointer]:
+          - generic "System Information" [ref=e40]:
+            - img [ref=e43]
+          - generic [ref=e45]: System Information
+          - generic [ref=e46]: "13"
+      - listitem [ref=e47]:
+        - button "Bookmarks" [ref=e48] [cursor=pointer]:
+          - generic "Bookmarks" [ref=e49]:
+            - img [ref=e52]
+          - generic [ref=e54]: Bookmarks
+      - listitem [ref=e55]:
+        - button "codex-test" [ref=e56] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e61]: codex-test
+  - navigation "Module Menu" [ref=e65]:
+    - menubar "Module Menu" [ref=e66]:
+      - menuitem "Dashboard" [ref=e67] [cursor=pointer]:
+        - img [ref=e71]
+        - generic [ref=e73]: Dashboard
+      - menuitem "Content" [expanded] [ref=e74] [cursor=pointer]:
+        - img [ref=e78]
+        - generic [ref=e80]: Content
+      - menu "Content" [ref=e82]:
+        - menuitem "Layout" [ref=e83] [cursor=pointer]:
+          - img [ref=e87]
+          - generic [ref=e89]: Layout
+        - menuitem "Records" [ref=e90] [cursor=pointer]:
+          - img [ref=e94]
+          - generic [ref=e96]: Records
+        - menuitem "Preview" [ref=e97] [cursor=pointer]:
+          - img [ref=e101]
+          - generic [ref=e103]: Preview
+        - menuitem "Status" [ref=e104] [cursor=pointer]:
+          - img [ref=e108]
+          - generic [ref=e110]: Status
+        - menuitem "Recycler" [ref=e111] [cursor=pointer]:
+          - img [ref=e115]
+          - generic [ref=e117]: Recycler
+        - menuitem "Forms" [ref=e118] [cursor=pointer]:
+          - img [ref=e122]
+          - generic [ref=e124]: Forms
+      - menuitem "Media" [ref=e125] [cursor=pointer]:
+        - img [ref=e129]
+        - generic [ref=e131]: Media
+      - menuitem "Sites" [expanded] [ref=e132] [cursor=pointer]:
+        - img [ref=e136]
+        - generic [ref=e138]: Sites
+      - menu "Sites" [ref=e140]:
+        - menuitem "Setup" [ref=e141] [cursor=pointer]:
+          - img [ref=e145]
+          - generic [ref=e147]: Setup
+        - menuitem "Page TSconfig" [ref=e148] [cursor=pointer]:
+          - img [ref=e152]
+          - generic [ref=e154]: Page TSconfig
+        - menuitem "TypoScript" [ref=e155] [cursor=pointer]:
+          - img [ref=e159]
+          - generic [ref=e161]: TypoScript
+      - menuitem "Administration" [expanded] [ref=e162] [cursor=pointer]:
+        - img [ref=e166]
+        - generic [ref=e168]: Administration
+      - menu "Administration" [ref=e170]:
+        - menuitem "Users" [ref=e171] [cursor=pointer]:
+          - img [ref=e175]
+          - generic [ref=e177]: Users
+        - menuitem "Permissions" [ref=e178] [cursor=pointer]:
+          - img [ref=e182]
+          - generic [ref=e184]: Permissions
+        - menuitem "Integrations" [ref=e185] [cursor=pointer]:
+          - img [ref=e189]
+          - generic [ref=e191]: Integrations
+        - menuitem "Log" [ref=e192] [cursor=pointer]:
+          - img [ref=e196]
+          - generic [ref=e198]: Log
+        - menuitem "pixelcoda Search" [ref=e199] [cursor=pointer]:
+          - img [ref=e203]
+          - generic [ref=e207]: pixelcoda Search
+  - iframe [ref=e214]:
+    - generic [ref=f1e2]:
+      - generic [ref=f1e5]:
+        - img [ref=f1e7]
+        - heading "Whoops, looks like something went wrong. Toggle details Copy plaintext stack trace" [level=1] [ref=f1e9]:
+          - text: Whoops, looks like something went wrong.
+          - generic [ref=f1e10]:
+            - button "Toggle details" [ref=f1e11] [cursor=pointer]
+            - button "Copy plaintext stack trace" [ref=f1e12] [cursor=pointer]
+      - generic [ref=f1e13]:
+        - generic [ref=f1e14]:
+          - generic [ref=f1e15]:
+            - heading "(1/1) Error" [level=3] [ref=f1e16]
+            - paragraph [ref=f1e17]: Call to undefined function PixelCoda\PixelcodaSearch\Controller\Backend\yaml_parse_file()
+          - generic [ref=f1e18]:
+            - generic [ref=f1e20]:
+              - generic [ref=f1e21]:
+                - generic [ref=f1e22]:
+                  - text: in
+                  - strong [ref=f1e23]: /var/www/html/packages/pixelcoda_search/Classes/Controller/Backend/SearchModuleController.php
+                  - text: line 272
+                - button "Copy Copy path" [ref=f1e24] [cursor=pointer]:
+                  - img "Copy" [ref=f1e25]
+                  - text: Copy path
+              - generic [ref=f1e29]:
+                - generic [ref=f1e30]: 268 return [];
+                - generic [ref=f1e31]: "269 }"
+                - generic [ref=f1e32]: "270"
+                - generic [ref=f1e33]: "271 try {"
+                - generic [ref=f1e34]: "272 return yaml_parse_file($configPath) ?: [];"
+                - generic [ref=f1e35]: "273 } catch (Exception) {"
+                - generic [ref=f1e36]: 274 return [];
+                - generic [ref=f1e37]: "275 }"
+                - generic [ref=f1e38]: "276 }"
+            - generic [ref=f1e39]:
+              - generic [ref=f1e40]:
+                - text: at PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController->getSiteConfiguration(
+                - text: )
+              - generic [ref=f1e41]:
+                - generic [ref=f1e42]:
+                  - generic [ref=f1e43]:
+                    - text: in
+                    - strong [ref=f1e44]: /var/www/html/packages/pixelcoda_search/Classes/Controller/Backend/SearchModuleController.php
+                    - text: line 59
+                  - button "Copy Copy path" [ref=f1e45] [cursor=pointer]:
+                    - img "Copy" [ref=f1e46]
+                    - text: Copy path
+                - generic [ref=f1e50]:
+                  - generic [ref=f1e51]: 55 $view = $this->createView($request, 'Index');
+                  - generic [ref=f1e52]: "56"
+                  - generic [ref=f1e53]: 57 // Get current configuration
+                  - generic [ref=f1e54]: 58 $config = $this->getCurrentConfiguration();
+                  - generic [ref=f1e55]: 59 $siteConfig = $this->getSiteConfiguration();
+                  - generic [ref=f1e56]: "60"
+                  - generic [ref=f1e57]: 61 // Get current TYPO3 mode
+                  - generic [ref=f1e58]: 62 $currentMode = $this->getCurrentTYPO3Mode();
+                  - generic [ref=f1e59]: 63 $pluginMode = $config['default_mode'] ?? 'classic';
+            - generic [ref=f1e60]:
+              - generic [ref=f1e61]:
+                - text: at PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController->indexAction(
+                - text: )
+              - generic [ref=f1e62]:
+                - generic [ref=f1e63]:
+                  - generic [ref=f1e64]:
+                    - text: in
+                    - strong [ref=f1e65]: /var/www/html/packages/pixelcoda_search/Classes/Controller/Backend/SearchModuleController.php
+                    - text: line 45
+                  - button "Copy Copy path" [ref=f1e66] [cursor=pointer]:
+                    - img "Copy" [ref=f1e67]
+                    - text: Copy path
+                - generic [ref=f1e71]:
+                  - generic [ref=f1e72]: "41 return match ($action) {"
+                  - generic [ref=f1e73]: 42 'switchMode' => $this->switchModeAction($request),
+                  - generic [ref=f1e74]: 43 'clearCache' => $this->clearCacheAction($request),
+                  - generic [ref=f1e75]: 44 'testConnection' => $this->testConnectionAction($request),
+                  - generic [ref=f1e76]: 45 default => $this->indexAction($request),
+                  - generic [ref=f1e77]: "46 };"
+                  - generic [ref=f1e78]: "47 }"
+                  - generic [ref=f1e79]: "48"
+                  - generic [ref=f1e80]: 49 /**
+            - generic [ref=f1e81]:
+              - generic [ref=f1e82]:
+                - text: at PixelCoda\PixelcodaSearch\Controller\Backend\SearchModuleController->handleRequest(
+                - text: )
+              - generic [ref=f1e83]:
+                - generic [ref=f1e84]:
+                  - generic [ref=f1e85]:
+                    - text: in
+                    - strong [ref=f1e86]: /var/www/html/vendor/typo3/cms-backend/Classes/Http/RouteDispatcher.php
+                    - text: line 84
+                  - button "Copy Copy path" [ref=f1e87] [cursor=pointer]:
+                    - img "Copy" [ref=f1e88]
+                    - text: Copy path
+                - generic [ref=f1e92]:
+                  - generic [ref=f1e93]: 80 $targetIdentifier = $route->getOption('target');
+                  - generic [ref=f1e94]: 81 $target = $this->getCallableFromTarget($targetIdentifier);
+                  - generic [ref=f1e95]: 82 $arguments = [$request];
+                  - generic [ref=f1e96]: "83 try {"
+                  - generic [ref=f1e97]: 84 return $target(...$arguments);
+                  - generic [ref=f1e98]: "85 } catch (MethodNotAllowedException $exception) {"
+                  - generic [ref=f1e99]: 86 return $exception->createResponse();
+                  - generic [ref=f1e100]: "87 }"
+                  - generic [ref=f1e101]: "88 }"
+            - generic [ref=f1e102]:
+              - generic [ref=f1e103]:
+                - text: at TYPO3\CMS\Backend\Http\RouteDispatcher->dispatch(
+                - text: )
+              - generic [ref=f1e104]:
+                - generic [ref=f1e105]:
+                  - generic [ref=f1e106]:
+                    - text: in
+                    - strong [ref=f1e107]: /var/www/html/vendor/typo3/cms-backend/Classes/Http/RequestHandler.php
+                    - text: line 85
+                  - button "Copy Copy path" [ref=f1e108] [cursor=pointer]:
+                    - img "Copy" [ref=f1e109]
+                    - text: Copy path
+                - generic [ref=f1e113]:
+                  - generic [ref=f1e114]: 81 $GLOBALS['TYPO3_REQUEST'] = $request;
+                  - generic [ref=f1e115]: "82"
+                  - generic [ref=f1e116]: "83 try {"
+                  - generic [ref=f1e117]: 84 // Check if the router has the available route and dispatch.
+                  - generic [ref=f1e118]: 85 return $this->dispatcher->dispatch($request);
+                  - generic [ref=f1e119]: "86 } catch (MissingRequestTokenException $e) {"
+                  - generic [ref=f1e120]: "87 if ($isAjaxCall) {"
+                  - generic [ref=f1e121]: "88 return new Response(statusCode: 401);"
+                  - generic [ref=f1e122]: "89 }"
+            - generic [ref=f1e123]:
+              - generic [ref=f1e124]:
+                - text: at TYPO3\CMS\Backend\Http\RequestHandler->handle(
+                - text: )
+              - generic [ref=f1e125]:
+                - generic [ref=f1e126]:
+                  - generic [ref=f1e127]:
+                    - text: in
+                    - strong [ref=f1e128]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/ResponsePropagation.php
+                    - text: line 34
+                  - button "Copy Copy path" [ref=f1e129] [cursor=pointer]:
+                    - img "Copy" [ref=f1e130]
+                    - text: Copy path
+                - generic [ref=f1e134]:
+                  - generic [ref=f1e135]: "30 {"
+                  - generic [ref=f1e136]: "31 public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface"
+                  - generic [ref=f1e137]: "32 {"
+                  - generic [ref=f1e138]: "33 try {"
+                  - generic [ref=f1e139]: 34 $response = $handler->handle($request);
+                  - generic [ref=f1e140]: "35 } catch (PropagateResponseException $e) {"
+                  - generic [ref=f1e141]: 36 $response = $e->getResponse();
+                  - generic [ref=f1e142]: "37 }"
+                  - generic [ref=f1e143]: "38"
+            - generic [ref=f1e144]:
+              - generic [ref=f1e145]:
+                - text: at TYPO3\CMS\Core\Middleware\ResponsePropagation->process(
+                - text: )
+              - generic [ref=f1e146]:
+                - generic [ref=f1e147]:
+                  - generic [ref=f1e148]:
+                    - text: in
+                    - strong [ref=f1e149]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e150] [cursor=pointer]:
+                    - img "Copy" [ref=f1e151]
+                    - text: Copy path
+                - generic [ref=f1e155]:
+                  - generic [ref=f1e156]: "158"
+                  - generic [ref=f1e157]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e158]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e159]: "161 }"
+                  - generic [ref=f1e160]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e161]: "163 }"
+                  - generic [ref=f1e162]: "164 };"
+                  - generic [ref=f1e163]: "165 }"
+                  - generic [ref=f1e164]: "166 }"
+            - generic [ref=f1e165]:
+              - generic [ref=f1e166]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e167]:
+                - generic [ref=f1e168]:
+                  - generic [ref=f1e169]:
+                    - text: in
+                    - strong [ref=f1e170]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/AdditionalResponseHeaders.php
+                    - text: line 37
+                  - button "Copy Copy path" [ref=f1e171] [cursor=pointer]:
+                    - img "Copy" [ref=f1e172]
+                    - text: Copy path
+                - generic [ref=f1e176]:
+                  - generic [ref=f1e177]: 33 * Adds HTTP headers defined in $GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']
+                  - generic [ref=f1e178]: 34 */
+                  - generic [ref=f1e179]: "35 public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface"
+                  - generic [ref=f1e180]: "36 {"
+                  - generic [ref=f1e181]: 37 $response = $handler->handle($request);
+                  - generic [ref=f1e182]: "38"
+                  - generic [ref=f1e183]: 39 // Remove HSTS header, if [BE][lockSSL] is not configured to use SSL
+                  - generic [ref=f1e184]: "40 if ((bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === false) {"
+                  - generic [ref=f1e185]: 41 unset($GLOBALS['TYPO3_CONF_VARS']['BE']['HTTP']['Response']['Headers']['strictTransportSecurity']);
+            - generic [ref=f1e186]:
+              - generic [ref=f1e187]:
+                - text: at TYPO3\CMS\Backend\Middleware\AdditionalResponseHeaders->process(
+                - text: )
+              - generic [ref=f1e188]:
+                - generic [ref=f1e189]:
+                  - generic [ref=f1e190]:
+                    - text: in
+                    - strong [ref=f1e191]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e192] [cursor=pointer]:
+                    - img "Copy" [ref=f1e193]
+                    - text: Copy path
+                - generic [ref=f1e197]:
+                  - generic [ref=f1e198]: "158"
+                  - generic [ref=f1e199]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e200]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e201]: "161 }"
+                  - generic [ref=f1e202]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e203]: "163 }"
+                  - generic [ref=f1e204]: "164 };"
+                  - generic [ref=f1e205]: "165 }"
+                  - generic [ref=f1e206]: "166 }"
+            - generic [ref=f1e207]:
+              - generic [ref=f1e208]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e209]:
+                - generic [ref=f1e210]:
+                  - generic [ref=f1e211]:
+                    - text: in
+                    - strong [ref=f1e212]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/PageContextInitialization.php
+                    - text: line 66
+                  - button "Copy Copy path" [ref=f1e213] [cursor=pointer]:
+                    - img "Copy" [ref=f1e214]
+                    - text: Copy path
+                - generic [ref=f1e218]:
+                  - generic [ref=f1e219]: "62"
+                  - generic [ref=f1e220]: "63 public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface"
+                  - generic [ref=f1e221]: "64 {"
+                  - generic [ref=f1e222]: "65 if (!$this->requiresPageContext($request)) {"
+                  - generic [ref=f1e223]: 66 return $handler->handle($request);
+                  - generic [ref=f1e224]: "67 }"
+                  - generic [ref=f1e225]: "68"
+                  - generic [ref=f1e226]: 69 $backendUser = $request->getAttribute('backend.user', $GLOBALS['BE_USER']);
+                  - generic [ref=f1e227]: "70"
+            - generic [ref=f1e228]:
+              - generic [ref=f1e229]:
+                - text: at TYPO3\CMS\Backend\Middleware\PageContextInitialization->process(
+                - text: )
+              - generic [ref=f1e230]:
+                - generic [ref=f1e231]:
+                  - generic [ref=f1e232]:
+                    - text: in
+                    - strong [ref=f1e233]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e234] [cursor=pointer]:
+                    - img "Copy" [ref=f1e235]
+                    - text: Copy path
+                - generic [ref=f1e239]:
+                  - generic [ref=f1e240]: "158"
+                  - generic [ref=f1e241]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e242]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e243]: "161 }"
+                  - generic [ref=f1e244]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e245]: "163 }"
+                  - generic [ref=f1e246]: "164 };"
+                  - generic [ref=f1e247]: "165 }"
+                  - generic [ref=f1e248]: "166 }"
+            - generic [ref=f1e249]:
+              - generic [ref=f1e250]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e251]:
+                - generic [ref=f1e252]:
+                  - generic [ref=f1e253]:
+                    - text: in
+                    - strong [ref=f1e254]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/SiteResolver.php
+                    - text: line 64
+                  - button "Copy Copy path" [ref=f1e255] [cursor=pointer]:
+                    - img "Copy" [ref=f1e256]
+                    - text: Copy path
+                - generic [ref=f1e260]:
+                  - generic [ref=f1e261]: 60 $rootLine = BackendUtility::BEgetRootLine($pageId);
+                  - generic [ref=f1e262]: "61 }"
+                  - generic [ref=f1e263]: 62 $site = $this->siteMatcher->matchByPageId($pageId, $rootLine);
+                  - generic [ref=f1e264]: 63 $request = $request->withAttribute('site', $site);
+                  - generic [ref=f1e265]: 64 return $handler->handle($request);
+                  - generic [ref=f1e266]: "65 }"
+                  - generic [ref=f1e267]: "66 }"
+            - generic [ref=f1e268]:
+              - generic [ref=f1e269]:
+                - text: at TYPO3\CMS\Backend\Middleware\SiteResolver->process(
+                - text: )
+              - generic [ref=f1e270]:
+                - generic [ref=f1e271]:
+                  - generic [ref=f1e272]:
+                    - text: in
+                    - strong [ref=f1e273]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e274] [cursor=pointer]:
+                    - img "Copy" [ref=f1e275]
+                    - text: Copy path
+                - generic [ref=f1e279]:
+                  - generic [ref=f1e280]: "158"
+                  - generic [ref=f1e281]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e282]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e283]: "161 }"
+                  - generic [ref=f1e284]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e285]: "163 }"
+                  - generic [ref=f1e286]: "164 };"
+                  - generic [ref=f1e287]: "165 }"
+                  - generic [ref=f1e288]: "166 }"
+            - generic [ref=f1e289]:
+              - generic [ref=f1e290]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e291]:
+                - generic [ref=f1e292]:
+                  - generic [ref=f1e293]:
+                    - text: in
+                    - strong [ref=f1e294]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/SudoModeInterceptor.php
+                    - text: line 60
+                  - button "Copy Copy path" [ref=f1e295] [cursor=pointer]:
+                    - img "Copy" [ref=f1e296]
+                    - text: Copy path
+                - generic [ref=f1e300]:
+                  - generic [ref=f1e301]: "56 public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface"
+                  - generic [ref=f1e302]: "57 {"
+                  - generic [ref=f1e303]: 58 $this->currentRequest = $request;
+                  - generic [ref=f1e304]: "59 try {"
+                  - generic [ref=f1e305]: 60 $response = $handler->handle($request);
+                  - generic [ref=f1e306]: "61 } catch (VerificationRequiredException $exception) {"
+                  - generic [ref=f1e307]: 62 $response = $this->handleVerificationRequired($exception, $request);
+                  - generic [ref=f1e308]: "63 } catch (RequestGrantedException $exception) {"
+                  - generic [ref=f1e309]: 64 $response = $this->handleRequestGrantedException($exception, $request);
+            - generic [ref=f1e310]:
+              - generic [ref=f1e311]:
+                - text: at TYPO3\CMS\Backend\Middleware\SudoModeInterceptor->process(
+                - text: )
+              - generic [ref=f1e312]:
+                - generic [ref=f1e313]:
+                  - generic [ref=f1e314]:
+                    - text: in
+                    - strong [ref=f1e315]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e316] [cursor=pointer]:
+                    - img "Copy" [ref=f1e317]
+                    - text: Copy path
+                - generic [ref=f1e321]:
+                  - generic [ref=f1e322]: "158"
+                  - generic [ref=f1e323]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e324]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e325]: "161 }"
+                  - generic [ref=f1e326]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e327]: "163 }"
+                  - generic [ref=f1e328]: "164 };"
+                  - generic [ref=f1e329]: "165 }"
+                  - generic [ref=f1e330]: "166 }"
+            - generic [ref=f1e331]:
+              - generic [ref=f1e332]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e333]:
+                - generic [ref=f1e334]:
+                  - generic [ref=f1e335]:
+                    - text: in
+                    - strong [ref=f1e336]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/JavaScriptLabelImportMapEntryResolver.php
+                    - text: line 53
+                  - button "Copy Copy path" [ref=f1e337] [cursor=pointer]:
+                    - img "Copy" [ref=f1e338]
+                    - text: Copy path
+                - generic [ref=f1e342]:
+                  - generic [ref=f1e343]: 49 self::class,
+                  - generic [ref=f1e344]: 50 'resolveVirtualLabelImport'
+                  - generic [ref=f1e345]: 51 );
+                  - generic [ref=f1e346]: "52"
+                  - generic [ref=f1e347]: 53 return $handler->handle($request);
+                  - generic [ref=f1e348]: "54 }"
+                  - generic [ref=f1e349]: "55"
+                  - generic [ref=f1e350]: "56 public function resolveVirtualLabelImport(ResolveVirtualJavaScriptImportEvent $event): void"
+                  - generic [ref=f1e351]: "57 {"
+            - generic [ref=f1e352]:
+              - generic [ref=f1e353]:
+                - text: at TYPO3\CMS\Backend\Middleware\JavaScriptLabelImportMapEntryResolver->process(
+                - text: )
+              - generic [ref=f1e354]:
+                - generic [ref=f1e355]:
+                  - generic [ref=f1e356]:
+                    - text: in
+                    - strong [ref=f1e357]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e358] [cursor=pointer]:
+                    - img "Copy" [ref=f1e359]
+                    - text: Copy path
+                - generic [ref=f1e363]:
+                  - generic [ref=f1e364]: "158"
+                  - generic [ref=f1e365]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e366]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e367]: "161 }"
+                  - generic [ref=f1e368]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e369]: "163 }"
+                  - generic [ref=f1e370]: "164 };"
+                  - generic [ref=f1e371]: "165 }"
+                  - generic [ref=f1e372]: "166 }"
+            - generic [ref=f1e373]:
+              - generic [ref=f1e374]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e375]:
+                - generic [ref=f1e376]:
+                  - generic [ref=f1e377]:
+                    - text: in
+                    - strong [ref=f1e378]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/ContentSecurityPolicyHeaders.php
+                    - text: line 60
+                  - button "Copy Copy path" [ref=f1e379] [cursor=pointer]:
+                    - img "Copy" [ref=f1e380]
+                    - text: Copy path
+                - generic [ref=f1e384]:
+                  - generic [ref=f1e385]: "56 {"
+                  - generic [ref=f1e386]: 57 $scope = Scope::backend();
+                  - generic [ref=f1e387]: 58 $nonce = $this->requestId->nonce;
+                  - generic [ref=f1e388]: 59 $request = $request->withAttribute('nonce', $nonce);
+                  - generic [ref=f1e389]: 60 $response = $handler->handle($request);
+                  - generic [ref=f1e390]: 61 $disposition = Disposition::enforce;
+                  - generic [ref=f1e391]: 62 $dispositionMap = new Map();
+                  - generic [ref=f1e392]: 63 $dispositionMap[$disposition] = new DispositionConfiguration(
+                  - generic [ref=f1e393]: 64 true,
+            - generic [ref=f1e394]:
+              - generic [ref=f1e395]:
+                - text: at TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyHeaders->process(
+                - text: )
+              - generic [ref=f1e396]:
+                - generic [ref=f1e397]:
+                  - generic [ref=f1e398]:
+                    - text: in
+                    - strong [ref=f1e399]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e400] [cursor=pointer]:
+                    - img "Copy" [ref=f1e401]
+                    - text: Copy path
+                - generic [ref=f1e405]:
+                  - generic [ref=f1e406]: "158"
+                  - generic [ref=f1e407]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e408]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e409]: "161 }"
+                  - generic [ref=f1e410]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e411]: "163 }"
+                  - generic [ref=f1e412]: "164 };"
+                  - generic [ref=f1e413]: "165 }"
+                  - generic [ref=f1e414]: "166 }"
+            - generic [ref=f1e415]:
+              - generic [ref=f1e416]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e417]:
+                - generic [ref=f1e418]:
+                  - generic [ref=f1e419]:
+                    - text: in
+                    - strong [ref=f1e420]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/BackendModuleValidator.php
+                    - text: line 207
+                  - button "Copy Copy path" [ref=f1e421] [cursor=pointer]:
+                    - img "Copy" [ref=f1e422]
+                    - text: Copy path
+                - generic [ref=f1e426]:
+                  - generic [ref=f1e427]: 203 $request = $request
+                  - generic [ref=f1e428]: 204 ->withAttribute('module', $module)
+                  - generic [ref=f1e429]: 205 ->withAttribute('moduleData', $moduleData);
+                  - generic [ref=f1e430]: "206"
+                  - generic [ref=f1e431]: 207 $response = $handler->handle($request);
+                  - generic [ref=f1e432]: "208"
+                  - generic [ref=f1e433]: "209 if ($ensureToPersistUserSettings) {"
+                  - generic [ref=f1e434]: 210 $backendUser->writeUC();
+                  - generic [ref=f1e435]: "211 }"
+            - generic [ref=f1e436]:
+              - generic [ref=f1e437]:
+                - text: at TYPO3\CMS\Backend\Middleware\BackendModuleValidator->process(
+                - text: )
+              - generic [ref=f1e438]:
+                - generic [ref=f1e439]:
+                  - generic [ref=f1e440]:
+                    - text: in
+                    - strong [ref=f1e441]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e442] [cursor=pointer]:
+                    - img "Copy" [ref=f1e443]
+                    - text: Copy path
+                - generic [ref=f1e447]:
+                  - generic [ref=f1e448]: "158"
+                  - generic [ref=f1e449]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e450]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e451]: "161 }"
+                  - generic [ref=f1e452]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e453]: "163 }"
+                  - generic [ref=f1e454]: "164 };"
+                  - generic [ref=f1e455]: "165 }"
+                  - generic [ref=f1e456]: "166 }"
+            - generic [ref=f1e457]:
+              - generic [ref=f1e458]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e459]:
+                - generic [ref=f1e460]:
+                  - generic [ref=f1e461]:
+                    - text: in
+                    - strong [ref=f1e462]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/BackendUserAuthenticator.php
+                    - text: line 171
+                  - button "Copy Copy path" [ref=f1e463] [cursor=pointer]:
+                    - img "Copy" [ref=f1e464]
+                    - text: Copy path
+                - generic [ref=f1e468]:
+                  - generic [ref=f1e469]: "167 }"
+                  - generic [ref=f1e470]: 168 $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
+                  - generic [ref=f1e471]: 169 // Re-setting the user and take the workspace from the user object now
+                  - generic [ref=f1e472]: 170 $this->setBackendUserAspect($GLOBALS['BE_USER']);
+                  - generic [ref=f1e473]: 171 $response = $handler->handle($request);
+                  - generic [ref=f1e474]: 172 $this->sessionGarbageCollection();
+                  - generic [ref=f1e475]: 173 return $this->enrichResponseWithHeadersAndCookieInformation($request, $response, $GLOBALS['BE_USER']);
+                  - generic [ref=f1e476]: "174 }"
+                  - generic [ref=f1e477]: "175"
+            - generic [ref=f1e478]:
+              - generic [ref=f1e479]:
+                - text: at TYPO3\CMS\Backend\Middleware\BackendUserAuthenticator->process(
+                - text: )
+              - generic [ref=f1e480]:
+                - generic [ref=f1e481]:
+                  - generic [ref=f1e482]:
+                    - text: in
+                    - strong [ref=f1e483]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e484] [cursor=pointer]:
+                    - img "Copy" [ref=f1e485]
+                    - text: Copy path
+                - generic [ref=f1e489]:
+                  - generic [ref=f1e490]: "158"
+                  - generic [ref=f1e491]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e492]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e493]: "161 }"
+                  - generic [ref=f1e494]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e495]: "163 }"
+                  - generic [ref=f1e496]: "164 };"
+                  - generic [ref=f1e497]: "165 }"
+                  - generic [ref=f1e498]: "166 }"
+            - generic [ref=f1e499]:
+              - generic [ref=f1e500]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e501]:
+                - generic [ref=f1e502]:
+                  - generic [ref=f1e503]:
+                    - text: in
+                    - strong [ref=f1e504]: /var/www/html/vendor/typo3/cms-reactions/Classes/Http/Middleware/ReactionResolver.php
+                    - text: line 56
+                  - button "Copy Copy path" [ref=f1e505] [cursor=pointer]:
+                    - img "Copy" [ref=f1e506]
+                    - text: Copy path
+                - generic [ref=f1e510]:
+                  - generic [ref=f1e511]: "52 {"
+                  - generic [ref=f1e512]: 53 // 1. We only listen to the "reaction" endpoint
+                  - generic [ref=f1e513]: 54 $routeResult = $request->getAttribute('routing');
+                  - generic [ref=f1e514]: "55 if (!($routeResult instanceof RouteResult) || $routeResult->getRouteName() !== 'reaction') {"
+                  - generic [ref=f1e515]: 56 return $handler->handle($request);
+                  - generic [ref=f1e516]: "57 }"
+                  - generic [ref=f1e517]: "58"
+                  - generic [ref=f1e518]: 59 // 2. Security check
+                  - generic [ref=f1e519]: 60 $reactionIdentifier = (string)($routeResult->getArguments()['reactionIdentifier'] ?? '');
+            - generic [ref=f1e520]:
+              - generic [ref=f1e521]:
+                - text: at TYPO3\CMS\Reactions\Http\Middleware\ReactionResolver->process(
+                - text: )
+              - generic [ref=f1e522]:
+                - generic [ref=f1e523]:
+                  - generic [ref=f1e524]:
+                    - text: in
+                    - strong [ref=f1e525]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e526] [cursor=pointer]:
+                    - img "Copy" [ref=f1e527]
+                    - text: Copy path
+                - generic [ref=f1e531]:
+                  - generic [ref=f1e532]: "158"
+                  - generic [ref=f1e533]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e534]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e535]: "161 }"
+                  - generic [ref=f1e536]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e537]: "163 }"
+                  - generic [ref=f1e538]: "164 };"
+                  - generic [ref=f1e539]: "165 }"
+                  - generic [ref=f1e540]: "166 }"
+            - generic [ref=f1e541]:
+              - generic [ref=f1e542]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e543]:
+                - generic [ref=f1e544]:
+                  - generic [ref=f1e545]:
+                    - text: in
+                    - strong [ref=f1e546]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/RequestTokenMiddleware.php
+                    - text: line 71
+                  - button "Copy Copy path" [ref=f1e547] [cursor=pointer]:
+                    - img "Copy" [ref=f1e548]
+                    - text: Copy path
+                - generic [ref=f1e552]:
+                  - generic [ref=f1e553]: 67 $this->securityAspect->setReceivedRequestToken(false);
+                  - generic [ref=f1e554]: 68 $this->logger->debug('Could not resolve request token', ['exception' => $exception]);
+                  - generic [ref=f1e555]: "69 }"
+                  - generic [ref=f1e556]: "70"
+                  - generic [ref=f1e557]: 71 $response = $handler->handle($request);
+                  - generic [ref=f1e558]: 72 return $this->enrichResponseWithCookie($request, $response);
+                  - generic [ref=f1e559]: "73 }"
+                  - generic [ref=f1e560]: "74"
+                  - generic [ref=f1e561]: "75 protected function resolveNoncePool(ServerRequestInterface $request): NoncePool"
+            - generic [ref=f1e562]:
+              - generic [ref=f1e563]:
+                - text: at TYPO3\CMS\Core\Middleware\RequestTokenMiddleware->process(
+                - text: )
+              - generic [ref=f1e564]:
+                - generic [ref=f1e565]:
+                  - generic [ref=f1e566]:
+                    - text: in
+                    - strong [ref=f1e567]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e568] [cursor=pointer]:
+                    - img "Copy" [ref=f1e569]
+                    - text: Copy path
+                - generic [ref=f1e573]:
+                  - generic [ref=f1e574]: "158"
+                  - generic [ref=f1e575]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e576]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e577]: "161 }"
+                  - generic [ref=f1e578]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e579]: "163 }"
+                  - generic [ref=f1e580]: "164 };"
+                  - generic [ref=f1e581]: "165 }"
+                  - generic [ref=f1e582]: "166 }"
+            - generic [ref=f1e583]:
+              - generic [ref=f1e584]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e585]:
+                - generic [ref=f1e586]:
+                  - generic [ref=f1e587]:
+                    - text: in
+                    - strong [ref=f1e588]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/BackendRouteInitialization.php
+                    - text: line 77
+                  - button "Copy Copy path" [ref=f1e589] [cursor=pointer]:
+                    - img "Copy" [ref=f1e590]
+                    - text: Copy path
+                - generic [ref=f1e594]:
+                  - generic [ref=f1e595]: 73 $uri = $this->uriBuilder->buildUriFromRoute('login');
+                  - generic [ref=f1e596]: 74 return new RedirectResponse($uri);
+                  - generic [ref=f1e597]: "75 }"
+                  - generic [ref=f1e598]: "76"
+                  - generic [ref=f1e599]: 77 return $handler->handle($request);
+                  - generic [ref=f1e600]: "78 }"
+                  - generic [ref=f1e601]: "79 }"
+            - generic [ref=f1e602]:
+              - generic [ref=f1e603]:
+                - text: at TYPO3\CMS\Backend\Middleware\BackendRouteInitialization->process(
+                - text: )
+              - generic [ref=f1e604]:
+                - generic [ref=f1e605]:
+                  - generic [ref=f1e606]:
+                    - text: in
+                    - strong [ref=f1e607]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e608] [cursor=pointer]:
+                    - img "Copy" [ref=f1e609]
+                    - text: Copy path
+                - generic [ref=f1e613]:
+                  - generic [ref=f1e614]: "158"
+                  - generic [ref=f1e615]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e616]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e617]: "161 }"
+                  - generic [ref=f1e618]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e619]: "163 }"
+                  - generic [ref=f1e620]: "164 };"
+                  - generic [ref=f1e621]: "165 }"
+                  - generic [ref=f1e622]: "166 }"
+            - generic [ref=f1e623]:
+              - generic [ref=f1e624]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e625]:
+                - generic [ref=f1e626]:
+                  - generic [ref=f1e627]:
+                    - text: in
+                    - strong [ref=f1e628]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/ContentSecurityPolicyReporter.php
+                    - text: line 45
+                  - button "Copy Copy path" [ref=f1e629] [cursor=pointer]:
+                    - img "Copy" [ref=f1e630]
+                    - text: Copy path
+                - generic [ref=f1e634]:
+                  - generic [ref=f1e635]: 41 // @todo create report, then call persist, then dispatch new event
+                  - generic [ref=f1e636]: 42 $this->persistCspReport($scope, $request);
+                  - generic [ref=f1e637]: 43 return (new Response())->withStatus(201);
+                  - generic [ref=f1e638]: "44 }"
+                  - generic [ref=f1e639]: 45 return $handler->handle($request);
+                  - generic [ref=f1e640]: "46 }"
+                  - generic [ref=f1e641]: "47 }"
+            - generic [ref=f1e642]:
+              - generic [ref=f1e643]:
+                - text: at TYPO3\CMS\Backend\Middleware\ContentSecurityPolicyReporter->process(
+                - text: )
+              - generic [ref=f1e644]:
+                - generic [ref=f1e645]:
+                  - generic [ref=f1e646]:
+                    - text: in
+                    - strong [ref=f1e647]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e648] [cursor=pointer]:
+                    - img "Copy" [ref=f1e649]
+                    - text: Copy path
+                - generic [ref=f1e653]:
+                  - generic [ref=f1e654]: "158"
+                  - generic [ref=f1e655]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e656]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e657]: "161 }"
+                  - generic [ref=f1e658]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e659]: "163 }"
+                  - generic [ref=f1e660]: "164 };"
+                  - generic [ref=f1e661]: "165 }"
+                  - generic [ref=f1e662]: "166 }"
+            - generic [ref=f1e663]:
+              - generic [ref=f1e664]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e665]:
+                - generic [ref=f1e666]:
+                  - generic [ref=f1e667]:
+                    - text: in
+                    - strong [ref=f1e668]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/ForcedHttpsBackendRedirector.php
+                    - text: line 55
+                  - button "Copy Copy path" [ref=f1e669] [cursor=pointer]:
+                    - img "Copy" [ref=f1e670]
+                    - text: Copy path
+                - generic [ref=f1e674]:
+                  - generic [ref=f1e675]: 51 ->withPort($sslPortSuffix);
+                  - generic [ref=f1e676]: 52 return new RedirectResponse($backendUrl);
+                  - generic [ref=f1e677]: "53 }"
+                  - generic [ref=f1e678]: "54"
+                  - generic [ref=f1e679]: 55 return $handler->handle($request);
+                  - generic [ref=f1e680]: "56 }"
+                  - generic [ref=f1e681]: "57 }"
+            - generic [ref=f1e682]:
+              - generic [ref=f1e683]:
+                - text: at TYPO3\CMS\Backend\Middleware\ForcedHttpsBackendRedirector->process(
+                - text: )
+              - generic [ref=f1e684]:
+                - generic [ref=f1e685]:
+                  - generic [ref=f1e686]:
+                    - text: in
+                    - strong [ref=f1e687]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e688] [cursor=pointer]:
+                    - img "Copy" [ref=f1e689]
+                    - text: Copy path
+                - generic [ref=f1e693]:
+                  - generic [ref=f1e694]: "158"
+                  - generic [ref=f1e695]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e696]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e697]: "161 }"
+                  - generic [ref=f1e698]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e699]: "163 }"
+                  - generic [ref=f1e700]: "164 };"
+                  - generic [ref=f1e701]: "165 }"
+                  - generic [ref=f1e702]: "166 }"
+            - generic [ref=f1e703]:
+              - generic [ref=f1e704]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e705]:
+                - generic [ref=f1e706]:
+                  - generic [ref=f1e707]:
+                    - text: in
+                    - strong [ref=f1e708]: /var/www/html/vendor/typo3/cms-backend/Classes/Middleware/LockedBackendGuard.php
+                    - text: line 76
+                  - button "Copy Copy path" [ref=f1e709] [cursor=pointer]:
+                    - img "Copy" [ref=f1e710]
+                    - text: Copy path
+                - generic [ref=f1e714]:
+                  - generic [ref=f1e715]: 72 $request->getAttribute('normalizedParams')->getRemoteAddress(),
+                  - generic [ref=f1e716]: 73 trim((string)$GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])
+                  - generic [ref=f1e717]: 74 );
+                  - generic [ref=f1e718]: "75"
+                  - generic [ref=f1e719]: 76 return $handler->handle($request);
+                  - generic [ref=f1e720]: "77 }"
+                  - generic [ref=f1e721]: "78"
+                  - generic [ref=f1e722]: 79 /**
+                  - generic [ref=f1e723]: 80 * Check adminOnly configuration variable and redirects to an URL in file
+            - generic [ref=f1e724]:
+              - generic [ref=f1e725]:
+                - text: at TYPO3\CMS\Backend\Middleware\LockedBackendGuard->process(
+                - text: )
+              - generic [ref=f1e726]:
+                - generic [ref=f1e727]:
+                  - generic [ref=f1e728]:
+                    - text: in
+                    - strong [ref=f1e729]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e730] [cursor=pointer]:
+                    - img "Copy" [ref=f1e731]
+                    - text: Copy path
+                - generic [ref=f1e735]:
+                  - generic [ref=f1e736]: "158"
+                  - generic [ref=f1e737]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e738]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e739]: "161 }"
+                  - generic [ref=f1e740]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e741]: "163 }"
+                  - generic [ref=f1e742]: "164 };"
+                  - generic [ref=f1e743]: "165 }"
+                  - generic [ref=f1e744]: "166 }"
+            - generic [ref=f1e745]:
+              - generic [ref=f1e746]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e747]:
+                - generic [ref=f1e748]:
+                  - generic [ref=f1e749]:
+                    - text: in
+                    - strong [ref=f1e750]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/NormalizedParamsAttribute.php
+                    - text: line 44
+                  - button "Copy Copy path" [ref=f1e751] [cursor=pointer]:
+                    - img "Copy" [ref=f1e752]
+                    - text: Copy path
+                - generic [ref=f1e756]:
+                  - generic [ref=f1e757]: 40 $normalizedParams = $request->getAttribute('normalizedParams', null);
+                  - generic [ref=f1e758]: "41 if ($normalizedParams === null) {"
+                  - generic [ref=f1e759]: 42 $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+                  - generic [ref=f1e760]: "43 }"
+                  - generic [ref=f1e761]: 44 return $handler->handle($request);
+                  - generic [ref=f1e762]: "45 }"
+                  - generic [ref=f1e763]: "46 }"
+            - generic [ref=f1e764]:
+              - generic [ref=f1e765]:
+                - text: at TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute->process(
+                - text: )
+              - generic [ref=f1e766]:
+                - generic [ref=f1e767]:
+                  - generic [ref=f1e768]:
+                    - text: in
+                    - strong [ref=f1e769]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e770] [cursor=pointer]:
+                    - img "Copy" [ref=f1e771]
+                    - text: Copy path
+                - generic [ref=f1e775]:
+                  - generic [ref=f1e776]: "158"
+                  - generic [ref=f1e777]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e778]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e779]: "161 }"
+                  - generic [ref=f1e780]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e781]: "163 }"
+                  - generic [ref=f1e782]: "164 };"
+                  - generic [ref=f1e783]: "165 }"
+                  - generic [ref=f1e784]: "166 }"
+            - generic [ref=f1e785]:
+              - generic [ref=f1e786]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e787]:
+                - generic [ref=f1e788]:
+                  - generic [ref=f1e789]:
+                    - text: in
+                    - strong [ref=f1e790]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 70
+                  - button "Copy Copy path" [ref=f1e791] [cursor=pointer]:
+                    - img "Copy" [ref=f1e792]
+                    - text: Copy path
+                - generic [ref=f1e796]:
+                  - generic [ref=f1e797]: 66 * Invoke the middleware stack
+                  - generic [ref=f1e798]: 67 */
+                  - generic [ref=f1e799]: "68 public function handle(ServerRequestInterface $request): ResponseInterface"
+                  - generic [ref=f1e800]: "69 {"
+                  - generic [ref=f1e801]: 70 return $this->tip->handle($request);
+                  - generic [ref=f1e802]: "71 }"
+                  - generic [ref=f1e803]: "72"
+                  - generic [ref=f1e804]: 73 /**
+                  - generic [ref=f1e805]: 74 * Seed the middleware stack with the inner request handler
+            - generic [ref=f1e806]:
+              - generic [ref=f1e807]:
+                - text: at TYPO3\CMS\Core\Http\MiddlewareDispatcher->handle(
+                - text: )
+              - generic [ref=f1e808]:
+                - generic [ref=f1e809]:
+                  - generic [ref=f1e810]:
+                    - text: in
+                    - strong [ref=f1e811]: /var/www/html/vendor/typo3/cms-core/Classes/Http/AbstractApplication.php
+                    - text: line 83
+                  - button "Copy Copy path" [ref=f1e812] [cursor=pointer]:
+                    - img "Copy" [ref=f1e813]
+                    - text: Copy path
+                - generic [ref=f1e817]:
+                  - generic [ref=f1e818]: "79"
+                  - generic [ref=f1e819]: "80 public function handle(ServerRequestInterface $request): ResponseInterface"
+                  - generic [ref=f1e820]: "81 {"
+                  - generic [ref=f1e821]: "82 try {"
+                  - generic [ref=f1e822]: 83 $response = $this->requestHandler->handle($request);
+                  - generic [ref=f1e823]: "84 } catch (ImmediateResponseException $exception) {"
+                  - generic [ref=f1e824]: 85 $response = $exception->getResponse();
+                  - generic [ref=f1e825]: "86 }"
+                  - generic [ref=f1e826]: 87 return $response;
+            - generic [ref=f1e827]:
+              - generic [ref=f1e828]:
+                - text: at TYPO3\CMS\Core\Http\AbstractApplication->handle(
+                - text: )
+              - generic [ref=f1e829]:
+                - generic [ref=f1e830]:
+                  - generic [ref=f1e831]:
+                    - text: in
+                    - strong [ref=f1e832]: /var/www/html/vendor/typo3/cms-backend/Classes/Http/Application.php
+                    - text: line 56
+                  - button "Copy Copy path" [ref=f1e833] [cursor=pointer]:
+                    - img "Copy" [ref=f1e834]
+                    - text: Copy path
+                - generic [ref=f1e838]:
+                  - generic [ref=f1e839]: "52 {"
+                  - generic [ref=f1e840]: 53 $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+                  - generic [ref=f1e841]: 54 // Set up the initial context
+                  - generic [ref=f1e842]: 55 $this->initializeContext();
+                  - generic [ref=f1e843]: 56 return parent::handle($request);
+                  - generic [ref=f1e844]: "57 }"
+                  - generic [ref=f1e845]: "58"
+                  - generic [ref=f1e846]: 59 /**
+                  - generic [ref=f1e847]: 60 * Initializes the Context used for accessing data and finding out the current state of the application
+            - generic [ref=f1e848]:
+              - generic [ref=f1e849]:
+                - text: at TYPO3\CMS\Backend\Http\Application->handle(
+                - text: )
+              - generic [ref=f1e850]:
+                - generic [ref=f1e851]:
+                  - generic [ref=f1e852]:
+                    - text: in
+                    - strong [ref=f1e853]: /var/www/html/vendor/typo3/cms-core/Classes/Http/RequestHandler.php
+                    - text: line 38
+                  - button "Copy Copy path" [ref=f1e854] [cursor=pointer]:
+                    - img "Copy" [ref=f1e855]
+                    - text: Copy path
+                - generic [ref=f1e859]:
+                  - generic [ref=f1e860]: "34"
+                  - generic [ref=f1e861]: "35 public function handle(ServerRequestInterface $request): ResponseInterface"
+                  - generic [ref=f1e862]: "36 {"
+                  - generic [ref=f1e863]: "37 if ($this->container->has(BackendApplication::class) && $this->backendEntryPointResolver->isBackendRoute($request)) {"
+                  - generic [ref=f1e864]: 38 return $this->container->get(BackendApplication::class)->handle($request);
+                  - generic [ref=f1e865]: "39 }"
+                  - generic [ref=f1e866]: "40"
+                  - generic [ref=f1e867]: "41 if ($this->container->has(FrontendApplication::class)) {"
+                  - generic [ref=f1e868]: 42 return $this->container->get(FrontendApplication::class)->handle($request);
+            - generic [ref=f1e869]:
+              - generic [ref=f1e870]:
+                - text: at TYPO3\CMS\Core\Http\RequestHandler->handle(
+                - text: )
+              - generic [ref=f1e871]:
+                - generic [ref=f1e872]:
+                  - generic [ref=f1e873]:
+                    - text: in
+                    - strong [ref=f1e874]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/ResponsePropagation.php
+                    - text: line 34
+                  - button "Copy Copy path" [ref=f1e875] [cursor=pointer]:
+                    - img "Copy" [ref=f1e876]
+                    - text: Copy path
+                - generic [ref=f1e880]:
+                  - generic [ref=f1e881]: "30 {"
+                  - generic [ref=f1e882]: "31 public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface"
+                  - generic [ref=f1e883]: "32 {"
+                  - generic [ref=f1e884]: "33 try {"
+                  - generic [ref=f1e885]: 34 $response = $handler->handle($request);
+                  - generic [ref=f1e886]: "35 } catch (PropagateResponseException $e) {"
+                  - generic [ref=f1e887]: 36 $response = $e->getResponse();
+                  - generic [ref=f1e888]: "37 }"
+                  - generic [ref=f1e889]: "38"
+            - generic [ref=f1e890]:
+              - generic [ref=f1e891]:
+                - text: at TYPO3\CMS\Core\Middleware\ResponsePropagation->process(
+                - text: )
+              - generic [ref=f1e892]:
+                - generic [ref=f1e893]:
+                  - generic [ref=f1e894]:
+                    - text: in
+                    - strong [ref=f1e895]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e896] [cursor=pointer]:
+                    - img "Copy" [ref=f1e897]
+                    - text: Copy path
+                - generic [ref=f1e901]:
+                  - generic [ref=f1e902]: "158"
+                  - generic [ref=f1e903]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e904]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e905]: "161 }"
+                  - generic [ref=f1e906]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e907]: "163 }"
+                  - generic [ref=f1e908]: "164 };"
+                  - generic [ref=f1e909]: "165 }"
+                  - generic [ref=f1e910]: "166 }"
+            - generic [ref=f1e911]:
+              - generic [ref=f1e912]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e913]:
+                - generic [ref=f1e914]:
+                  - generic [ref=f1e915]:
+                    - text: in
+                    - strong [ref=f1e916]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/NormalizedParamsAttribute.php
+                    - text: line 44
+                  - button "Copy Copy path" [ref=f1e917] [cursor=pointer]:
+                    - img "Copy" [ref=f1e918]
+                    - text: Copy path
+                - generic [ref=f1e922]:
+                  - generic [ref=f1e923]: 40 $normalizedParams = $request->getAttribute('normalizedParams', null);
+                  - generic [ref=f1e924]: "41 if ($normalizedParams === null) {"
+                  - generic [ref=f1e925]: 42 $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
+                  - generic [ref=f1e926]: "43 }"
+                  - generic [ref=f1e927]: 44 return $handler->handle($request);
+                  - generic [ref=f1e928]: "45 }"
+                  - generic [ref=f1e929]: "46 }"
+            - generic [ref=f1e930]:
+              - generic [ref=f1e931]:
+                - text: at TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute->process(
+                - text: )
+              - generic [ref=f1e932]:
+                - generic [ref=f1e933]:
+                  - generic [ref=f1e934]:
+                    - text: in
+                    - strong [ref=f1e935]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e936] [cursor=pointer]:
+                    - img "Copy" [ref=f1e937]
+                    - text: Copy path
+                - generic [ref=f1e941]:
+                  - generic [ref=f1e942]: "158"
+                  - generic [ref=f1e943]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e944]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e945]: "161 }"
+                  - generic [ref=f1e946]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e947]: "163 }"
+                  - generic [ref=f1e948]: "164 };"
+                  - generic [ref=f1e949]: "165 }"
+                  - generic [ref=f1e950]: "166 }"
+            - generic [ref=f1e951]:
+              - generic [ref=f1e952]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e953]:
+                - generic [ref=f1e954]:
+                  - generic [ref=f1e955]:
+                    - text: in
+                    - strong [ref=f1e956]: /var/www/html/vendor/typo3/cms-core/Classes/Middleware/VerifyHostHeader.php
+                    - text: line 55
+                  - button "Copy Copy path" [ref=f1e957] [cursor=pointer]:
+                    - img "Copy" [ref=f1e958]
+                    - text: Copy path
+                - generic [ref=f1e962]:
+                  - generic [ref=f1e963]: 51 1396795884
+                  - generic [ref=f1e964]: 52 );
+                  - generic [ref=f1e965]: "53 }"
+                  - generic [ref=f1e966]: "54"
+                  - generic [ref=f1e967]: 55 return $handler->handle($request);
+                  - generic [ref=f1e968]: "56 }"
+                  - generic [ref=f1e969]: "57"
+                  - generic [ref=f1e970]: 58 /**
+                  - generic [ref=f1e971]: 59 * Checks if the provided host header value matches the trusted hosts pattern.
+            - generic [ref=f1e972]:
+              - generic [ref=f1e973]:
+                - text: at TYPO3\CMS\Core\Middleware\VerifyHostHeader->process(
+                - text: )
+              - generic [ref=f1e974]:
+                - generic [ref=f1e975]:
+                  - generic [ref=f1e976]:
+                    - text: in
+                    - strong [ref=f1e977]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 162
+                  - button "Copy Copy path" [ref=f1e978] [cursor=pointer]:
+                    - img "Copy" [ref=f1e979]
+                    - text: Copy path
+                - generic [ref=f1e983]:
+                  - generic [ref=f1e984]: "158"
+                  - generic [ref=f1e985]: "159 if (!$middleware instanceof MiddlewareInterface) {"
+                  - generic [ref=f1e986]: 160 throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);
+                  - generic [ref=f1e987]: "161 }"
+                  - generic [ref=f1e988]: 162 return $middleware->process($request, $this->next);
+                  - generic [ref=f1e989]: "163 }"
+                  - generic [ref=f1e990]: "164 };"
+                  - generic [ref=f1e991]: "165 }"
+                  - generic [ref=f1e992]: "166 }"
+            - generic [ref=f1e993]:
+              - generic [ref=f1e994]:
+                - text: at Psr\Http\Server\RequestHandlerInterface@anonymous/var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php:128$1cd->handle(
+                - text: )
+              - generic [ref=f1e995]:
+                - generic [ref=f1e996]:
+                  - generic [ref=f1e997]:
+                    - text: in
+                    - strong [ref=f1e998]: /var/www/html/vendor/typo3/cms-core/Classes/Http/MiddlewareDispatcher.php
+                    - text: line 70
+                  - button "Copy Copy path" [ref=f1e999] [cursor=pointer]:
+                    - img "Copy" [ref=f1e1000]
+                    - text: Copy path
+                - generic [ref=f1e1004]:
+                  - generic [ref=f1e1005]: 66 * Invoke the middleware stack
+                  - generic [ref=f1e1006]: 67 */
+                  - generic [ref=f1e1007]: "68 public function handle(ServerRequestInterface $request): ResponseInterface"
+                  - generic [ref=f1e1008]: "69 {"
+                  - generic [ref=f1e1009]: 70 return $this->tip->handle($request);
+                  - generic [ref=f1e1010]: "71 }"
+                  - generic [ref=f1e1011]: "72"
+                  - generic [ref=f1e1012]: 73 /**
+                  - generic [ref=f1e1013]: 74 * Seed the middleware stack with the inner request handler
+            - generic [ref=f1e1014]:
+              - generic [ref=f1e1015]:
+                - text: at TYPO3\CMS\Core\Http\MiddlewareDispatcher->handle(
+                - text: )
+              - generic [ref=f1e1016]:
+                - generic [ref=f1e1017]:
+                  - generic [ref=f1e1018]:
+                    - text: in
+                    - strong [ref=f1e1019]: /var/www/html/vendor/typo3/cms-core/Classes/Http/AbstractApplication.php
+                    - text: line 83
+                  - button "Copy Copy path" [ref=f1e1020] [cursor=pointer]:
+                    - img "Copy" [ref=f1e1021]
+                    - text: Copy path
+                - generic [ref=f1e1025]:
+                  - generic [ref=f1e1026]: "79"
+                  - generic [ref=f1e1027]: "80 public function handle(ServerRequestInterface $request): ResponseInterface"
+                  - generic [ref=f1e1028]: "81 {"
+                  - generic [ref=f1e1029]: "82 try {"
+                  - generic [ref=f1e1030]: 83 $response = $this->requestHandler->handle($request);
+                  - generic [ref=f1e1031]: "84 } catch (ImmediateResponseException $exception) {"
+                  - generic [ref=f1e1032]: 85 $response = $exception->getResponse();
+                  - generic [ref=f1e1033]: "86 }"
+                  - generic [ref=f1e1034]: 87 return $response;
+            - generic [ref=f1e1035]:
+              - generic [ref=f1e1036]:
+                - text: at TYPO3\CMS\Core\Http\AbstractApplication->handle(
+                - text: )
+              - generic [ref=f1e1037]:
+                - generic [ref=f1e1038]:
+                  - generic [ref=f1e1039]:
+                    - text: in
+                    - strong [ref=f1e1040]: /var/www/html/vendor/typo3/cms-core/Classes/Http/AbstractApplication.php
+                    - text: line 106
+                  - button "Copy Copy path" [ref=f1e1041] [cursor=pointer]:
+                    - img "Copy" [ref=f1e1042]
+                    - text: Copy path
+                - generic [ref=f1e1046]:
+                  - generic [ref=f1e1047]: 102 $this->sendResponse(new Response(null, 400));
+                  - generic [ref=f1e1048]: 103 return;
+                  - generic [ref=f1e1049]: "104 }"
+                  - generic [ref=f1e1050]: "105"
+                  - generic [ref=f1e1051]: 106 $response = $this->handle($request);
+                  - generic [ref=f1e1052]: 107 $this->sendResponse($response);
+                  - generic [ref=f1e1053]: "108 }"
+                  - generic [ref=f1e1054]: "109 }"
+            - generic [ref=f1e1055]:
+              - generic [ref=f1e1056]:
+                - text: at TYPO3\CMS\Core\Http\AbstractApplication->run(
+                - text: )
+              - generic [ref=f1e1057]:
+                - generic [ref=f1e1058]:
+                  - generic [ref=f1e1059]:
+                    - text: in
+                    - strong [ref=f1e1060]: /var/www/html/public/index.php
+                    - text: line 28
+                  - button "Copy Copy path" [ref=f1e1061] [cursor=pointer]:
+                    - img "Copy" [ref=f1e1062]
+                    - text: Copy path
+                - generic [ref=f1e1066]:
+                  - generic [ref=f1e1067]: "24"
+                  - generic [ref=f1e1068]: 25 $container = \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader, $isInstallToolDirectAccess);
+                  - generic [ref=f1e1069]: "26"
+                  - generic [ref=f1e1070]: "27 if ($container->has(\\TYPO3\\CMS\\Core\\Http\\Application::class)) {"
+                  - generic [ref=f1e1071]: 28 $container->get(\TYPO3\CMS\Core\Http\Application::class)->run();
+                  - generic [ref=f1e1072]: 29 return;
+                  - generic [ref=f1e1073]: "30 }"
+                  - generic [ref=f1e1074]: "31"
+                  - generic [ref=f1e1075]: 32 $container->get(\TYPO3\CMS\Install\Http\Application::class)->run();
+            - generic [ref=f1e1076]:
+              - generic [ref=f1e1077]:
+                - text: at
+                - text: "{closure:/var/www/html/public/index.php:16}("
+                - text: )
+              - generic [ref=f1e1078]:
+                - generic [ref=f1e1079]:
+                  - generic [ref=f1e1080]:
+                    - text: in
+                    - strong [ref=f1e1081]: /var/www/html/public/index.php
+                    - text: line 33
+                  - button "Copy Copy path" [ref=f1e1082] [cursor=pointer]:
+                    - img "Copy" [ref=f1e1083]
+                    - text: Copy path
+                - generic [ref=f1e1087]:
+                  - generic [ref=f1e1088]: 29 return;
+                  - generic [ref=f1e1089]: "30 }"
+                  - generic [ref=f1e1090]: "31"
+                  - generic [ref=f1e1091]: 32 $container->get(\TYPO3\CMS\Install\Http\Application::class)->run();
+                  - generic [ref=f1e1092]: "33 });"
+        - generic [ref=f1e1094]:
+          - generic [ref=f1e1095]: Stack Trace
+          - paragraph [ref=f1e1097]: You can copy the contents of this stack trace into the clipboard, to paste this error and get help. Be sure to scan it for any sensitive data, which you might want to redact. You can toggle the stack trace between a full and a minimal view (without file contents).

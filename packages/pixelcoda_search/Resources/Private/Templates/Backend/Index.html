@@ -1,0 +1,215 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:asset.css identifier="pixelcoda-search-backend" href="EXT:pixelcoda_search/Resources/Public/Css/backend.css" />
+
+    <div class="pc-search-admin">
+        <header class="pc-search-hero">
+            <div class="pc-search-hero__mark" aria-hidden="true">
+                <core:icon identifier="pixelcoda-search" size="large" />
+            </div>
+            <div class="pc-search-hero__copy">
+                <span class="pc-search-eyebrow">Pixelcoda TYPO3 Search</span>
+                <h1>Search Administration</h1>
+                <p>Rendering, API-Verbindung und Index-Konfiguration zentral verwalten.</p>
+            </div>
+            <div class="pc-search-hero__state">
+                <span class="pc-search-state-dot"></span>
+                TYPO3 12–14 kompatibel
+            </div>
+        </header>
+
+        <div class="pc-search-layout">
+            <main class="pc-search-main">
+                <section class="pc-search-panel" aria-labelledby="rendering-title">
+                    <div class="pc-search-panel__header">
+                        <div>
+                            <span class="pc-search-section-icon" aria-hidden="true">
+                                <core:icon identifier="actions-refresh" size="small" />
+                            </span>
+                            <div>
+                                <h2 id="rendering-title">Rendering-Modus</h2>
+                                <p>Ausgabeformat für klassische und Headless-Projekte festlegen.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pc-search-mode-summary">
+                        <div class="pc-search-mode-status">
+                            <span class="pc-search-label">TYPO3-Modus</span>
+                            <f:if condition="{currentMode} == 'headless'">
+                                <f:then><strong>Headless <small>JSON API</small></strong></f:then>
+                                <f:else><strong>Standard <small>HTML Templates</small></strong></f:else>
+                            </f:if>
+                        </div>
+                        <div class="pc-search-mode-status">
+                            <span class="pc-search-label">Plugin-Modus</span>
+                            <f:if condition="{pluginMode} == 'headless'">
+                                <f:then><strong>Headless <small>API-first</small></strong></f:then>
+                                <f:else><strong>Classic <small>Fluid Rendering</small></strong></f:else>
+                            </f:if>
+                        </div>
+                    </div>
+
+                    <f:if condition="{modesSynchronized}">
+                        <f:then>
+                            <div class="pc-search-notice pc-search-notice--success">
+                                <core:icon identifier="actions-check" size="small" />
+                                <span><strong>Modi synchronisiert.</strong> TYPO3 und Plugin verwenden dieselbe Ausgabe.</span>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <div class="pc-search-notice pc-search-notice--warning">
+                                <core:icon identifier="actions-close" size="small" />
+                                <span><strong>Modi nicht synchronisiert.</strong> Bitte eine gemeinsame Ausgabe auswählen.</span>
+                            </div>
+                        </f:else>
+                    </f:if>
+
+                    <form method="post" action="{moduleUrls.switchMode}" class="pc-search-mode-form">
+                        <div class="form-group">
+                            <label class="form-label" for="mode">Neuen Modus auswählen</label>
+                            <select name="mode" id="mode" class="form-select">
+                                <f:for each="{availableModes}" as="label" key="value">
+                                    <option value="{value}" {f:if(condition: '{currentMode} == {value}', then: 'selected')}>{label}</option>
+                                </f:for>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <core:icon identifier="actions-refresh" size="small" />
+                            Modus anwenden
+                        </button>
+                    </form>
+
+                    <div class="pc-search-mode-grid">
+                        <article class="pc-search-mode-card pc-search-mode-card--headless">
+                            <span class="pc-search-mode-card__icon" aria-hidden="true">
+                                <core:icon identifier="pixelcoda-search" size="large" />
+                            </span>
+                            <h3>Headless</h3>
+                            <p>Strukturierte Daten für moderne Frontends und Apps.</p>
+                            <ul>
+                                <li>JSON API Output</li>
+                                <li>React, Vue und Next.js</li>
+                                <li>Unabhängiges Frontend</li>
+                            </ul>
+                        </article>
+                        <article class="pc-search-mode-card">
+                            <span class="pc-search-mode-card__icon" aria-hidden="true">
+                                <core:icon identifier="content-text" size="large" />
+                            </span>
+                            <h3>Standard</h3>
+                            <p>Direktes TYPO3-Rendering mit Fluid Templates.</p>
+                            <ul>
+                                <li>HTML Template Output</li>
+                                <li>SEO-freundliche Ausgabe</li>
+                                <li>Einfache Integration</li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="pc-search-panel" aria-labelledby="configuration-title">
+                    <div class="pc-search-panel__header">
+                        <div>
+                            <span class="pc-search-section-icon" aria-hidden="true">
+                                <core:icon identifier="actions-cog" size="small" />
+                            </span>
+                            <div>
+                                <h2 id="configuration-title">Aktuelle Konfiguration</h2>
+                                <p>Aktive Verbindung und Indexierungsfunktionen im Überblick.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <dl class="pc-search-config-grid">
+                        <div><dt>API URL</dt><dd><code>{config.api_url}</code></dd></div>
+                        <div><dt>Project ID</dt><dd><code>{config.project_id}</code></dd></div>
+                        <div><dt>Default Mode</dt><dd><code>{config.default_mode}</code></dd></div>
+                        <div><dt>Batch Size</dt><dd><code>{config.batch_size}</code></dd></div>
+                        <div><dt>Auto Index</dt><dd><f:if condition="{config.enable_auto_index}"><f:then>Aktiv</f:then><f:else>Inaktiv</f:else></f:if></dd></div>
+                        <div><dt>Vector Search</dt><dd><f:if condition="{config.enable_vector_search}"><f:then>Aktiv</f:then><f:else>Inaktiv</f:else></f:if></dd></div>
+                        <div><dt>Metrics</dt><dd><f:if condition="{config.enable_metrics}"><f:then>Aktiv</f:then><f:else>Inaktiv</f:else></f:if></dd></div>
+                        <div><dt>Debug Mode</dt><dd><f:if condition="{config.debug_mode}"><f:then>Aktiv</f:then><f:else>Inaktiv</f:else></f:if></dd></div>
+                    </dl>
+                </section>
+
+                <section class="pc-search-panel" aria-labelledby="help-title">
+                    <div class="pc-search-panel__header">
+                        <div>
+                            <span class="pc-search-section-icon" aria-hidden="true">
+                                <core:icon identifier="actions-info" size="small" />
+                            </span>
+                            <div>
+                                <h2 id="help-title">Schnellstart</h2>
+                                <p>Die wichtigsten Schritte für eine produktive Suche.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <ol class="pc-search-steps">
+                        <li><span>1</span><div><strong>Modus auswählen</strong><p>Classic oder Headless passend zum Projekt aktivieren.</p></div></li>
+                        <li><span>2</span><div><strong>API testen</strong><p>Verbindung prüfen und veröffentlichte Inhalte indexieren.</p></div></li>
+                        <li><span>3</span><div><strong>Search-Element einfügen</strong><p>Das barrierefreie Inhaltselement auf der gewünschten Seite platzieren.</p></div></li>
+                    </ol>
+                    <div class="pc-search-code-row">
+                        <code>typo3 pixelcoda:search:reindex</code>
+                        <code>typo3 pixelcoda:search:index --dry-run</code>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="pc-search-sidebar" aria-label="Systemstatus und Schnellaktionen">
+                <section class="pc-search-panel pc-search-panel--sticky">
+                    <div class="pc-search-panel__header">
+                        <div>
+                            <span class="pc-search-section-icon" aria-hidden="true">
+                                <core:icon identifier="actions-info" size="small" />
+                            </span>
+                            <div>
+                                <h2>Systemstatus</h2>
+                                <p>Bereitschaft der Suchdienste.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="pc-search-status-list">
+                        <li>
+                            <span>API-Konfiguration</span>
+                            <f:if condition="{systemStatus.api_configured}">
+                                <f:then><strong class="pc-search-badge pc-search-badge--success">Bereit</strong></f:then>
+                                <f:else><strong class="pc-search-badge pc-search-badge--danger">Fehlt</strong></f:else>
+                            </f:if>
+                        </li>
+                        <li>
+                            <span>Headless Extension</span>
+                            <f:if condition="{systemStatus.headless_extension}">
+                                <f:then><strong class="pc-search-badge pc-search-badge--success">Aktiv</strong></f:then>
+                                <f:else><strong class="pc-search-badge pc-search-badge--neutral">Optional</strong></f:else>
+                            </f:if>
+                        </li>
+                        <li>
+                            <span>Cache</span>
+                            <f:if condition="{systemStatus.cache_status} == 'empty'">
+                                <f:then><strong class="pc-search-badge pc-search-badge--success">Leer</strong></f:then>
+                                <f:else><strong class="pc-search-badge pc-search-badge--info">Gefüllt</strong></f:else>
+                            </f:if>
+                        </li>
+                    </ul>
+                    <div class="pc-search-actions">
+                        <a href="{moduleUrls.testConnection}" class="btn btn-primary">
+                            <core:icon identifier="actions-link" size="small" />
+                            API-Verbindung testen
+                        </a>
+                        <a href="{moduleUrls.clearCache}" class="btn btn-default">
+                            <core:icon identifier="actions-system-cache-clear-impact-low" size="small" />
+                            Cache leeren
+                        </a>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+</f:section>
+</html>

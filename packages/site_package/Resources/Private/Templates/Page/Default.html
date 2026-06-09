@@ -1,0 +1,102 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:bk2k="http://typo3.org/ns/BK2K/BootstrapPackage/ViewHelpers">
+
+<f:layout name="Default" />
+
+<f:section name="Header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">
+                <img src="/typo3conf/ext/site_package/Resources/Public/Images/logo.png" alt="pixelcoda TYPO3 Site" height="40">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <f:cObject typoscriptObjectPath="lib.navigation.main" />
+
+                <!-- Search Box -->
+                <div class="ms-auto">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+</f:section>
+
+<f:section name="Main">
+    <div class="container my-4">
+        <f:cObject typoscriptObjectPath="lib.pixelcodaDemoLoginNotice" />
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <f:cObject typoscriptObjectPath="lib.navigation.breadcrumb" />
+        </nav>
+
+        <!-- Page Title -->
+        <div class="row">
+            <div class="col-12">
+                <h1 class="page-title mb-4">{data.title}</h1>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="main-content">
+                    <f:format.raw>{content}</f:format.raw>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <aside class="sidebar">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Quick Links</h5>
+                        </div>
+                        <div class="card-body">
+                            <f:cObject typoscriptObjectPath="lib.navigation.sidebar" />
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Search</h5>
+                        </div>
+                        <div class="card-body">
+                            <form role="search">
+                                <div class="input-group">
+                                    <input type="search" class="form-control" placeholder="Search content..." aria-label="Search">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+<f:section name="Footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">&copy; {f:format.date(date: 'now', format: 'Y')} pixelcoda TYPO3 Site. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-0">Powered by <a href="https://typo3.org" target="_blank">TYPO3</a> &
+                    <a href="https://www.bootstrap-package.com" target="_blank">Bootstrap Package</a></p>
+            </div>
+        </div>
+    </div>
+</f:section>
+
+</html>

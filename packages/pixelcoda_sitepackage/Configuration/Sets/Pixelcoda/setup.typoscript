@@ -1,0 +1,61 @@
+page = PAGE
+page {
+  typeNum = 0
+
+  10 = PAGEVIEW
+  10 {
+    paths.10 = EXT:pixelcoda_sitepackage/Resources/Private/PageView/
+  }
+
+  includeCSS {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/Css/site.css
+  }
+
+  includeJSFooter {
+    pixelcoda = EXT:pixelcoda_sitepackage/Resources/Public/JavaScript/site.js
+  }
+}
+
+lib.pixelcodaDemoLoginNotice = TEXT
+lib.pixelcodaDemoLoginNotice.value (
+  <section class="pixelcoda-demo-login-notice" aria-labelledby="pixelcoda-demo-login-title">
+    <div>
+      <span class="pixelcoda-demo-login-notice__eyebrow">Demo-Modus</span>
+      <h2 id="pixelcoda-demo-login-title">Plugins im TYPO3 Backend testen</h2>
+      <p>Melde dich als Redakteur an, um pixelcoda Search, Frontend Editing und GSAP-Animationen direkt in der Testumgebung auszuprobieren.</p>
+      <dl>
+        <div><dt>Benutzer</dt><dd>pixelcoda-editor</dd></div>
+        <div><dt>Rolle</dt><dd>Redakteur, kein Admin</dd></div>
+      </dl>
+    </div>
+    <a href="/typo3/login?redirect=tools_PixelcodaSearchM1" class="pixelcoda-demo-login-notice__button">Zum TYPO3 Login</a>
+  </section>
+)
+
+[backend.user.isLoggedIn]
+lib.pixelcodaDemoLoginNotice >
+[END]
+
+lib.dynamicContent = COA
+lib.dynamicContent {
+  10 = LOAD_REGISTER
+  10 {
+    colPos.cObject = TEXT
+    colPos.cObject {
+      field = colPos
+      ifEmpty = 0
+    }
+  }
+
+  20 = CONTENT
+  20 {
+    table = tt_content
+    select {
+      orderBy = sorting
+      where = {#colPos}={register:colPos}
+      where.insertData = 1
+    }
+  }
+
+  90 = RESTORE_REGISTER
+}

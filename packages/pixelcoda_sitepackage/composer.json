@@ -1,0 +1,22 @@
+{
+    "name": "pixelcoda/sitepackage",
+    "description": "TYPO3 sitepackage for Pixelcoda.",
+    "type": "typo3-cms-extension",
+    "version": "1.0.0",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "typo3/cms-core": "^14.3",
+        "typo3/cms-fluid-styled-content": "^14.3",
+        "typo3/cms-frontend": "^14.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pixelcoda\\Sitepackage\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "pixelcoda_sitepackage"
+        }
+    }
+}

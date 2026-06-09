@@ -1,0 +1,244 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - button "Collapse sidebar" [ref=e6] [cursor=pointer]:
+        - img [ref=e10]
+      - link "Pixelcoda TYPO3 Test 14.3.2" [ref=e13] [cursor=pointer]:
+        - /url: ./
+        - img [ref=e15]
+        - generic [ref=e16]:
+          - generic [ref=e17]: Pixelcoda TYPO3 Test
+          - generic [ref=e18]: 14.3.2
+    - list [ref=e21]:
+      - listitem [ref=e22]:
+        - button "Search" [ref=e23] [cursor=pointer]:
+          - generic "Search" [ref=e24]:
+            - img [ref=e27]
+          - generic [ref=e29]: Search
+      - listitem [ref=e30]:
+        - button "Clear cache" [ref=e31] [cursor=pointer]:
+          - generic "Clear cache" [ref=e32]:
+            - img [ref=e35]
+          - generic [ref=e37]: Clear cache
+      - listitem [ref=e38]:
+        - button "System Information 20" [ref=e39] [cursor=pointer]:
+          - generic "System Information" [ref=e40]:
+            - img [ref=e43]
+          - generic [ref=e45]: System Information
+          - generic [ref=e46]: "20"
+      - listitem [ref=e47]:
+        - button "Bookmarks" [ref=e48] [cursor=pointer]:
+          - generic "Bookmarks" [ref=e49]:
+            - img [ref=e52]
+          - generic [ref=e54]: Bookmarks
+      - listitem [ref=e55]:
+        - button "codex-test" [ref=e56] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e61]: codex-test
+  - navigation "Module Menu" [ref=e65]:
+    - menubar "Module Menu" [ref=e66]:
+      - menuitem "Dashboard" [ref=e67] [cursor=pointer]:
+        - img [ref=e71]
+        - generic [ref=e73]: Dashboard
+      - menuitem "Content" [expanded] [ref=e74] [cursor=pointer]:
+        - img [ref=e78]
+        - generic [ref=e80]: Content
+      - menu "Content" [ref=e82]:
+        - menuitem "Layout" [ref=e83] [cursor=pointer]:
+          - img [ref=e87]
+          - generic [ref=e89]: Layout
+        - menuitem "Records" [ref=e90] [cursor=pointer]:
+          - img [ref=e94]
+          - generic [ref=e96]: Records
+        - menuitem "Preview" [ref=e97] [cursor=pointer]:
+          - img [ref=e101]
+          - generic [ref=e103]: Preview
+        - menuitem "Status" [ref=e104] [cursor=pointer]:
+          - img [ref=e108]
+          - generic [ref=e110]: Status
+        - menuitem "Recycler" [ref=e111] [cursor=pointer]:
+          - img [ref=e115]
+          - generic [ref=e117]: Recycler
+        - menuitem "Forms" [ref=e118] [cursor=pointer]:
+          - img [ref=e122]
+          - generic [ref=e124]: Forms
+      - menuitem "Media" [ref=e125] [cursor=pointer]:
+        - img [ref=e129]
+        - generic [ref=e131]: Media
+      - menuitem "Sites" [expanded] [ref=e132] [cursor=pointer]:
+        - img [ref=e136]
+        - generic [ref=e138]: Sites
+      - menu "Sites" [ref=e140]:
+        - menuitem "Setup" [ref=e141] [cursor=pointer]:
+          - img [ref=e145]
+          - generic [ref=e147]: Setup
+        - menuitem "Page TSconfig" [ref=e148] [cursor=pointer]:
+          - img [ref=e152]
+          - generic [ref=e154]: Page TSconfig
+        - menuitem "TypoScript" [ref=e155] [cursor=pointer]:
+          - img [ref=e159]
+          - generic [ref=e161]: TypoScript
+      - menuitem "Administration" [expanded] [ref=e162] [cursor=pointer]:
+        - img [ref=e166]
+        - generic [ref=e168]: Administration
+      - menu "Administration" [ref=e170]:
+        - menuitem "Users" [ref=e171] [cursor=pointer]:
+          - img [ref=e175]
+          - generic [ref=e177]: Users
+        - menuitem "Permissions" [ref=e178] [cursor=pointer]:
+          - img [ref=e182]
+          - generic [ref=e184]: Permissions
+        - menuitem "Integrations" [ref=e185] [cursor=pointer]:
+          - img [ref=e189]
+          - generic [ref=e191]: Integrations
+        - menuitem "Log" [ref=e192] [cursor=pointer]:
+          - img [ref=e196]
+          - generic [ref=e198]: Log
+        - menuitem "pixelcoda Search" [ref=e199] [cursor=pointer]:
+          - img [ref=e203]
+          - generic [ref=e207]: pixelcoda Search
+  - iframe [ref=e214]:
+    - generic [ref=f4e2]:
+      - navigation "Breadcrumb" [ref=f4e7]:
+        - button "pixelcoda Search" [ref=f4e8] [cursor=pointer]:
+          - img [ref=f4e12]
+          - generic [ref=f4e16]: pixelcoda Search
+      - toolbar [ref=f4e19]:
+        - button "Reload" [ref=f4e20] [cursor=pointer]:
+          - img [ref=f4e23]
+      - generic [ref=f4e27]:
+        - generic [ref=f4e30]:
+          - heading "🔍 pixelcoda Search - Administration" [level=1] [ref=f4e32]:
+            - generic [ref=f4e34]: 🔍
+            - text: pixelcoda Search - Administration
+          - paragraph [ref=f4e36]: Verwalte deine pixelcoda Search Konfiguration und wechsle zwischen Headless und Standard Modus.
+        - generic [ref=f4e37]:
+          - generic [ref=f4e39]:
+            - heading "🔄 Rendering Modus" [level=2] [ref=f4e41]
+            - generic [ref=f4e42]:
+              - generic [ref=f4e43]:
+                - generic [ref=f4e44]:
+                  - heading "Aktueller TYPO3 Modus" [level=5] [ref=f4e45]
+                  - generic [ref=f4e46]: 📄 Standard (HTML Templates)
+                - generic [ref=f4e47]:
+                  - heading "Plugin Modus" [level=5] [ref=f4e48]
+                  - generic [ref=f4e49]: 📄 Classic Mode
+              - generic [ref=f4e50]:
+                - strong [ref=f4e51]: "✅ Modi synchronisiert:"
+                - text: TYPO3 und Plugin verwenden den gleichen Modus.
+              - generic [ref=f4e52]:
+                - generic [ref=f4e53]:
+                  - generic [ref=f4e54]: "Neuen Modus auswählen:"
+                  - combobox "Neuen Modus auswählen:" [ref=f4e55]:
+                    - option "Headless (JSON API)"
+                    - option "Standard (HTML Templates)" [selected]
+                - button "🔄 Modus wechseln" [ref=f4e56] [cursor=pointer]
+              - generic [ref=f4e57]:
+                - generic [ref=f4e59]:
+                  - generic [ref=f4e60]: 📱 Headless Modus
+                  - list [ref=f4e62]:
+                    - listitem [ref=f4e63]: ✓ JSON API Output
+                    - listitem [ref=f4e64]: ✓ React/Vue/Next.js kompatibel
+                    - listitem [ref=f4e65]: ✓ Moderne Frontend-Entwicklung
+                    - listitem [ref=f4e66]: ✓ Bessere Performance
+                - generic [ref=f4e68]:
+                  - generic [ref=f4e69]: 📄 Standard Modus
+                  - list [ref=f4e71]:
+                    - listitem [ref=f4e72]: ✓ HTML Template Output
+                    - listitem [ref=f4e73]: ✓ Traditionelles TYPO3
+                    - listitem [ref=f4e74]: ✓ SEO-optimiert
+                    - listitem [ref=f4e75]: ✓ Einfache Integration
+          - generic [ref=f4e77]:
+            - heading "📊 System Status" [level=3] [ref=f4e79]
+            - generic [ref=f4e80]:
+              - list [ref=f4e81]:
+                - listitem [ref=f4e82]:
+                  - text: API Konfiguration
+                  - generic [ref=f4e83]: ✓
+                - listitem [ref=f4e84]:
+                  - text: Headless Extension
+                  - generic [ref=f4e85]: "-"
+                - listitem [ref=f4e86]:
+                  - text: Cache Status
+                  - generic [ref=f4e87]: Gefüllt
+              - generic [ref=f4e88]:
+                - heading "Schnellaktionen" [level=5] [ref=f4e89]
+                - generic [ref=f4e90]:
+                  - link "🧹 Cache leeren" [ref=f4e91] [cursor=pointer]:
+                    - /url: "?action=clearCache"
+                  - link "🔗 API-Verbindung testen" [ref=f4e92] [cursor=pointer]:
+                    - /url: "?action=testConnection"
+        - generic [ref=f4e95]:
+          - heading "⚙️ Aktuelle Konfiguration" [level=3] [ref=f4e97]
+          - generic [ref=f4e99]:
+            - table [ref=f4e101]:
+              - rowgroup [ref=f4e102]:
+                - 'row "API URL: http://host.docker.internal:8787" [ref=f4e103]':
+                  - cell "API URL:" [ref=f4e104]:
+                    - strong [ref=f4e105]: "API URL:"
+                  - cell "http://host.docker.internal:8787" [ref=f4e106]:
+                    - code [ref=f4e107]: http://host.docker.internal:8787
+                - 'row "Project ID: typo3" [ref=f4e108]':
+                  - cell "Project ID:" [ref=f4e109]:
+                    - strong [ref=f4e110]: "Project ID:"
+                  - cell "typo3" [ref=f4e111]:
+                    - code [ref=f4e112]: typo3
+                - 'row "Default Mode: classic" [ref=f4e113]':
+                  - cell "Default Mode:" [ref=f4e114]:
+                    - strong [ref=f4e115]: "Default Mode:"
+                  - cell "classic" [ref=f4e116]:
+                    - code [ref=f4e117]: classic
+                - 'row "Debug Mode: Aus" [ref=f4e118]':
+                  - cell "Debug Mode:" [ref=f4e119]:
+                    - strong [ref=f4e120]: "Debug Mode:"
+                  - cell "Aus" [ref=f4e121]:
+                    - generic [ref=f4e122]: Aus
+            - table [ref=f4e124]:
+              - rowgroup [ref=f4e125]:
+                - 'row "Auto Index: ✓" [ref=f4e126]':
+                  - cell "Auto Index:" [ref=f4e127]:
+                    - strong [ref=f4e128]: "Auto Index:"
+                  - cell "✓" [ref=f4e129]:
+                    - generic [ref=f4e130]: ✓
+                - 'row "Vector Search: ✓" [ref=f4e131]':
+                  - cell "Vector Search:" [ref=f4e132]:
+                    - strong [ref=f4e133]: "Vector Search:"
+                  - cell "✓" [ref=f4e134]:
+                    - generic [ref=f4e135]: ✓
+                - 'row "Metrics: ✗" [ref=f4e136]':
+                  - cell "Metrics:" [ref=f4e137]:
+                    - strong [ref=f4e138]: "Metrics:"
+                  - cell "✗" [ref=f4e139]:
+                    - generic [ref=f4e140]: ✗
+                - 'row "Batch Size: 50" [ref=f4e141]':
+                  - cell "Batch Size:" [ref=f4e142]:
+                    - strong [ref=f4e143]: "Batch Size:"
+                  - cell "50" [ref=f4e144]:
+                    - code [ref=f4e145]: "50"
+        - generic [ref=f4e148]:
+          - heading "💡 Hilfe & Dokumentation" [level=3] [ref=f4e150]
+          - generic [ref=f4e152]:
+            - generic [ref=f4e153]:
+              - heading "🚀 Schnellstart" [level=5] [ref=f4e154]
+              - paragraph [ref=f4e155]: "Erste Schritte mit pixelcoda Search:"
+              - list [ref=f4e156]:
+                - listitem [ref=f4e157]: Wähle deinen gewünschten Modus
+                - listitem [ref=f4e158]: Teste die API-Verbindung
+                - listitem [ref=f4e159]: Füge das Search-Element zu deinen Seiten hinzu
+            - generic [ref=f4e160]:
+              - heading "🔧 CLI Befehle" [level=5] [ref=f4e161]
+              - paragraph [ref=f4e162]: "Nützliche Kommandozeilen-Befehle:"
+              - list [ref=f4e163]:
+                - listitem [ref=f4e164]:
+                  - code [ref=f4e165]: typo3 pixelcoda:search:index
+                - listitem [ref=f4e166]:
+                  - code [ref=f4e167]: typo3 pixelcoda:search:reindex
+                - listitem [ref=f4e168]:
+                  - code [ref=f4e169]: typo3 cache:flush
+            - generic [ref=f4e170]:
+              - heading "📚 Dokumentation" [level=5] [ref=f4e171]
+              - paragraph [ref=f4e172]: "Weitere Informationen findest du in:"
+              - list [ref=f4e173]:
+                - listitem [ref=f4e174]: README.md
+                - listitem [ref=f4e175]: Documentation/DualMode.md
+                - listitem [ref=f4e176]: TYPO3 Backend Hilfe

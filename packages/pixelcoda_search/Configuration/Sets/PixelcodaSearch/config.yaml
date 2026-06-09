@@ -1,0 +1,4 @@
+name: pixelcoda/typo3-search
+label: Pixelcoda Search
+dependencies:
+  - typo3/fluid-styled-content

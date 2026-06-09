@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Pixelcoda\Sitepackage\:
+    resource: '../Classes/*'
+
+  Pixelcoda\Sitepackage\EventListener\BackendLoginDemoCredentials:
+    tags:
+      - name: event.listener
+        identifier: 'pixelcoda-demo-login-credentials'

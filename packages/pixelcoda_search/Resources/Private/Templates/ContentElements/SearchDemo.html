@@ -1,0 +1,267 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="Header">
+    <f:if condition="{data.header}">
+        <f:render partial="Header/Header" arguments="{
+            header: data.header,
+            layout: data.header_layout,
+            positionClass: '{f:if(condition: data.header_position, then: \'ce-headline-{data.header_position}\')}'
+        }" />
+    </f:if>
+</f:section>
+
+<f:section name="Main">
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}">
+        <!-- Search Form -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-search me-2"></i>
+                    <f:if condition="{data.header}">
+                        <f:then>{data.header}</f:then>
+                        <f:else>Website durchsuchen</f:else>
+                    </f:if>
+                </h5>
+            </div>
+            <div class="card-body">
+                <form class="pixelcoda-search-form" id="search-form-{data.uid}" onsubmit="return pixelcodaSearchDemo(event, {data.uid})">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="search-input-{data.uid}" name="q" placeholder="Website durchsuchen..." aria-label="Suchbegriff eingeben" autocomplete="off">
+                        <button class="btn btn-primary" type="submit" id="search-button-{data.uid}">
+                            <i class="fas fa-search"></i>
+                            <span class="d-none d-sm-inline ms-1">Suchen</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Search Status -->
+                <div id="search-status-{data.uid}" class="alert alert-info d-none" role="status">
+                    <i class="fas fa-spinner fa-spin me-2"></i>
+                    Suche läuft...
+                </div>
+
+                <!-- API Status -->
+                <div class="d-flex align-items-center mb-3">
+                    <small class="text-muted">
+                        Plugin Status:
+                        <span id="api-status-{data.uid}" class="badge bg-success">
+                            <i class="fas fa-check-circle"></i> Aktiv
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div id="search-results-{data.uid}" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Suchergebnisse
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div id="results-content-{data.uid}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Information -->
+        <div class="mt-4">
+            <details class="card">
+                <summary class="card-header">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Plugin-Informationen
+                </summary>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Plugin-Details:</strong>
+                            <ul class="list-unstyled mt-2">
+                                <li><i class="fas fa-tag me-2"></i>Plugin-ID: {data.uid}</li>
+                                <li><i class="fas fa-cog me-2"></i>Modus: Demo</li>
+                                <li><i class="fas fa-database me-2"></i>Collections: pages, tt_content, news</li>
+                                <li><i class="fas fa-search me-2"></i>Ergebnisse pro Seite: 10</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>API-Konfiguration:</strong>
+                            <ul class="list-unstyled mt-2">
+                                <li><i class="fas fa-server me-2"></i>API URL: http://localhost:8787</li>
+                                <li><i class="fas fa-key me-2"></i>API Key: pc_write_dev_key</li>
+                                <li><i class="fas fa-project-diagram me-2"></i>Project ID: typo3-dev</li>
+                                <li><i class="fas fa-robot me-2"></i>KI-Assistent: Aktiviert</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Hinweis:</strong> Das Plugin läuft derzeit im Demo-Modus.
+                        Starten Sie die pixelcoda API mit <code>docker-compose up -d</code> für die volle Funktionalität.
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- JavaScript for Search Functionality -->
+    <script>
+        // Demo Search Function
+        function pixelcodaSearchDemo(event, uid) {
+            event.preventDefault();
+
+            const query = document.getElementById('search-input-' + uid).value.trim();
+            if (!query) {
+                alert('Bitte geben Sie einen Suchbegriff ein.');
+                return false;
+            }
+
+            const statusElement = document.getElementById('search-status-' + uid);
+            const resultsElement = document.getElementById('search-results-' + uid);
+            const resultsContent = document.getElementById('results-content-' + uid);
+
+            // Show loading state
+            statusElement.classList.remove('d-none');
+            resultsElement.style.display = 'none';
+
+            // Simulate API delay
+            setTimeout(() => {
+                statusElement.classList.add('d-none');
+
+                // Generate demo results based on query
+                const demoResults = generateDemoResults(query);
+                displayDemoResults(demoResults, resultsContent, resultsElement, query);
+            }, 1000);
+
+            return false;
+        }
+
+        // Generate demo search results
+        function generateDemoResults(query) {
+            const baseResults = [{
+                    title: 'TYPO3 Startseite',
+                    summary: 'Willkommen auf unserer TYPO3-Website mit Bootstrap Package und pixelcoda Search.',
+                    url: '/',
+                    collection: 'pages',
+                    score: 0.95
+                },
+                {
+                    title: 'Bootstrap Package Integration',
+                    summary: 'Erfahren Sie mehr über die Integration des Bootstrap Package in TYPO3 für moderne, responsive Designs.',
+                    url: '/bootstrap-package',
+                    collection: 'tt_content',
+                    score: 0.87
+                },
+                {
+                    title: 'pixelcoda Search Plugin',
+                    summary: 'Das pixelcoda Search Plugin bietet erweiterte Suchfunktionen für TYPO3-Websites mit KI-Unterstützung.',
+                    url: '/pixelcoda-search',
+                    collection: 'pages',
+                    score: 0.82
+                },
+                {
+                    title: 'TYPO3 Content Management',
+                    summary: 'Verwalten Sie Ihre Inhalte effizient mit TYPO3 CMS und nutzen Sie die Vorteile eines professionellen Systems.',
+                    url: '/content-management',
+                    collection: 'tt_content',
+                    score: 0.78
+                },
+                {
+                    title: 'Responsive Web Design',
+                    summary: 'Moderne, responsive Websites mit Bootstrap 5 und TYPO3 für optimale Darstellung auf allen Geräten.',
+                    url: '/responsive-design',
+                    collection: 'pages',
+                    score: 0.75
+                }
+            ];
+
+            // Filter results based on query (simple contains check)
+            const filteredResults = baseResults.filter(result =>
+                result.title.toLowerCase().includes(query.toLowerCase()) ||
+                result.summary.toLowerCase().includes(query.toLowerCase())
+            );
+
+            // If no matches, return all results with modified titles
+            if (filteredResults.length === 0) {
+                return baseResults.map(result => ({
+                    ...result,
+                    title: result.title + ' - Verwandt mit "' + query + '"',
+                    score: result.score * 0.6
+                }));
+            }
+
+            return filteredResults;
+        }
+
+        // Display search results
+        function displayDemoResults(results, resultsContent, resultsElement, query) {
+            let html = '<div class="row">';
+
+            // Add demo notice
+            html += `
+                <div class="col-12 mb-3">
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>Demo-Suche erfolgreich!</strong> 
+                        Gefunden: ${results.length} Ergebnisse für "${query}".
+                        <small class="d-block mt-1">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Dies sind Beispiel-Ergebnisse. Starten Sie die pixelcoda API für echte Suchergebnisse.
+                        </small>
+                    </div>
+                </div>
+            `;
+
+            results.forEach((result, index) => {
+                html += `
+                    <div class="col-12 mb-3">
+                        <div class="border-start border-primary border-3 ps-3">
+                            <h6 class="mb-1">
+                                <a href="${result.url}" class="text-decoration-none">
+                                    ${result.title}
+                                </a>
+                                <span class="badge bg-primary ms-2">${index + 1}</span>
+                            </h6>
+                            <p class="text-muted small mb-1">${result.summary}</p>
+                            <small class="text-muted">
+                                <i class="fas fa-tag me-1"></i>
+                                ${result.collection}
+                                • Score: ${Math.round(result.score * 100)}%
+                                <i class="fas fa-clock ms-2 me-1"></i>
+                                Demo-Ergebnis
+                            </small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+
+            resultsContent.innerHTML = html;
+            resultsElement.style.display = 'block';
+        }
+
+        // Add Enter key support
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input-{data.uid}');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        pixelcodaSearchDemo(e, {
+                            data.uid
+                        });
+                    }
+                });
+
+                // Focus on search input
+                searchInput.focus();
+            }
+        });
+    </script>
+</f:section>
+
+</html>

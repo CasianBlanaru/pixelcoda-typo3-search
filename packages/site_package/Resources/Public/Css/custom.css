@@ -1,0 +1,304 @@
+/* Custom CSS for pixelcoda TYPO3 Site with Bootstrap Package */
+/* ============================================================ */
+
+/* Custom color scheme */
+:root {
+    --primary-color: #577760;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* Header customizations */
+.navbar-brand img {
+    max-height: 40px;
+    width: auto;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--dark-color);
+    font-weight: 500;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+    color: var(--primary-color);
+}
+
+/* Main content styling */
+.page-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.main-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.main-content h2,
+.main-content h3,
+.main-content h4 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.pixelcoda-demo-login-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(91, 59, 240, 0.16);
+    border-radius: 1.25rem;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(115, 230, 169, 0.22), transparent 30%),
+        radial-gradient(circle at 100% 20%, rgba(91, 59, 240, 0.18), transparent 34%),
+        #ffffff;
+    box-shadow: 0 18px 54px rgba(17, 24, 39, 0.1);
+}
+
+.pixelcoda-demo-login-notice__eyebrow {
+    display: inline-flex;
+    margin-bottom: 0.65rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(91, 59, 240, 0.1);
+    color: #4f32d8;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.pixelcoda-demo-login-notice h2 {
+    margin: 0 0 0.5rem;
+    color: #101828;
+    font-size: clamp(1.35rem, 2vw, 2rem);
+    line-height: 1.15;
+}
+
+.pixelcoda-demo-login-notice p {
+    max-width: 62rem;
+    margin: 0;
+    color: #475467;
+}
+
+.pixelcoda-demo-login-notice dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+}
+
+.pixelcoda-demo-login-notice dl div {
+    display: flex;
+    gap: 0.45rem;
+    align-items: baseline;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid rgba(16, 24, 40, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.pixelcoda-demo-login-notice dt {
+    color: #667085;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.pixelcoda-demo-login-notice dd {
+    margin: 0;
+    color: #101828;
+    font-weight: 800;
+}
+
+.pixelcoda-demo-login-notice__button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.75rem 1.2rem;
+    border-radius: 999px;
+    background: #101828;
+    color: #ffffff;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 12px 28px rgba(16, 24, 40, 0.22);
+}
+
+.pixelcoda-demo-login-notice__button:hover,
+.pixelcoda-demo-login-notice__button:focus {
+    color: #ffffff;
+    background: #4f32d8;
+    text-decoration: none;
+}
+
+/* Sidebar styling */
+.sidebar .card {
+    border: 1px solid rgba(87, 119, 96, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .card-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom: none;
+}
+
+.sidebar .card-header .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Search form styling */
+.search-form .form-control {
+    border-color: var(--primary-color);
+}
+
+.search-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(87, 119, 96, 0.25);
+}
+
+.search-form .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.search-form .btn-primary:hover {
+    background-color: #456350;
+    border-color: #456350;
+}
+
+/* Footer styling */
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #6ba373;
+    text-decoration: underline;
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item.active {
+    color: var(--primary-color);
+}
+
+/* Content elements styling */
+.ce-textpic,
+.ce-text,
+.ce-image {
+    margin-bottom: 2rem;
+}
+
+.ce-textpic img,
+.ce-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pixelcoda-demo-login-notice {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 1.15rem;
+    }
+
+    .pixelcoda-demo-login-notice dl {
+        flex-direction: column;
+    }
+
+    .pixelcoda-demo-login-notice dl div,
+    .pixelcoda-demo-login-notice__button {
+        width: 100%;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .main-content {
+        font-size: 1rem;
+    }
+    
+    .navbar-brand img {
+        max-height: 30px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .sidebar,
+    .footer {
+        display: none !important;
+    }
+    
+    .main-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* Accessibility improvements */
+.sr-only-focusable:focus {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 0 0 0.375rem 0;
+}
+
+/* Custom animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

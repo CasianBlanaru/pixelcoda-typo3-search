@@ -1,0 +1,12 @@
+name: typo3-inst
+type: typo3
+docroot: public
+project_tld: localhost
+php_version: "8.4"
+webserver_type: nginx-fpm
+database:
+  type: mariadb
+  version: "10.11"
+composer_version: "2"
+web_environment: []
+nodejs_version: "22"

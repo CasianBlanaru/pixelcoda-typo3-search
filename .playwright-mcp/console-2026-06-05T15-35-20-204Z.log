@@ -1,0 +1,6 @@
+[      69ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/oxanium-variable.woff2:0
+[      71ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/inter-variable.woff2:0
+[      74ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/jetbrains-mono-variable.woff2:0
+[   36324ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/oxanium-variable.woff2:0
+[   36324ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/inter-variable.woff2:0
+[   36324ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3100/fonts/jetbrains-mono-variable.woff2:0

@@ -1,0 +1,253 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - button "Collapse sidebar" [ref=e6] [cursor=pointer]:
+        - img [ref=e10]
+      - link "Pixelcoda TYPO3 Test 14.3.2" [ref=e13] [cursor=pointer]:
+        - /url: ./
+        - img [ref=e15]
+        - generic [ref=e16]:
+          - generic [ref=e17]: Pixelcoda TYPO3 Test
+          - generic [ref=e18]: 14.3.2
+    - list [ref=e21]:
+      - listitem [ref=e22]:
+        - button "Search" [ref=e23] [cursor=pointer]:
+          - generic "Search" [ref=e24]:
+            - img [ref=e27]
+          - generic [ref=e29]: Search
+      - listitem [ref=e30]:
+        - button "Clear cache" [ref=e31] [cursor=pointer]:
+          - generic "Clear cache" [ref=e32]:
+            - img [ref=e35]
+          - generic [ref=e37]: Clear cache
+      - listitem [ref=e38]:
+        - button "System Information 24" [ref=e39] [cursor=pointer]:
+          - generic "System Information" [ref=e40]:
+            - img [ref=e43]
+          - generic [ref=e45]: System Information
+          - generic [ref=e46]: "24"
+      - listitem [ref=e47]:
+        - button "Bookmarks" [ref=e48] [cursor=pointer]:
+          - generic "Bookmarks" [ref=e49]:
+            - img [ref=e52]
+          - generic [ref=e54]: Bookmarks
+      - listitem [ref=e55]:
+        - button "codex-premium" [ref=e56] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e61]: codex-premium
+  - navigation "Module Menu" [ref=e65]:
+    - menubar "Module Menu" [ref=e66]:
+      - menuitem "Dashboard" [ref=e67] [cursor=pointer]:
+        - img [ref=e71]
+        - generic [ref=e73]: Dashboard
+      - menuitem "Content" [expanded] [ref=e74] [cursor=pointer]:
+        - img [ref=e78]
+        - generic [ref=e80]: Content
+      - menu "Content" [ref=e82]:
+        - menuitem "Layout" [ref=e83] [cursor=pointer]:
+          - img [ref=e87]
+          - generic [ref=e89]: Layout
+        - menuitem "Records" [ref=e90] [cursor=pointer]:
+          - img [ref=e94]
+          - generic [ref=e96]: Records
+        - menuitem "Preview" [ref=e97] [cursor=pointer]:
+          - img [ref=e101]
+          - generic [ref=e103]: Preview
+        - menuitem "Status" [ref=e104] [cursor=pointer]:
+          - img [ref=e108]
+          - generic [ref=e110]: Status
+        - menuitem "Recycler" [ref=e111] [cursor=pointer]:
+          - img [ref=e115]
+          - generic [ref=e117]: Recycler
+        - menuitem "Forms" [ref=e118] [cursor=pointer]:
+          - img [ref=e122]
+          - generic [ref=e124]: Forms
+      - menuitem "Media" [ref=e125] [cursor=pointer]:
+        - img [ref=e129]
+        - generic [ref=e131]: Media
+      - menuitem "Sites" [expanded] [ref=e132] [cursor=pointer]:
+        - img [ref=e136]
+        - generic [ref=e138]: Sites
+      - menu "Sites" [ref=e140]:
+        - menuitem "Setup" [ref=e141] [cursor=pointer]:
+          - img [ref=e145]
+          - generic [ref=e147]: Setup
+        - menuitem "Page TSconfig" [ref=e148] [cursor=pointer]:
+          - img [ref=e152]
+          - generic [ref=e154]: Page TSconfig
+        - menuitem "TypoScript" [ref=e155] [cursor=pointer]:
+          - img [ref=e159]
+          - generic [ref=e161]: TypoScript
+      - menuitem "Administration" [expanded] [ref=e162] [cursor=pointer]:
+        - img [ref=e166]
+        - generic [ref=e168]: Administration
+      - menu "Administration" [ref=e170]:
+        - menuitem "Users" [ref=e171] [cursor=pointer]:
+          - img [ref=e175]
+          - generic [ref=e177]: Users
+        - menuitem "Permissions" [ref=e178] [cursor=pointer]:
+          - img [ref=e182]
+          - generic [ref=e184]: Permissions
+        - menuitem "Integrations" [ref=e185] [cursor=pointer]:
+          - img [ref=e189]
+          - generic [ref=e191]: Integrations
+        - menuitem "Log" [ref=e192] [cursor=pointer]:
+          - img [ref=e196]
+          - generic [ref=e198]: Log
+        - menuitem "pixelcoda Search" [active] [ref=e199] [cursor=pointer]:
+          - img [ref=e203]
+          - generic [ref=e207]: pixelcoda Search
+  - generic [ref=e211]:
+    - iframe [ref=e214]:
+      - generic [ref=f1e2]:
+        - navigation "Breadcrumb" [ref=f1e7]:
+          - button "pixelcoda Search" [ref=f1e8] [cursor=pointer]:
+            - img [ref=f1e12]
+            - generic [ref=f1e16]: pixelcoda Search
+        - toolbar [ref=f1e19]:
+          - button "Reload" [ref=f1e20] [cursor=pointer]:
+            - img [ref=f1e23]
+        - generic [ref=f1e27]:
+          - banner [ref=f1e28]:
+            - generic [ref=f1e32]:
+              - generic [ref=f1e33]: Pixelcoda TYPO3 Search
+              - heading "Search Administration" [level=1] [ref=f1e34]
+              - paragraph [ref=f1e35]: Rendering, API-Verbindung und Index-Konfiguration zentral verwalten.
+            - generic [ref=f1e36]: TYPO3 12–14 kompatibel
+          - generic [ref=f1e38]:
+            - main [ref=f1e39]:
+              - region "Rendering-Modus" [ref=f1e40]:
+                - generic [ref=f1e42]:
+                  - img [ref=f1e46]
+                  - generic [ref=f1e48]:
+                    - heading "Rendering-Modus" [level=2] [ref=f1e49]
+                    - paragraph [ref=f1e50]: Ausgabeformat für klassische und Headless-Projekte festlegen.
+                - generic [ref=f1e51]:
+                  - generic [ref=f1e52]:
+                    - generic [ref=f1e53]: TYPO3-Modus
+                    - strong [ref=f1e54]:
+                      - text: Standard
+                      - generic [ref=f1e55]: HTML Templates
+                  - generic [ref=f1e56]:
+                    - generic [ref=f1e57]: Plugin-Modus
+                    - strong [ref=f1e58]:
+                      - text: Classic
+                      - generic [ref=f1e59]: Fluid Rendering
+                - generic [ref=f1e60]:
+                  - img [ref=f1e63]
+                  - generic [ref=f1e65]:
+                    - strong [ref=f1e66]: Modi synchronisiert.
+                    - text: TYPO3 und Plugin verwenden dieselbe Ausgabe.
+                - generic [ref=f1e67]:
+                  - generic [ref=f1e68]:
+                    - generic [ref=f1e69]: Neuen Modus auswählen
+                    - combobox "Neuen Modus auswählen" [ref=f1e70]:
+                      - option "Headless (JSON API)"
+                      - option "Standard (HTML Templates)" [selected]
+                  - button "Modus anwenden" [ref=f1e71] [cursor=pointer]:
+                    - img [ref=f1e74]
+                    - text: Modus anwenden
+                - generic [ref=f1e76]:
+                  - article [ref=f1e77]:
+                    - heading "Headless" [level=3] [ref=f1e81]
+                    - paragraph [ref=f1e82]: Strukturierte Daten für moderne Frontends und Apps.
+                    - list [ref=f1e83]:
+                      - listitem [ref=f1e84]: ✓ JSON API Output
+                      - listitem [ref=f1e85]: ✓ React, Vue und Next.js
+                      - listitem [ref=f1e86]: ✓ Unabhängiges Frontend
+                  - article [ref=f1e87]:
+                    - img [ref=f1e91]
+                    - heading "Standard" [level=3] [ref=f1e93]
+                    - paragraph [ref=f1e94]: Direktes TYPO3-Rendering mit Fluid Templates.
+                    - list [ref=f1e95]:
+                      - listitem [ref=f1e96]: ✓ HTML Template Output
+                      - listitem [ref=f1e97]: ✓ SEO-freundliche Ausgabe
+                      - listitem [ref=f1e98]: ✓ Einfache Integration
+              - region "Aktuelle Konfiguration" [ref=f1e99]:
+                - generic [ref=f1e101]:
+                  - img [ref=f1e105]
+                  - generic [ref=f1e107]:
+                    - heading "Aktuelle Konfiguration" [level=2] [ref=f1e108]
+                    - paragraph [ref=f1e109]: Aktive Verbindung und Indexierungsfunktionen im Überblick.
+                - generic [ref=f1e110]:
+                  - generic [ref=f1e111]:
+                    - term [ref=f1e112]: API URL
+                    - definition [ref=f1e113]:
+                      - code [ref=f1e114]: http://host.docker.internal:8787
+                  - generic [ref=f1e115]:
+                    - term [ref=f1e116]: Project ID
+                    - definition [ref=f1e117]:
+                      - code [ref=f1e118]: typo3
+                  - generic [ref=f1e119]:
+                    - term [ref=f1e120]: Default Mode
+                    - definition [ref=f1e121]:
+                      - code [ref=f1e122]: classic
+                  - generic [ref=f1e123]:
+                    - term [ref=f1e124]: Batch Size
+                    - definition [ref=f1e125]:
+                      - code [ref=f1e126]: "50"
+                  - generic [ref=f1e127]:
+                    - term [ref=f1e128]: Auto Index
+                    - definition [ref=f1e129]: Aktiv
+                  - generic [ref=f1e130]:
+                    - term [ref=f1e131]: Vector Search
+                    - definition [ref=f1e132]: Aktiv
+                  - generic [ref=f1e133]:
+                    - term [ref=f1e134]: Metrics
+                    - definition [ref=f1e135]: Inaktiv
+                  - generic [ref=f1e136]:
+                    - term [ref=f1e137]: Debug Mode
+                    - definition [ref=f1e138]: Inaktiv
+              - region "Schnellstart" [ref=f1e139]:
+                - generic [ref=f1e141]:
+                  - img [ref=f1e145]
+                  - generic [ref=f1e147]:
+                    - heading "Schnellstart" [level=2] [ref=f1e148]
+                    - paragraph [ref=f1e149]: Die wichtigsten Schritte für eine produktive Suche.
+                - list [ref=f1e150]:
+                  - listitem [ref=f1e151]:
+                    - generic [ref=f1e152]: "1"
+                    - generic [ref=f1e153]:
+                      - strong [ref=f1e154]: Modus auswählen
+                      - paragraph [ref=f1e155]: Classic oder Headless passend zum Projekt aktivieren.
+                  - listitem [ref=f1e156]:
+                    - generic [ref=f1e157]: "2"
+                    - generic [ref=f1e158]:
+                      - strong [ref=f1e159]: API testen
+                      - paragraph [ref=f1e160]: Verbindung prüfen und veröffentlichte Inhalte indexieren.
+                  - listitem [ref=f1e161]:
+                    - generic [ref=f1e162]: "3"
+                    - generic [ref=f1e163]:
+                      - strong [ref=f1e164]: Search-Element einfügen
+                      - paragraph [ref=f1e165]: Das barrierefreie Inhaltselement auf der gewünschten Seite platzieren.
+                - generic [ref=f1e166]:
+                  - code [ref=f1e167]: typo3 pixelcoda:search:reindex
+                  - code [ref=f1e168]: typo3 pixelcoda:search:index --dry-run
+            - complementary "Systemstatus und Schnellaktionen" [ref=f1e169]:
+              - generic [ref=f1e170]:
+                - generic [ref=f1e172]:
+                  - img [ref=f1e176]
+                  - generic [ref=f1e178]:
+                    - heading "Systemstatus" [level=2] [ref=f1e179]
+                    - paragraph [ref=f1e180]: Bereitschaft der Suchdienste.
+                - list [ref=f1e181]:
+                  - listitem [ref=f1e182]:
+                    - generic [ref=f1e183]: API-Konfiguration
+                    - strong [ref=f1e184]: Bereit
+                  - listitem [ref=f1e185]:
+                    - generic [ref=f1e186]: Headless Extension
+                    - strong [ref=f1e187]: Optional
+                  - listitem [ref=f1e188]:
+                    - generic [ref=f1e189]: Cache
+                    - strong [ref=f1e190]: Gefüllt
+                - generic [ref=f1e191]:
+                  - link "API-Verbindung testen" [ref=f1e192] [cursor=pointer]:
+                    - /url: "?action=testConnection"
+                    - img [ref=f1e195]
+                    - text: API-Verbindung testen
+                  - link "Cache leeren" [ref=f1e197] [cursor=pointer]:
+                    - /url: "?action=clearCache"
+                    - img [ref=f1e200]
+                    - text: Cache leeren
+    - progressbar [ref=e217]:
+      - generic [ref=e220]: 100%

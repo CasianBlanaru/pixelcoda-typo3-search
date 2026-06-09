@@ -1,0 +1,112 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="Header">
+    <f:if condition="{data.header}">
+        <h2 class="{f:if(condition: data.header_position, then: 'ce-headline-{data.header_position}')}">{data.header}</h2>
+    </f:if>
+</f:section>
+
+<f:section name="Main">
+    <div class="pixelcoda-search-container" id="pixelcoda-search-{data.uid}" data-uid="{data.uid}" data-api-url="{settings.apiUrl}" data-api-key="{settings.apiKey}" data-project="{settings.project}" data-results-per-page="{settings.resultsPerPage}" data-collections="{settings.collections}" data-enable-ask="{settings.enableAsk}" data-enable-suggestions="{settings.enableSuggestions}" data-enable-facets="{settings.enableFacets}" data-sort-order="{settings.sortOrder}">
+
+        <!-- Search Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-search me-2"></i>
+                    <f:if condition="{data.header}">
+                        <f:then>{data.header}</f:then>
+                        <f:else>Website durchsuchen</f:else>
+                    </f:if>
+                </h2>
+            </div>
+            <div class="card-body">
+                <form class="pixelcoda-search-form" id="search-form-{data.uid}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="search-input-{data.uid}" name="q" placeholder="{f:if(condition: flexform_data.settings.placeholder, then: flexform_data.settings.placeholder, else: 'Website durchsuchen...')}" aria-label="Suchbegriff eingeben" autocomplete="off">
+                        <button class="btn btn-primary" type="submit" id="search-button-{data.uid}">
+                            <i class="fas fa-search"></i>
+                            <span class="d-none d-sm-inline ms-1">Suchen</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Search Status -->
+                <div id="search-status-{data.uid}" class="alert alert-info d-none" role="status">
+                    <i class="fas fa-spinner fa-spin me-2"></i>
+                    Suche läuft...
+                </div>
+
+                <!-- API Status -->
+                <div class="d-flex align-items-center mb-3">
+                    <small class="text-muted">
+                        API Status:
+                        <span id="api-status-{data.uid}" class="badge bg-secondary">
+                            <i class="fas fa-circle-notch fa-spin"></i> Prüfe...
+                        </span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <f:if condition="{settings.enableAsk}">
+            <section class="pixelcoda-ai-panel" aria-labelledby="ai-title-{data.uid}">
+                <div>
+                    <span class="pixelcoda-ai-label">KI-gestützte Antwort</span>
+                    <h2 id="ai-title-{data.uid}">Frage zum Inhalt stellen</h2>
+                    <p>Erhalte eine zusammengefasste Antwort mit Quellen aus dem Suchindex.</p>
+                </div>
+                <form class="pixelcoda-ai-form" id="ai-form-{data.uid}">
+                    <label for="ai-input-{data.uid}">Ihre Frage</label>
+                    <div class="pixelcoda-ai-input-row">
+                        <input type="text" id="ai-input-{data.uid}" name="question" minlength="3" placeholder="Was bietet Pixelcoda Search?" autocomplete="off">
+                        <button type="submit">KI fragen</button>
+                    </div>
+                </form>
+                <div id="ai-status-{data.uid}" class="pixelcoda-ai-status" role="status" hidden>Antwort wird erstellt...</div>
+                <div id="ai-result-{data.uid}" class="pixelcoda-ai-result" aria-live="polite" hidden></div>
+            </section>
+        </f:if>
+
+        <!-- Search Results -->
+        <div id="search-results-{data.uid}" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Suchergebnisse
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div id="facets-content-{data.uid}" class="pixelcoda-search-facets" hidden></div>
+                    <div id="results-content-{data.uid}"></div>
+                    <nav id="pagination-content-{data.uid}" class="pagination-wrapper" aria-label="Suchergebnisseiten" hidden></nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Information -->
+        <f:if condition="{settings.showDebug}">
+            <div class="mt-4">
+                <details class="card">
+                    <summary class="card-header">
+                        <i class="fas fa-bug me-2"></i>
+                        Debug-Informationen
+                    </summary>
+                    <div class="card-body">
+                        <pre class="bg-light p-3 rounded"><code>Plugin-ID: {data.uid}
+Mode: {settings.mode}
+API URL: {settings.apiUrl}
+Collections: {settings.collections}
+Enable Ask: {settings.enableAsk}
+Enable Suggestions: {settings.enableSuggestions}</code></pre>
+                    </div>
+                </details>
+            </div>
+        </f:if>
+    </div>
+</f:section>
+
+</html>

@@ -1,0 +1,49 @@
+#########################
+### API CONFIGURATION ###
+#########################
+
+# cat=api/basic/10; type=string; label=Search API URL: Base URL of the Pixelcoda Search API without a trailing slash.
+api_url = http://localhost:8787
+
+# cat=api/basic/20; type=string; label=Project ID: Search project identifier used by API requests.
+project_id = typo3
+
+# cat=api/security/30; type=password; label=Write API key: Secret key used for indexing and write operations.
+api_key =
+
+# cat=api/security/40; type=password; label=Read API key: Optional key used for frontend search requests.
+read_api_key =
+
+# cat=api/security/50; type=password; label=Webhook HMAC secret: Secret used to verify signed webhook requests.
+hmac_secret =
+
+# cat=api/security/60; type=string; label=Allowed CORS origins: Comma-separated frontend origins allowed to access the API.
+cors_origins =
+
+#########################
+### SEARCH EXPERIENCE ###
+#########################
+
+# cat=search/basic/10; type=options[classic,headless]; label=Default rendering mode: Classic renders Fluid templates. Headless returns API-ready data.
+default_mode = classic
+
+# cat=search/indexing/20; type=boolean; label=Enable automatic indexing: Queue supported content records for indexing after changes.
+enable_auto_index = 1
+
+# cat=search/indexing/25; type=string; label=Enabled tables: Comma-separated supported TYPO3 tables to index.
+enabled_tables = pages,tt_content
+
+# cat=search/indexing/30; type=boolean; label=Enable vector search: Include semantic vector retrieval when supported by the API.
+enable_vector_search = 1
+
+# cat=search/indexing/40; type=int+; label=Index batch size: Maximum records handled per indexing batch.
+batch_size = 50
+
+# cat=search/advanced/50; type=int+; label=API timeout: Request timeout in seconds.
+timeout = 30
+
+# cat=search/advanced/60; type=boolean; label=Enable metrics: Collect privacy-aware search telemetry.
+enable_metrics = 0
+
+# cat=search/advanced/70; type=boolean; label=Debug mode: Enable additional diagnostic output. Keep disabled in production.
+debug_mode = 0

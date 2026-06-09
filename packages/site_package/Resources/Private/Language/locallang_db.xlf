@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2024-10-02T12:00:00Z" product-name="site_package">
+        <header/>
+        <body>
+            <!-- Header Class Field -->
+            <trans-unit id="tt_content.header_class">
+                <source>Header CSS Class</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.default">
+                <source>Default</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h1">
+                <source>H1 - Main Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h2">
+                <source>H2 - Section Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h3">
+                <source>H3 - Subsection Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h4">
+                <source>H4 - Minor Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h5">
+                <source>H5 - Small Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.h6">
+                <source>H6 - Smallest Heading</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-1">
+                <source>Display 1 - Largest Display</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-2">
+                <source>Display 2 - Large Display</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-3">
+                <source>Display 3 - Medium Display</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.display-4">
+                <source>Display 4 - Small Display</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.lead">
+                <source>Lead - Emphasized Text</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-muted">
+                <source>Muted Text</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-primary">
+                <source>Primary Color</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-secondary">
+                <source>Secondary Color</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-success">
+                <source>Success Color</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-info">
+                <source>Info Color</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-warning">
+                <source>Warning Color</source>
+            </trans-unit>
+            <trans-unit id="tt_content.header_class.text-danger">
+                <source>Danger Color</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

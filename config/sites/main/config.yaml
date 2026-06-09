@@ -1,0 +1,18 @@
+base: '/'
+dependencies:
+  - typo3/fluid-styled-content
+  - pixelcoda/fe-editor
+  - pixelcoda/content-gsap-animation
+  - pixelcoda/typo3-search
+errorHandling: {  }
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    locale: en_US.UTF-8
+    navigationTitle: English
+    flag: us
+rootPageId: 2
+routes: {  }

@@ -1,0 +1,12 @@
+styles.content.image.lazyLoading = lazy
+styles.content.image.imageDecoding = async
+styles.content.textmedia.maxW = 520
+styles.content.textmedia.maxWInText = 520
+
+pixelcoda.search {
+    apiUrl = http://localhost:8787
+    projectId = typo3
+    readApiKey = pc_read_dev_key
+}
+
+plugin.tx_pixelcodasearch_search.settings.collections = pages,tt_content

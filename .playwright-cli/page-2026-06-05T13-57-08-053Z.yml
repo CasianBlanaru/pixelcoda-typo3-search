@@ -1,0 +1,108 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - button "Collapse sidebar" [ref=e6] [cursor=pointer]:
+        - img [ref=e10]
+      - link "Pixelcoda TYPO3 Test 14.3.2" [ref=e13] [cursor=pointer]:
+        - /url: ./
+        - img [ref=e15]
+        - generic [ref=e16]:
+          - generic [ref=e17]: Pixelcoda TYPO3 Test
+          - generic [ref=e18]: 14.3.2
+    - list [ref=e21]:
+      - listitem [ref=e22]:
+        - button "Search" [ref=e23] [cursor=pointer]:
+          - generic "Search" [ref=e24]:
+            - img [ref=e27]
+          - generic [ref=e29]: Search
+      - listitem [ref=e30]:
+        - button "Clear cache" [ref=e31] [cursor=pointer]:
+          - generic "Clear cache" [ref=e32]:
+            - img [ref=e35]
+          - generic [ref=e37]: Clear cache
+      - listitem [ref=e38]:
+        - button "System Information 20" [ref=e39] [cursor=pointer]:
+          - generic "System Information" [ref=e40]:
+            - img [ref=e43]
+          - generic [ref=e45]: System Information
+          - generic [ref=e46]: "20"
+      - listitem [ref=e47]:
+        - button "Bookmarks" [ref=e48] [cursor=pointer]:
+          - generic "Bookmarks" [ref=e49]:
+            - img [ref=e52]
+          - generic [ref=e54]: Bookmarks
+      - listitem [ref=e55]:
+        - button "codex-test" [ref=e56] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e61]: codex-test
+  - navigation "Module Menu" [ref=e65]:
+    - menubar "Module Menu" [ref=e66]:
+      - menuitem "Dashboard" [ref=e67] [cursor=pointer]:
+        - img [ref=e71]
+        - generic [ref=e73]: Dashboard
+      - menuitem "Content" [expanded] [ref=e74] [cursor=pointer]:
+        - img [ref=e78]
+        - generic [ref=e80]: Content
+      - menu "Content" [ref=e82]:
+        - menuitem "Layout" [ref=e83] [cursor=pointer]:
+          - img [ref=e87]
+          - generic [ref=e89]: Layout
+        - menuitem "Records" [ref=e90] [cursor=pointer]:
+          - img [ref=e94]
+          - generic [ref=e96]: Records
+        - menuitem "Preview" [ref=e97] [cursor=pointer]:
+          - img [ref=e101]
+          - generic [ref=e103]: Preview
+        - menuitem "Status" [ref=e104] [cursor=pointer]:
+          - img [ref=e108]
+          - generic [ref=e110]: Status
+        - menuitem "Recycler" [ref=e111] [cursor=pointer]:
+          - img [ref=e115]
+          - generic [ref=e117]: Recycler
+        - menuitem "Forms" [ref=e118] [cursor=pointer]:
+          - img [ref=e122]
+          - generic [ref=e124]: Forms
+      - menuitem "Media" [ref=e125] [cursor=pointer]:
+        - img [ref=e129]
+        - generic [ref=e131]: Media
+      - menuitem "Sites" [expanded] [ref=e132] [cursor=pointer]:
+        - img [ref=e136]
+        - generic [ref=e138]: Sites
+      - menu "Sites" [ref=e140]:
+        - menuitem "Setup" [ref=e141] [cursor=pointer]:
+          - img [ref=e145]
+          - generic [ref=e147]: Setup
+        - menuitem "Page TSconfig" [ref=e148] [cursor=pointer]:
+          - img [ref=e152]
+          - generic [ref=e154]: Page TSconfig
+        - menuitem "TypoScript" [ref=e155] [cursor=pointer]:
+          - img [ref=e159]
+          - generic [ref=e161]: TypoScript
+      - menuitem "Administration" [expanded] [ref=e162] [cursor=pointer]:
+        - img [ref=e166]
+        - generic [ref=e168]: Administration
+      - menu "Administration" [ref=e170]:
+        - menuitem "Users" [ref=e171] [cursor=pointer]:
+          - img [ref=e175]
+          - generic [ref=e177]: Users
+        - menuitem "Permissions" [ref=e178] [cursor=pointer]:
+          - img [ref=e182]
+          - generic [ref=e184]: Permissions
+        - menuitem "Integrations" [ref=e185] [cursor=pointer]:
+          - img [ref=e189]
+          - generic [ref=e191]: Integrations
+        - menuitem "Log" [ref=e192] [cursor=pointer]:
+          - img [ref=e196]
+          - generic [ref=e198]: Log
+        - menuitem "pixelcoda Search" [ref=e199] [cursor=pointer]:
+          - img [ref=e203]
+          - generic [ref=e207]: pixelcoda Search
+  - iframe [ref=e214]:
+    - generic [ref=f3e2]:
+      - navigation "Breadcrumb" [ref=f3e7]:
+        - button "pixelcoda Search" [ref=f3e8] [cursor=pointer]:
+          - img [ref=f3e12]
+          - generic [ref=f3e16]: pixelcoda Search
+      - toolbar [ref=f3e19]:
+        - button "Reload" [ref=f3e20] [cursor=pointer]:
+          - img [ref=f3e23]

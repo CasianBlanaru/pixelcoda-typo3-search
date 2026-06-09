@@ -1,0 +1,170 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - img "TYPO3" [ref=e3]:
+      - img [ref=e4]
+    - article [ref=e7]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e31]:
+        - button "Element ziehen" [ref=e32]:
+          - generic [ref=e33]: "::"
+        - button "Nach oben" [ref=e34] [cursor=pointer]: Up
+        - button "Nach unten" [ref=e35] [cursor=pointer]: Down
+      - heading "Pixelcoda Content GSAP Animation" [level=2] [ref=e9]
+      - paragraph [ref=e11]: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+      - button "Bild" [ref=e36] [cursor=pointer]
+    - article [ref=e13]:
+      - text: Headless ready
+      - generic [ref=e37]:
+        - button "Element ziehen" [ref=e38]:
+          - generic [ref=e39]: "::"
+        - button "Nach oben" [ref=e40] [cursor=pointer]: Up
+        - button "Nach unten" [ref=e41] [cursor=pointer]: Down
+      - heading "Headless-ready animation settings" [level=2] [ref=e15]
+      - paragraph [ref=e17]: Editors configure the motion once. Fluid templates and headless frontends can consume stable animationSettingsData.
+      - button "Bild" [ref=e42] [cursor=pointer]
+  - toolbar "Frontend Editing" [ref=e19]:
+    - generic [ref=e20]:
+      - button "Edit" [pressed] [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: Edit
+      - button "Save" [disabled] [ref=e23]:
+        - generic [ref=e24]: Save
+      - button "AI" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: AI
+      - button "Neues Element hinzufuegen" [ref=e28] [cursor=pointer]
+    - generic [ref=e29]:
+      - generic [ref=e30]: Textfeld auswählen
+      - generic [ref=e43]: Datensatzeditor geöffnet
+  - dialog "Bild und Datensatz bearbeiten" [ref=e45]:
+    - banner [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]: Pixelcoda FE Editor
+        - heading "Bild und Datensatz bearbeiten" [level=2] [ref=e49]
+      - button "Seitenleiste schliessen" [ref=e50] [cursor=pointer]: ×
+    - generic [ref=e51]:
+      - paragraph [ref=e52]: Der TYPO3-Datensatz bleibt auf dieser Seite geöffnet. Nach dem Speichern wird die Vorschau automatisch aktualisiert.
+      - iframe [active] [ref=e53]:
+        - generic [ref=f4e1]:
+          - generic [ref=f4e2]:
+            - generic [ref=f4e3]:
+              - generic [ref=f4e4]:
+                - generic [ref=f4e5]: Pixelcoda Content GSAP Animation
+                - link "Open full editing view" [active] [ref=f4e6] [cursor=pointer]:
+                  - /url: /typo3/record/edit?token=cd29d21d6df87bcc50238be5dbb9d614573aa9d2dc78b675eba0bc38b943c291&edit%5Btt_content%5D%5B2%5D=edit&returnUrl=/
+                  - img [ref=f4e9]
+              - generic [ref=f4e11]:
+                - button "Save" [ref=f4e12] [cursor=pointer]:
+                  - img [ref=f4e15]
+                  - generic [ref=f4e17]: Save
+                - button "Close" [ref=f4e18] [cursor=pointer]:
+                  - img [ref=f4e21]
+                  - generic [ref=f4e23]: Close
+            - generic [ref=f4e27]:
+              - tablist [ref=f4e29]:
+                - tab "General" [selected] [ref=f4e30] [cursor=pointer]
+                - tab "Images" [ref=f4e31] [cursor=pointer]
+                - tab "Appearance" [ref=f4e32] [cursor=pointer]
+                - tab "Access" [ref=f4e33] [cursor=pointer]
+                - tab "Notes" [ref=f4e34] [cursor=pointer]
+                - tab "Animation" [ref=f4e35] [cursor=pointer]
+              - tabpanel "General" [ref=f4e37]:
+                - heading "General" [level=2] [ref=f4e38]
+                - group [ref=f4e39]:
+                  - heading "General" [level=3] [ref=f4e40]
+                  - generic [ref=f4e41]:
+                    - generic [ref=f4e42]:
+                      - generic [ref=f4e43]: Type
+                      - generic [ref=f4e48]:
+                        - img [ref=f4e52]
+                        - combobox "Type" [ref=f4e54]:
+                          - option "PixelCoda Demo (editierbar)"
+                          - option "Header Only"
+                          - option "Regular Text Element"
+                          - option "Text & Images" [selected]
+                          - option "Images Only"
+                          - option "Text & Media"
+                          - option "Bullet List"
+                          - option "Table"
+                          - option "File Links"
+                          - option "Abstracts"
+                          - option "Categorized content"
+                          - option "Categorized pages"
+                          - option "Pages"
+                          - option "Subpages"
+                          - option "Recently updated pages"
+                          - option "Related pages"
+                          - option "Section index"
+                          - option "Section index of subpages from selected pages"
+                          - option "Sitemap"
+                          - option "Sitemaps of selected pages"
+                          - option "Form"
+                          - option "Login Form"
+                          - option "Insert records"
+                          - option "Divider"
+                          - option "Plain HTML"
+                    - generic [ref=f4e55]:
+                      - generic [ref=f4e56]: Column
+                      - combobox "Column" [ref=f4e61]:
+                        - option "Normal" [selected]
+                - group [ref=f4e62]:
+                  - heading "Headlines" [level=3] [ref=f4e63]
+                  - generic [ref=f4e64]:
+                    - generic [ref=f4e65]: Header
+                    - generic [ref=f4e70]:
+                      - textbox "Header" [ref=f4e71]: Pixelcoda Content GSAP Animation
+                      - button "Clear input" [ref=f4e72] [cursor=pointer]:
+                        - img [ref=f4e75]
+                  - generic [ref=f4e78]:
+                    - generic [ref=f4e79]:
+                      - generic [ref=f4e80]: Type
+                      - combobox "Type" [ref=f4e85]:
+                        - option "Default" [selected]
+                        - option "Layout 1"
+                        - option "Layout 2"
+                        - option "Layout 3"
+                        - option "Layout 4"
+                        - option "Layout 5"
+                        - option "Hidden"
+                    - generic [ref=f4e86]:
+                      - generic [ref=f4e87]: Alignment
+                      - combobox "Alignment" [ref=f4e92]:
+                        - option "Default" [selected]
+                        - option "Center"
+                        - option "Right"
+                        - option "Left"
+                    - generic [ref=f4e93]:
+                      - generic [ref=f4e94]: Date
+                      - generic [ref=f4e99]:
+                        - textbox "Date" [ref=f4e101]:
+                          - /placeholder: ""
+                        - button "Open date picker" [ref=f4e102] [cursor=pointer]:
+                          - img [ref=f4e105]
+                  - generic [ref=f4e107]:
+                    - generic [ref=f4e108]: Link
+                    - generic [ref=f4e111]:
+                      - generic [ref=f4e113]:
+                        - textbox "Link" [ref=f4e116]
+                        - button "Toggle link explanation" [disabled]:
+                          - generic:
+                            - generic:
+                              - img
+                      - link "Open link wizard" [ref=f4e119] [cursor=pointer]:
+                        - /url: /typo3/wizard/link/browse?token=301d64aaf5a1605d46d7a8a0ddc0b50b9c6800cfcae69b759466cba5b0617fc7&P%5Btable%5D=tt_content&P%5Buid%5D=2&P%5Bpid%5D=2&P%5Bfield%5D=header_link&P%5BformName%5D=editform&P%5BitemName%5D=data%5Btt_content%5D%5B2%5D%5Bheader_link%5D&P%5Bhmac%5D=28552afb33bdaa0b31509c8e768aa858d1764f48&P%5BfieldChangeFunc%5D%5B0%5D%5Bname%5D=typo3-backend-form-update-value&P%5BfieldChangeFunc%5D%5B0%5D%5Bdata%5D%5BtableName%5D=tt_content&P%5BfieldChangeFunc%5D%5B0%5D%5Bdata%5D%5Bidentifier%5D=2&P%5BfieldChangeFunc%5D%5B0%5D%5Bdata%5D%5BfieldName%5D=header_link&P%5BfieldChangeFunc%5D%5B0%5D%5Bdata%5D%5BelementName%5D=data%5Btt_content%5D%5B2%5D%5Bheader_link%5D&P%5BfieldChangeFuncHash%5D=c53d2430c888b601169c4116bcdbc99cd7655a55
+                        - img [ref=f4e122]
+                  - generic [ref=f4e124]:
+                    - generic [ref=f4e125]: Subheader
+                    - textbox "Subheader" [ref=f4e131]
+                - group [ref=f4e132]:
+                  - group "Text" [ref=f4e134]:
+                    - generic [ref=f4e135]: Text
+                    - application "Rich Text Editor" [ref=f4e141]:
+                      - generic [ref=f4e143]:
+                        - toolbar "Editor toolbar"
+                      - textbox "Text. Press ⌥0 for help." [ref=f4e144]:
+                        - paragraph [ref=f4e145]: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+          - generic:
+            - application:
+              - generic:
+                - generic:
+                  - list
+                - generic:
+                  - list

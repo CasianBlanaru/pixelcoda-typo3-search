@@ -1,0 +1,512 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Zum Hauptinhalt springen" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - navigation [ref=e4]:
+      - generic [ref=e6]:
+        - link "pixelcoda" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e9]:
+          - link "Product" [ref=e10] [cursor=pointer]:
+            - /url: /#showcase
+          - link "Architecture" [ref=e11] [cursor=pointer]:
+            - /url: /#architecture
+          - link "Use Cases" [ref=e12] [cursor=pointer]:
+            - /url: /#use-cases
+          - link "Open Source" [ref=e13] [cursor=pointer]:
+            - /url: /#trust
+        - link "Live Demo" [ref=e15] [cursor=pointer]:
+          - /url: https://web-production-e607a.up.railway.app/
+    - main [ref=e16]:
+      - main [ref=e17]:
+        - region "Search. Understand. Answer." [ref=e18]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: TYPO3, Headless CMS and React search platform
+              - heading "Search. Understand. Answer." [level=1] [ref=e24]
+              - paragraph [ref=e25]: Turn your TYPO3 content into an AI knowledge base with hybrid search, semantic answers, accessible widgets and a production-ready API.
+              - generic [ref=e26]:
+                - link "Open live TYPO3 demo" [ref=e27] [cursor=pointer]:
+                  - /url: https://web-production-e607a.up.railway.app/
+                - link "See the product" [ref=e28] [cursor=pointer]:
+                  - /url: "#showcase"
+              - generic [ref=e29]:
+                - generic [ref=e30]:
+                  - term [ref=e31]: Stack
+                  - definition [ref=e32]: TYPO3 + AI
+                - generic [ref=e33]:
+                  - term [ref=e34]: Mode
+                  - definition [ref=e35]: Classic + Headless
+                - generic [ref=e36]:
+                  - term [ref=e37]: Deploy
+                  - definition [ref=e38]: Docker-ready
+            - img "PixelCoda Search product screenshot showing search results, facets and AI answer" [ref=e40]:
+              - generic [ref=e41]:
+                - generic [ref=e46]: Search API Console
+                - generic [ref=e47]:
+                  - generic [ref=e48]:
+                    - generic [ref=e49]:
+                      - generic [ref=e50]:
+                        - paragraph [ref=e51]: AI Search
+                        - heading "TYPO3 content answers" [level=3] [ref=e52]
+                      - generic [ref=e53]: Online
+                    - generic [ref=e54]:
+                      - generic [ref=e55]:
+                        - generic [ref=e56]: ⌕
+                        - generic [ref=e57]: How do I test TYPO3 search facets?
+                      - generic [ref=e58]:
+                        - generic [ref=e59]:
+                          - generic [ref=e61]:
+                            - strong [ref=e62]: Faceted TYPO3 Search
+                            - generic [ref=e63]: 98%
+                          - generic [ref=e67]:
+                            - strong [ref=e68]: AI Answers with Sources
+                            - generic [ref=e69]: 93%
+                          - generic [ref=e73]:
+                            - strong [ref=e74]: React Search Widgets
+                            - generic [ref=e75]: 88%
+                        - generic [ref=e78]:
+                          - paragraph [ref=e79]: AI answer
+                          - paragraph [ref=e80]: Use the Search content element, enable facets and index pages plus tt_content.
+                          - generic [ref=e81]:
+                            - paragraph [ref=e82]: "Source: Search Demo"
+                            - paragraph [ref=e83]: "Source: Backend Module"
+                  - complementary [ref=e84]:
+                    - paragraph [ref=e85]: Facets
+                    - generic [ref=e86]:
+                      - generic [ref=e87]:
+                        - generic [ref=e88]: Pages
+                        - generic [ref=e89]: "12"
+                      - generic [ref=e90]:
+                        - generic [ref=e91]: Content
+                        - generic [ref=e92]: "10"
+                      - generic [ref=e93]:
+                        - generic [ref=e94]: Docs
+                        - generic [ref=e95]: "8"
+                      - generic [ref=e96]:
+                        - generic [ref=e97]: API
+                        - generic [ref=e98]: "6"
+                    - paragraph [ref=e99]: Latency
+                    - generic [ref=e100]:
+                      - strong [ref=e101]: 38ms
+                      - paragraph [ref=e102]: Median search response
+        - region "Social proof" [ref=e103]:
+          - generic [ref=e104]:
+            - paragraph [ref=e105]: Built for modern TYPO3 delivery
+            - generic [ref=e106]:
+              - generic [ref=e107]: Open Source
+              - generic [ref=e108]: Composer
+              - generic [ref=e109]: Docker
+              - generic [ref=e110]: Meilisearch
+              - generic [ref=e111]: pgvector
+        - region "One search layer for editors, developers and users." [ref=e112]:
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - paragraph [ref=e115]: Product showcase
+              - heading "One search layer for editors, developers and users." [level=2] [ref=e116]
+              - paragraph [ref=e117]: PixelCoda Search connects the TYPO3 backend, an API-first search engine and accessible frontend widgets into one product workflow.
+            - generic [ref=e118]:
+              - article [ref=e119]:
+                - generic [ref=e120]:
+                  - heading "AI-powered Search" [level=3] [ref=e131]
+                  - list [ref=e132]:
+                    - listitem [ref=e133]:
+                      - img [ref=e134]
+                      - generic [ref=e136]: Autocomplete that understands intent
+                    - listitem [ref=e137]:
+                      - img [ref=e138]
+                      - generic [ref=e140]: Source-backed answers from your content
+                    - listitem [ref=e141]:
+                      - img [ref=e142]
+                      - generic [ref=e144]: Fast result pages for editors and users
+                - generic [ref=e145]:
+                  - paragraph [ref=e146]: AI-powered Search
+                  - heading "Give every visitor the answer they came for." [level=3] [ref=e147]
+                  - paragraph [ref=e148]: PixelCoda Search turns TYPO3 pages, records and headless content into ranked results with suggestions, filters and AI summaries.
+              - article [ref=e149]:
+                - generic [ref=e150]:
+                  - heading "Hybrid Search" [level=3] [ref=e161]
+                  - list [ref=e162]:
+                    - listitem [ref=e163]:
+                      - img [ref=e164]
+                      - generic [ref=e166]: Meilisearch for instant recall
+                    - listitem [ref=e167]:
+                      - img [ref=e168]
+                      - generic [ref=e170]: pgvector for semantic similarity
+                    - listitem [ref=e171]:
+                      - img [ref=e172]
+                      - generic [ref=e174]: Weighted ranking for TYPO3 content models
+                - generic [ref=e175]:
+                  - paragraph [ref=e176]: Hybrid Search
+                  - heading "Keyword precision plus semantic understanding." [level=3] [ref=e177]
+                  - paragraph [ref=e178]: Meilisearch handles typo-tolerant speed. pgvector adds meaning. Together they return the right result even when users do not know the exact wording.
+              - article [ref=e179]:
+                - generic [ref=e180]:
+                  - heading "AI Answers" [level=3] [ref=e191]
+                  - list [ref=e192]:
+                    - listitem [ref=e193]:
+                      - img [ref=e194]
+                      - generic [ref=e196]: Retrieval augmented generation
+                    - listitem [ref=e197]:
+                      - img [ref=e198]
+                      - generic [ref=e200]: OpenAI-ready adapter layer
+                    - listitem [ref=e201]:
+                      - img [ref=e202]
+                      - generic [ref=e204]: Clear fallback when AI is disabled
+                - generic [ref=e205]:
+                  - paragraph [ref=e206]: AI Answers
+                  - heading "RAG responses with citations, not guesses." [level=3] [ref=e207]
+                  - paragraph [ref=e208]: Ask questions against your indexed website and return concise answers with linked sources from pages and content elements.
+              - article [ref=e209]:
+                - generic [ref=e210]:
+                  - heading "TYPO3 Integration" [level=3] [ref=e221]
+                  - list [ref=e222]:
+                    - listitem [ref=e223]:
+                      - img [ref=e224]
+                      - generic [ref=e226]: TYPO3 12, 13 and 14 compatible
+                    - listitem [ref=e227]:
+                      - img [ref=e228]
+                      - generic [ref=e230]: Content element and backend module
+                    - listitem [ref=e231]:
+                      - img [ref=e232]
+                      - generic [ref=e234]: Composer and Extension Repository ready
+                - generic [ref=e235]:
+                  - paragraph [ref=e236]: TYPO3 Integration
+                  - heading "A native backend workflow for real teams." [level=3] [ref=e237]
+                  - paragraph [ref=e238]: Configure classic Fluid rendering, headless JSON output and API keys from TYPO3 without making editors think about infrastructure.
+              - article [ref=e239]:
+                - generic [ref=e240]:
+                  - heading "React Widgets" [level=3] [ref=e251]
+                  - list [ref=e252]:
+                    - listitem [ref=e253]:
+                      - img [ref=e254]
+                      - generic [ref=e256]: API-first response contract
+                    - listitem [ref=e257]:
+                      - img [ref=e258]
+                      - generic [ref=e260]: Accessible widgets and states
+                    - listitem [ref=e261]:
+                      - img [ref=e262]
+                      - generic [ref=e264]: Works with headless CMS projects
+                - generic [ref=e265]:
+                  - paragraph [ref=e266]: React Widgets
+                  - heading "Drop search into modern frontends." [level=3] [ref=e267]
+                  - paragraph [ref=e268]: Use the same Search & Answers API for React, Next.js, Vue, static sites or classic TYPO3 templates.
+              - article [ref=e269]:
+                - generic [ref=e270]:
+                  - heading "Analytics Dashboard" [level=3] [ref=e281]
+                  - list [ref=e282]:
+                    - listitem [ref=e283]:
+                      - img [ref=e284]
+                      - generic [ref=e286]: Search health monitoring
+                    - listitem [ref=e287]:
+                      - img [ref=e288]
+                      - generic [ref=e290]: Top queries and zero-result terms
+                    - listitem [ref=e291]:
+                      - img [ref=e292]
+                      - generic [ref=e294]: Index and API status at a glance
+                - generic [ref=e295]:
+                  - paragraph [ref=e296]: Analytics Dashboard
+                  - heading "See what people cannot find yet." [level=3] [ref=e297]
+                  - paragraph [ref=e298]: Track popular terms, empty result queries and performance signals so content teams can improve the website continuously.
+        - region "From TYPO3 content to trusted AI answers." [ref=e299]:
+          - generic [ref=e301]:
+            - generic [ref=e302]:
+              - paragraph [ref=e303]: Architecture
+              - heading "From TYPO3 content to trusted AI answers." [level=2] [ref=e304]
+              - paragraph [ref=e305]: A clean ingest pipeline keeps your content structured, searchable and ready for semantic retrieval without locking your frontend into TYPO3 templates.
+            - list [ref=e306]:
+              - listitem [ref=e307]:
+                - generic [ref=e308]: Step 1
+                - paragraph [ref=e309]: TYPO3 / Websites / APIs
+              - listitem [ref=e311]:
+                - generic [ref=e312]: Step 2
+                - paragraph [ref=e313]: Ingest Pipeline
+              - listitem [ref=e315]:
+                - generic [ref=e316]: Step 3
+                - paragraph [ref=e317]: Chunking
+              - listitem [ref=e319]:
+                - generic [ref=e320]: Step 4
+                - paragraph [ref=e321]: Embeddings
+              - listitem [ref=e323]:
+                - generic [ref=e324]: Step 5
+                - paragraph [ref=e325]: Meilisearch + pgvector
+              - listitem [ref=e327]:
+                - generic [ref=e328]: Step 6
+                - paragraph [ref=e329]: RAG Layer
+              - listitem [ref=e331]:
+                - generic [ref=e332]: Step 7
+                - paragraph [ref=e333]: Search & Answers API
+              - listitem [ref=e335]:
+                - generic [ref=e336]: Step 8
+                - paragraph [ref=e337]: Frontend Widgets
+        - region "Everything you need for premium website search." [ref=e338]:
+          - generic [ref=e339]:
+            - generic [ref=e340]:
+              - paragraph [ref=e341]: Platform capabilities
+              - heading "Everything you need for premium website search." [level=2] [ref=e342]
+            - generic [ref=e343]:
+              - article [ref=e344]:
+                - generic [ref=e345]: "1"
+                - heading "Headless API First" [level=3] [ref=e346]
+                - paragraph [ref=e347]: Use the same JSON API for TYPO3, React and external apps.
+              - article [ref=e348]:
+                - generic [ref=e349]: "2"
+                - heading "Hybrid Search" [level=3] [ref=e350]
+                - paragraph [ref=e351]: Combine typo-tolerant keyword search with vector similarity.
+              - article [ref=e352]:
+                - generic [ref=e353]: "3"
+                - heading "RAG Answers" [level=3] [ref=e354]
+                - paragraph [ref=e355]: Generate source-backed answers from indexed website content.
+              - article [ref=e356]:
+                - generic [ref=e357]: "4"
+                - heading "Multi LLM Support" [level=3] [ref=e358]
+                - paragraph [ref=e359]: Keep OpenAI today and add additional providers through adapters.
+              - article [ref=e360]:
+                - generic [ref=e361]: "5"
+                - heading "TYPO3 Connector" [level=3] [ref=e362]
+                - paragraph [ref=e363]: Index pages, content elements and project-specific records.
+              - article [ref=e364]:
+                - generic [ref=e365]: "6"
+                - heading "Analytics" [level=3] [ref=e366]
+                - paragraph [ref=e367]: Measure queries, empty results, latency and content demand.
+              - article [ref=e368]:
+                - generic [ref=e369]: "7"
+                - heading "Docker Ready" [level=3] [ref=e370]
+                - paragraph [ref=e371]: Run the Search API, TYPO3 connector and workers in containers.
+              - article [ref=e372]:
+                - generic [ref=e373]: "8"
+                - heading "Accessibility First" [level=3] [ref=e374]
+                - paragraph [ref=e375]: Keyboard-ready UI, visible focus and reduced-motion support.
+              - article [ref=e376]:
+                - generic [ref=e377]: "9"
+                - heading "Security & HMAC" [level=3] [ref=e378]
+                - paragraph [ref=e379]: Protect indexing, webhooks and API communication.
+              - article [ref=e380]:
+                - generic [ref=e381]: "10"
+                - heading "Webhooks" [level=3] [ref=e382]
+                - paragraph [ref=e383]: Trigger re-indexing when content changes or external systems update.
+        - region "Built for content-heavy digital products." [ref=e384]:
+          - generic [ref=e385]:
+            - generic [ref=e386]:
+              - paragraph [ref=e387]: Use cases
+              - heading "Built for content-heavy digital products." [level=2] [ref=e388]
+            - generic [ref=e389]:
+              - article [ref=e390]:
+                - generic [ref=e391]: ⌁
+                - heading "Corporate Websites" [level=3] [ref=e392]
+                - paragraph [ref=e393]: TYPO3 pages -> brand-safe search -> answer cards
+                - list [ref=e394]:
+                  - listitem [ref=e395]:
+                    - img [ref=e396]
+                    - generic [ref=e398]: Help visitors reach products and services faster
+                  - listitem [ref=e399]:
+                    - img [ref=e400]
+                    - generic [ref=e402]: Surface priority pages without hiding organic relevance
+                  - listitem [ref=e403]:
+                    - img [ref=e404]
+                    - generic [ref=e406]: Reduce support requests from website visitors
+              - article [ref=e407]:
+                - generic [ref=e408]: ⌁
+                - heading "Documentation Portals" [level=3] [ref=e409]
+                - paragraph [ref=e410]: Docs -> chunks -> semantic results
+                - list [ref=e411]:
+                  - listitem [ref=e412]:
+                    - img [ref=e413]
+                    - generic [ref=e415]: Return exact pages and short answers
+                  - listitem [ref=e416]:
+                    - img [ref=e417]
+                    - generic [ref=e419]: Handle synonym-heavy developer searches
+                  - listitem [ref=e420]:
+                    - img [ref=e421]
+                    - generic [ref=e423]: Keep long documentation navigable
+              - article [ref=e424]:
+                - generic [ref=e425]: ⌁
+                - heading "Knowledge Bases" [level=3] [ref=e426]
+                - paragraph [ref=e427]: Articles -> embeddings -> RAG answers
+                - list [ref=e428]:
+                  - listitem [ref=e429]:
+                    - img [ref=e430]
+                    - generic [ref=e432]: Answer questions across many articles
+                  - listitem [ref=e433]:
+                    - img [ref=e434]
+                    - generic [ref=e436]: Show citations for trust
+                  - listitem [ref=e437]:
+                    - img [ref=e438]
+                    - generic [ref=e440]: Improve internal support deflection
+              - article [ref=e441]:
+                - generic [ref=e442]: ⌁
+                - heading "Intranets" [level=3] [ref=e443]
+                - paragraph [ref=e444]: Departments -> secured indexes -> role-aware results
+                - list [ref=e445]:
+                  - listitem [ref=e446]:
+                    - img [ref=e447]
+                    - generic [ref=e449]: Find policies, documents and contacts quickly
+                  - listitem [ref=e450]:
+                    - img [ref=e451]
+                    - generic [ref=e453]: Support structured TYPO3 records
+                  - listitem [ref=e454]:
+                    - img [ref=e455]
+                    - generic [ref=e457]: Prepare for permission-aware search
+              - article [ref=e458]:
+                - generic [ref=e459]: ⌁
+                - heading "Headless CMS Projects" [level=3] [ref=e460]
+                - paragraph [ref=e461]: CMS/API -> Search API -> React widgets
+                - list [ref=e462]:
+                  - listitem [ref=e463]:
+                    - img [ref=e464]
+                    - generic [ref=e466]: Keep frontend teams independent
+                  - listitem [ref=e467]:
+                    - img [ref=e468]
+                    - generic [ref=e470]: Reuse the same index across channels
+                  - listitem [ref=e471]:
+                    - img [ref=e472]
+                    - generic [ref=e474]: Avoid rebuilding search for every frontend
+              - article [ref=e475]:
+                - generic [ref=e476]: ⌁
+                - heading "Developer Portals" [level=3] [ref=e477]
+                - paragraph [ref=e478]: Guides -> code-aware ranking -> answer API
+                - list [ref=e479]:
+                  - listitem [ref=e480]:
+                    - img [ref=e481]
+                    - generic [ref=e483]: Search guides, snippets and API pages
+                  - listitem [ref=e484]:
+                    - img [ref=e485]
+                    - generic [ref=e487]: Expose results through JSON
+                  - listitem [ref=e488]:
+                    - img [ref=e489]
+                    - generic [ref=e491]: Optimize onboarding and support
+        - region "Start with Composer. Scale with Docker." [ref=e492]:
+          - generic [ref=e493]:
+            - generic [ref=e494]:
+              - paragraph [ref=e495]: Open and deployable
+              - heading "Start with Composer. Scale with Docker." [level=2] [ref=e496]
+              - paragraph [ref=e497]: Install the TYPO3 extension, connect the API and run the stack locally or in production with Docker.
+              - generic [ref=e498]:
+                - link "GitHub" [ref=e499] [cursor=pointer]:
+                  - /url: https://github.com/CasianBlanaru/pixelcoda-typo3-search
+                - link "TYPO3 Extension Repository" [ref=e500] [cursor=pointer]:
+                  - /url: https://extensions.typo3.org/extension/pixelcoda_search
+            - generic [ref=e502]:
+              - paragraph [ref=e503]: "# Install extension"
+              - paragraph [ref=e504]: composer require pixelcoda/typo3-search
+              - paragraph [ref=e505]: "# Start API"
+              - paragraph [ref=e506]: docker compose up -d search-api meilisearch postgres
+              - paragraph [ref=e507]: "# Verify"
+              - paragraph [ref=e508]: curl /search-api/health
+        - region "More than a search box." [ref=e509]:
+          - generic [ref=e511]:
+            - generic [ref=e512]:
+              - paragraph [ref=e513]: Comparison
+              - heading "More than a search box." [level=2] [ref=e514]
+              - paragraph [ref=e515]: "PixelCoda Search packages the pieces teams usually stitch together: connector, API, ranking, AI answers, widgets and deployment."
+            - generic [ref=e516]:
+              - generic [ref=e517]:
+                - generic [ref=e518]: Capability
+                - generic [ref=e519]: PixelCoda
+                - generic [ref=e520]: Search stack
+                - generic [ref=e521]: Custom
+              - generic [ref=e522]:
+                - strong [ref=e523]: TYPO3-native setup
+                - generic [ref=e524]: Built-in
+                - generic [ref=e525]: Custom work
+                - generic [ref=e526]: Varies
+              - generic [ref=e527]:
+                - strong [ref=e528]: Hybrid keyword + vector search
+                - generic [ref=e529]: Included
+                - generic [ref=e530]: Manual setup
+                - generic [ref=e531]: Rare
+              - generic [ref=e532]:
+                - strong [ref=e533]: AI answers with sources
+                - generic [ref=e534]: Included
+                - generic [ref=e535]: Plugin stack
+                - generic [ref=e536]: Custom
+              - generic [ref=e537]:
+                - strong [ref=e538]: Headless React usage
+                - generic [ref=e539]: API-first
+                - generic [ref=e540]: Possible
+                - generic [ref=e541]: Custom
+              - generic [ref=e542]:
+                - strong [ref=e543]: Accessible frontend widgets
+                - generic [ref=e544]: First-class
+                - generic [ref=e545]: Depends
+                - generic [ref=e546]: Depends
+              - generic [ref=e547]:
+                - strong [ref=e548]: Docker deployment
+                - generic [ref=e549]: Ready
+                - generic [ref=e550]: Manual
+                - generic [ref=e551]: Manual
+        - region "Customer proof" [ref=e552]:
+          - generic [ref=e553]:
+            - heading "Customer proof" [level=2] [ref=e554]
+            - generic [ref=e555]:
+              - figure "Beta customer placeholder 1" [ref=e556]:
+                - blockquote [ref=e557]: “A strong foundation for TYPO3 teams that need modern search without rebuilding the CMS.”
+                - generic [ref=e558]: Beta customer placeholder 1
+              - figure "Beta customer placeholder 2" [ref=e559]:
+                - blockquote [ref=e560]: "“The product direction is clear: fast results, structured answers and a backend editors can understand.”"
+                - generic [ref=e561]: Beta customer placeholder 2
+              - figure "Beta customer placeholder 3" [ref=e562]:
+                - blockquote [ref=e563]: “A useful bridge between classic TYPO3, headless delivery and AI-powered content discovery.”
+                - generic [ref=e564]: Beta customer placeholder 3
+        - region "Questions teams ask before shipping." [ref=e565]:
+          - generic [ref=e566]:
+            - generic [ref=e567]:
+              - paragraph [ref=e568]: FAQ
+              - heading "Questions teams ask before shipping." [level=2] [ref=e569]
+            - generic [ref=e570]:
+              - group [ref=e571]:
+                - generic "Is PixelCoda Search only for TYPO3?" [ref=e572] [cursor=pointer]:
+                  - text: Is PixelCoda Search only for TYPO3?
+                  - generic [ref=e573]: +
+              - group [ref=e574]:
+                - generic "Does it replace Meilisearch?" [ref=e575] [cursor=pointer]:
+                  - text: Does it replace Meilisearch?
+                  - generic [ref=e576]: +
+              - group [ref=e577]:
+                - generic "Can AI be disabled?" [ref=e578] [cursor=pointer]:
+                  - text: Can AI be disabled?
+                  - generic [ref=e579]: +
+              - group [ref=e580]:
+                - generic "Is it ready for TYPO3 editors?" [ref=e581] [cursor=pointer]:
+                  - text: Is it ready for TYPO3 editors?
+                  - generic [ref=e582]: +
+              - group [ref=e583]:
+                - generic "What makes it different from a developer demo?" [ref=e584] [cursor=pointer]:
+                  - text: What makes it different from a developer demo?
+                  - generic [ref=e585]: +
+        - region "Launch a search experience your users actually trust." [ref=e586]:
+          - generic [ref=e587]:
+            - paragraph [ref=e588]: Ready to test it?
+            - heading "Launch a search experience your users actually trust." [level=2] [ref=e589]
+            - paragraph [ref=e590]: Open the TYPO3 demo, test the Search content element, inspect facets and try the API-powered answer workflow.
+            - generic [ref=e591]:
+              - link "Open live demo" [ref=e592] [cursor=pointer]:
+                - /url: https://web-production-e607a.up.railway.app/
+              - link "View source on GitHub" [ref=e593] [cursor=pointer]:
+                - /url: https://github.com/CasianBlanaru/pixelcoda-typo3-search
+      - generic [ref=e594]:
+        - paragraph [ref=e595]: AI Search for TYPO3 and headless projects
+        - link "Try demo" [ref=e596] [cursor=pointer]:
+          - /url: https://web-production-e607a.up.railway.app/
+    - contentinfo [ref=e597]:
+      - generic [ref=e599]:
+        - generic [ref=e600]: © 2026 Pixelcoda by Casian Blanaru. Alle Rechte vorbehalten.
+        - generic [ref=e601]:
+          - button "Datenschutz" [ref=e602] [cursor=pointer]
+          - link "Impressum" [ref=e603] [cursor=pointer]:
+            - /url: /impressum
+          - link "Barrierefreiheit" [ref=e604] [cursor=pointer]:
+            - /url: /barrierefreiheit
+  - dialog "Cookie-Einstellungen" [ref=e605]:
+    - generic [ref=e607]:
+      - generic [ref=e608]:
+        - heading "Cookie-Einstellungen" [level=3] [ref=e609]
+        - paragraph [ref=e610]:
+          - text: Wir verwenden nur technisch notwendige Cookies für die Funktionalität dieser Website. Keine Tracking-Cookies oder externe Dienste ohne Ihre Zustimmung.
+          - link "Mehr erfahren in unserer Datenschutzerklärung" [ref=e611] [cursor=pointer]:
+            - /url: /datenschutz
+      - generic [ref=e612]:
+        - button "Cookies ablehnen" [ref=e613] [cursor=pointer]: Ablehnen
+        - button "Cookies akzeptieren" [ref=e614] [cursor=pointer]: Akzeptieren
+  - button "Barrierefreiheits-Einstellungen öffnen" [ref=e615] [cursor=pointer]
+  - alert [ref=e616]

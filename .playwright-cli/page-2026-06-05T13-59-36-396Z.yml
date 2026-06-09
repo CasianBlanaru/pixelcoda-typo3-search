@@ -1,0 +1,107 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - img "TYPO3" [ref=e3]:
+      - img [ref=e4]
+    - article [ref=e12]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e74]:
+        - button "Element per Drag-and-drop verschieben" [ref=e75]:
+          - generic [ref=e76]: ⠿
+        - button "Nach oben verschieben" [ref=e77] [cursor=pointer]:
+          - generic [ref=e78]: ↑
+        - button "Nach unten verschieben" [ref=e79] [cursor=pointer]:
+          - generic [ref=e80]: ↓
+        - button "Elementaktionen öffnen" [ref=e81] [cursor=pointer]:
+          - generic [ref=e82]: •••
+      - heading "Neues Element" [level=2] [ref=e14]
+      - paragraph [ref=e16]: Hier können Sie Ihren Text eingeben...
+    - article [ref=e7]:
+      - text: Headless ready
+      - generic [ref=e65]:
+        - button "Element per Drag-and-drop verschieben" [ref=e66]:
+          - generic [ref=e67]: ⠿
+        - button "Nach oben verschieben" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: ↑
+        - button "Nach unten verschieben" [active] [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: ↓
+        - button "Elementaktionen öffnen" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: •••
+      - heading "Neues Element" [level=2] [ref=e9]
+      - paragraph [ref=e11]: Hier können Sie Ihren Text eingeben...
+    - article [ref=e17]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e83]:
+        - button "Element per Drag-and-drop verschieben" [ref=e84]:
+          - generic [ref=e85]: ⠿
+        - button "Nach oben verschieben" [ref=e86] [cursor=pointer]:
+          - generic [ref=e87]: ↑
+        - button "Nach unten verschieben" [ref=e88] [cursor=pointer]:
+          - generic [ref=e89]: ↓
+        - button "Elementaktionen öffnen" [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]: •••
+      - heading "Pixelcoda Content GSAP Animation Yeah" [level=2] [ref=e19]
+      - paragraph [ref=e21]: Bring TYPO3 content to life with performant, scroll-triggered GSAP animations and reduced-motion support.
+      - button "Bild" [ref=e92] [cursor=pointer]
+    - article [ref=e23]:
+      - text: GSAP ScrollTrigger
+      - generic [ref=e93]:
+        - button "Element per Drag-and-drop verschieben" [ref=e94]:
+          - generic [ref=e95]: ⠿
+        - button "Nach oben verschieben" [ref=e96] [cursor=pointer]:
+          - generic [ref=e97]: ↑
+        - button "Nach unten verschieben" [ref=e98] [cursor=pointer]:
+          - generic [ref=e99]: ↓
+        - button "Elementaktionen öffnen" [ref=e100] [cursor=pointer]:
+          - generic [ref=e101]: •••
+      - heading "Headless-ready animation settings" [level=2] [ref=e25]
+      - paragraph [ref=e27]: Editors configure the motion once. Fluid templates and headless frontends can consume stable animationSettingsData.
+      - button "Bild" [ref=e102] [cursor=pointer]
+    - generic [ref=e29]:
+      - text: Headless ready
+      - generic [ref=e103]:
+        - button "Element per Drag-and-drop verschieben" [ref=e104]:
+          - generic [ref=e105]: ⠿
+        - button "Nach oben verschieben" [ref=e106] [cursor=pointer]:
+          - generic [ref=e107]: ↑
+        - button "Nach unten verschieben" [ref=e108] [cursor=pointer]:
+          - generic [ref=e109]: ↓
+        - button "Elementaktionen öffnen" [ref=e110] [cursor=pointer]:
+          - generic [ref=e111]: •••
+      - heading "Pixelcoda Search" [level=2] [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - heading "Pixelcoda Search" [level=2] [ref=e34]: Pixelcoda Search
+          - generic [ref=e35]:
+            - generic [ref=e37]:
+              - textbox "Suchbegriff eingeben" [ref=e38]:
+                - /placeholder: Website durchsuchen...
+              - button "Suchen" [ref=e39] [cursor=pointer]: Suchen
+            - generic [ref=e41]:
+              - text: "API Status:"
+              - generic [ref=e42]: Offline
+        - region "Frage zum Inhalt stellen" [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]: KI-gestützte Antwort
+            - heading "Frage zum Inhalt stellen" [level=2] [ref=e46]
+            - paragraph [ref=e47]: Erhalte eine zusammengefasste Antwort mit Quellen aus dem Suchindex.
+          - generic [ref=e48]:
+            - generic [ref=e49]: Ihre Frage
+            - generic [ref=e50]:
+              - textbox "Ihre Frage" [ref=e51]:
+                - /placeholder: Was bietet Pixelcoda Search?
+              - button "KI fragen" [ref=e52] [cursor=pointer]
+  - toolbar "Frontend Editing" [ref=e53]:
+    - generic [ref=e54]:
+      - button "Frontend Editing deaktivieren" [pressed] [ref=e112] [cursor=pointer]:
+        - text: Frontend Editing deaktivieren
+        - generic [ref=e56]: Edit
+      - button "Keine ungespeicherten Änderungen" [disabled] [ref=e57]:
+        - text: Keine ungespeicherten Änderungen
+        - generic [ref=e58]: Save
+      - 'button "AI konfigurieren: OPENAI_API_KEY fehlt" [ref=e60] [cursor=pointer]':
+        - text: "AI konfigurieren: OPENAI_API_KEY fehlt"
+        - generic [ref=e61]: AI
+      - button "Neues Element hinzufügen" [ref=e62] [cursor=pointer]
+    - generic [ref=e63]:
+      - generic [ref=e64]: Textfeld auswählen
+      - generic [ref=e113]: Reihenfolge gespeichert

@@ -1,0 +1,115 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="content">
+    <div class="pixelcoda-ask" role="main" aria-label="AI-powered Q&A">
+        <div class="ask-container">
+            <h1 class="ask-title" id="ask-title">
+                <f:translate key="ask.title" default="Fragen Sie uns etwas" />
+            </h1>
+            
+            <div class="ask-form-container">
+                <form class="ask-form" method="get" role="search" aria-labelledby="ask-title">
+                    <div class="form-group">
+                        <label for="ask-question" class="sr-only">
+                            <f:translate key="ask.question.label" default="Ihre Frage" />
+                        </label>
+                        <input 
+                            type="text" 
+                            id="ask-question" 
+                            name="q" 
+                            class="form-control ask-input" 
+                            placeholder="{f:translate(key: 'ask.question.placeholder', default: 'Stellen Sie Ihre Frage...')}"
+                            value="{question}"
+                            aria-describedby="ask-help"
+                            autocomplete="off"
+                            required
+                        />
+                        <div id="ask-help" class="form-text">
+                            <f:translate key="ask.question.help" default="Geben Sie mindestens 3 Zeichen ein" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ask-context" class="form-label">
+                            <f:translate key="ask.context.label" default="Zusätzlicher Kontext (optional)" />
+                        </label>
+                        <textarea 
+                            id="ask-context" 
+                            name="context" 
+                            class="form-control ask-context" 
+                            rows="3"
+                            placeholder="{f:translate(key: 'ask.context.placeholder', default: 'Geben Sie zusätzliche Informationen an, die bei der Beantwortung helfen könnten...')}"
+                            aria-describedby="context-help"
+                        >{context}</textarea>
+                        <div id="context-help" class="form-text">
+                            <f:translate key="ask.context.help" default="Zusätzliche Informationen helfen der KI, bessere Antworten zu geben" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary ask-submit" aria-describedby="ask-status">
+                            <span class="btn-text">
+                                <f:translate key="ask.submit" default="Frage stellen" />
+                            </span>
+                            <span class="btn-loading" style="display: none;" aria-hidden="true">
+                                <f:translate key="ask.submitting" default="Wird verarbeitet..." />
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <f:if condition="{question}">
+                <div class="ask-results" role="region" aria-live="polite" aria-label="Antworten">
+                    <div class="ask-question-display">
+                        <h2 class="question-title">
+                            <f:translate key="ask.question.display" default="Frage:" />
+                        </h2>
+                        <p class="question-text">"{question}"</p>
+                    </div>
+                    
+                    <f:if condition="{answer}">
+                        <div class="ask-answer">
+                            <h3 class="answer-title">
+                                <f:translate key="ask.answer.title" default="Antwort:" />
+                            </h3>
+                            <div class="answer-content">
+                                <f:format.raw>{answer}</f:format.raw>
+                            </div>
+                            
+                            <f:if condition="{sources}">
+                                <div class="answer-sources">
+                                    <h4 class="sources-title">
+                                        <f:translate key="ask.sources.title" default="Quellen:" />
+                                    </h4>
+                                    <ul class="sources-list" role="list">
+                                        <f:for each="{sources}" as="source" iteration="i">
+                                            <li class="source-item" role="listitem">
+                                                <a href="{source.url}" class="source-link" target="_blank" rel="noopener">
+                                                    <span class="source-title">{source.title}</span>
+                                                    <f:if condition="{source.excerpt}">
+                                                        <span class="source-excerpt">{source.excerpt}</span>
+                                                    </f:if>
+                                                </a>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </div>
+                            </f:if>
+                        </div>
+                    </f:if>
+                    
+                    <f:if condition="{message}">
+                        <div class="ask-message alert alert-info" role="alert">
+                            {message}
+                        </div>
+                    </f:if>
+                </div>
+            </f:if>
+        </div>
+    </div>
+</f:section>
+
+</html>
