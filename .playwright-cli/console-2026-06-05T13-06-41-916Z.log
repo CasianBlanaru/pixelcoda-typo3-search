@@ -1,4 +1,0 @@
-[ 1673973ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://typo3-inst.localhost/typo3/ajax/system-information/render?token=4c496e2618f1aaa3601e37c473d1f02f64ec47c89f90c5bb8e007fd8cc701ff7&skipSessionUpdate=1:0
-[ 1674125ms] o
-[ 1974234ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://typo3-inst.localhost/typo3/ajax/system-information/render?token=4c496e2618f1aaa3601e37c473d1f02f64ec47c89f90c5bb8e007fd8cc701ff7&skipSessionUpdate=1:0
-[ 1974250ms] o

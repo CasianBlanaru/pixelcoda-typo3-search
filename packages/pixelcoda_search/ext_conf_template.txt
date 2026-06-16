@@ -3,7 +3,7 @@
 #########################
 
 # cat=api/basic/10; type=string; label=Search API URL: Base URL of the Pixelcoda Search API without a trailing slash.
-api_url = http://localhost:8787
+api_url = http://host.docker.internal:8787
 
 # cat=api/basic/20; type=string; label=Project ID: Search project identifier used by API requests.
 project_id = typo3

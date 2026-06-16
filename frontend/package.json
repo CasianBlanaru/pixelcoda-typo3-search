@@ -1,0 +1,17 @@
+{
+  "name": "pixelcoda-nextjs-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@pixelcoda/headless-nextjs": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typo3-headless": "^3.0.0"
+  }
+}

@@ -1,8 +1,38 @@
+# Dependencies
+node_modules/
+vendor/
+.build/
+
+# Next.js Build Output
+.next/
+out/
+build/
+dist/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and System files
+.idea/
+.vscode/
+*.swp
+*.swo
 .DS_Store
-.idea
-nbproject
-/var/*
-!/var/labels
-/vendor
-/public/*
-!/public/.htaccess
+
+# TYPO3 specific (if within the same repo)
+fileadmin/
+typo3conf/
+uploads/
+typo3temp/
+
+# Package Manager
+yarn-error.log
