@@ -2,7 +2,7 @@
 # ==================================
 
 # Force Standard Mode when configured
-[traverse(site:customConfiguration, 'renderingMode') == 'standard']
+[traverse(site('configuration'), 'customConfiguration/renderingMode') == 'standard']
     # Kill all JSON configuration
     page.config.additionalHeaders >
     page.config.disableAllHeaderCode = 0

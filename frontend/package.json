@@ -3,15 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -H 0.0.0.0 -p ${PORT:-3000}"
   },
   "dependencies": {
     "@pixelcoda/headless-nextjs": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "typo3-headless": "^3.0.0"
+    "react-dom": "latest"
   }
 }

@@ -469,7 +469,7 @@ class AnimationPreviewField extends AbstractFormElement
      */
     private function renderAnimationPreviewHtml(): array
     {
-        $previewLabel = LocalizationUtility::translate('LLL:EXT:content_gsap_animation/Resources/Private/Language/locallang_be.xlf:preview-label');
+        $previewLabel = LocalizationUtility::translate('LLL:EXT:content_gsap_animation/Resources/Private/Language/locallang_be.xlf:preview-label') ?? 'Animation preview';
         $gsapLogoWebPath = $this->getAssetWebPath('EXT:content_gsap_animation/Resources/Public/Images/gsap-greensock.svg');
         $animationPreviewImages = [
             'fade-up' => 'Fade up',
@@ -541,7 +541,7 @@ class AnimationPreviewField extends AbstractFormElement
         return self::$assetWebPathCache[$assetPath];
     }
 
-    private function buildSiblingFieldName(string $currentFieldName, string $targetFieldName): string
+    protected function buildSiblingFieldName(string $currentFieldName, string $targetFieldName): string
     {
         $fieldName = preg_replace(
             '/\[tx_content_gsap_animation_animation\](\[\])?$/',

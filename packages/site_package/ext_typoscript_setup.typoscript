@@ -2,14 +2,8 @@
 # =================================================
 # This file loads AFTER all other extensions
 
-# FORCE OVERRIDE - Clear everything first
-page >
-config >
-tt_content >
-lib >
-
 # Check rendering mode and override accordingly
-[traverse(site:customConfiguration, 'renderingMode') == 'standard']
+[traverse(site('configuration'), 'customConfiguration/renderingMode') == 'standard']
     # OVERRIDE HEADLESS - Switch to Standard Mode
     # ============================================
     
@@ -79,12 +73,72 @@ lib >
 [ELSE]
     # Headless Mode - Load Headless Extension
     @import 'EXT:headless/Configuration/TypoScript/setup.typoscript'
+
+    # Keep core content elements in JSON mode even if another extension loaded
+    # Fluid Styled Content definitions earlier in the include chain.
+    tt_content.text =< lib.contentElementWithHeader
+    tt_content.textpic =< lib.contentElementWithHeader
+    tt_content.textpic {
+        dataProcessing >
+        fields {
+            content {
+                fields {
+                    enlargeImageOnClick = BOOL
+                    enlargeImageOnClick.field = image_zoom
+                    bodytext = TEXT
+                    bodytext {
+                        field = bodytext
+                        parseFunc =< lib.parseFunc_RTE
+                    }
+                    gallery = TEXT
+                    gallery {
+                        dataProcessing {
+                            10 = FriendsOfTYPO3\Headless\DataProcessing\FilesProcessor
+                            10 {
+                                references.fieldName = image
+                                as = files
+                                processingConfiguration.delayProcessing = 1
+                            }
+                            20 = FriendsOfTYPO3\Headless\DataProcessing\GalleryProcessor
+                            20 {
+                                maxGalleryWidth = {$styles.content.textmedia.maxW}
+                                maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}
+                                columnSpacing = {$styles.content.textmedia.columnSpacing}
+                                borderWidth = {$styles.content.textmedia.borderWidth}
+                                borderPadding = {$styles.content.textmedia.borderPadding}
+                                as = gallery
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    tt_content.textmedia < tt_content.textpic
+    tt_content.textmedia.fields.content.fields.gallery.dataProcessing.10.references.fieldName = assets
+    tt_content.image =< lib.contentElementWithHeader
+    tt_content.image {
+        dataProcessing >
+        fields {
+            content {
+                fields {
+                    enlargeImageOnClick = BOOL
+                    enlargeImageOnClick.field = image_zoom
+                    gallery < tt_content.textpic.fields.content.fields.gallery
+                }
+            }
+        }
+    }
     
     # Reset config
     config {
-        disableAllHeaderCode = 0
-        additionalHeaders >
+        disableAllHeaderCode = 1
+        additionalHeaders {
+            10.header = Content-Type: application/json;charset=utf-8
+            20.header = Access-Control-Allow-Origin: *
+            30.header = Access-Control-Allow-Methods: GET, POST, OPTIONS
+        }
         debug = 0
-        admPanel = 1
+        admPanel = 0
     }
 [END]

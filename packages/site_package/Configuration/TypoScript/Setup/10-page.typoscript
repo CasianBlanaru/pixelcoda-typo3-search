@@ -5,35 +5,9 @@
 # - Standard Mode: Traditional TYPO3 with Fluid templates
 
 # Mode detection from site configuration
-[traverse(site:customConfiguration, 'renderingMode') == 'headless']
-    # HEADLESS MODE - JSON Output
-    @import 'EXT:headless/Configuration/TypoScript/setup.typoscript'
+[traverse(site('configuration'), 'customConfiguration/renderingMode') == 'headless']
     
-    # JSON page type
-    page = PAGE
-    page {
-        typeNum = 0
-        
-        # Force JSON output
-        config {
-            disableAllHeaderCode = 1
-            additionalHeaders.10.header = Content-Type: application/json;charset=utf-8
-            admPanel = 0
-            debug = 0
-        }
-        
-        10 = CONTENT
-        10 {
-            table = tt_content
-            select {
-                orderBy = sorting
-                where = {#colPos}=0
-            }
-            renderObj =< tt_content
-        }
-    }
-    
-    # Alternative JSON endpoint
+    # Alternative JSON endpoint for specific API calls
     pageJson = PAGE
     pageJson {
         typeNum = 834

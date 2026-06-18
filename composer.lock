@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70a646ead38e43b4852b1ed144a77551",
+    "content-hash": "e0ef6f08809f6984795f6fb857c00630",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -723,6 +723,169 @@
                 "source": "https://github.com/googleapis/php-jwt/tree/v7.0.5"
             },
             "time": "2026-04-01T20:38:03+00:00"
+        },
+        {
+            "name": "friendsoftypo3/headless",
+            "version": "dev-feature/typo3-v14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3-Headless/headless.git",
+                "reference": "74992fa513a380475eba1224a4868466fe93dd6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3-Headless/headless/zipball/74992fa513a380475eba1224a4868466fe93dd6a",
+                "reference": "74992fa513a380475eba1224a4868466fe93dd6a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">= 8.2",
+                "typo3/cms-core": "^14.0",
+                "typo3/cms-install": "^14.0"
+            },
+            "conflict": {
+                "typo3/cms-core": "<14.0"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.43",
+                "friendsofphp/php-cs-fixer": "^v3",
+                "helmich/typo3-typoscript-lint": "^v3",
+                "justinrainbow/json-schema": "^5",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.12",
+                "phpunit/phpcov": "^8 || ^9 || ^10",
+                "seld/jsonlint": "^1.11",
+                "symfony/yaml": "^6.1 || ^7.1",
+                "typo3/cms-form": "^14.0",
+                "typo3/coding-standards": "^0.8",
+                "typo3/testing-framework": "^9.0"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "app-dir": ".Build",
+                    "extension-key": "headless",
+                    "web-dir": ".Build/public"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FriendsOfTYPO3\\Headless\\": "Classes"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "TYPO3\\JsonResponse\\": ".Build/vendor/typo3/testing-framework/Resources/Core/Functional/Extensions/json_response/Classes",
+                    "FriendsOfTYPO3\\Headless\\Tests\\": "Tests"
+                }
+            },
+            "scripts": {
+                "ci:composer:normalize": [
+                    "@composer normalize --dry-run"
+                ],
+                "ci:coverage": [
+                    "@ci:coverage:unit",
+                    "@ci:coverage:functional"
+                ],
+                "ci:coverage:functional": [
+                    "@coverage:create-directories",
+                    ".Build/vendor/bin/phpunit -c Tests/Functional/phpunit.xml Classes --coverage-php=.Build/coverage/functional.cov Tests/Functional"
+                ],
+                "ci:coverage:merge": [
+                    "@coverage:create-directories",
+                    "@php .Build/vendor/bin/phpcov merge --clover=./build/logs/clover.xml ./.Build/coverage/"
+                ],
+                "ci:coverage:unit": [
+                    "@coverage:create-directories",
+                    ".Build/vendor/bin/phpunit -c Tests/Unit/phpunit.xml Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
+                ],
+                "coverage:create-directories": [
+                    "mkdir -p build/logs .Build/coverage"
+                ],
+                "ci:json:lint": [
+                    "find . -name '*.json' -not -path '*.Build/vendor*' | xargs .Build/vendor/bin/jsonlint -q"
+                ],
+                "ci:php:cs-fixer": [
+                    "php-cs-fixer fix -v --dry-run --using-cache no --diff --config .php-cs-fixer.php"
+                ],
+                "ci:php:lint": [
+                    "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"
+                ],
+                "ci:php:stan": [
+                    "phpstan --no-progress"
+                ],
+                "ci:test": [
+                    "@ci:phplint",
+                    "@ci:php:cs-fixer",
+                    "@ci:test:unit",
+                    "@ci:test:functional"
+                ],
+                "ci:test:functional": [
+                    ".Build/vendor/bin/phpunit -c Tests/Functional/phpunit.xml"
+                ],
+                "ci:test:unit": [
+                    ".Build/vendor/bin/phpunit -c Tests/Unit/phpunit.xml"
+                ],
+                "ci:ts:lint": [
+                    ".Build/vendor/bin/typoscript-lint -c Configuration/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration/TypoScript"
+                ],
+                "ci:yaml:lint": [
+                    "find . ! -path '*.Build/*' -name '*.yml' | xargs php ./.Build/vendor/bin/yaml-lint"
+                ],
+                "docs:generate": [
+                    "docker run --rm --pull always -v $(pwd):/project -it ghcr.io/typo3-documentation/render-guides:latest --config=Documentation"
+                ],
+                "fix:php:cs-fixer": [
+                    "php-cs-fixer fix -v --using-cache no --config .php-cs-fixer.php"
+                ],
+                "prepare-release": [
+                    "rm .gitignore",
+                    "rm -rf .Build",
+                    "rm -rf .github",
+                    "rm -rf Tests",
+                    "rm .editorconfig",
+                    "rm .gitattributes",
+                    "rm .php-cs-fixer.php",
+                    "rm CONTRIBUTING.rst"
+                ]
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Tymoteusz Motylewski",
+                    "role": "Head"
+                },
+                {
+                    "name": "Łukasz Uznański",
+                    "role": "Developer"
+                },
+                {
+                    "name": "TYPO3 PWA Initiative",
+                    "email": "extensions@macopedia.pl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This extension provides way to output content from TYPO3 in JSON format.",
+            "keywords": [
+                "TYPO3",
+                "headless",
+                "json",
+                "pwa"
+            ],
+            "support": {
+                "source": "https://github.com/TYPO3-Headless/headless/tree/feature/typo3-v14",
+                "issues": "https://github.com/TYPO3-Headless/headless/issues"
+            },
+            "funding": [
+                {
+                    "type": "custom",
+                    "url": "https://buy.stripe.com/bIYcPX1wd9hrawUfZ0"
+                }
+            ],
+            "time": "2026-05-08T14:46:14+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1473,8 +1636,8 @@
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "./packages/pixelcoda_content_gsap_animation",
-                "reference": "e3bc107435464a21e125373791730381a0f0f01f"
+                "url": "./packages/content_gsap_animation",
+                "reference": "e85f02d309bd18f45a8ed9b92c4d2ad283cfbfa8"
             },
             "require": {
                 "php": ">=8.2.0",
@@ -1674,7 +1837,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/pixelcoda_search",
-                "reference": "0443c64dff64674eb3f0047c39dac478a704a927"
+                "reference": "34e71bbdf4f955fd09f54e69a0f6d93de2a700fd"
             },
             "require": {
                 "php": "^8.1 || ^8.2 || ^8.3 || ^8.4 || ^8.5",
@@ -1691,6 +1854,7 @@
                 "phpunit/phpunit": "^10.5 || ^11.0",
                 "rector/rector": "^1.2 || ^2.0",
                 "ssch/typo3-rector": "^2.1 || ^3.0",
+                "typo3/cms-fluid-styled-content": "^12.4 || ^13.4 || ^14.0",
                 "typo3/testing-framework": "^8.2 || ^9.0"
             },
             "type": "typo3-cms-extension",
@@ -1737,7 +1901,7 @@
                     "rector process --dry-run"
                 ],
                 "check:phpstan": [
-                    "phpstan analyse -c phpstan.neon"
+                    "phpstan analyse -c phpstan.neon.dist --memory-limit=512M"
                 ],
                 "ci": [
                     "@check:php-cs",
@@ -7805,6 +7969,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "friendsoftypo3/headless": 20,
         "pixelcoda/content-gsap-animation": 20,
         "pixelcoda/fe-editor": 20,
         "pixelcoda/typo3-search": 20

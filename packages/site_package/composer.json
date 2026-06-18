@@ -5,7 +5,7 @@
 	"minimum-stability": "stable",
 	"description": "TYPO3 Headless And PWA Demo Site Package",
 	"require": {
-		"typo3/cms-core": "^12.4"
+		"typo3/cms-core": "^14.3"
 	},
 	"authors": [
 		{

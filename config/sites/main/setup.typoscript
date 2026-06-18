@@ -1,11 +1,13 @@
+[traverse(site('configuration'), 'customConfiguration/renderingMode') == 'standard']
+
 page = PAGE
 page.meta.description = TYPO3 test page for Pixelcoda Content GSAP Animation with local GSAP ScrollTrigger integration.
 page.meta.viewport = width=device-width, initial-scale=1
 page.shortcutIcon = EXT:content_gsap_animation/Resources/Public/Icons/Extension.svg
-config.absRefPrefix = https://typo3-inst.localhost/
+config.absRefPrefix = https://api.typo3-inst.localhost/
 config.disableCanonical = 1
 page.headerData.10 = TEXT
-page.headerData.10.value = <link rel="canonical" href="https://typo3-inst.localhost/">
+page.headerData.10.value = <link rel="canonical" href="https://api.typo3-inst.localhost/">
 styles.content.image.lazyLoading = lazy
 styles.content.image.imageDecoding = async
 styles.content.textmedia.maxW = 520
@@ -386,3 +388,5 @@ page.includeJSFooter {
     animations.defer = 1
     animations.depends = animation_definitions,gsap_scrolltrigger
 }
+
+[END]

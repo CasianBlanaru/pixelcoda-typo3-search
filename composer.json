@@ -14,10 +14,11 @@
         "sort-packages": true
     },
     "require": {
-        "pixelcoda/fe-editor": "@dev",
+        "friendsoftypo3/headless": "dev-feature/typo3-v14",
         "pixelcoda/content-gsap-animation": "dev-main as 3.1.0",
-        "pixelcoda/typo3-search": "dev-main",
+        "pixelcoda/fe-editor": "@dev",
         "pixelcoda/sitepackage": "^1.0",
+        "pixelcoda/typo3-search": "dev-main",
         "typo3/cms-backend": "^14.3",
         "typo3/cms-belog": "^14.3",
         "typo3/cms-beuser": "^14.3",
@@ -47,6 +48,10 @@
         "fe-editor": {
             "type": "path",
             "url": "./packages/typo3_fe_editing/packages/pixelcoda_fe_editor"
+        },
+        "friendsoftypo3/headless": {
+            "type": "vcs",
+            "url": "https://github.com/TYPO3-Headless/headless"
         },
         "packages": {
             "type": "path",

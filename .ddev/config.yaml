@@ -2,6 +2,8 @@ name: typo3-inst
 type: typo3
 docroot: public
 project_tld: localhost
+additional_hostnames:
+  - api.typo3-inst
 php_version: "8.4"
 webserver_type: nginx-fpm
 database:
@@ -10,3 +12,7 @@ database:
 composer_version: "2"
 web_environment: []
 nodejs_version: "22"
+web_extra_daemons:
+  - name: nextjs
+    command: "yarn dev --hostname 0.0.0.0"
+    directory: /var/www/html/frontend

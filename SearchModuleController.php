@@ -351,7 +351,6 @@ class SearchModuleController
         if (!file_exists($path)) {
             $path = Environment::getPublicPath() . '/../config/sites/main/config.yaml';
         }
-
         return $path;
     }
 
@@ -374,11 +373,10 @@ class SearchModuleController
      */
     protected function switchPackageStates(string $mode): void
     {
-        $configDir = Environment::getPublicPath() . '/../config/system';
-        if (!is_dir($configDir)) { // Check if the public path based config dir exists
-            $configDir = Environment::getProjectPath() . '/config/system'; // Fallback to project path
+        $configDir = Environment::getProjectPath() . '/config/system';
+        if (!is_dir($configDir)) {
+            $configDir = Environment::getPublicPath() . '/../config/system';
         }
-        // Now that configDir is correctly determined, construct sourceFile
         $sourceFile = $configDir . '/PackageStates.php.' . $mode;
         $targetFile = $configDir . '/PackageStates.php';
 
@@ -401,14 +399,13 @@ class SearchModuleController
         // Clear var/cache directory
         $cacheDir = Environment::getVarPath() . '/cache';
         if (is_dir($cacheDir)) {
-            GeneralUtility::mkdir_deep($cacheDir);
-            GeneralUtility::rmdir($cacheDir, true);
+            $this->removeDirectory($cacheDir);
         }
 
         // Clear typo3temp
         $tempVarDir = Environment::getPublicPath() . '/typo3temp/var';
         if (is_dir($tempVarDir)) {
-            GeneralUtility::rmdir($tempVarDir, true);
+            $this->removeDirectory($tempVarDir);
         }
 
         $this->ensureRuntimeDirectories();
@@ -451,6 +448,24 @@ class SearchModuleController
                 GeneralUtility::mkdir_deep($directory);
             }
         }
+    }
+
+    /**
+     * Remove directory recursively.
+     */
+    protected function removeDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir), ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir . '/' . $file;
+            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+        }
+
+        rmdir($dir);
     }
 
     /**

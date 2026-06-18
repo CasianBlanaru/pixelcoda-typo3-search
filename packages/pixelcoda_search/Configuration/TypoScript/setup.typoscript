@@ -230,6 +230,8 @@ pixelcoda_search_api_ask_stream {
     }
 }
 
+@import 'EXT:pixelcoda_search/Configuration/TypoScript/Setup/ContentElement.typoscript'
+
 # Webhook endpoint
 pixelcoda_webhook = PAGE
 pixelcoda_webhook {

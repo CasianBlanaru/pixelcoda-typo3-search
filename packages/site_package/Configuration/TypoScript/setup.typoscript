@@ -8,12 +8,19 @@
 @import 'EXT:site_package/Configuration/TypoScript/Setup/*.typoscript'
 
 # Global configuration based on rendering mode
-[traverse(site:customConfiguration, 'renderingMode') == 'headless']
+[traverse(site('configuration'), 'customConfiguration/renderingMode') == 'headless']
     # HEADLESS MODE ACTIVE
     # ====================
     
-    # Include Headless Extension
+    # 1. First, make sure the basic headless setup is loaded
+    # This sets up the default JSON rendering
     @import 'EXT:headless/Configuration/TypoScript/setup.typoscript'
+
+    # 2. Add your custom fields to the existing headless page object 
+    # instead of recreating it from scratch.
+    # Headless uses 'tt_content' rendering automatically.
+
+    # Include Headless Extension
     
     # Override content element rendering for JSON
     lib.contentElement {
@@ -33,53 +40,7 @@
         debug = 0
         admPanel = 0
     }
-    
-    # JSON Page Object
-    page = PAGE
-    page {
-        typeNum = 0
-        10 = JSON
-        10 {
-            fields {
-                id = TEXT
-                id.field = uid
-                
-                title = TEXT
-                title.field = title
-                
-                slug = TEXT
-                slug.field = slug
-                
-                content = JSON
-                content {
-                    fields {
-                        colPos0 < styles.content.get
-                        colPos0.select.where = {#colPos}=0
-                        colPos0.renderObj =< tt_content
-                        
-                        colPos1 < styles.content.get
-                        colPos1.select.where = {#colPos}=1
-                        colPos1.renderObj =< tt_content
-                    }
-                }
-                
-                meta = JSON
-                meta {
-                    fields {
-                        title = TEXT
-                        title.field = title
-                        
-                        description = TEXT
-                        description.field = description
-                        
-                        keywords = TEXT
-                        keywords.field = keywords
-                    }
-                }
-            }
-        }
-    }
-    
+
 [ELSE]
     # STANDARD MODE ACTIVE
     # ====================

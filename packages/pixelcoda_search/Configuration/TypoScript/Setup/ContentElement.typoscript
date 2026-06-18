@@ -2,7 +2,7 @@
 # Supports both Headless (JSON) and Standard (Fluid) modes
 
 # Check if we're in Headless mode
-[traverse(request.getQueryParams(), 'type') == 834 || request.getAttribute('headless') || plugin.tx_pixelcodasearch_search.settings.mode == 'headless']
+[traverse(request.getQueryParams(), 'type') == 834 || traverse(site('configuration'), 'customConfiguration/renderingMode') == 'headless']
     # HEADLESS MODE - JSON Output
     tt_content.pixelcodasearch_search >
     tt_content.pixelcodasearch_search = JSON

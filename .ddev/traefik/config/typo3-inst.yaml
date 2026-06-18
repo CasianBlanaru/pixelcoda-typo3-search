@@ -1,0 +1,129 @@
+# Custom routing: frontend on typo3-inst.localhost, TYPO3 API/backend on api.typo3-inst.localhost.
+# If you remove the ddev-generated line above you
+# are responsible for maintaining this file. DDEV will not then
+# update it, for example if you add `additional_hostnames`, etc.
+
+http:
+  routers:
+    typo3-inst-frontend-80-http:
+      entrypoints:
+        - http-80
+      rule: HostRegexp(`^typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-frontend-3000"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "typo3-inst-redirectHttps"
+    typo3-inst-web-80-http:
+      entrypoints:
+        - http-80
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-web-80"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "typo3-inst-redirectHttps"
+    typo3-inst-web-8025-http:
+      entrypoints:
+        - http-8025
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-web-8025"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "typo3-inst-redirectHttps"
+    typo3-inst-xhgui-80-http:
+      entrypoints:
+        - http-8143
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-xhgui-80"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "typo3-inst-redirectHttps"
+    
+    
+    
+    typo3-inst-frontend-3000-https:
+      entrypoints:
+        - http-443
+      rule: HostRegexp(`^typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-frontend-3000"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    typo3-inst-web-80-https:
+      entrypoints:
+        - http-443
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-web-80"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    typo3-inst-web-8025-https:
+      entrypoints:
+        - http-8026
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-web-8025"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    
+    typo3-inst-xhgui-80-https:
+      entrypoints:
+        - http-8142
+      rule: HostRegexp(`^api\.typo3-inst\.localhost$`)
+      
+      service: "typo3-inst-xhgui-80"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    
+
+  middlewares:
+    typo3-inst-redirectHttps:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  services:
+    typo3-inst-web-80:
+      loadbalancer:
+        servers:
+          - url: http://ddev-typo3-inst-web:80
+        
+    typo3-inst-frontend-3000:
+      loadbalancer:
+        servers:
+          - url: http://ddev-typo3-inst-web:3000
+        
+    typo3-inst-web-8025:
+      loadbalancer:
+        servers:
+          - url: http://ddev-typo3-inst-web:8025
+        
+    
+    
+    typo3-inst-xhgui-80:
+      loadbalancer:
+        servers:
+          - url: http://ddev-typo3-inst-xhgui:80
+        
+    
+    
+
+tls:
+  certificates:
+    - certFile: /mnt/ddev-global-cache/traefik/certs/typo3-inst.crt
+      keyFile: /mnt/ddev-global-cache/traefik/certs/typo3-inst.key

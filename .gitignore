@@ -19,6 +19,7 @@ dist/
 # Logs
 npm-debug.log*
 yarn-debug.log*
+package-lock.json
 yarn-error.log*
 
 # IDE and System files

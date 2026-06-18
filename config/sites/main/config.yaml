@@ -1,10 +1,12 @@
-base: '/'
+base: 'https://api.typo3-inst.localhost/'
+customConfiguration:
+  renderingMode: headless
 dependencies:
   - typo3/fluid-styled-content
-  - pixelcoda/fe-editor
-  - pixelcoda/content-gsap-animation
-  - pixelcoda/typo3-search
-errorHandling: {  }
+  - friendsoftypo3/headless
+  - friendsoftypo3/headless-mixed
+frontendBase: 'https://typo3-inst.localhost/'
+headless: 1
 languages:
   -
     title: English
@@ -15,4 +17,16 @@ languages:
     navigationTitle: English
     flag: us
 rootPageId: 2
-routes: {  }
+websiteTitle: ''
+routeEnhancers:
+  PageTypeSuffix:
+    type: PageType
+    map:
+      .json: 834
+  PixelcodaSearch:
+    type: Simple
+    limitToPages: [2]
+    routePath: '/suche'
+    _arguments:
+      q: 'q'
+      collections: 'collections'
