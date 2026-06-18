@@ -401,14 +401,13 @@ class SearchModuleController
         // Clear var/cache directory
         $cacheDir = Environment::getVarPath() . '/cache';
         if (is_dir($cacheDir)) {
-            GeneralUtility::mkdir_deep($cacheDir);
-            GeneralUtility::rmdir($cacheDir, true);
+            $this->removeDirectory($cacheDir);
         }
 
         // Clear typo3temp
         $tempVarDir = Environment::getPublicPath() . '/typo3temp/var';
         if (is_dir($tempVarDir)) {
-            GeneralUtility::rmdir($tempVarDir, true);
+            $this->removeDirectory($tempVarDir);
         }
 
         $this->ensureRuntimeDirectories();
@@ -451,6 +450,24 @@ class SearchModuleController
                 GeneralUtility::mkdir_deep($directory);
             }
         }
+    }
+
+    /**
+     * Remove directory recursively.
+     */
+    protected function removeDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $files = array_diff(scandir($dir), ['.', '..']);
+        foreach ($files as $file) {
+            $path = $dir . '/' . $file;
+            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+        }
+
+        rmdir($dir);
     }
 
     /**
