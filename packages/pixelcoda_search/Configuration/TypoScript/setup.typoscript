@@ -127,7 +127,7 @@ pixelcoda_search_api {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
@@ -163,7 +163,7 @@ pixelcoda_search_api_search {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
@@ -190,7 +190,7 @@ pixelcoda_search_api_ask {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
@@ -219,7 +219,7 @@ pixelcoda_search_api_ask_stream {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
@@ -245,7 +245,7 @@ pixelcoda_webhook {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = PixelCoda\PixelcodaSearch\Controller\WebhookController->indexAction
     }
@@ -263,7 +263,7 @@ pixelcoda_suggest {
         debug = 0
     }
     
-    10 = USER
+    10 = USER_INT
     10 {
         userFunc = PixelCoda\PixelcodaSearch\Eid\SuggestEid->processRequest
     }
