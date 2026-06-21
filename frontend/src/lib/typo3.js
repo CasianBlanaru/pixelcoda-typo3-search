@@ -36,7 +36,10 @@ export function normalizeMediaUrl(value) {
   if (value.startsWith('data:') || value.startsWith('blob:')) return value;
 
   const typo3Origin = siteConfig.typo3BaseUrl.replace(/\/$/, '');
-  const fileApi = siteConfig.frontendFileApi.replace(/\/$/, '');
+  let fileApi = siteConfig.frontendFileApi.replace(/\/$/, '');
+  if (fileApi.startsWith('/headless')) {
+    fileApi = fileApi.replace(/^\/headless/, '') || '/fileadmin';
+  }
 
   try {
     const url = new URL(value);
@@ -68,8 +71,23 @@ export function getBestImageUrl(file) {
 }
 
 export async function fetchPageData(path = '/', searchParams = null) {
-  const query = toQueryString(searchParams);
-  const url = `${joinUrl(siteConfig.apiBaseUrl, path)}${query}`;
+  // Strip '/headless' suffix from apiBaseUrl if present to target TYPO3 directly
+  let apiBase = siteConfig.apiBaseUrl;
+  if (apiBase.endsWith('/headless')) {
+    apiBase = siteConfig.typo3BaseUrl;
+  }
+
+  // Clean search params that trigger cHash verification in TYPO3
+  const cleanSearchParams = { ...searchParams };
+  if (cleanSearchParams) {
+    delete cleanSearchParams.q;
+    delete cleanSearchParams.collections;
+    delete cleanSearchParams.page;
+    delete cleanSearchParams.per_page;
+  }
+
+  const query = toQueryString(cleanSearchParams);
+  const url = `${joinUrl(apiBase, path)}${query}`;
   const response = await fetch(url, {
     headers: { Accept: 'application/json' },
     ...(query ? { cache: 'no-store' } : { next: { revalidate: 60 } }),

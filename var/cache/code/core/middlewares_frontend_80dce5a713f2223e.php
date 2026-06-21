@@ -6,6 +6,7 @@ return array (
   'typo3/cms-core/cache-timeout' => 'TYPO3\\CMS\\Frontend\\Middleware\\CacheTimeout',
   'typo3/cms-frontend/content-length-headers' => 'TYPO3\\CMS\\Frontend\\Middleware\\ContentLengthResponseHeader',
   'typo3/cms-frontend/shortcut-and-mountpoint-redirect' => 'TYPO3\\CMS\\Frontend\\Middleware\\ShortcutAndMountPointRedirect',
+  'pixelcoda/headless-metadata' => 'PixelCoda\\FeEditor\\Middleware\\HeadlessMetadataMiddleware',
   'pixelcoda/fe-editor-overlay' => 'PixelCoda\\FeEditor\\Middleware\\FrontendEditOverlay',
   'typo3/cms-frontend/prepare-tsfe-rendering' => 'TYPO3\\CMS\\Frontend\\Middleware\\PrepareTypoScriptFrontendRendering',
   'typo3/cms-frontend/page-argument-validator' => 'TYPO3\\CMS\\Frontend\\Middleware\\PageArgumentValidator',

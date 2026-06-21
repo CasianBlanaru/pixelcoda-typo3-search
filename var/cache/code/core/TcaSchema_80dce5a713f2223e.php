@@ -23345,6 +23345,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
               'label' => 'LLL:EXT:content_gsap_animation/Resources/Private/Language/locallang_be.xlf:label.easing',
             ),
           )),
+          'tx_pixelcodafeeditor_mobile' => 
+          \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+             'name' => 'tx_pixelcodafeeditor_mobile',
+             'configuration' => 
+            array (
+              'type' => 'number',
+              'size' => 2,
+              'default' => 12,
+              'range' => 
+              array (
+                'lower' => 1,
+                'upper' => 12,
+              ),
+              'exclude' => true,
+              'label' => 'Mobile Cols (1-12)',
+            ),
+          )),
+          'tx_pixelcodafeeditor_tablet' => 
+          \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+             'name' => 'tx_pixelcodafeeditor_tablet',
+             'configuration' => 
+            array (
+              'type' => 'number',
+              'size' => 2,
+              'default' => 12,
+              'range' => 
+              array (
+                'lower' => 1,
+                'upper' => 12,
+              ),
+              'exclude' => true,
+              'label' => 'Tablet Cols (1-12)',
+            ),
+          )),
+          'tx_pixelcodafeeditor_desktop' => 
+          \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+             'name' => 'tx_pixelcodafeeditor_desktop',
+             'configuration' => 
+            array (
+              'type' => 'number',
+              'size' => 2,
+              'default' => 12,
+              'range' => 
+              array (
+                'lower' => 1,
+                'upper' => 12,
+              ),
+              'exclude' => true,
+              'label' => 'Desktop Cols (1-12)',
+            ),
+          )),
         ),
       )),
        'schemaConfiguration' => 
@@ -23498,6 +23549,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
           'tx_content_gsap_animation_extended' => 
           array (
             'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
+          ),
+          'pixelcoda_responsive' => 
+          array (
+            'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
           ),
         ),
       ),
@@ -23801,6 +23856,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:column',
                     'l10n_mode' => 'exclude',
                     'l10n_display' => 'defaultAsReadonly',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
                   ),
                 )),
                 'sys_language_uid' => 
@@ -24114,8 +24220,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',
+              'showitem' => '--palette--;;general,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -24739,6 +24849,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -25104,8 +25265,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -25744,6 +25909,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -26109,8 +26325,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
               'columnsOverrides' => 
               array (
                 'bodytext' => 
@@ -26986,6 +27206,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -27351,6 +27622,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -27362,7 +27637,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -28213,6 +28488,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -28578,8 +28904,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -29445,6 +29775,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -29810,6 +30191,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -29821,7 +30206,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:media,assets,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:media,assets,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -30491,6 +30876,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -30856,6 +31292,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -30867,7 +31307,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,bullets_type,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,bullets_type,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -31588,6 +32028,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'cols' => 
                 \TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType::__set_state(array(
                    'name' => 'cols',
@@ -32090,6 +32581,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -32103,7 +32598,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--palette--;;tableconfiguration,table_caption,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;tablelayout,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--palette--;;tableconfiguration,table_caption,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;tablelayout,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -32956,6 +33451,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -33321,6 +33867,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -33329,7 +33879,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   'label' => 'frontend.db.tt_content:uploads.media',
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--palette--;;uploads,--palette--;;uploadslayout,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--palette--;;uploads,--palette--;;uploadslayout,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -33974,6 +34524,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -34339,8 +34940,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -35003,6 +35608,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -35368,6 +36024,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -35389,7 +36049,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -36052,6 +36712,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -36417,6 +37128,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -36438,7 +37153,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -37083,6 +37798,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -37448,8 +38214,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -38094,6 +38864,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -38459,8 +39280,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -39105,6 +39930,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -39470,8 +40346,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -40116,6 +40996,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -40481,8 +41412,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -41127,6 +42062,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -41492,8 +42478,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -42138,6 +43128,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -42503,8 +43544,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -43128,6 +44173,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -43493,8 +44589,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -44139,6 +45239,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -44504,8 +45655,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -45023,6 +46178,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -45388,6 +46594,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -45396,7 +46606,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT',
                 ),
               ),
-              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,records;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,records;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -45894,6 +47104,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -46259,6 +47520,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'creationOptions' => 
               array (
@@ -46271,7 +47536,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT',
                 ),
               ),
-              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -46787,6 +48052,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -47152,6 +48468,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
               'columnsOverrides' => 
               array (
@@ -47169,7 +48489,7 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                   ),
                 ),
               ),
-              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.html_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.html_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
             ),
              'subSchemata' => NULL,
              'passiveRelations' => 
@@ -47804,6 +49124,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -48169,8 +49540,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
               'columnsOverrides' => 
               array (
                 'pi_flexform' => 
@@ -48815,6 +50190,57 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                     'label' => 'frontend.db.tt_content:space_after_class',
                   ),
                 )),
+                'tx_pixelcodafeeditor_mobile' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_mobile',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Mobile Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_tablet' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_tablet',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Tablet Cols (1-12)',
+                  ),
+                )),
+                'tx_pixelcodafeeditor_desktop' => 
+                \TYPO3\CMS\Core\Schema\Field\NumberFieldType::__set_state(array(
+                   'name' => 'tx_pixelcodafeeditor_desktop',
+                   'configuration' => 
+                  array (
+                    'type' => 'number',
+                    'size' => 2,
+                    'default' => 12,
+                    'range' => 
+                    array (
+                      'lower' => 1,
+                      'upper' => 12,
+                    ),
+                    'exclude' => true,
+                    'label' => 'Desktop Cols (1-12)',
+                  ),
+                )),
                 'sectionIndex' => 
                 \TYPO3\CMS\Core\Schema\Field\CheckboxFieldType::__set_state(array(
                    'name' => 'sectionIndex',
@@ -49180,8 +50606,12 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
                 ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
+                ),
               ),
-              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+              'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
               'columnsOverrides' => 
               array (
                 'pi_flexform' => 
@@ -49934,6 +51364,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 'tx_content_gsap_animation_extended' => 
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
+                ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
                 ),
               ),
               'showitem' => '--div--;Content,--palette--;;general,header,subheader,bodytext; Text;;;richtext:rte_transform[mode=ts_css],--div--;Appearance,frame_class,layout,--div--;Access,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',
@@ -50935,6 +52369,10 @@ return \TYPO3\CMS\Core\Schema\SchemaCollection::__set_state(array(
                 'tx_content_gsap_animation_extended' => 
                 array (
                   'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
+                ),
+                'pixelcoda_responsive' => 
+                array (
+                  'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
                 ),
               ),
               'showitem' => '--palette--;;general,--palette--;;headers,--div--;LLL:EXT:pixelcoda_search/Resources/Private/Language/locallang_db.xlf:tabs.plugin,pi_flexform,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',

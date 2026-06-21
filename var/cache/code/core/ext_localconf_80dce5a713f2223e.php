@@ -868,6 +868,50 @@ ExtensionUtility::configurePlugin(
     ]
 );
 
+ExtensionUtility::configurePlugin(
+    'PixelcodaSearch',
+    'Search',
+    [
+        SearchController::class => 'index,search,suggest,apiSearch,apiAsk,apiAskStream',
+    ],
+    [
+        SearchController::class => 'index,search,suggest,apiSearch,apiAsk,apiAskStream',
+    ]
+);
+
+ExtensionUtility::configurePlugin(
+    'PixelcodaSearch',
+    'SearchApi',
+    [
+        SearchController::class => 'apiSearch',
+    ],
+    [
+        SearchController::class => 'apiSearch',
+    ]
+);
+
+ExtensionUtility::configurePlugin(
+    'PixelcodaSearch',
+    'AskApi',
+    [
+        SearchController::class => 'apiAsk',
+    ],
+    [
+        SearchController::class => 'apiAsk',
+    ]
+);
+
+ExtensionUtility::configurePlugin(
+    'PixelcodaSearch',
+    'AskStreamApi',
+    [
+        SearchController::class => 'apiAskStream',
+    ],
+    [
+        SearchController::class => 'apiAskStream',
+    ]
+);
+
 // Register EID handler for AJAX autocomplete
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['search_suggest']
     = SuggestEid::class . '::processRequest';

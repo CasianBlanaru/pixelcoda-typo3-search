@@ -5,6 +5,7 @@ dependencies:
   - typo3/fluid-styled-content
   - friendsoftypo3/headless
   - friendsoftypo3/headless-mixed
+  - pixelcoda/fe-editor
 frontendBase: 'https://typo3-inst.localhost/'
 headless: 1
 languages:

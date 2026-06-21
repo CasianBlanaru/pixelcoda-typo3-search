@@ -76,6 +76,7 @@ class DependencyInjectionContainer_a1490367f7f72161 extends Container
             'FriendsOfTYPO3\\Headless\\XClass\\ImageService' => 'getImageServiceService',
             'Masterminds\\HTML5' => 'getHTML5Service',
             'PixelCoda\\FeEditor\\Middleware\\FrontendEditOverlay' => 'getFrontendEditOverlayService',
+            'PixelCoda\\FeEditor\\Middleware\\HeadlessMetadataMiddleware' => 'getHeadlessMetadataMiddlewareService',
             'PixelCoda\\FeEditor\\ViewHelpers\\ContentEditableViewHelper' => 'getContentEditableViewHelperService',
             'PixelCoda\\FeEditor\\ViewHelpers\\DropZoneViewHelper' => 'getDropZoneViewHelperService',
             'PixelCoda\\PixelcodaSearch\\Command\\IndexCommand' => 'getIndexCommandService',
@@ -1396,6 +1397,7 @@ class DependencyInjectionContainer_a1490367f7f72161 extends Container
             'PixelCoda\\FeEditor\\Api\\AiController' => true,
             'PixelCoda\\FeEditor\\Api\\SaveController' => true,
             'PixelCoda\\FeEditor\\Configuration\\AiConfiguration' => true,
+            'PixelCoda\\FeEditor\\DataProcessing\\PixelCodaHeadlessDataProcessor' => true,
             'PixelCoda\\FeEditor\\Event\\AfterSaveEvent' => true,
             'PixelCoda\\FeEditor\\Event\\BeforeSaveEvent' => true,
             'PixelCoda\\FeEditor\\Security\\TokenService' => true,
@@ -4218,6 +4220,16 @@ class DependencyInjectionContainer_a1490367f7f72161 extends Container
     protected static function getFrontendEditOverlayService($container)
     {
         return $container->services['PixelCoda\\FeEditor\\Middleware\\FrontendEditOverlay'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\PixelCoda\FeEditor\Middleware\FrontendEditOverlay::class, ($container->services['TYPO3\\CMS\\Core\\FormProtection\\FormProtectionFactory'] ?? self::getFormProtectionFactoryService($container)), ($container->services['TYPO3\\CMS\\Backend\\Routing\\UriBuilder'] ?? self::getUriBuilderService($container)), \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\PixelCoda\FeEditor\Configuration\AiConfiguration::class, ($container->services['extension-configuration'] ??= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class))));
+    }
+
+    /**
+     * Gets the public 'PixelCoda\FeEditor\Middleware\HeadlessMetadataMiddleware' shared autowired service.
+     *
+     * @return \PixelCoda\FeEditor\Middleware\HeadlessMetadataMiddleware
+     */
+    protected static function getHeadlessMetadataMiddlewareService($container)
+    {
+        return $container->services['PixelCoda\\FeEditor\\Middleware\\HeadlessMetadataMiddleware'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\PixelCoda\FeEditor\Middleware\HeadlessMetadataMiddleware::class);
     }
 
     /**
@@ -11164,7 +11176,7 @@ class DependencyInjectionContainer_a1490367f7f72161 extends Container
      */
     protected static function getAllowedCallableAssertionService($container)
     {
-        return $container->services['TYPO3\\CMS\\Core\\Security\\AllowedCallableAssertion'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\TYPO3\CMS\Core\Security\AllowedCallableAssertion::class, [['TYPO3\\CMS\\Extbase\\Core\\Bootstrap', 'run'], ['TYPO3\\CMS\\Seo\\XmlSitemap\\XmlSitemapRenderer', 'render'], ['FriendsOfTYPO3\\Headless\\Frontend\\BackendEditorUrl', 'page'], ['FriendsOfTYPO3\\Headless\\Frontend\\BackendEditorUrl', 'record']]);
+        return $container->services['TYPO3\\CMS\\Core\\Security\\AllowedCallableAssertion'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstanceForDi(\TYPO3\CMS\Core\Security\AllowedCallableAssertion::class, [['TYPO3\\CMS\\Extbase\\Core\\Bootstrap', 'run'], ['TYPO3\\CMS\\Seo\\XmlSitemap\\XmlSitemapRenderer', 'render'], ['FriendsOfTYPO3\\Headless\\Frontend\\BackendEditorUrl', 'page'], ['FriendsOfTYPO3\\Headless\\Frontend\\BackendEditorUrl', 'record'], ['PixelCoda\\FeEditor\\DataProcessing\\PixelCodaHeadlessDataProcessor', 'processUserFunc']]);
     }
 
     /**

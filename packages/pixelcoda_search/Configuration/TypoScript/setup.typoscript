@@ -10,6 +10,7 @@ tt_content.list.20.pixelcodasearch_search {
     vendorName = PixelCoda
     controller = Search
     action = index
+    nonCacheableActions = search, apiSearch, apiAsk, apiAskStream
     switchableControllerActions {
         Search {
             1 = index
@@ -167,7 +168,7 @@ pixelcoda_search_api_search {
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
-        pluginName = Search
+        pluginName = SearchApi
         vendorName = PixelCoda
         controller = Search
         action = apiSearch
@@ -194,7 +195,7 @@ pixelcoda_search_api_ask {
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
-        pluginName = Search
+        pluginName = AskApi
         vendorName = PixelCoda
         controller = Search
         action = apiAsk
@@ -223,7 +224,7 @@ pixelcoda_search_api_ask_stream {
     10 {
         userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
         extensionName = PixelcodaSearch
-        pluginName = Search
+        pluginName = AskStreamApi
         vendorName = PixelCoda
         controller = Search
         action = apiAskStream

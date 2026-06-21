@@ -2,6 +2,32 @@
 return array (
   'orderedSets' => 
   array (
+    'friendsoftypo3/headless' => 
+    \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
+       'name' => 'friendsoftypo3/headless',
+       'label' => 'TYPO3 Headless',
+       'dependencies' => 
+      array (
+      ),
+       'optionalDependencies' => 
+      array (
+      ),
+       'settingsDefinitions' => 
+      array (
+      ),
+       'categoryDefinitions' => 
+      array (
+      ),
+       'typoscript' => 'EXT:headless/Configuration/Sets/Headless/',
+       'pagets' => 'EXT:headless/Configuration/Sets/Headless/page.tsconfig',
+       'settings' => 
+      array (
+      ),
+       'hidden' => false,
+       'routeEnhancers' => 
+      array (
+      ),
+    )),
     'typo3/fluid-styled-content' => 
     \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
        'name' => 'typo3/fluid-styled-content',
@@ -457,6 +483,34 @@ return array (
       array (
       ),
     )),
+    'pixelcoda/fe-editor' => 
+    \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
+       'name' => 'pixelcoda/fe-editor',
+       'label' => 'PixelCoda FE Editor',
+       'dependencies' => 
+      array (
+        0 => 'typo3/fluid-styled-content',
+        1 => 'friendsoftypo3/headless',
+      ),
+       'optionalDependencies' => 
+      array (
+      ),
+       'settingsDefinitions' => 
+      array (
+      ),
+       'categoryDefinitions' => 
+      array (
+      ),
+       'typoscript' => 'EXT:pixelcoda_fe_editor/Configuration/Sets/PixelcodaFeEditor/',
+       'pagets' => 'EXT:pixelcoda_fe_editor/Configuration/Sets/PixelcodaFeEditor/page.tsconfig',
+       'settings' => 
+      array (
+      ),
+       'hidden' => false,
+       'routeEnhancers' => 
+      array (
+      ),
+    )),
     'pixelcoda/content-gsap-animation' => 
     \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
        'name' => 'pixelcoda/content-gsap-animation',
@@ -476,33 +530,6 @@ return array (
       ),
        'typoscript' => 'EXT:content_gsap_animation/Configuration/Sets/ContentGsapAnimation/',
        'pagets' => 'EXT:content_gsap_animation/Configuration/Sets/ContentGsapAnimation/page.tsconfig',
-       'settings' => 
-      array (
-      ),
-       'hidden' => false,
-       'routeEnhancers' => 
-      array (
-      ),
-    )),
-    'pixelcoda/fe-editor' => 
-    \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
-       'name' => 'pixelcoda/fe-editor',
-       'label' => 'Pixelcoda FE Editor',
-       'dependencies' => 
-      array (
-        0 => 'typo3/fluid-styled-content',
-      ),
-       'optionalDependencies' => 
-      array (
-      ),
-       'settingsDefinitions' => 
-      array (
-      ),
-       'categoryDefinitions' => 
-      array (
-      ),
-       'typoscript' => 'EXT:pixelcoda_fe_editor/Configuration/Sets/FeEditor/',
-       'pagets' => 'EXT:pixelcoda_fe_editor/Configuration/Sets/FeEditor/page.tsconfig',
        'settings' => 
       array (
       ),
@@ -591,32 +618,6 @@ return array (
       ),
        'typoscript' => 'EXT:fluid_styled_content/Configuration/Sets/FluidStyledContentCss/',
        'pagets' => 'EXT:fluid_styled_content/Configuration/Sets/FluidStyledContentCss/page.tsconfig',
-       'settings' => 
-      array (
-      ),
-       'hidden' => false,
-       'routeEnhancers' => 
-      array (
-      ),
-    )),
-    'friendsoftypo3/headless' => 
-    \TYPO3\CMS\Core\Site\Set\SetDefinition::__set_state(array(
-       'name' => 'friendsoftypo3/headless',
-       'label' => 'TYPO3 Headless',
-       'dependencies' => 
-      array (
-      ),
-       'optionalDependencies' => 
-      array (
-      ),
-       'settingsDefinitions' => 
-      array (
-      ),
-       'categoryDefinitions' => 
-      array (
-      ),
-       'typoscript' => 'EXT:headless/Configuration/Sets/Headless/',
-       'pagets' => 'EXT:headless/Configuration/Sets/Headless/page.tsconfig',
        'settings' => 
       array (
       ),

@@ -68,6 +68,12 @@ return [
     'FE' => [
         'cacheHash' => [
             'enforceValidation' => true,
+            'excludedParameters' => [
+                'q',
+                'collections',
+                'page',
+                'per_page',
+            ],
         ],
         'debug' => false,
         'disableNoCacheParameter' => true,

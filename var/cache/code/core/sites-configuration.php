@@ -12,6 +12,7 @@ return array (
       0 => 'typo3/fluid-styled-content',
       1 => 'friendsoftypo3/headless',
       2 => 'friendsoftypo3/headless-mixed',
+      3 => 'pixelcoda/fe-editor',
     ),
     'frontendBase' => 'https://typo3-inst.localhost/',
     'headless' => 1,

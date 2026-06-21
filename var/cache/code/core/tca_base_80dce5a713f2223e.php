@@ -8188,20 +8188,68 @@ return array (
             ),
           ),
         ),
+        'tx_pixelcodafeeditor_mobile' => 
+        array (
+          'exclude' => true,
+          'label' => 'Mobile Cols (1-12)',
+          'config' => 
+          array (
+            'type' => 'number',
+            'size' => 2,
+            'default' => 12,
+            'range' => 
+            array (
+              'lower' => 1,
+              'upper' => 12,
+            ),
+          ),
+        ),
+        'tx_pixelcodafeeditor_tablet' => 
+        array (
+          'exclude' => true,
+          'label' => 'Tablet Cols (1-12)',
+          'config' => 
+          array (
+            'type' => 'number',
+            'size' => 2,
+            'default' => 12,
+            'range' => 
+            array (
+              'lower' => 1,
+              'upper' => 12,
+            ),
+          ),
+        ),
+        'tx_pixelcodafeeditor_desktop' => 
+        array (
+          'exclude' => true,
+          'label' => 'Desktop Cols (1-12)',
+          'config' => 
+          array (
+            'type' => 'number',
+            'size' => 2,
+            'default' => 12,
+            'range' => 
+            array (
+              'lower' => 1,
+              'upper' => 12,
+            ),
+          ),
+        ),
       ),
       'types' => 
       array (
         1 => 
         array (
-          'showitem' => '--palette--;;general,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',
+          'showitem' => '--palette--;;general,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription',
         ),
         'header' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'text' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
           'columnsOverrides' => 
           array (
             'bodytext' => 
@@ -8225,11 +8273,11 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'image' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:images,image,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'textmedia' => 
         array (
@@ -8243,7 +8291,7 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:media,assets,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--div--;core.form.tabs:media,assets,--palette--;;mediaAdjustments,--palette--;;gallerySettings,--palette--;;imagelinks,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'bullets' => 
         array (
@@ -8257,7 +8305,7 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,bullets_type,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,bullets_type,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.bulletlist_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'table' => 
         array (
@@ -8273,7 +8321,7 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--palette--;;tableconfiguration,table_caption,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;tablelayout,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,bodytext,--palette--;;tableconfiguration,table_caption,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;tablelayout,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'uploads' => 
         array (
@@ -8284,11 +8332,11 @@ return array (
               'label' => 'frontend.db.tt_content:uploads.media',
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,--palette--;;uploads,--palette--;;uploadslayout,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--palette--;;uploads,--palette--;;uploadslayout,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_abstract' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_categorized_content' => 
         array (
@@ -8312,7 +8360,7 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_categorized_pages' => 
         array (
@@ -8336,39 +8384,39 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,selected_categories,category_field,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_pages' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_subpages' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_recently_updated' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_related_pages' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_section' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_section_pages' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_sitemap' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'menu_sitemap_pages' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.menu_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'shortcut' => 
         array (
@@ -8379,7 +8427,7 @@ return array (
               'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT',
             ),
           ),
-          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,records;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,records;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'div' => 
         array (
@@ -8394,7 +8442,7 @@ return array (
               'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT',
             ),
           ),
-          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'html' => 
         array (
@@ -8414,11 +8462,11 @@ return array (
               ),
             ),
           ),
-          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.html_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.html_formlabel,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
         ),
         'form_formframework' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
           'columnsOverrides' => 
           array (
             'pi_flexform' => 
@@ -8433,7 +8481,7 @@ return array (
         ),
         'felogin_login' => 
         array (
-          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
+          'showitem' => '--palette--;;general,--palette--;;headers,--div--;core.form.tabs:plugin,pi_flexform,--div--;core.form.tabs:appearance,--palette--;;frames,--palette--;Pixelcoda Responsive;pixelcoda_responsive,--palette--;;appearanceLinks,--div--;core.form.tabs:categories,categories,--div--;core.form.tabs:language,--palette--;;language,--div--;core.form.tabs:access,--palette--;;hidden,--palette--;;access,--div--;core.form.tabs:notes,rowDescription,--div--;core.form.tabs:extended',
           'columnsOverrides' => 
           array (
             'pi_flexform' => 
@@ -8552,6 +8600,10 @@ return array (
         'tx_content_gsap_animation_extended' => 
         array (
           'showitem' => 'tx_content_gsap_animation_once,tx_content_gsap_animation_mirror,--linebreak--,tx_content_gsap_animation_easing,--linebreak--,tx_content_gsap_animation_anchor_placement,--linebreak--,tx_content_gsap_animation_offset',
+        ),
+        'pixelcoda_responsive' => 
+        array (
+          'showitem' => 'tx_pixelcodafeeditor_mobile,tx_pixelcodafeeditor_tablet,tx_pixelcodafeeditor_desktop',
         ),
       ),
     ),
