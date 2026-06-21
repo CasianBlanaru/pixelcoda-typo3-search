@@ -10,9 +10,11 @@ database:
   type: mariadb
   version: "10.11"
 composer_version: "2"
-web_environment: []
+web_environment:
+  - TYPO3_CONTEXT=Development
+  - NODE_OPTIONS=--max-old-space-size=2048
 nodejs_version: "22"
-web_extra_daemons:
-  - name: nextjs
-    command: "yarn dev --hostname 0.0.0.0"
-    directory: /var/www/html/frontend
+# web_extra_daemons:
+#   - name: nextjs
+#     command: "yarn start"
+#     directory: /var/www/html/frontend

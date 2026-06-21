@@ -6,6 +6,7 @@ dependencies:
   - friendsoftypo3/headless
   - friendsoftypo3/headless-mixed
   - pixelcoda/fe-editor
+  - pixelcoda/typo3-search
 frontendBase: 'https://typo3-inst.localhost/'
 headless: 1
 languages:
@@ -13,12 +14,12 @@ languages:
     title: English
     enabled: true
     languageId: 0
-    base: /
+    base: '/'
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
+    frontendBase: 'https://typo3-inst.localhost/'
 rootPageId: 2
-websiteTitle: ''
 routeEnhancers:
   PageTypeSuffix:
     type: PageType
@@ -26,8 +27,10 @@ routeEnhancers:
       .json: 834
   PixelcodaSearch:
     type: Simple
-    limitToPages: [2]
-    routePath: '/suche'
+    limitToPages:
+      - 2
+    routePath: /suche
     _arguments:
-      q: 'q'
-      collections: 'collections'
+      q: q
+      collections: collections
+websiteTitle: ''
