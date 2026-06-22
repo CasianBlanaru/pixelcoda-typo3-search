@@ -1901,7 +1901,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "Accessible TYPO3 search extension with autocomplete, faceted filters, classic and headless rendering, Meilisearch integration and optional AI answers.",
+            "description": "Premium TYPO3 Search extension with autocomplete, suggestions, pagination, faceted filters, Meilisearch integration, headless JSON API, React-ready widgets, accessibility-first markup and optional AI/RAG answers for TYPO3 12, 13 and 14.",
             "homepage": "https://pixelcoda.de",
             "keywords": [
                 "accessibility",
@@ -1911,9 +1911,14 @@
                 "headless-search",
                 "meilisearch",
                 "search",
+                "semantic-search",
                 "site-search",
                 "typo3",
-                "typo3-extension"
+                "typo3-ai-search",
+                "typo3-extension",
+                "typo3-rag",
+                "typo3-search",
+                "typo3-vector-search"
             ],
             "support": {
                 "docs": "https://github.com/CasianBlanaru/pixelcoda-typo3-search#readme",
@@ -7706,16 +7711,16 @@
         },
         {
             "name": "typo3/html-sanitizer",
-            "version": "v2.3.1",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/html-sanitizer.git",
-                "reference": "988caa31b5fa0dbe17a8331bfa3245898a650d88"
+                "reference": "8b5d0be44ded457ca993ec9ca93d859941c63764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/988caa31b5fa0dbe17a8331bfa3245898a650d88",
-                "reference": "988caa31b5fa0dbe17a8331bfa3245898a650d88",
+                "url": "https://api.github.com/repos/TYPO3/html-sanitizer/zipball/8b5d0be44ded457ca993ec9ca93d859941c63764",
+                "reference": "8b5d0be44ded457ca993ec9ca93d859941c63764",
                 "shasum": ""
             },
             "require": {
@@ -7751,9 +7756,9 @@
             "description": "HTML sanitizer aiming to provide XSS-safe markup based on explicitly allowed tags, attributes and values.",
             "support": {
                 "issues": "https://github.com/TYPO3/html-sanitizer/issues",
-                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.3.1"
+                "source": "https://github.com/TYPO3/html-sanitizer/tree/v2.3.2"
             },
-            "time": "2026-04-30T11:50:45+00:00"
+            "time": "2026-06-08T15:19:36+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -7906,5 +7911,5 @@
     "platform-overrides": {
         "php": "8.3.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
