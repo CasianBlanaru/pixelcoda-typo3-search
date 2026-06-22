@@ -11,7 +11,7 @@
     "@pixelcoda/llm-adapter": "*",
     "dotenv": "^16.4.5",
     "node-html-parser": "^6.1.12",
-    "undici": "^6.19.8"
+    "undici": "^6.27.0"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
