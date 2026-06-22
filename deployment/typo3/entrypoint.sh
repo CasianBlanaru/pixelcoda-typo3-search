@@ -211,9 +211,9 @@ if [ "$db_configured" = true ]; then
     fi
 
     php /usr/local/bin/pixelcoda-configure-site || true
+    php /usr/local/bin/pixelcoda-set-permissions || true
 fi
 
-php /usr/local/bin/pixelcoda-set-permissions
 vendor/bin/typo3 cache:flush || true
 mkdir -p \
     /var/www/html/public/typo3temp/assets/css \
