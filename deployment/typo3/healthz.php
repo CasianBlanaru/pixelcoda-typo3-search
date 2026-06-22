@@ -10,14 +10,16 @@ $databaseConnected = false;
 
 if ($installed && extension_loaded('mysqli')) {
     mysqli_report(MYSQLI_REPORT_OFF);
-    $connection = @new mysqli(
+    $connection = mysqli_init();
+    $connection->options(MYSQLI_OPT_CONNECT_TIMEOUT, 2);
+    $connected = @$connection->real_connect(
         (string)getenv('TYPO3_DB_HOST'),
         (string)getenv('TYPO3_DB_USERNAME'),
         (string)getenv('TYPO3_DB_PASSWORD'),
         (string)getenv('TYPO3_DB_DBNAME'),
         (int)(getenv('TYPO3_DB_PORT') ?: 3306),
     );
-    $databaseConnected = $connection->connect_errno === 0 && $connection->ping();
+    $databaseConnected = $connected && $connection->ping();
     $connection->close();
 }
 
