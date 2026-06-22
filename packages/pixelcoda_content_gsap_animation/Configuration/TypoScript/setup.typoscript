@@ -1,0 +1,42 @@
+# Default definition for content_gsap_animation
+plugin.tx_content_gsap_animation {
+    variables {
+        # GSAP options
+        gsap-easing = TEXT
+        gsap-easing.value = {$plugin.tx_content_gsap_animation.gsap-easing}
+
+        gsap-once = TEXT
+        gsap-once.value = {$plugin.tx_content_gsap_animation.gsap-once}
+
+        gsap-duration = TEXT
+        gsap-duration.value = {$plugin.tx_content_gsap_animation.gsap-duration}
+    }
+
+    dataProcessing {
+        78911002 = Pixelcoda\ContentGsapAnimation\DataProcessing\AnimationSettingsProcessor
+    }
+}
+
+# Include necessary GSAP JavaScript files in footer
+page {
+    includeJSFooter {
+        # GSAP main library
+        gsap = EXT:content_gsap_animation/Resources/Public/JavaScript/Vendor/gsap/gsap.min.js
+        gsap.defer = 1
+
+        # ScrollTrigger plugin
+        gsap_scrolltrigger = EXT:content_gsap_animation/Resources/Public/JavaScript/Vendor/gsap/ScrollTrigger.min.js
+        gsap_scrolltrigger.defer = 1
+        gsap_scrolltrigger.depends = gsap
+
+        # Animation definitions
+        animation_definitions = EXT:content_gsap_animation/Resources/Public/JavaScript/Core/animation-definitions.js
+        animation_definitions.defer = 1
+        # animation_definitions.depends = gsap # Not strictly necessary as it's a definition object
+
+        # Animation initialization file
+        animations = EXT:content_gsap_animation/Resources/Public/JavaScript/Bundle/animation.bundle.js
+        animations.defer = 1
+        animations.depends = animation_definitions,gsap_scrolltrigger
+    }
+}

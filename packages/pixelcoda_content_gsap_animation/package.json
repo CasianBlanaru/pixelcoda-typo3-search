@@ -1,0 +1,30 @@
+{
+  "name": "pixelcoda-content-gsap-animation",
+  "version": "3.5.17",
+  "description": "TYPO3 extension for accessible GSAP GreenSock ScrollTrigger content animations with backend preview and headless JSON data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c Resources/Public/rollup.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CasianBlanaru/pixelcoda-content-gsap-animation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CasianBlanaru/pixelcoda-content-gsap-animation/issues"
+  },
+  "homepage": "https://github.com/CasianBlanaru/pixelcoda-content-gsap-animation#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rollup": "^4.40.2"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0"
+  }
+}

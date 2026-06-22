@@ -1,0 +1,13 @@
+# import default setup for content_gsap_animation
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:content_gsap_animation/Configuration/TypoScript/setup.typoscript">
+
+# support for bootstrap_package v15
+lib.contentElement {
+    variables {
+        gsap-easing < plugin.tx_content_gsap_animation.variables.gsap-easing
+        gsap-once < plugin.tx_content_gsap_animation.variables.gsap-once
+    }
+    dataProcessing {
+        78911002 < plugin.tx_content_gsap_animation.dataProcessing.78911002
+    }
+}
