@@ -102,6 +102,7 @@ if [ "$db_configured" = true ]; then
     echo "Waiting for Railway MySQL (max 15 seconds)..."
     for _i in $(seq 1 5); do
         if mysqladmin ping \
+            --connect-timeout=2 \
             --host="${TYPO3_DB_HOST}" \
             --port="${TYPO3_DB_PORT}" \
             --user="${TYPO3_DB_USERNAME}" \
@@ -172,6 +173,7 @@ if [ "$db_configured" = true ]; then
 
     vendor/bin/typo3 setup:begroups:default --groups=Both --no-interaction || true
     if ! mysql \
+        --connect-timeout=2 \
         --host="${TYPO3_DB_HOST}" \
         --port="${TYPO3_DB_PORT}" \
         --user="${TYPO3_DB_USERNAME}" \
@@ -183,6 +185,7 @@ if [ "$db_configured" = true ]; then
         | grep -q '[0-9]'; then
         editor_group_ids="$(
             mysql \
+                --connect-timeout=2 \
                 --host="${TYPO3_DB_HOST}" \
                 --port="${TYPO3_DB_PORT}" \
                 --user="${TYPO3_DB_USERNAME}" \
@@ -203,6 +206,7 @@ if [ "$db_configured" = true ]; then
     else
         demo_password_hash="$(php -r 'echo password_hash($argv[1], PASSWORD_ARGON2ID);' "${PIXELCODA_DEMO_EDITOR_PASSWORD}")"
         mysql \
+            --connect-timeout=2 \
             --host="${TYPO3_DB_HOST}" \
             --port="${TYPO3_DB_PORT}" \
             --user="${TYPO3_DB_USERNAME}" \
