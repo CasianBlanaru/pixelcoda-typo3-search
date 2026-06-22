@@ -190,7 +190,8 @@ if [ "$db_configured" = true ]; then
                 --batch \
                 --skip-column-names \
                 "${TYPO3_DB_DBNAME}" \
-                -e "SELECT GROUP_CONCAT(uid ORDER BY uid SEPARATOR ',') FROM be_groups WHERE title IN ('Editor','Advanced Editor') AND deleted=0"
+                -e "SELECT GROUP_CONCAT(uid ORDER BY uid SEPARATOR ',') FROM be_groups WHERE title IN ('Editor','Advanced Editor') AND deleted=0" \
+                || echo ""
         )"
         vendor/bin/typo3 backend:user:create \
             --username="${PIXELCODA_DEMO_EDITOR_USERNAME}" \
