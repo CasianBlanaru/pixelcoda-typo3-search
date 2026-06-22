@@ -47,6 +47,11 @@ return [
                 'model' => '',
                 'provider' => 'anthropic',
             ],
+            'headless' => [
+                'enabled' => '1',
+                'exposeBackendEditUrl' => '1',
+                'exposePid' => '1',
+            ],
         ],
         'pixelcoda_search' => [
             'api_key' => 'pc_write_dev_key',
@@ -113,7 +118,6 @@ return [
     ],
     'SYS' => [
         'UTF8filesystem' => true,
-        'cookieDomain' => '.typo3-inst.localhost',
         'caching' => [
             'cacheConfigurations' => [
                 'hash' => [
@@ -133,6 +137,7 @@ return [
                 ],
             ],
         ],
+        'cookieDomain' => '.typo3-inst.localhost',
         'devIPmask' => '',
         'displayErrors' => 0,
         'encryptionKey' => 'b4a5fb8dd80feb35857f95388966a0ee97edcd6c6dcb1e5b6dd6b09548322f5e753efc9857528c6d90d29cf03f452cf8',

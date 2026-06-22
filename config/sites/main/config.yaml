@@ -14,7 +14,7 @@ languages:
     title: English
     enabled: true
     languageId: 0
-    base: '/'
+    base: /
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
