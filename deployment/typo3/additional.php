@@ -59,3 +59,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['content_gsap_animation'] = array_repl
         'hideFooterAnimationLabel' => false,
     ],
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = 1;
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
