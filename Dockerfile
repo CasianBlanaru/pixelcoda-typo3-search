@@ -58,6 +58,7 @@ COPY deployment/typo3/favicon.svg public/favicon.svg
 COPY deployment/typo3/favicon.svg public/favicon.ico
 COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-production.ini
 COPY simple-api.js index.html package.json /opt/pixelcoda-search-api/
+RUN cd /opt/pixelcoda-search-api && npm install --omit=dev
 
 RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && mkdir -p \
