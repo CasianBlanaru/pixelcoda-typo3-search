@@ -20,16 +20,16 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';
 
 $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'] = [
     'charset' => 'utf8mb4',
-    'dbname' => (string)getenv('TYPO3_DB_DBNAME'),
+    'dbname' => (string)(getenv('TYPO3_DB_DBNAME') ?: getenv('MYSQLDATABASE')),
     'defaultTableOptions' => [
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
     ],
     'driver' => (string)(getenv('TYPO3_DB_DRIVER') ?: 'mysqli'),
-    'host' => (string)getenv('TYPO3_DB_HOST'),
-    'password' => (string)getenv('TYPO3_DB_PASSWORD'),
-    'port' => (int)(getenv('TYPO3_DB_PORT') ?: 3306),
-    'user' => (string)getenv('TYPO3_DB_USERNAME'),
+    'host' => (string)(getenv('TYPO3_DB_HOST') ?: getenv('MYSQLHOST') ?: '127.0.0.1'),
+    'password' => (string)(getenv('TYPO3_DB_PASSWORD') ?: getenv('MYSQLPASSWORD')),
+    'port' => (int)(getenv('TYPO3_DB_PORT') ?: getenv('MYSQLPORT') ?: 3306),
+    'user' => (string)(getenv('TYPO3_DB_USERNAME') ?: getenv('MYSQLUSER')),
 ];
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['pixelcoda_search'] = array_replace(
