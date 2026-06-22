@@ -14,6 +14,7 @@ RUN apt-get update \
         libzip-dev \
         curl \
         nodejs \
+        npm \
         unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j"$(nproc)" dom gd intl mbstring mysqli opcache pdo_mysql xml zip \
