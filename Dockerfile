@@ -73,7 +73,7 @@ RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
     && chown -R www-data:www-data /data /var/www/html
 
 ENV PORT=8080 \
-    TYPO3_CONTEXT=Production \
+    TYPO3_CONTEXT=Development \
     TYPO3_PATH_APP=/var/www/html \
     TYPO3_PATH_ROOT=/var/www/html/public
 
