@@ -1,0 +1,58 @@
+{
+    "name": "pixelcoda-typo3-search",
+    "version": "2.2.11",
+    "description": "Accessible, API-first search platform with AI-assisted answers for TYPO3",
+    "type": "module",
+    "main": "simple-api.js",
+    "workspaces": [
+        "apps/api",
+        "apps/worker",
+        "apps/widgets",
+        "packages/llm-adapter",
+        "standalone-api"
+    ],
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
+    "scripts": {
+        "start": "node simple-api.js",
+        "dev": "node simple-api.js",
+        "test": "npm run test:extension",
+        "test:extension": "npm --prefix typo3-dev/packages/pixelcoda_search test -- --runInBand",
+        "lint:extension": "npm --prefix typo3-dev/packages/pixelcoda_search run lint",
+        "build": "npm run build:extension && npm run build:llm-adapter && npm run build:widgets && npm run build:worker && npm run build:api && npm run build:standalone",
+        "build:extension": "npm --prefix typo3-dev/packages/pixelcoda_search run build",
+        "build:api": "npm run build --workspace @pixelcoda/api",
+        "build:worker": "npm run build --workspace @pixelcoda/worker",
+        "build:widgets": "npm run build --workspace @pixelcoda/widgets",
+        "build:llm-adapter": "npm run build --workspace @pixelcoda/llm-adapter",
+        "build:standalone": "npm run build --workspace pixelcoda-search-api-standalone",
+        "api:dev": "cd standalone-api && npm run dev",
+        "api:start": "cd standalone-api && npm start",
+        "widgets:dev": "cd apps/widgets && npm run dev",
+        "widgets:build": "cd apps/widgets && npm run build"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5"
+    },
+    "devDependencies": {
+        "typescript": "^5.6.3"
+    },
+    "keywords": [
+        "search",
+        "api",
+        "typo3",
+        "cms",
+        "ai",
+        "vector-search",
+        "meilisearch"
+    ],
+    "author": "Pixelcoda",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CasianBlanaru/pixelcoda-typo3-search.git"
+    },
+    "homepage": "https://github.com/CasianBlanaru/pixelcoda-typo3-search#readme"
+}
