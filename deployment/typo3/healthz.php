@@ -8,7 +8,7 @@ $settingsPath = dirname(__DIR__) . '/config/system/settings.php';
 $installed = is_file($settingsPath);
 $databaseConnected = false;
 
-if ($installed && extension_loaded('mysqli')) {
+if ($installed && (string)getenv('TYPO3_DB_HOST') !== '' && extension_loaded('mysqli')) {
     mysqli_report(MYSQLI_REPORT_OFF);
     $connection = mysqli_init();
     $connection->options(MYSQLI_OPT_CONNECT_TIMEOUT, 2);
