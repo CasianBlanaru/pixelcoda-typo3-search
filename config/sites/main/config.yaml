@@ -1,4 +1,4 @@
-base: 'https://api.typo3-inst.localhost/'
+base: '%env(TYPO3_BACKEND_BASE)%'
 customConfiguration:
   renderingMode: headless
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   - friendsoftypo3/headless-mixed
   - pixelcoda/fe-editor
   - pixelcoda/typo3-search
-frontendBase: 'https://typo3-inst.localhost/'
+frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 headless: 1
 languages:
   -
@@ -18,7 +18,7 @@ languages:
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
-    frontendBase: 'https://typo3-inst.localhost/'
+    frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 rootPageId: 2
 routeEnhancers:
   PageTypeSuffix:

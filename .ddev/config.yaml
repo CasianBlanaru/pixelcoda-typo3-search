@@ -13,6 +13,8 @@ composer_version: "2"
 web_environment:
   - TYPO3_CONTEXT=Development
   - NODE_OPTIONS=--max-old-space-size=2048
+  - TYPO3_BACKEND_BASE=https://api.typo3-inst.localhost/
+  - TYPO3_FRONTEND_BASE=https://typo3-inst.localhost/
 nodejs_version: "22"
 # web_extra_daemons:
 #   - name: nextjs
