@@ -19,6 +19,7 @@
         "pixelcoda/fe-editor": "@dev",
         "pixelcoda/sitepackage": "^1.0",
         "pixelcoda/typo3-search": "dev-main",
+        "pwademo/site-package": "@dev",
         "typo3/cms-backend": "^14.3",
         "typo3/cms-belog": "^14.3",
         "typo3/cms-beuser": "^14.3",

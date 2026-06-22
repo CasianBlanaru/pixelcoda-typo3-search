@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0ef6f08809f6984795f6fb857c00630",
+    "content-hash": "f604785ee2cb764a79c960c5e3c998db",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1784,11 +1784,11 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/content_gsap_animation",
-                "reference": "e85f02d309bd18f45a8ed9b92c4d2ad283cfbfa8"
+                "reference": "09da50c183c735fe623ce849ee8c6bfb48aa21e2"
             },
             "require": {
                 "php": ">=8.2.0",
-                "typo3/cms-core": "^12.4 || ^13.4 || ^14.3"
+                "typo3/cms-core": "^13.4 || ^14.3"
             },
             "require-dev": {
                 "b13/container": "^3.1.0",
@@ -1901,15 +1901,15 @@
         },
         {
             "name": "pixelcoda/fe-editor",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./packages/typo3_fe_editing/packages/pixelcoda_fe_editor",
-                "reference": "6c995ed790c498dca942be641976c2e30ec6c5c4"
+                "reference": "5981d267b70ce92a61a4ab18d60edd19e0cc6db7"
             },
             "require": {
-                "typo3/cms-core": "^12.4 || ^13.4 || ^14.0",
-                "typo3/cms-rte-ckeditor": "^12.4 || ^13.4 || ^14.0"
+                "typo3/cms-core": "^13.4 || ^14.0",
+                "typo3/cms-rte-ckeditor": "^13.4 || ^14.0"
             },
             "type": "typo3-cms-extension",
             "extra": {
@@ -2605,6 +2605,48 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "pwademo/site-package",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "./packages/site_package",
+                "reference": "15b7e7b48bb5fa94aa6a20d79b2c231f7c05276a"
+            },
+            "require": {
+                "typo3/cms-core": "^14.3"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "site_package"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pwademo\\SitePackage\\": "Classes"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Łukasz Uznański",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Marcin Sągol",
+                    "role": "Developer"
+                },
+                {
+                    "name": "TYPO3 PWA Initiative",
+                    "role": "Developer",
+                    "email": "extensions@macopedia.pl"
+                }
+            ],
+            "description": "TYPO3 Headless And PWA Demo Site Package",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "ralouphie/getallheaders",
@@ -8120,7 +8162,8 @@
         "friendsoftypo3/headless": 20,
         "pixelcoda/content-gsap-animation": 20,
         "pixelcoda/fe-editor": 20,
-        "pixelcoda/typo3-search": 20
+        "pixelcoda/typo3-search": 20,
+        "pwademo/site-package": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -8129,5 +8172,5 @@
     "platform-overrides": {
         "php": "8.2.0"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
