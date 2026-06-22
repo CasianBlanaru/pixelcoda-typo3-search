@@ -12,8 +12,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\Writer\YamlFileWriter;
 use TYPO3\CMS\Core\Core\Environment;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -322,11 +322,14 @@ class SearchModuleController
     {
         $configPath = $this->getSiteConfigPath();
         if (!file_exists($configPath)) {
+            $configPath = $this->getHeadlessConfigPathFallback();
+        }
+
+        if (!file_exists($configPath)) {
             throw new Exception('Site configuration file not found at ' . $configPath);
         }
         
         $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-        $writer = GeneralUtility::makeInstance(YamlFileWriter::class);
         
         $config = $loader->load($configPath);
         if (!isset($config['customConfiguration']) || !is_array($config['customConfiguration'])) {
@@ -335,7 +338,10 @@ class SearchModuleController
         $config['customConfiguration']['renderingMode'] = $mode;
 
         try {
-            $writer->write($configPath, $config);
+            $yamlFileContents = Yaml::dump($config, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
+            if (!GeneralUtility::writeFile($configPath, $yamlFileContents, true)) {
+                throw new \Exception('Unable to write site configuration');
+            }
         } catch (Exception $e) {
             throw new Exception('Failed to update site configuration: ' . $e->getMessage());
         }
