@@ -53,7 +53,7 @@ return [
             'api_url' => 'http://host.docker.internal:8787',
             'batch_size' => '50',
             'cors_origins' => '',
-            'debug_mode' => '0',
+            'debug_mode' => '1',
             'default_mode' => 'headless',
             'enable_auto_index' => '1',
             'enable_metrics' => '0',
@@ -113,6 +113,7 @@ return [
     ],
     'SYS' => [
         'UTF8filesystem' => true,
+        'cookieDomain' => '.typo3-inst.localhost',
         'caching' => [
             'cacheConfigurations' => [
                 'hash' => [

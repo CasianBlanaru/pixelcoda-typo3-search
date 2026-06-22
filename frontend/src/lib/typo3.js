@@ -70,7 +70,7 @@ export function getBestImageUrl(file) {
   );
 }
 
-export async function fetchPageData(path = '/', searchParams = null) {
+export async function fetchPageData(path = '/', searchParams = null, cookie = null) {
   // Strip '/headless' suffix from apiBaseUrl if present to target TYPO3 directly
   let apiBase = siteConfig.apiBaseUrl;
   if (apiBase.endsWith('/headless')) {
@@ -89,8 +89,11 @@ export async function fetchPageData(path = '/', searchParams = null) {
   const query = toQueryString(cleanSearchParams);
   const url = `${joinUrl(apiBase, path)}${query}`;
   const response = await fetch(url, {
-    headers: { Accept: 'application/json' },
-    ...(query ? { cache: 'no-store' } : { next: { revalidate: 60 } }),
+    headers: { 
+      Accept: 'application/json',
+      ...(cookie ? { Cookie: cookie } : {}),
+    },
+    cache: 'no-store',
   });
 
   if (!response.ok) {

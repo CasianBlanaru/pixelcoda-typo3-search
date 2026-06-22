@@ -106,7 +106,7 @@ http:
     typo3-inst-frontend-3000:
       loadbalancer:
         servers:
-          - url: http://ddev-typo3-inst-web:3000
+          - url: http://host.docker.internal:3000
         
     typo3-inst-web-8025:
       loadbalancer:

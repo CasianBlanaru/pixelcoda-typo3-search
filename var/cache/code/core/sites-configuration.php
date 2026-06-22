@@ -13,6 +13,7 @@ return array (
       1 => 'friendsoftypo3/headless',
       2 => 'friendsoftypo3/headless-mixed',
       3 => 'pixelcoda/fe-editor',
+      4 => 'pixelcoda/typo3-search',
     ),
     'frontendBase' => 'https://typo3-inst.localhost/',
     'headless' => 1,
@@ -27,10 +28,10 @@ return array (
         'locale' => 'en_US.UTF-8',
         'navigationTitle' => 'English',
         'flag' => 'us',
+        'frontendBase' => 'https://typo3-inst.localhost/',
       ),
     ),
     'rootPageId' => 2,
-    'websiteTitle' => '',
     'routeEnhancers' => 
     array (
       'PageTypeSuffix' => 
@@ -56,6 +57,7 @@ return array (
         ),
       ),
     ),
+    'websiteTitle' => '',
   ),
 );
 #

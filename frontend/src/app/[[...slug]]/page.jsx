@@ -1,13 +1,18 @@
-import DevTools from '../../components/DevTools';
-import Renderer from '../../components/Renderer';
+import { cookies } from 'next/headers';
+import Renderer, { rendererComponents } from '../../components/Renderer';
 import { fetchPageData, normalizePageData, normalizePath } from '../../lib/typo3';
+import DevTools from '../../components/DevTools';
 
 export async function generateMetadata({ params, searchParams }) {
   try {
     const resolved = await params;
     const resolvedSearchParams = await searchParams;
     const path = normalizePath(resolved?.slug);
-    const page = normalizePageData(await fetchPageData(path, resolvedSearchParams));
+    
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore.toString();
+    
+    const page = normalizePageData(await fetchPageData(path, resolvedSearchParams, cookieHeader));
     return {
       title: page?.meta?.title || page?.title || 'TYPO3 Headless',
       description: page?.meta?.description || page?.meta?.abstract || '',
@@ -28,7 +33,9 @@ export default async function Page({ params, searchParams }) {
   const path = normalizePath(resolved?.slug);
 
   try {
-    page = normalizePageData(await fetchPageData(path, resolvedSearchParams));
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore.toString();
+    page = normalizePageData(await fetchPageData(path, resolvedSearchParams, cookieHeader));
   } catch (exception) {
     error = exception;
   }
