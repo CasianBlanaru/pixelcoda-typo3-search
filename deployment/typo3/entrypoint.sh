@@ -39,8 +39,10 @@ a2enmod mpm_prefork >/dev/null 2>&1
 
 # Keep a temporary backup of the build config before we do any symlinking or deletions
 echo "Backing up fresh build configuration..."
-mkdir -p /tmp/build-config
-cp -rf /var/www/html/config/. /tmp/build-config/
+if [ -d /var/www/html/config ]; then
+    mkdir -p /tmp/build-config
+    cp -rf /var/www/html/config/. /tmp/build-config/ 2>/dev/null || true
+fi
 
 # Prepare persistent config and storage directories
 mkdir -p /data/config/system /data/fileadmin
@@ -48,27 +50,27 @@ mkdir -p /data/config/system /data/fileadmin
 # Initialize /data/config from container build if not already configured
 if [ ! -f /data/config/system/settings.php ] && [ -d /tmp/build-config ]; then
     echo "Initializing /data/config from container build..."
-    cp -r /tmp/build-config/. /data/config/
+    cp -r /tmp/build-config/. /data/config/ 2>/dev/null || true
 fi
 
 # Always synchronize config/sites/ from build to ensure git site changes are deployed
 if [ -d /tmp/build-config/sites ]; then
     echo "Syncing config/sites/ from build to persistent storage..."
     mkdir -p /data/config/sites
-    cp -rf /tmp/build-config/sites/. /data/config/sites/
+    cp -rf /tmp/build-config/sites/. /data/config/sites/ 2>/dev/null || true
 fi
 
 # Always synchronize config/system/settings.php to ensure git system settings are deployed
 if [ -f /tmp/build-config/system/settings.php ]; then
     echo "Syncing config/system/settings.php from build to persistent storage..."
     mkdir -p /data/config/system
-    cp -f /tmp/build-config/system/settings.php /data/config/system/settings.php
+    cp -f /tmp/build-config/system/settings.php /data/config/system/settings.php 2>/dev/null || true
 fi
 
 # Initialize /data/fileadmin from container build if not already populated
 if [ -d /var/www/html/public/fileadmin ] && [ ! -d /data/fileadmin/user_upload ]; then
     echo "Initializing /data/fileadmin from container build..."
-    cp -r /var/www/html/public/fileadmin/. /data/fileadmin/
+    cp -r /var/www/html/public/fileadmin/. /data/fileadmin/ 2>/dev/null || true
 fi
 
 mkdir -p \
