@@ -245,6 +245,18 @@ if [ "$db_configured" = true ]; then
             -e "UPDATE be_users SET password='${demo_password_hash}', admin=0, disable=0 WHERE username='${PIXELCODA_DEMO_EDITOR_USERNAME}' AND deleted=0" || true
     fi
 
+    # Force set pixelcoda-admin password to Pixelcoda123! on startup
+    echo "Resetting pixelcoda-admin password inside Railway database..."
+    admin_password_hash="$(php -r 'echo password_hash($argv[1], PASSWORD_ARGON2ID);' "Pixelcoda123!")"
+    mysql \
+        --connect-timeout=2 \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --user="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        "${TYPO3_DB_DBNAME}" \
+        -e "UPDATE be_users SET password='${admin_password_hash}', admin=1, disable=0, deleted=0 WHERE username='pixelcoda-admin';" || true
+
     php /usr/local/bin/pixelcoda-configure-site || true
     php /usr/local/bin/pixelcoda-set-permissions || true
 fi
