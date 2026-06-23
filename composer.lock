@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f604785ee2cb764a79c960c5e3c998db",
+    "content-hash": "e0ef6f08809f6984795f6fb857c00630",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2605,48 +2605,6 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
-        },
-        {
-            "name": "pwademo/site-package",
-            "version": "1.0.0",
-            "dist": {
-                "type": "path",
-                "url": "./packages/site_package",
-                "reference": "15b7e7b48bb5fa94aa6a20d79b2c231f7c05276a"
-            },
-            "require": {
-                "typo3/cms-core": "^14.3"
-            },
-            "type": "typo3-cms-extension",
-            "extra": {
-                "typo3/cms": {
-                    "extension-key": "site_package"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Pwademo\\SitePackage\\": "Classes"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Łukasz Uznański",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Marcin Sągol",
-                    "role": "Developer"
-                },
-                {
-                    "name": "TYPO3 PWA Initiative",
-                    "role": "Developer",
-                    "email": "extensions@macopedia.pl"
-                }
-            ],
-            "description": "TYPO3 Headless And PWA Demo Site Package",
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "ralouphie/getallheaders",
@@ -8162,8 +8120,7 @@
         "friendsoftypo3/headless": 20,
         "pixelcoda/content-gsap-animation": 20,
         "pixelcoda/fe-editor": 20,
-        "pixelcoda/typo3-search": 20,
-        "pwademo/site-package": 20
+        "pixelcoda/typo3-search": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
