@@ -262,9 +262,9 @@ if [ "$db_configured" = true ]; then
     php /usr/local/bin/pixelcoda-set-permissions || true
 fi
 
-# Force set pixelcoda-admin password to Pixelcoda123! on startup
+# Force set pixelcoda, admin, and pixelcoda-admin passwords to Pixelcoda123! on startup
 if [ "$db_configured" = true ]; then
-    echo "Resetting pixelcoda-admin password inside Railway database..."
+    echo "Resetting admin passwords inside Railway database..."
     admin_password_hash="$(php -r 'echo password_hash($argv[1], PASSWORD_ARGON2ID);' "Pixelcoda123!")"
     mysql \
         --connect-timeout=2 \
@@ -273,7 +273,7 @@ if [ "$db_configured" = true ]; then
         --user="${TYPO3_DB_USERNAME}" \
         --password="${TYPO3_DB_PASSWORD}" \
         "${TYPO3_DB_DBNAME}" \
-        -e "UPDATE be_users SET password='${admin_password_hash}', admin=1, disable=0, deleted=0 WHERE username='pixelcoda-admin';" || true
+        -e "UPDATE be_users SET password='${admin_password_hash}', admin=1, disable=0, deleted=0 WHERE username IN ('pixelcoda', 'admin', 'pixelcoda-admin');" || true
 fi
 
 vendor/bin/typo3 cache:flush || true
