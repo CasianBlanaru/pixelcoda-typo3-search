@@ -37,10 +37,29 @@ a2enconf pixelcoda-server-name >/dev/null
 a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
 a2enmod mpm_prefork >/dev/null 2>&1
 
+# Prepare persistent config and storage directories
+mkdir -p /data/config/system /data/fileadmin
+
+# Initialize /data/config from container build if not already configured
+if [ ! -f /data/config/system/settings.php ] && [ -d /var/www/html/config ]; then
+    echo "Initializing /data/config from container build..."
+    cp -r /var/www/html/config/. /data/config/
+fi
+
+# Always synchronize config/sites/ from build to ensure git site changes are deployed
+if [ -d /var/www/html/config/sites ]; then
+    echo "Syncing config/sites/ from build to persistent storage..."
+    mkdir -p /data/config/sites
+    cp -rf /var/www/html/config/sites/. /data/config/sites/
+fi
+
+# Initialize /data/fileadmin from container build if not already populated
+if [ -d /var/www/html/public/fileadmin ] && [ ! -d /data/fileadmin/user_upload ]; then
+    echo "Initializing /data/fileadmin from container build..."
+    cp -r /var/www/html/public/fileadmin/. /data/fileadmin/
+fi
+
 mkdir -p \
-    /data/config \
-    /data/config/system \
-    /data/fileadmin \
     /var/www/html/packages/ext \
     /var/www/html/packages/sysext/placeholder \
     /var/www/html/public/typo3temp \
