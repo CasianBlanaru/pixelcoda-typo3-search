@@ -36,6 +36,12 @@ if (file_exists($buildSiteConfigPath)) {
     $buildSiteConfigData = file_get_contents($buildSiteConfigPath);
 }
 
+$buildSiteSetupData = "File not found";
+$buildSiteSetupPath = '/var/www/html/config/sites/main/setup.typoscript';
+if (file_exists($buildSiteSetupPath)) {
+    $buildSiteSetupData = file_get_contents($buildSiteSetupPath);
+}
+
 $sitesDirList = is_dir('/data/config/sites/main') ? scandir('/data/config/sites/main') : [];
 $systemDirList = is_dir('/data/config/system') ? scandir('/data/config/system') : [];
 
@@ -49,6 +55,7 @@ echo json_encode([
     'data_site_config' => $siteConfigData,
     'data_setup_typoscript' => $siteSetupData,
     'build_site_config' => $buildSiteConfigData,
+    'build_setup_typoscript' => $buildSiteSetupData,
     'data_sites_dir' => $sitesDirList,
     'data_system_dir' => $systemDirList,
 ]);
