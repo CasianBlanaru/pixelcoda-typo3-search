@@ -192,6 +192,19 @@ if [[ "$db_configured" = true && ! -f /data/config/system/settings.php ]]; then
 fi
 
 if [ "$db_configured" = true ]; then
+    # Automatically import local database dump if present and not already imported
+    if [ -f /var/www/html/deployment/typo3/db_dump.sql.gz ] && [ ! -f /data/db_imported_v3.flag ]; then
+        echo "Local database dump found. Importing to Railway MySQL..."
+        gunzip -c /var/www/html/deployment/typo3/db_dump.sql.gz | mysql \
+            --host="${TYPO3_DB_HOST}" \
+            --port="${TYPO3_DB_PORT}" \
+            --user="${TYPO3_DB_USERNAME}" \
+            --password="${TYPO3_DB_PASSWORD}" \
+            "${TYPO3_DB_DBNAME}" || echo "Database import encountered an error"
+        touch /data/db_imported_v3.flag
+        echo "Database import completed!"
+    fi
+
     cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
     vendor/bin/typo3 extension:setup --no-interaction -vvv \
