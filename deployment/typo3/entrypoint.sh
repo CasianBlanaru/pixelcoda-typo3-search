@@ -37,27 +37,32 @@ a2enconf pixelcoda-server-name >/dev/null
 a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
 a2enmod mpm_prefork >/dev/null 2>&1
 
+# Keep a temporary backup of the build config before we do any symlinking or deletions
+echo "Backing up fresh build configuration..."
+mkdir -p /tmp/build-config
+cp -rf /var/www/html/config/. /tmp/build-config/
+
 # Prepare persistent config and storage directories
 mkdir -p /data/config/system /data/fileadmin
 
 # Initialize /data/config from container build if not already configured
-if [ ! -f /data/config/system/settings.php ] && [ -d /var/www/html/config ]; then
+if [ ! -f /data/config/system/settings.php ] && [ -d /tmp/build-config ]; then
     echo "Initializing /data/config from container build..."
-    cp -r /var/www/html/config/. /data/config/
+    cp -r /tmp/build-config/. /data/config/
 fi
 
 # Always synchronize config/sites/ from build to ensure git site changes are deployed
-if [ -d /var/www/html/config/sites ]; then
+if [ -d /tmp/build-config/sites ]; then
     echo "Syncing config/sites/ from build to persistent storage..."
     mkdir -p /data/config/sites
-    cp -rf /var/www/html/config/sites/. /data/config/sites/
+    cp -rf /tmp/build-config/sites/. /data/config/sites/
 fi
 
 # Always synchronize config/system/settings.php to ensure git system settings are deployed
-if [ -f /var/www/html/config/system/settings.php ]; then
+if [ -f /tmp/build-config/system/settings.php ]; then
     echo "Syncing config/system/settings.php from build to persistent storage..."
     mkdir -p /data/config/system
-    cp -f /var/www/html/config/system/settings.php /data/config/system/settings.php
+    cp -f /tmp/build-config/system/settings.php /data/config/system/settings.php
 fi
 
 # Initialize /data/fileadmin from container build if not already populated
