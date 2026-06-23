@@ -3,6 +3,8 @@ Listen ${PORT}
 <VirtualHost *:${PORT}>
     DocumentRoot /var/www/html/public
     ProxyPreserveHost On
+    UseCanonicalName Off
+    UseCanonicalPhysicalPort Off
     SetEnvIf X-Forwarded-Proto "^https$" HTTPS=on
     RequestHeader set X-Forwarded-Proto "https" env=HTTPS
     RequestHeader set X-Forwarded-Port "443" env=HTTPS

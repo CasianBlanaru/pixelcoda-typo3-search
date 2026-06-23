@@ -2,6 +2,10 @@ FROM php:8.3-apache-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        locales \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && locale-gen en_US.UTF-8 \
+    && apt-get install -y --no-install-recommends \
         default-mysql-client \
         gettext-base \
         libfreetype6-dev \
@@ -78,7 +82,10 @@ RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
 ENV PORT=8080 \
     TYPO3_CONTEXT=Development \
     TYPO3_PATH_APP=/var/www/html \
-    TYPO3_PATH_ROOT=/var/www/html/public
+    TYPO3_PATH_ROOT=/var/www/html/public \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 EXPOSE 8080
 
