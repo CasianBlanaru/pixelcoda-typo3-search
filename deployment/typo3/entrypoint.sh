@@ -38,7 +38,11 @@ a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
 a2enmod mpm_prefork >/dev/null 2>&1
 
 # Prepare persistent config and storage directories
-mkdir -p /data/config/system /data/fileadmin
+mkdir -p /data/config/system /data/fileadmin /data/var/cache
+
+# Clear persistent TypoScript and system caches to force recompilation of git settings on startup
+echo "Clearing persistent cache folder..."
+rm -rf /data/var/cache/*
 
 # Initialize /data/config from container build if not already configured
 if [ ! -f /data/config/system/settings.php ] && [ -d /usr/local/share/typo3-config ]; then
