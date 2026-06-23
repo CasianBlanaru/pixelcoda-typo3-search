@@ -53,6 +53,13 @@ if [ -d /var/www/html/config/sites ]; then
     cp -rf /var/www/html/config/sites/. /data/config/sites/
 fi
 
+# Always synchronize config/system/settings.php to ensure git system settings are deployed
+if [ -f /var/www/html/config/system/settings.php ]; then
+    echo "Syncing config/system/settings.php from build to persistent storage..."
+    mkdir -p /data/config/system
+    cp -f /var/www/html/config/system/settings.php /data/config/system/settings.php
+fi
+
 # Initialize /data/fileadmin from container build if not already populated
 if [ -d /var/www/html/public/fileadmin ] && [ ! -d /data/fileadmin/user_upload ]; then
     echo "Initializing /data/fileadmin from container build..."
