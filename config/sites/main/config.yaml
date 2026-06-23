@@ -7,10 +7,7 @@ dependencies:
   - friendsoftypo3/headless-mixed
   - pixelcoda/fe-editor
   - pixelcoda/typo3-search
-  - pixelcoda/sitepackage
-  - pixelcoda/content-gsap-animation
-  - pixelcoda/fe-editor-classic
-# frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
+frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 headless: 1
 languages:
   -
@@ -21,7 +18,7 @@ languages:
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
-#    frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
+    frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 routeEnhancers:
   PageTypeSuffix:
     type: PageType
