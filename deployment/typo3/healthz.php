@@ -24,6 +24,12 @@ if (file_exists($siteConfigPath)) {
     $siteConfigData = file_get_contents($siteConfigPath);
 }
 
+$siteSetupData = "File not found";
+$siteSetupPath = '/data/config/sites/main/setup.typoscript';
+if (file_exists($siteSetupPath)) {
+    $siteSetupData = file_get_contents($siteSetupPath);
+}
+
 $buildSiteConfigData = "File not found";
 $buildSiteConfigPath = '/var/www/html/config/sites/main/config.yaml';
 if (file_exists($buildSiteConfigPath)) {
@@ -41,6 +47,7 @@ echo json_encode([
     'php_error' => error_get_last(),
     'typo3_logs' => $logOutput,
     'data_site_config' => $siteConfigData,
+    'data_setup_typoscript' => $siteSetupData,
     'build_site_config' => $buildSiteConfigData,
     'data_sites_dir' => $sitesDirList,
     'data_system_dir' => $systemDirList,
