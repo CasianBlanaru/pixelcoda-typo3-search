@@ -45,6 +45,9 @@ RUN composer install \
 # registers framework packages, but Finder still requires a scanable directory.
 RUN mkdir -p packages/ext packages/sysext/placeholder
 
+COPY config config
+COPY config /usr/local/share/typo3-config
+
 COPY deployment/typo3/apache-vhost.conf.template /etc/apache2/sites-available/000-default.conf.template
 COPY deployment/typo3/entrypoint.sh /usr/local/bin/pixelcoda-typo3-entrypoint
 COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
