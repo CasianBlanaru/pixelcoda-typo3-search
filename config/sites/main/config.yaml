@@ -3,9 +3,6 @@ customConfiguration:
   renderingMode: headless
 dependencies:
   - friendsoftypo3/headless
-  - pixelcoda/sitepackage
-  - pixelcoda/fe-editor
-  - pixelcoda/typo3-search
 frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 headless: 1
 languages:

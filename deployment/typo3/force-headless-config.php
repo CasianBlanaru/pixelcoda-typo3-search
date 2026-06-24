@@ -32,16 +32,13 @@ if (isset($config['languages']) && is_array($config['languages'])) {
     unset($lang);
 }
 
-$config['dependencies'] = array_values(array_unique(array_merge(
-    $config['dependencies'] ?? [],
-    [
-        'typo3/fluid-styled-content',
-        'friendsoftypo3/headless',
-        'pixelcoda/sitepackage',
-        'pixelcoda/fe-editor',
-        'pixelcoda/typo3-search',
-    ]
-)));
+// Remove sets to prevent TypoScript conflicts in headless mode
+unset($config['sets']);
+
+// Use dependencies instead of sets for headless mode
+$config['dependencies'] = [
+    'friendsoftypo3/headless',
+];
 
 file_put_contents(
     $siteConfigPath,
@@ -53,6 +50,9 @@ echo "  headless: 1\n";
 echo "  renderingMode: headless\n";
 echo "  base: $siteBase\n";
 echo "  frontendBase: $frontendBase\n";
+echo "  dependencies: only friendsoftypo3/headless\n";
 
-exec('rm -rf /var/www/html/var/cache/*');
-echo "Cache cleared.\n";
+// Clear all cache locations
+exec('rm -rf /var/www/html/var/cache/* /data/var/cache/* 2>/dev/null');
+exec('rm -rf /var/www/html/public/typo3temp/* 2>/dev/null');
+echo "All caches cleared.\n";
