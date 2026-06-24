@@ -217,6 +217,16 @@ if [ "$db_configured" = true ]; then
         "${TYPO3_DB_DBNAME}" \
         < /var/www/html/deployment/typo3/insert-demo-content.sql 2>/dev/null || echo "Demo content SQL skipped or already exists"
 
+    # Reset admin passwords via SQL
+    echo "Resetting admin passwords via SQL..."
+    mysql \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --user="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        "${TYPO3_DB_DBNAME}" \
+        < /var/www/html/deployment/typo3/reset-admin-passwords.sql 2>/dev/null || echo "Admin password reset skipped"
+
     cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
     vendor/bin/typo3 extension:setup --no-interaction -vvv \
@@ -272,20 +282,6 @@ if [ "$db_configured" = true ]; then
 
     php /usr/local/bin/pixelcoda-configure-site || true
     php /usr/local/bin/pixelcoda-set-permissions || true
-fi
-
-# Force set pixelcoda, admin, and pixelcoda-admin passwords to Pixelcoda123! on startup
-if [ "$db_configured" = true ]; then
-    echo "Resetting admin passwords inside Railway database..."
-    admin_password_hash="$(php -r 'echo password_hash($argv[1], PASSWORD_ARGON2ID);' "Pixelcoda123!")"
-    mysql \
-        --connect-timeout=2 \
-        --host="${TYPO3_DB_HOST}" \
-        --port="${TYPO3_DB_PORT}" \
-        --user="${TYPO3_DB_USERNAME}" \
-        --password="${TYPO3_DB_PASSWORD}" \
-        "${TYPO3_DB_DBNAME}" \
-        -e "UPDATE be_users SET password='${admin_password_hash}', admin=1, disable=0, deleted=0 WHERE username IN ('pixelcoda', 'admin', 'pixelcoda-admin');" || true
 fi
 
 vendor/bin/typo3 cache:flush || true
