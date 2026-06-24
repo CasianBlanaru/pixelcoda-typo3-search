@@ -26,31 +26,35 @@ try {
     exit(0);
 }
 
-// Check if page 1 exists
-$stmt = $pdo->prepare('SELECT uid FROM pages WHERE uid = 1 AND deleted = 0');
+// Find homepage (doktype=1, is_siteroot=1)
+$stmt = $pdo->prepare('SELECT uid FROM pages WHERE doktype = 1 AND is_siteroot = 1 AND deleted = 0 ORDER BY uid ASC LIMIT 1');
 $stmt->execute();
-if (!$stmt->fetch()) {
-    echo "Page with uid=1 not found. Skipping demo content.\n";
+$homepageUid = $stmt->fetchColumn();
+
+if (!$homepageUid) {
+    echo "Homepage not found. Skipping demo content.\n";
     exit(0);
 }
 
+echo "Found homepage with uid={$homepageUid}\n";
+
 // Check if content already exists
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM tt_content WHERE pid = 1 AND deleted = 0');
-$stmt->execute();
+$stmt = $pdo->prepare('SELECT COUNT(*) FROM tt_content WHERE pid = :pid AND deleted = 0');
+$stmt->execute(['pid' => $homepageUid]);
 $count = $stmt->fetchColumn();
 
 if ($count > 0) {
-    echo "Content already exists on page 1 (found {$count} elements). Skipping.\n";
+    echo "Content already exists on page {$homepageUid} (found {$count} elements). Skipping.\n";
     exit(0);
 }
 
-echo "Adding demo content to homepage (pid=1)...\n";
+echo "Adding demo content to homepage (pid={$homepageUid})...\n";
 
 $timestamp = time();
 
 $contentElements = [
     [
-        'pid' => 1,
+        'pid' => $homepageUid,
         'colPos' => 0,
         'sorting' => 256,
         'CType' => 'header',
@@ -63,7 +67,7 @@ $contentElements = [
         'deleted' => 0,
     ],
     [
-        'pid' => 1,
+        'pid' => $homepageUid,
         'colPos' => 0,
         'sorting' => 512,
         'CType' => 'text',
@@ -77,7 +81,7 @@ $contentElements = [
         'deleted' => 0,
     ],
     [
-        'pid' => 1,
+        'pid' => $homepageUid,
         'colPos' => 0,
         'sorting' => 768,
         'CType' => 'text',
