@@ -66,9 +66,7 @@ tt_content.pixelcodasearch_search {
     }
 }
 
-# Debug: Add a simple test to verify TypoScript is loaded
-page.headerData.999 = TEXT
-page.headerData.999.value = <!-- pixelcoda Search TypoScript loaded -->
+# TypoScript loaded marker removed - breaks JSON output in headless mode
 
 # Clean configuration - using native Headless JSON structure
 

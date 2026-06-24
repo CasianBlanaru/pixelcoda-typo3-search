@@ -1,10 +1,10 @@
-base: '%env(TYPO3_BACKEND_BASE)%'
+base: '%env(TYPO3_SITE_BASE)%'
 customConfiguration:
   renderingMode: headless
 dependencies:
   - typo3/fluid-styled-content
   - friendsoftypo3/headless
-  - friendsoftypo3/headless-mixed
+  - pixelcoda/sitepackage
   - pixelcoda/fe-editor
   - pixelcoda/typo3-search
 frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
@@ -26,8 +26,6 @@ routeEnhancers:
       .json: 834
   PixelcodaSearch:
     type: Simple
-    limitToPages:
-      - 2
     routePath: /suche
     _arguments:
       q: q

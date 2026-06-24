@@ -15,6 +15,7 @@ $requiredSets = [
     'pixelcoda/typo3-search',
 ];
 $siteBase = normalizeSiteBase();
+$frontendBase = normalizeFrontendBase();
 
 function normalizeSiteBase(): string
 {
@@ -28,6 +29,18 @@ function normalizeSiteBase(): string
         $base .= '/';
     }
 
+    return $base;
+}
+
+function normalizeFrontendBase(): string
+{
+    $base = (string)(getenv('TYPO3_FRONTEND_BASE') ?: '');
+    if ('' === $base) {
+        $base = normalizeSiteBase();
+    }
+    if ('/' !== $base && !str_ends_with($base, '/')) {
+        $base .= '/';
+    }
     return $base;
 }
 
@@ -101,6 +114,16 @@ if ('' !== $databaseHost && '' !== $databaseName && '' !== $databaseUser) {
 
             if ((int)($configuration['rootPageId'] ?? 0) === $primaryRootPageId) {
                 $configuration['base'] = $siteBase;
+                $configuration['headless'] = 1;
+                $configuration['customConfiguration'] = ['renderingMode' => 'headless'];
+                $configuration['frontendBase'] = $frontendBase;
+                // Ensure language frontendBase is also set
+                if (isset($configuration['languages']) && is_array($configuration['languages'])) {
+                    foreach ($configuration['languages'] as &$lang) {
+                        $lang['frontendBase'] = $frontendBase;
+                    }
+                    unset($lang);
+                }
             }
 
             writeSiteConfiguration($siteConfigurationFile, $configuration);
@@ -176,6 +199,9 @@ if ('' !== $databaseHost && '' !== $databaseName && '' !== $databaseUser) {
 
         $configuration = [
             'base' => '/preview-' . $rootPageId . '/',
+            'headless' => 1,
+            'customConfiguration' => ['renderingMode' => 'headless'],
+            'frontendBase' => $frontendBase,
             'dependencies' => $requiredSets,
             'errorHandling' => [],
             'languages' => [
@@ -187,6 +213,7 @@ if ('' !== $databaseHost && '' !== $databaseName && '' !== $databaseUser) {
                     'locale' => 'en_US.UTF-8',
                     'navigationTitle' => 'English',
                     'flag' => 'us',
+                    'frontendBase' => $frontendBase,
                 ],
             ],
             'rootPageId' => $rootPageId,

@@ -11,25 +11,14 @@
 [traverse(site('configuration'), 'customConfiguration/renderingMode') == 'headless']
     # HEADLESS MODE ACTIVE
     # ====================
-    
-    # 1. First, make sure the basic headless setup is loaded
-    # This sets up the default JSON rendering
     @import 'EXT:headless/Configuration/TypoScript/setup.typoscript'
 
-    # 2. Add your custom fields to the existing headless page object 
-    # instead of recreating it from scratch.
-    # Headless uses 'tt_content' rendering automatically.
-
-    # Include Headless Extension
-    
-    # Override content element rendering for JSON
     lib.contentElement {
         templateRootPaths {
             200 = EXT:headless/Resources/Private/Templates/
         }
     }
-    
-    # Configure JSON output
+
     config {
         disableAllHeaderCode = 1
         additionalHeaders {
@@ -44,68 +33,39 @@
 [ELSE]
     # STANDARD MODE ACTIVE
     # ====================
-    
-    # Include Bootstrap Package
-    @import 'EXT:bootstrap_package/Configuration/TypoScript/setup.typoscript'
-    
-    # Include Fluid Styled Content (fallback)
     @import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
-    
-    # Include pixelcoda Search Plugin
     @import 'EXT:pixelcoda_search/Configuration/TypoScript/setup.typoscript'
-    
-    # Standard HTML configuration
+
     config {
         doctype = html5
         xmlprologue = none
         htmlTag_setParams = lang="en"
-        removeDefaultJS = 0
-        compressCss = 1
-        compressJs = 1
-        concatenateCss = 1
-        concatenateJs = 1
     }
-    
-    # Standard Page Object
+
     page = PAGE
     page {
         typeNum = 0
-        
-        # Meta tags
+
         meta {
             viewport = width=device-width, initial-scale=1
-            X-UA-Compatible = IE=edge
         }
-        
-        # CSS
-        includeCSS {
-            fontawesome = https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
-            fontawesome.external = 1
-            custom = EXT:site_package/Resources/Public/Css/custom.css
-        }
-        
-        # JavaScript
-        includeJSFooter {
-            main = EXT:site_package/Resources/Public/JavaScript/main.js
-        }
-        
-        # Main template
+
         10 = FLUIDTEMPLATE
         10 {
             templateName = Default
-            
+
             templateRootPaths {
                 10 = EXT:site_package/Resources/Private/Templates/Page/
             }
-            
+
             partialRootPaths {
                 10 = EXT:site_package/Resources/Private/Partials/Page/
             }
-            
+
             layoutRootPaths {
                 10 = EXT:site_package/Resources/Private/Layouts/Page/
             }
-            
+
             variables {
                 content < styles.content.get
                 content.select.where = {#colPos}=0
@@ -114,37 +74,10 @@
     }
 [END]
 
-[!backend.user.isLoggedIn]
-lib.pixelcodaDemoLoginNotice = TEXT
-lib.pixelcodaDemoLoginNotice.value (
-    <section class="pixelcoda-demo-login-notice" aria-labelledby="pixelcoda-demo-login-title">
-        <div>
-            <span class="pixelcoda-demo-login-notice__eyebrow">Demo-Modus</span>
-            <h2 id="pixelcoda-demo-login-title">Plugins im TYPO3 Backend testen</h2>
-            <p>Melde dich als Redakteur an, um pixelcoda Search, Frontend Editing und GSAP-Animationen direkt in der Testumgebung auszuprobieren.</p>
-            <dl>
-                <div><dt>Benutzer</dt><dd>pixelcoda-editor</dd></div>
-                <div><dt>Passwort</dt><dd>PixelcodaDemo-2026!</dd></div>
-            </dl>
-        </div>
-        <a href="/typo3/login?redirect=tools_PixelcodaSearchM1" class="pixelcoda-demo-login-notice__button">Zum TYPO3 Login</a>
-    </section>
-)
-[ELSE]
-lib.pixelcodaDemoLoginNotice = TEXT
-[END]
-
-# Shared configuration for both modes
-lib.parseFunc_RTE < lib.parseFunc_RTE
-
-# Header class configuration for Bootstrap Package compatibility
 lib.contentElement {
     settings {
         header {
             defaultHeaderType = 2
-            class = TEXT
-            class.field = header_class
-            class.ifEmpty = 
         }
     }
 }

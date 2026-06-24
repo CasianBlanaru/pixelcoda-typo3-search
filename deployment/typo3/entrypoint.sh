@@ -9,6 +9,8 @@ export TYPO3_DB_DBNAME="${TYPO3_DB_DBNAME:-${MYSQLDATABASE:-}}"
 export TYPO3_DB_USERNAME="${TYPO3_DB_USERNAME:-${MYSQLUSER:-}}"
 export TYPO3_DB_PASSWORD="${TYPO3_DB_PASSWORD:-${MYSQLPASSWORD:-}}"
 export TYPO3_SETUP_CREATE_SITE="${TYPO3_SETUP_CREATE_SITE:-https://${RAILWAY_PUBLIC_DOMAIN:-localhost}/}"
+export TYPO3_SITE_BASE="${TYPO3_SITE_BASE:-https://${RAILWAY_PUBLIC_DOMAIN:-localhost}/}"
+export TYPO3_FRONTEND_BASE="${TYPO3_FRONTEND_BASE:-https://${RAILWAY_PUBLIC_DOMAIN:-localhost}/}"
 export TYPO3_PROJECT_NAME="${TYPO3_PROJECT_NAME:-Pixelcoda TYPO3 Suite}"
 export TYPO3_SERVER_TYPE=apache
 export TYPO3_PATH_APP="${TYPO3_PATH_APP:-/var/www/html}"
@@ -285,7 +287,6 @@ mkdir -p \
 chown -R www-data:www-data /var/www/html/public/typo3temp /var/www/html/var
 vendor/bin/typo3 cache:warmup || true
 
-# Save environment variables for Apache/PHP to inherit
 env | grep -E '^(TYPO3_|MYSQL|PIXELCODA_|API_)' | sed 's/^/export /' >> /etc/apache2/envvars || true
 
 exec "$@"
