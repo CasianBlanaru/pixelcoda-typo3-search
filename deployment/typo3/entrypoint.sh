@@ -280,6 +280,7 @@ fi
 
 vendor/bin/typo3 cache:flush || true
 php /usr/local/bin/pixelcoda-force-headless-config || true
+vendor/bin/typo3 cache:flush || true
 mkdir -p \
     /var/www/html/public/typo3temp/assets/css \
     /var/www/html/public/typo3temp/assets/js \
