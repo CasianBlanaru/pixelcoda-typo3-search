@@ -2,8 +2,8 @@ base: '%env(TYPO3_SITE_BASE)%'
 customConfiguration:
   renderingMode: headless
 dependencies:
-  - typo3/fluid-styled-content
   - friendsoftypo3/headless
+  - pixelcoda/site-package
   - pixelcoda/sitepackage
   - pixelcoda/fe-editor
   - pixelcoda/typo3-search

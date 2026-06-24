@@ -1,0 +1,6 @@
+# This setup loads AFTER friendsoftypo3/headless dependency
+# Headless mode is already configured by the headless Set
+# We only need to ensure the config is not overridden
+
+# The headless Set already defines page typeNum=0 with JSON output
+# No additional configuration needed - just ensure we don't break it

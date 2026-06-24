@@ -58,6 +58,7 @@ COPY deployment/typo3/configure-site.php /usr/local/bin/pixelcoda-configure-site
 COPY deployment/typo3/set-permissions.php /usr/local/bin/pixelcoda-set-permissions
 COPY deployment/typo3/diagnose-bootstrap.php /usr/local/bin/pixelcoda-diagnose-bootstrap
 COPY deployment/typo3/additional.php /usr/local/share/pixelcoda-typo3-additional.php
+COPY deployment/typo3/force-headless-config.php /usr/local/bin/pixelcoda-force-headless-config
 COPY public/index.php public/index.php
 COPY deployment/typo3/backend-index.php public/typo3/index.php
 COPY deployment/typo3/install-index.php public/typo3/install.php

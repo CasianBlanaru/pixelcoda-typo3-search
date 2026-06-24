@@ -1,0 +1,4 @@
+name: pixelcoda/site-package
+label: Pixelcoda Site Package
+dependencies:
+  - friendsoftypo3/headless
