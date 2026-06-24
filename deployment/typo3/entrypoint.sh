@@ -207,6 +207,16 @@ if [ "$db_configured" = true ]; then
         echo "Database import completed!"
     fi
 
+    # Insert demo content via SQL (runs even if PHP fails)
+    echo "Inserting demo content via SQL..."
+    mysql \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --user="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        "${TYPO3_DB_DBNAME}" \
+        < /var/www/html/deployment/typo3/insert-demo-content.sql 2>/dev/null || echo "Demo content SQL skipped or already exists"
+
     cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
     vendor/bin/typo3 extension:setup --no-interaction -vvv \
