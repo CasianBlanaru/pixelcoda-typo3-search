@@ -3,7 +3,6 @@ customConfiguration:
   renderingMode: headless
 dependencies:
   - friendsoftypo3/headless
-  - pixelcoda/site-package
   - pixelcoda/sitepackage
   - pixelcoda/fe-editor
   - pixelcoda/typo3-search
