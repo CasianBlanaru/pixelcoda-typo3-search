@@ -14,7 +14,7 @@
         "sort-packages": true
     },
     "require": {
-        "friendsoftypo3/headless": "dev-feature/typo3-v14",
+        "friendsoftypo3/headless": "^5.0@RC",
         "pixelcoda/content-gsap-animation": "dev-main as 3.1.0",
         "pixelcoda/fe-editor": "@dev",
         "pixelcoda/sitepackage": "^1.0",
@@ -48,10 +48,6 @@
         "fe-editor": {
             "type": "path",
             "url": "./packages/typo3_fe_editing/packages/pixelcoda_fe_editor"
-        },
-        "friendsoftypo3/headless": {
-            "type": "vcs",
-            "url": "https://github.com/TYPO3-Headless/headless"
         },
         "packages": {
             "type": "path",
