@@ -1,4 +1,6 @@
 base: '%env(TYPO3_SITE_BASE)%'
+rootPageId: 2
+websiteTitle: 'TYPO3 Headless'
 customConfiguration:
   renderingMode: headless
 dependencies:
@@ -26,4 +28,3 @@ routeEnhancers:
     _arguments:
       q: q
       collections: collections
-websiteTitle: ''
