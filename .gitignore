@@ -37,3 +37,8 @@ typo3temp/
 
 # Package Manager
 yarn-error.log
+# Deployment artifacts (too large for git)
+deployment/*.sql
+deployment/*.sql.gz
+deployment/*.tar.gz
+deployment/typo3-database-import.sql
