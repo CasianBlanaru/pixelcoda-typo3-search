@@ -2,206 +2,168 @@
 
 ## Programming Languages
 
-### PHP 8.2+
-- Backend language for TYPO3 CMS
-- Platform version locked to 8.2.0 in composer.json
-- Modern PHP features (typed properties, attributes, enums)
+### PHP
+- **Version**: 8.2.0 (platform requirement)
+- **Usage**: TYPO3 CMS backend, custom extensions
+- **Key Features**: Type declarations, attributes, readonly properties
 
 ### JavaScript/TypeScript
-- Frontend language for Next.js (React)
-- Node.js >=18.0.0 for search platform
-- Node.js >=22.0.0 for Next.js frontend
-- TypeScript 5.6+ for type safety
+- **Node.js**: >=18.0.0 (search platform), >=22.0.0 (frontend)
+- **TypeScript**: 5.9.3 for type-safe development
+- **Usage**: Next.js frontend, search platform, extension tooling
 
-## Core Frameworks
+## Backend Technologies
 
-### TYPO3 14.3
-- Enterprise CMS framework
-- Core system extensions:
-  - cms-backend, cms-core, cms-frontend
+### TYPO3 CMS
+- **Version**: 14.3
+- **Type**: Enterprise PHP CMS
+- **Core Modules**:
+  - cms-backend, cms-frontend
   - cms-extbase (MVC framework)
-  - cms-fluid (templating)
+  - cms-fluid (templating engine)
   - cms-form, cms-seo, cms-rte-ckeditor
-  - cms-dashboard, cms-reactions, cms-webhooks
 
-### Next.js (latest)
-- React framework with App Router
-- Server-side rendering (SSR)
-- Static site generation (SSG)
-- API routes and middleware
+### Headless Extension
+- **Package**: `friendsoftypo3/headless` v5.0 RC
+- **Purpose**: Transform TYPO3 pages to JSON API
+- **Features**: Content element serialization, routing, file handling
 
-### React (latest)
-- UI library for frontend
-- Component-based architecture
-- Hooks and modern patterns
+### Database
+- **Doctrine DBAL**: Database abstraction layer
+- **Supported**: MySQL/MariaDB (typical TYPO3 deployment)
 
-## Key Dependencies
+### PHP Dependencies
+- **Symfony Components**: Cache, Console, Dependency Injection, Event Dispatcher, Mailer, Messenger, Routing, Validator
+- **Guzzle HTTP**: HTTP client library
+- **PHPStan**: Static analysis tool (v2.1)
 
-### TYPO3/PHP
-**friendsoftypo3/headless** (dev-feature/typo3-v14)
-- Headless CMS capabilities
-- JSON API endpoints
-- Content serialization
+## Frontend Technologies
 
-**Symfony Components** (via TYPO3)
-- Cache, Console, DependencyInjection
-- EventDispatcher, HttpFoundation, Mailer
-- Routing, Validator, Messenger, Filesystem
+### Next.js
+- **Version**: 16.2.9
+- **Framework**: React-based with App Router
+- **Features**: SSR, SSG, API routes, image optimization
+- **Rendering**: Server Components and Client Components
 
-**Doctrine DBAL**
-- Database abstraction layer
-- Query builder
-- Schema management
+### React
+- **Version**: 19.2.7
+- **Usage**: Component-based UI
+- **Integration**: `@pixelcoda/headless-nextjs` v1.1.4 for TYPO3 integration
 
-**Guzzle HTTP Client**
-- HTTP requests and API calls
-- PSR-7/PSR-18 compliant
+### PostCSS
+- **Version**: 8.5.15
+- **Usage**: CSS processing and transformations
 
-**Firebase PHP-JWT**
-- JWT token handling
-- API authentication
+## Search Platform Technologies
 
-### Frontend
-**@pixelcoda/headless-nextjs** (latest)
-- TYPO3 Headless integration for Next.js
-- Content rendering components
-- API client utilities
+### Core Stack
+- **Meilisearch**: Vector search engine
+- **AI/LLM**: Integration via `@pixelcoda/llm-adapter`
+- **Workspaces**: Monorepo with multiple packages
 
-### Search Platform
-**Meilisearch** (inferred)
-- Vector search engine
-- AI-assisted search capabilities
-- Fast full-text search
+### Components
+- **API Service**: Express/Node.js based
+- **Worker**: Background job processing
+- **Widgets**: UI components for search interface
 
-## Build Systems
+## Build Systems & Tools
 
-### Composer
-- PHP dependency management
-- TYPO3 extension installation
-- Autoloading (PSR-4)
-- Platform requirements enforcement
+### PHP Build
+- **Composer**: Dependency management
+  - Class autoloading (PSR-4)
+  - Package installation
+  - Path repositories for local extensions
 
-**Commands:**
-```bash
-composer install      # Install dependencies
-composer update       # Update dependencies
-```
+### JavaScript Build
+- **npm/yarn**: Package management
+- **Workspaces**: Monorepo management
+- **Next.js Build**: Production optimization, code splitting
 
-### Yarn (Yarn Berry/v3+)
-- Node.js package management
-- Workspace support
-- Zero-installs with PnP
-
-**Commands:**
-```bash
-yarn install          # Install dependencies
-yarn dev              # Development server
-yarn build            # Production build
-```
-
-### npm (for workspaces)
-- Alternative to Yarn for monorepo
-- Workspace management
-- Script execution
-
-**Commands:**
-```bash
-npm install           # Install all workspaces
-npm run build         # Build all workspaces
-npm run api:dev       # Run standalone API
-```
-
-## Development Tools
-
-### DDEV
-- Local development environment
-- Docker-based (Apache/Nginx, PHP, MySQL)
-- Mutagen sync for macOS performance
-- Custom commands and hooks
-
-### PHPStan 2.1+
-- Static analysis for PHP
-- Type checking and error detection
-- Custom rules and baseline
-
-### TypeScript Compiler
-- Type checking for JavaScript
-- Build-time validation
-- IDE integration
+### Development Tools
+- **DDEV**: Docker-based local development
+  - PHP 8.2 container
+  - Database container
+  - Web server (Apache/Nginx)
+  - Mutagen file sync
 
 ## Development Commands
 
 ### TYPO3 Backend
 ```bash
-# TYPO3 CLI
-vendor/bin/typo3 cache:flush
-vendor/bin/typo3 extension:setup
-
-# DDEV shortcuts
-ddev start
-ddev restart
-ddev exec [command]
+composer install              # Install PHP dependencies
+composer require <package>    # Add new dependency
+vendor/bin/typo3              # TYPO3 CLI
 ```
 
 ### Next.js Frontend
 ```bash
-# Development (frontend directory)
 cd frontend
-yarn install
-yarn dev              # http://localhost:3000
-
-# Production
-yarn build
-yarn start
+yarn install                  # Install dependencies
+yarn dev                      # Development server (port 3000)
+yarn build                    # Production build
+yarn start                    # Production server
 ```
 
 ### Search Platform
 ```bash
-# Root workspaces
-npm run api:dev       # Standalone API development
-npm run widgets:dev   # Widgets development
-npm run build         # Build all workspaces
-
-# Simple API
-npm start             # node simple-api.js
+npm install                   # Install all workspace dependencies
+npm start                     # Run simple API
+npm run build                 # Build all workspaces
+npm run api:dev              # Development API
+npm run widgets:dev          # Development widgets
+npm test                      # Run tests
 ```
 
-## Runtime Environment
-
-### Environment Variables (Frontend)
-```env
-NEXT_PUBLIC_API_BASE_URL         # TYPO3 API endpoint
-NEXT_PUBLIC_TYPO3_BASE_URL       # TYPO3 base URL
-NEXT_PUBLIC_BASE_URL             # Frontend URL
-NEXT_PUBLIC_FRONTEND_FILE_API    # File assets endpoint
-NEXT_PUBLIC_SKIN                 # UI skin (premium/standard)
-NEXT_PUBLIC_HEADLESS_DEVTOOLS    # DevTools enable flag
+### DDEV Environment
+```bash
+ddev start                    # Start containers
+ddev stop                     # Stop containers
+ddev ssh                      # SSH into web container
+ddev exec <command>          # Execute command in container
+ddev composer <command>      # Run Composer commands
 ```
 
-### PHP Configuration
-- php-production.ini for production settings
-- Memory limits, upload sizes, error reporting
-- OPcache configuration
+## Testing & Quality
 
-### Web Server
-- Apache or Nginx
-- Configured via deployment/typo3/apache-vhost.conf.template
-- Reverse proxy to TYPO3 backend
+### PHP
+- **PHPStan**: Static analysis (level defined in phpstan.neon)
+- **PHP CS Fixer**: Code style enforcement (.php-cs-fixer.php)
+- **Rector**: Automated refactoring (rector.php)
+
+### JavaScript
+- **Jest**: Testing framework (extension tests)
+- **ESLint**: Linting (configured per workspace)
 
 ## Deployment
 
-### Docker Support
-- Dockerfile at project root
-- Health check endpoints (healthz.php, diag.php)
-- Entrypoint scripts for initialization
-- Multi-stage builds supported
+### Docker
+- **Dockerfile**: Multi-stage build for production
+- **Base Image**: PHP 8.2 with Apache/Nginx
 
-### Railway Platform
-- railway.json configuration files
-- Environment variable management
-- Automatic deployments from Git
+### Railway
+- **railway.json**: Deployment configuration
+- **Environment**: Node.js for frontend, PHP for backend
 
-### Database
-- MySQL/MariaDB for TYPO3
-- Doctrine DBAL abstraction
-- Schema management via TYPO3 Install Tool
+### Configuration Files
+- `composer.json` - PHP dependencies, autoloading
+- `package.json` - Node.js scripts, workspaces
+- `next.config.js` - Next.js build configuration
+- `.ddev/config.yaml` - Local dev environment
+- `.env.local` - Environment variables (API endpoints, feature flags)
+
+## Key Libraries & Packages
+
+### TYPO3 Extensions
+- typo3/cms-* - Core TYPO3 modules
+- friendsoftypo3/headless - JSON API
+- pixelcoda/* - Custom extensions (symlinked from packages/)
+
+### Frontend
+- @pixelcoda/headless-nextjs - TYPO3-Next.js bridge
+- react-dom - React rendering
+
+### Utilities
+- dotenv - Environment variable loading
+- firebase/php-jwt - JWT authentication
+- enshrined/svg-sanitize - SVG security
+- masterminds/html5 - HTML parsing

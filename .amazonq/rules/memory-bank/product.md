@@ -1,64 +1,73 @@
 # Product Overview
 
 ## Project Purpose
-PixelCoda Next.js Frontend for TYPO3 Headless - A decoupled CMS architecture combining TYPO3 as a headless content backend with a Next.js frontend for modern web experiences. The system provides an API-first approach with advanced search capabilities and frontend editing.
+PixelCoda TYPO3 Headless Instance - A comprehensive headless CMS solution combining TYPO3 14.3 backend with Next.js 16 frontend, featuring AI-powered search capabilities and frontend editing tools.
 
 ## Value Proposition
-- Decoupled architecture enabling independent scaling of frontend and backend
-- Modern React/Next.js developer experience while leveraging TYPO3's robust CMS capabilities
-- Headless API architecture for multi-channel content delivery
-- AI-assisted search with vector search capabilities via Meilisearch
-- Frontend editing capabilities for content management
-- GSAP animation support for rich interactive experiences
+Provides a modern, decoupled CMS architecture that separates content management from presentation, enabling:
+- Flexible content delivery to multiple frontends via JSON API
+- Enhanced editor experience with visual frontend editing
+- AI-assisted search with vector search capabilities
+- Animated content presentations with GSAP integration
 
 ## Key Features
 
-### TYPO3 Backend (Headless CMS)
-- TYPO3 v14.3 core with headless extension
-- Custom extensions:
-  - pixelcoda/fe-editor: Frontend editing interface
-  - pixelcoda/typo3-search: AI-assisted search with vector capabilities
-  - pixelcoda/content-gsap-animation: Animation content elements
-  - pixelcoda/sitepackage: Site configuration and templates
-- JSON API endpoints for content delivery
-- Comprehensive CMS modules (backend, dashboard, forms, SEO)
+### Backend (TYPO3 CMS)
+- **TYPO3 14.3** with headless extension (friendsoftypo3/headless)
+- **Custom Extensions**:
+  - `pixelcoda/fe-editor` - Frontend visual editing capabilities
+  - `pixelcoda/typo3-search` - AI-powered search platform with vector search
+  - `pixelcoda/content-gsap-animation` - GSAP animation integration for content elements
+  - `pixelcoda/sitepackage` - Custom site configuration and templates
 
-### Next.js Frontend
-- Next.js (latest) with React 18+
-- Server-side rendering and static generation
-- @pixelcoda/headless-nextjs integration package
-- Configurable skin system (premium/standard)
-- DevTools overlay for development debugging
-- Railway-ready deployment configuration
+### Frontend (Next.js)
+- **Next.js 16.2.9** with React 19 for modern UI
+- Server-side rendering and static site generation
+- Premium skin system with customizable themes
+- Headless DevTools for debugging (keyboard shortcut overlay)
+- Integration with TYPO3 JSON API
 
 ### Search Platform
-- Accessible, API-first search architecture
-- AI-assisted answers and semantic search
-- Vector search via Meilisearch integration
-- Modular workspace architecture (api/worker/widgets/llm-adapter)
-- Standalone API mode for independent deployment
-- Admin interface for search configuration
+- AI-assisted search answers
+- Vector search capabilities
+- API-first architecture
+- Multiple workspaces: API, worker, widgets, LLM adapter
+- Meilisearch integration
+
+### Development Environment
+- **DDEV** for local Docker-based development
+- PHP 8.2+ runtime
+- Node.js 18+ for frontend and search services
 
 ## Target Users
 
 ### Content Editors
-- Use TYPO3 backend for content management
-- Frontend editing capabilities for direct page modifications
-- Search module for content discovery
+- Backend: TYPO3 admin interface for content management
+- Frontend: Visual editing tools for WYSIWYG experience
+- Search: Easy content discovery through AI-assisted search
 
 ### Developers
-- Next.js/React developers building modern frontends
-- TYPO3 extension developers customizing backend
-- DevOps engineers deploying decoupled architectures
+- Headless API for building custom frontends
+- Extensible through TYPO3 extensions
+- Modern JavaScript/TypeScript tooling
+- Docker-based development workflow
 
 ### End Users
-- Website visitors experiencing fast, modern web interfaces
-- Search users with AI-assisted answers
-- Mobile users with responsive experiences
+- Fast, modern web experience via Next.js SSR/SSG
+- Enhanced search with AI-powered answers
+- Smooth animations and interactions
 
-## Use Cases
-- Enterprise websites requiring robust CMS with modern frontend
-- Multi-channel content delivery (web, mobile, API consumers)
-- Content-heavy sites needing advanced search capabilities
-- Marketing sites requiring animation and interactive elements
-- Headless CMS architectures with TYPO3 as content source
+## Primary Use Cases
+
+1. **Headless CMS Content Delivery** - Deliver structured content via JSON API to Next.js or other frontends
+2. **Multi-channel Publishing** - Single content source for web, mobile, and other platforms
+3. **AI-Enhanced Content Search** - Semantic search with contextual answers for improved findability
+4. **Visual Content Editing** - Frontend editing experience without backend context switching
+5. **Animated Web Experiences** - GSAP-powered animations for engaging content presentation
+
+## Technical Architecture
+- **Monorepo structure** with TYPO3 backend, Next.js frontend, and search platform
+- **API-driven** communication between backend and frontend
+- **Composer** for PHP dependency management
+- **npm/yarn** workspaces for JavaScript projects
+- **Railway/Docker** deployment support
