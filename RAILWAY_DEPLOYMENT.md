@@ -1,159 +1,182 @@
-# Railway Deployment Configuration
+# Railway Deployment Guide
 
-## TYPO3 Backend Service
+## TYPO3 Backend Deployment
 
-**Service URL:** `https://web-production-581b4.up.railway.app`
+### 1. Datenbank Setup
 
-### Required Environment Variables
+Erstelle eine MySQL-Datenbank in Railway:
+- New → MySQL
+- Kopiere die Connection-Details
+
+### 2. TYPO3 Service erstellen
+
+```bash
+# Im Repository Root
+railway up
+```
+
+### 3. Environment Variables setzen
+
+In Railway Dashboard → Variables:
 
 ```env
-# TYPO3 Site Configuration
-TYPO3_SITE_BASE=https://web-production-581b4.up.railway.app
-TYPO3_FRONTEND_BASE=https://nextjs-front-end-for-typo3-headless-production.up.railway.app
-
 # Database
-DATABASE_HOST=<your-mysql-host>
-DATABASE_PORT=3306
-DATABASE_NAME=<your-database-name>
-DATABASE_USER=<your-database-user>
-DATABASE_PASSWORD=<your-database-password>
+TYPO3_INSTALL_DB_HOST=containers-us-west-xxx.railway.app
+TYPO3_INSTALL_DB_PORT=6379
+TYPO3_INSTALL_DB_NAME=railway
+TYPO3_INSTALL_DB_USER=root
+TYPO3_INSTALL_DB_PASSWORD=xxx
 
-# TYPO3 Configuration
+# TYPO3 Context
 TYPO3_CONTEXT=Production
-TYPO3_INSTALL_TOOL_PASSWORD=<hashed-password>
+TYPO3_INSTALL_SITE_SETUP_TYPE=site
+
+# URLs
+TYPO3_SITE_BASE=https://your-typo3-backend.up.railway.app/
+TYPO3_FRONTEND_BASE=https://your-nextjs-frontend.up.railway.app/
+TYPO3_BACKEND_BASE=https://your-typo3-backend.up.railway.app/
+
+# Install Tool
+TYPO3_INSTALL_TOOL_PASSWORD=your-secure-password
 ```
 
-### Health Check
-- **Endpoint:** `/healthz.php`
-- **Timeout:** 180 seconds
+### 4. Database Import
 
----
+Nach dem ersten Deploy:
 
-## Next.js Frontend Service
+```bash
+# Lokal
+railway link
+railway run mysql -h $TYPO3_INSTALL_DB_HOST -u $TYPO3_INSTALL_DB_USER -p$TYPO3_INSTALL_DB_PASSWORD $TYPO3_INSTALL_DB_NAME < deployment/database-dump.sql
+```
 
-**Service URL:** `https://nextjs-front-end-for-typo3-headless-production.up.railway.app`
+### 5. TypoScript Setup
 
-### Required Environment Variables
+Das Template wurde bereits konfiguriert in `setup-typoscript.sql`
+
+## Next.js Frontend Deployment
+
+### 1. Frontend Service erstellen
+
+```bash
+cd frontend
+railway up
+```
+
+### 2. Environment Variables
+
+In Railway Dashboard → Variables:
 
 ```env
-# TYPO3 Headless API
-NEXT_PUBLIC_API_BASE_URL=https://web-production-581b4.up.railway.app/headless
-NEXT_PUBLIC_TYPO3_BASE_URL=https://web-production-581b4.up.railway.app
-NEXT_PUBLIC_BASE_URL=https://nextjs-front-end-for-typo3-headless-production.up.railway.app
-
-# File API
+NEXT_PUBLIC_API_BASE_URL=https://your-typo3-backend.up.railway.app
+NEXT_PUBLIC_TYPO3_BASE_URL=https://your-typo3-backend.up.railway.app
+NEXT_PUBLIC_BASE_URL=https://your-nextjs-frontend.up.railway.app
 NEXT_PUBLIC_FRONTEND_FILE_API=/headless/fileadmin
-
-# Frontend Configuration
 NEXT_PUBLIC_SKIN=premium
-NEXT_PUBLIC_HEADLESS_DEVTOOLS=true
-
-# Search API (optional)
-NEXT_PUBLIC_SEARCH_API_BASE_URL=https://web-production-581b4.up.railway.app/api/search
-
-# NPM Token (for @pixelcoda packages)
-NPM_TOKEN=<your-npm-token>
+NEXT_PUBLIC_HEADLESS_DEVTOOLS=false
 ```
 
----
+### 3. Build Settings
 
-## Deployment Steps
+Railway erkennt `railway.json` automatisch:
 
-### 1. Update TYPO3 Backend Variables
+```json
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "yarn install && yarn build"
+  },
+  "deploy": {
+    "startCommand": "yarn start",
+    "healthcheckPath": "/",
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
+```
+
+## Test nach Deployment
+
+### TYPO3 Backend
+
 ```bash
-# In Railway Dashboard → TYPO3 Backend Service → Variables
-TYPO3_SITE_BASE=https://web-production-581b4.up.railway.app
-TYPO3_FRONTEND_BASE=https://nextjs-front-end-for-typo3-headless-production.up.railway.app
+curl https://your-typo3-backend.up.railway.app/?type=834 | jq '.content[0].content.header'
 ```
 
-### 2. Update Next.js Frontend Variables
+Sollte Content zurückgeben.
+
+### Frontend
+
 ```bash
-# In Railway Dashboard → Next.js Frontend Service → Variables
-NEXT_PUBLIC_API_BASE_URL=https://web-production-581b4.up.railway.app/headless
-NEXT_PUBLIC_FRONTEND_FILE_API=/headless/fileadmin
+curl https://your-nextjs-frontend.up.railway.app/ | grep "Welcome to TYPO3"
 ```
 
-### 3. Redeploy Services
-1. Go to Railway Dashboard
-2. Redeploy TYPO3 Backend service
-3. Wait for health check to pass
-4. Redeploy Next.js Frontend service
+Sollte HTML mit Content zurückgeben.
 
-### 4. Verify Deployment
-- **Backend Health:** `https://web-production-581b4.up.railway.app/healthz.php`
-- **Headless API:** `https://web-production-581b4.up.railway.app/headless`
-- **Frontend:** `https://nextjs-front-end-for-typo3-headless-production.up.railway.app`
+## Extensions auf Railway
 
----
+Beide Extensions funktionieren automatisch:
+
+1. **GSAP Animation**: 
+   - Backend-Felder verfügbar
+   - JSON-API liefert Animation-Settings (wenn konfiguriert)
+   - Frontend kann Animationen abspielen
+
+2. **Frontend Editing**:
+   - `_pixelcoda` Metadata in JSON
+   - `backendEditUrl` nur für eingeloggte Backend-User
+   - CORS muss für Frontend-Domain konfiguriert sein
+
+## CORS Setup für Railway
+
+In `config/system/additional.php`:
+
+```php
+<?php
+return [
+    'FE' => [
+        'additionalHeaders' => [
+            'Access-Control-Allow-Origin' => getenv('TYPO3_FRONTEND_BASE'),
+            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+            'Access-Control-Allow-Credentials' => 'true',
+        ],
+    ],
+];
+```
 
 ## Troubleshooting
 
-### Frontend shows "TYPO3 API konnte nicht geladen werden"
+### Content wird nicht geliefert
 
-**Cause:** Backend is returning 500 error or environment variables are incorrect
-
-**Fix:**
-1. Check TYPO3 backend logs: `https://web-production-581b4.up.railway.app/healthz.php`
-2. Verify environment variables are set correctly in Railway Dashboard
-3. Ensure `TYPO3_SITE_BASE` and `TYPO3_FRONTEND_BASE` are set on backend
-4. Ensure `NEXT_PUBLIC_API_BASE_URL` includes `/headless` path
-5. Redeploy both services after updating variables
-
-### TYPO3 Backend 500 Error
-
-**Common causes:**
-- Database connection issues
-- Missing `TYPO3_SITE_BASE` or `TYPO3_FRONTEND_BASE` variables
-- TYPO3 Install Tool not configured
-- File permissions issues
-
-**Fix:**
-1. Check Railway logs for TYPO3 service
-2. Verify database connection variables
-3. Run TYPO3 Install Tool via Railway web console
-4. Check `/var/log/typo3_*.log` in container
-
-### Headless Extension Not Working
-
-**Fix:**
-1. Verify headless extension is active: Check composer.json shows `friendsoftypo3/headless: ^5.0@RC`
-2. Clear TYPO3 caches: `vendor/bin/typo3 cache:flush`
-3. Check site configuration includes `headless: 1` and `renderingMode: headless`
-
----
-
-## Current Configuration
-
-### Site Configuration (`config/sites/main/config.yaml`)
-```yaml
-base: '%env(TYPO3_SITE_BASE)%'
-frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
-headless: 1
-customConfiguration:
-  renderingMode: headless
+```bash
+# TypoScript prüfen
+railway run --service typo3 vendor/bin/typo3 cache:flush
 ```
 
-### Dependencies
-- TYPO3: 14.3
-- friendsoftypo3/headless: v5.0.0-rc1
-- Next.js: 16.2.9
-- React: 19.2.7
+### Frontend lädt nicht
 
----
+```bash
+# Build-Logs prüfen
+railway logs --service frontend
 
-## Next Steps After Variable Update
+# Environment-Variablen prüfen
+railway vars --service frontend
+```
 
-After setting the environment variables in Railway Dashboard:
+### Extensions fehlen
 
-1. **Backend should be accessible at:**
-   - Health: https://web-production-581b4.up.railway.app/healthz.php
-   - Headless API: https://web-production-581b4.up.railway.app/headless
+Extensions sind in `packages/` und werden via Composer geladen:
 
-2. **Frontend should load successfully at:**
-   - https://nextjs-front-end-for-typo3-headless-production.up.railway.app
+```json
+{
+  "repositories": [
+    { "type": "path", "url": "./packages/*" }
+  ]
+}
+```
 
-3. **If issues persist:**
-   - Check Railway deployment logs
-   - Verify all environment variables are saved
-   - Ensure TYPO3 database is accessible
-   - Contact Railway support if infrastructure issues
+## Monitoring
+
+- TYPO3 Health: `https://your-backend.railway.app/typo3/login`
+- Frontend Health: `https://your-frontend.railway.app/api/health`
+- API Health: `https://your-backend.railway.app/?type=834`
