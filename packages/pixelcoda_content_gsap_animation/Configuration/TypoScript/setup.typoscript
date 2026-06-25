@@ -40,3 +40,6 @@ page {
         animations.depends = animation_definitions,gsap_scrolltrigger
     }
 }
+
+# Include headless configuration
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:content_gsap_animation/Configuration/TypoScript/Headless/setup.typoscript">

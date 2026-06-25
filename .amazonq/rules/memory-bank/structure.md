@@ -1,132 +1,107 @@
 # Project Structure
 
-## Directory Organization
+## Root Directory Organization
 
 ```
 typo3-inst/
-├── config/                    # TYPO3 system configuration
-│   ├── sites/main/           # Site-specific settings
-│   └── system/               # System-wide configuration (settings.php)
-├── deployment/               # Deployment configurations
-│   └── typo3/               # TYPO3-specific deployment scripts and configs
-├── frontend/                 # Next.js headless frontend
-│   ├── src/
-│   │   ├── app/             # Next.js App Router pages
-│   │   ├── components/      # React components
-│   │   └── lib/             # Utility libraries
-│   ├── public/              # Static assets
-│   ├── .next/               # Build output
-│   ├── next.config.js       # Next.js configuration
-│   ├── package.json         # Frontend dependencies
-│   └── .env.local           # Environment variables
-├── packages/                 # TYPO3 custom extensions
-│   ├── pixelcoda_search/    # AI search platform
-│   ├── typo3_fe_editing/    # Frontend editing tools
-│   ├── content_gsap_animation/  # GSAP animation extension
-│   ├── pixelcoda_content_gsap_animation/  # Alternative GSAP extension
-│   ├── pixelcoda_sitepackage/   # Site package
-│   └── site_package/        # Additional site package
-├── public/                   # TYPO3 web root
-│   ├── fileadmin/           # User-uploaded files
-│   ├── typo3temp/           # Temporary files and caches
-│   ├── _assets/             # Processed assets
-│   └── index.php            # TYPO3 entry point
-├── var/                      # Runtime data
-│   ├── cache/               # Application cache
-│   ├── log/                 # Log files
-│   ├── lock/                # Lock files
-│   └── session/             # Session storage
-├── vendor/                   # Composer dependencies (PHP)
-│   ├── typo3/               # TYPO3 core packages
-│   ├── friendsoftypo3/      # Headless extension
-│   ├── pixelcoda/           # Symlinked custom extensions
-│   └── symfony/             # Symfony components
-├── .ddev/                    # DDEV Docker development environment
-├── composer.json             # PHP dependencies and project config
-├── package.json              # Root-level Node.js workspace config
-└── README.md                 # Project documentation
+├── frontend/              # Next.js frontend application
+├── packages/              # TYPO3 extensions (composer packages)
+├── public/                # TYPO3 public files & assets
+├── config/                # TYPO3 configuration
+├── var/                   # Runtime cache, logs, sessions
+├── vendor/                # Composer dependencies
+├── deployment/            # Deployment scripts and configs
+├── .ddev/                 # DDEV local development environment
+└── simple-api.js          # Search API entry point
 ```
 
-## Core Components
+## Frontend Application (`frontend/`)
 
-### TYPO3 Backend
-**Location**: Root directory  
-**Purpose**: CMS backend for content management  
-**Key Files**:
-- `composer.json` - PHP dependencies, TYPO3 14.3 core and extensions
-- `config/system/settings.php` - Database and system configuration
-- `public/index.php` - Application entry point
+Next.js application structure:
+- `src/app/` - App Router pages and layouts
+- `src/components/` - React components
+- `src/lib/` - Utility functions and API clients
+- `public/` - Static assets
+- `.env.local` - Environment configuration
+- `next.config.js` - Next.js configuration
+- `railway.json` - Railway deployment config
 
-### Next.js Frontend
-**Location**: `frontend/`  
-**Purpose**: Headless frontend consuming TYPO3 JSON API  
-**Key Files**:
-- `src/app/` - App Router pages (e.g., `suche/page.jsx` for search)
-- `src/components/Renderer.jsx` - Renders TYPO3 content elements
-- `.env.local` - API endpoints and configuration
+## TYPO3 Extensions (`packages/`)
 
-### Custom Extensions
-**Location**: `packages/`  
-**Purpose**: TYPO3 extension development  
-**Structure**: Each extension follows TYPO3 conventions:
-- `Classes/` - PHP classes (Controllers, ViewHelpers, etc.)
-- `Configuration/` - TCA, TypoScript, routing
-- `Resources/` - Templates, assets
-- `ext_emconf.php` - Extension metadata
+Custom extensions organized as composer packages:
 
-### Search Platform
-**Location**: `packages/pixelcoda_search/`  
-**Architecture**: Workspace-based monorepo  
-**Workspaces**:
-- `apps/api` - Search API service
-- `apps/worker` - Background processing
-- `apps/widgets` - UI components
-- `packages/llm-adapter` - AI/LLM integration
-- `standalone-api` - Standalone search service
+### Frontend Editing (`typo3_fe_editing/`)
+Visual frontend editor with drag-and-drop, contextual editing, AI assistant.
 
-## Component Relationships
+### Search Module (`pixelcoda_search/`)
+AI-powered search platform with vector search, API-first architecture.
 
-### Data Flow
-1. **Content Creation**: Editors create content in TYPO3 backend
-2. **API Exposure**: Headless extension transforms content to JSON
-3. **Frontend Consumption**: Next.js fetches and renders JSON data
-4. **Search Indexing**: Search platform indexes content for AI search
+### GSAP Animations (`content_gsap_animation/`, `pixelcoda_content_gsap_animation/`)
+Content elements with GSAP-powered animations.
 
-### Extension Dependencies
-- **TYPO3 Core** (14.3) provides base CMS functionality
-- **friendsoftypo3/headless** (5.0) enables JSON API
-- **pixelcoda/fe-editor** adds frontend editing UI
-- **pixelcoda/typo3-search** integrates AI search
-- **pixelcoda/content-gsap-animation** adds animation capabilities
+### Sitepackage (`pixelcoda_sitepackage/`, `site_package/`)
+Custom site configuration and templates.
 
-### Frontend-Backend Integration
-- Next.js reads `NEXT_PUBLIC_API_BASE_URL` from `.env.local`
-- Renderer component maps TYPO3 content types to React components
-- FileAdmin assets served via `/headless/fileadmin` endpoint
+## TYPO3 Core Structure
+
+### Public Directory (`public/`)
+- `index.php` - TYPO3 entry point
+- `fileadmin/` - User-uploaded files
+- `typo3temp/` - Temporary files and processed assets
+- `_assets/` - Compiled frontend assets
+
+### Configuration (`config/`)
+- `config/system/settings.php` - Core configuration
+- `config/sites/main/` - Site configuration
+
+### Runtime (`var/`)
+- `var/cache/` - Application cache
+- `var/log/` - Application logs
+- `var/session/` - User sessions
+- `var/lock/` - File locks
+
+### Vendor (`vendor/`)
+- `typo3/` - TYPO3 CMS core packages
+- `friendsoftypo3/headless/` - Headless API extension
+- `pixelcoda/` - Symlinked custom extensions
+- Third-party libraries
+
+## Deployment (`deployment/`)
+
+Scripts and configurations for Railway and production deployment:
+- `deployment/typo3/` - TYPO3-specific deployment files
+- SQL dumps and setup scripts
+- Docker configurations
+- Database import utilities
+
+## Development Environment (`.ddev/`)
+
+DDEV configuration for local development:
+- Apache/Nginx configuration
+- PHP settings
+- Database configuration
+- Custom commands
 
 ## Architectural Patterns
 
-### Headless CMS Architecture
-- **Separation of Concerns**: Content management (TYPO3) decoupled from presentation (Next.js)
-- **API-First**: JSON API as contract between backend and frontend
-- **Extensibility**: TYPO3 extensions add custom functionality
+### Decoupled Architecture
+- Backend: TYPO3 serves as headless CMS via JSON API
+- Frontend: Next.js consumes API and renders pages
+- Communication: REST API endpoints
 
-### Monorepo Pattern
-- Root manages TYPO3 and shared configuration
-- `frontend/` self-contained Next.js application
-- `packages/` individual TYPO3 extensions with own dependencies
-- npm workspaces for JavaScript packages
+### Extension Architecture
+- Composer packages in `packages/` directory
+- Symlinked into `vendor/pixelcoda/`
+- Standard TYPO3 extension structure (Classes, Configuration, Resources)
 
-### Development Environment
-- **DDEV** provides containerized TYPO3, database, web server
-- **Local development**: Frontend on port 3000, TYPO3 API on localhost
-- **Hot reload**: Next.js dev mode and DDEV file syncing
+### Content Flow
+1. Content created in TYPO3 backend
+2. Headless extension transforms to JSON
+3. Next.js fetches via API
+4. React components render content
 
-## Configuration Files
-
-- `composer.json` - PHP dependencies, TYPO3 platform version (PHP 8.2)
-- `package.json` - npm workspaces, search platform scripts
-- `frontend/package.json` - Next.js and React dependencies
-- `.ddev/config.yaml` - Docker development environment
-- `frontend/.env.local` - Frontend environment variables
-- `config/system/settings.php` - TYPO3 database and system config
+### Search Architecture
+- Standalone Node.js API (`simple-api.js`)
+- Workspace-based monorepo structure
+- LLM adapter for AI features
+- Widget system for embeddable search

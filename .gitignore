@@ -42,3 +42,8 @@ deployment/*.sql
 deployment/*.sql.gz
 deployment/*.tar.gz
 deployment/typo3-database-import.sql
+public/*.gz
+public/*.tar.gz
+public/railway-import.php
+public/setup-railway-db.php
+!public/index.php

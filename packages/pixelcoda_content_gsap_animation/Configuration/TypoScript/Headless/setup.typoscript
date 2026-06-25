@@ -1,0 +1,72 @@
+# Headless integration for GSAP animations
+# Adds animation settings to all content elements in headless mode
+
+lib.contentElement {
+    dataProcessing {
+        900 = Pixelcoda\ContentGsapAnimation\DataProcessing\AnimationSettingsProcessor
+        900.as = gsapAnimation
+    }
+}
+
+# Add animation data to JSON output for all default content types
+tt_content.text.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.textpic.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.textmedia.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.image.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.header.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.bullets.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.table.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.uploads.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_abstract.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_categorized_content.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_categorized_pages.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_pages.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_subpages.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_recently_updated.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_related_pages.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_section.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_section_pages.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_sitemap.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.menu_sitemap_dir.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.shortcut.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.list.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.html.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+tt_content.div.fields.content.fields.animationSettings < lib.contentElement.dataProcessing.900
+
+# Add structured animation data to JSON output
+lib.gsapAnimationData = JSON
+lib.gsapAnimationData {
+    dataProcessing {
+        10 = Pixelcoda\ContentGsapAnimation\DataProcessing\AnimationSettingsProcessor
+        10.as = animationData
+    }
+    fields {
+        animation = TEXT
+        animation.data = animationData:animation
+        duration = INT
+        duration.data = animationData:duration
+        delay = INT
+        delay.data = animationData:delay
+        easing = TEXT
+        easing.data = animationData:easing
+        offset = INT
+        offset.data = animationData:offset
+        anchorPlacement = TEXT
+        anchorPlacement.data = animationData:anchorPlacement
+        once = BOOL
+        once.data = animationData:once
+        mirror = BOOL
+        mirror.data = animationData:mirror
+    }
+}
+
+tt_content.text.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.textpic.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.textmedia.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.image.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.header.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.bullets.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.table.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.uploads.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.list.fields.content.fields._gsap < lib.gsapAnimationData
+tt_content.html.fields.content.fields._gsap < lib.gsapAnimationData

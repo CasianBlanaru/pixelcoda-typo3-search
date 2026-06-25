@@ -42,3 +42,6 @@ page.includeCSS {
 page.includeJSFooter {
     pixelcoda_fe_editor = EXT:pixelcoda_fe_editor/Resources/Public/JavaScript/editor.js
 }
+
+# Include headless configuration
+<INCLUDE_TYPOSCRIPT: source="FILE:EXT:pixelcoda_fe_editor/Configuration/TypoScript/Headless/setup.typoscript">

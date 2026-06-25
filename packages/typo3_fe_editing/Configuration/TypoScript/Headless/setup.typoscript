@@ -1,0 +1,28 @@
+# Headless integration for pixelcoda_fe_editor
+# Add backend edit metadata to JSON output
+
+lib.contentElement {
+    dataProcessing {
+        950 = TYPO3\CMS\Frontend\DataProcessing\DatabaseQueryProcessor
+        950 {
+            if.isTrue.data = TSFE:beUserLogin
+            table = tt_content
+            pidInList.field = pid
+            where.field = uid
+            where.wrap = uid=|
+            as = _pixelcoda
+            dataProcessing {
+                10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+                10 {
+                    references.fieldName = image
+                    as = images
+                }
+            }
+        }
+    }
+}
+
+# Expose backend edit URL and metadata for headless frontends
+tt_content.stdWrap.dataWrap (
+    <div data-t3-uid="{field:uid}" data-t3-type="{field:CType}" data-t3-pid="{field:pid}">|</div>
+)
