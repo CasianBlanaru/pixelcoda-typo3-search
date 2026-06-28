@@ -1,6 +1,24 @@
 # Headless integration for GSAP animations
-# TODO: Fix TypoScript configuration - currently breaks content rendering
-# The DataProcessor needs to be integrated differently with the Headless extension
+# Adds _gsap field to content using DataProcessing
 
-# Temporarily disabled to prevent breaking content output
-# Will be fixed in future update
+# Create lib object that returns structured animation data
+lib.gsap_animation_data = JSON
+lib.gsap_animation_data {
+    dataProcessing {
+        10 = Pixelcoda\ContentGsapAnimation\DataProcessing\AnimationSettingsProcessor
+        10.as = gsapData
+    }
+}
+
+# Apply to all content element types
+tt_content.text.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.textpic.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.textmedia.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.image.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.header.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.bullets.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.table.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.uploads.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.list.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.html.fields.content.fields._gsap < lib.gsap_animation_data
+tt_content.div.fields.content.fields._gsap < lib.gsap_animation_data

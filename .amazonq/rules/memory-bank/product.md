@@ -1,55 +1,60 @@
 # Product Overview
 
-## Project Purpose
-PixelCoda TYPO3 Headless CMS installation with Next.js frontend - a decoupled content management system combining TYPO3 backend with modern React-based frontend for content delivery.
+## Purpose
+
+PixelCoda TYPO3 Headless is a modern, API-first CMS solution that decouples a TYPO3 backend from a Next.js frontend. This architecture enables content management through TYPO3's robust CMS while delivering content via headless JSON APIs to a high-performance React-based frontend.
 
 ## Value Proposition
-- Headless CMS architecture separating content management from presentation
-- Modern frontend built with Next.js 16 and React 19
-- AI-powered search functionality with vector search capabilities
-- Advanced frontend editing capabilities with drag-and-drop interface
-- Content animations powered by GSAP
-- Premium skin system for customizable UI themes
-- Developer-friendly DevTools overlay for debugging
+
+- **Decoupled Architecture**: TYPO3 backend serves as headless CMS, Next.js frontend consumes JSON APIs
+- **Modern Frontend**: React 19 and Next.js 16 for optimal performance and developer experience
+- **Content Flexibility**: Manage content in TYPO3, render dynamically in Next.js
+- **Enhanced Search**: AI-assisted search platform with vector search capabilities via Meilisearch
+- **Frontend Editing**: In-place content editing directly on the frontend
+- **Animation Support**: GSAP-based content animations for engaging user experiences
+- **Developer Tools**: Built-in headless devtools for debugging and development
 
 ## Key Features
 
-### Backend (TYPO3 14.3)
-- Full-featured CMS backend for content management
-- Headless API providing JSON responses
-- Custom PixelCoda extensions:
-  - Frontend editor with visual editing
-  - Search module with AI-assisted answers
-  - GSAP animation content elements
-  - Custom sitepackage
-- DDEV development environment support
-- Railway.app deployment ready
+### TYPO3 Backend
+- TYPO3 v14.3 core CMS functionality
+- Headless extension (FriendsOfTYPO3/headless) for JSON API output
+- Custom extensions for enhanced functionality:
+  - pixelcoda_search: Accessible, API-first search with AI assistance
+  - pixelcoda_fe_editor: Frontend editing capabilities
+  - content_gsap_animation: Animation content elements
+  - pixelcoda_sitepackage: Site configuration and templates
 
-### Frontend (Next.js 16)
-- Server-side rendering and static generation
-- Premium skin system
-- Headless DevTools overlay (CMD+SHIFT+H)
-- File API integration for media assets
-- Responsive design
-- React 19 with latest features
+### Next.js Frontend
+- Server-side rendering with Next.js 16
+- React 19 for modern component architecture
+- @pixelcoda/headless-nextjs integration package
+- GSAP animations support
+- Multiple skin support (premium, default)
+- Developer overlay (CMD+SHIFT+H / CTRL+SHIFT+H)
 
 ### Search Platform
-- API-first accessible search
-- AI-assisted answers
+- AI-assisted answers powered by LLM adapters
 - Vector search capabilities
-- Meilisearch integration
-- Multiple workspaces (API, worker, widgets, LLM adapter)
+- Accessible, API-first architecture
+- Workspace-based architecture with multiple apps:
+  - API server
+  - Worker processes
+  - Widgets for integration
+  - LLM adapter for AI functionality
 
 ## Target Users
-- Content editors managing website content via TYPO3 backend
-- Developers building and customizing the headless frontend
-- Site administrators deploying and maintaining the platform
-- End users consuming content through the Next.js frontend
+
+- **Content Editors**: Manage content through familiar TYPO3 interface
+- **Frontend Developers**: Build modern React applications with TYPO3 content
+- **Site Administrators**: Deploy and configure headless CMS infrastructure
+- **End Users**: Experience fast, modern web interfaces with enhanced search
 
 ## Use Cases
-- Corporate websites requiring content management
-- Marketing sites with dynamic content
-- Multi-channel content delivery
-- Sites requiring advanced search with AI capabilities
-- Projects needing visual frontend editing
-- Headless CMS implementations with modern frontend
+
+- Corporate websites requiring decoupled CMS
+- High-traffic sites needing frontend performance optimization
+- Multi-channel content delivery (web, mobile, IoT)
+- Projects requiring modern frontend frameworks with enterprise CMS
+- Content-heavy sites benefiting from AI-powered search
+- Sites requiring in-place frontend editing capabilities

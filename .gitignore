@@ -21,6 +21,7 @@ npm-debug.log*
 yarn-debug.log*
 package-lock.json
 yarn-error.log*
+*.log
 
 # IDE and System files
 .idea/
@@ -29,14 +30,22 @@ yarn-error.log*
 *.swo
 .DS_Store
 
-# TYPO3 specific (if within the same repo)
+# TYPO3 specific
 fileadmin/
 typo3conf/
 uploads/
 typo3temp/
+var/cache/
+var/log/
+var/session/
+var/lock/
+
+# Keep important var structure
+!var/.htaccess
 
 # Package Manager
 yarn-error.log
+
 # Deployment artifacts (too large for git)
 deployment/*.sql
 deployment/*.sql.gz
@@ -47,3 +56,6 @@ public/*.tar.gz
 public/railway-import.php
 public/setup-railway-db.php
 !public/index.php
+
+# Build and test artifacts
+check_json.sh

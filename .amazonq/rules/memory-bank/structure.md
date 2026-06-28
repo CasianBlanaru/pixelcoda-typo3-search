@@ -5,103 +5,126 @@
 ```
 typo3-inst/
 ├── frontend/              # Next.js frontend application
-├── packages/              # TYPO3 extensions (composer packages)
-├── public/                # TYPO3 public files & assets
+├── packages/              # TYPO3 extensions and custom packages
 ├── config/                # TYPO3 configuration
+├── public/                # TYPO3 public web root
 ├── var/                   # Runtime cache, logs, sessions
-├── vendor/                # Composer dependencies
-├── deployment/            # Deployment scripts and configs
+├── vendor/                # PHP dependencies (Composer)
+├── deployment/            # Deployment scripts and configurations
 ├── .ddev/                 # DDEV local development environment
-└── simple-api.js          # Search API entry point
+└── composer.json          # PHP/TYPO3 dependencies
 ```
 
 ## Frontend Application (`frontend/`)
 
 Next.js application structure:
-- `src/app/` - App Router pages and layouts
+- `src/app/` - Next.js App Router pages and layouts
 - `src/components/` - React components
-- `src/lib/` - Utility functions and API clients
-- `public/` - Static assets
-- `.env.local` - Environment configuration
+- `src/lib/` - Utility functions and helpers
+- `.env.local` - Environment configuration for API URLs
 - `next.config.js` - Next.js configuration
-- `railway.json` - Railway deployment config
+- `railway.json` - Railway deployment configuration
 
 ## TYPO3 Extensions (`packages/`)
 
-Custom extensions organized as composer packages:
+### Core Extensions
+- **pixelcoda_search/**: AI-assisted search extension with:
+  - `Classes/` - PHP backend logic
+  - `Configuration/` - TCA, routing, TypoScript
+  - `Resources/` - Frontend assets
+  - `Tests/` - Unit and integration tests
+  - PHP quality tools (phpstan, php-cs-fixer, rector)
 
-### Frontend Editing (`typo3_fe_editing/`)
-Visual frontend editor with drag-and-drop, contextual editing, AI assistant.
+- **typo3_fe_editing/**: Frontend editing capabilities
+  - Nested package structure under `packages/pixelcoda_fe_editor/`
+  - Enables in-place content editing
 
-### Search Module (`pixelcoda_search/`)
-AI-powered search platform with vector search, API-first architecture.
+- **content_gsap_animation/**: GSAP animation content elements
+  - `Classes/` - Data processors and domain models
+  - `Configuration/` - Content element definitions
+  - `JavaScript/` - Animation scripts
+  - `Build/` - Frontend build configuration
 
-### GSAP Animations (`content_gsap_animation/`, `pixelcoda_content_gsap_animation/`)
-Content elements with GSAP-powered animations.
+- **pixelcoda_sitepackage/**: Site configuration and templates
+  - `Configuration/` - Site configuration, TypoScript
+  - `Resources/` - Templates and assets
 
-### Sitepackage (`pixelcoda_sitepackage/`, `site_package/`)
-Custom site configuration and templates.
+## TYPO3 Configuration (`config/`)
 
-## TYPO3 Core Structure
+```
+config/
+├── sites/main/           # Site configuration (domains, languages)
+└── system/               # System configuration
+    ├── settings.php      # Database, encryption keys
+    └── additional.php    # Custom PHP configuration
+```
 
-### Public Directory (`public/`)
-- `index.php` - TYPO3 entry point
+## Public Web Root (`public/`)
+
+TYPO3's entry point:
+- `index.php` - Main entry script
+- `_assets/` - Generated frontend assets
 - `fileadmin/` - User-uploaded files
-- `typo3temp/` - Temporary files and processed assets
-- `_assets/` - Compiled frontend assets
+- `typo3temp/` - Temporary files and caches
 
-### Configuration (`config/`)
-- `config/system/settings.php` - Core configuration
-- `config/sites/main/` - Site configuration
+## Runtime Directory (`var/`)
 
-### Runtime (`var/`)
-- `var/cache/` - Application cache
-- `var/log/` - Application logs
-- `var/session/` - User sessions
-- `var/lock/` - File locks
-
-### Vendor (`vendor/`)
-- `typo3/` - TYPO3 CMS core packages
-- `friendsoftypo3/headless/` - Headless API extension
-- `pixelcoda/` - Symlinked custom extensions
-- Third-party libraries
+- `cache/code/` - Compiled PHP code cache
+- `cache/data/` - Data caches
+- `log/` - Application logs
+- `session/` - User sessions
+- `lock/` - File-based locks
 
 ## Deployment (`deployment/`)
 
-Scripts and configurations for Railway and production deployment:
-- `deployment/typo3/` - TYPO3-specific deployment files
-- SQL dumps and setup scripts
-- Docker configurations
-- Database import utilities
+Scripts and configurations for production deployment:
+- `typo3/` - TYPO3-specific deployment files
+  - `entrypoint.sh` - Docker/Railway startup script
+  - `*.php` - Database setup, configuration scripts
+  - `apache-vhost.conf.template` - Apache configuration
+- Railway and manual deployment documentation
+- Database dumps and setup SQL
 
 ## Development Environment (`.ddev/`)
 
-DDEV configuration for local development:
-- Apache/Nginx configuration
-- PHP settings
-- Database configuration
-- Custom commands
+DDEV Docker-based local environment:
+- `config.yaml` - DDEV project configuration
+- `apache/` - Apache web server configuration
+- `php/` - PHP configuration overrides
+- `providers/` - Integration with hosting providers
+- `commands/` - Custom DDEV commands
 
 ## Architectural Patterns
 
-### Decoupled Architecture
-- Backend: TYPO3 serves as headless CMS via JSON API
-- Frontend: Next.js consumes API and renders pages
-- Communication: REST API endpoints
+### Headless CMS Architecture
+- **Backend (TYPO3)**: Content management, API generation
+- **Frontend (Next.js)**: Content consumption, rendering
+- **Communication**: JSON API via friendsoftypo3/headless extension
 
-### Extension Architecture
-- Composer packages in `packages/` directory
-- Symlinked into `vendor/pixelcoda/`
-- Standard TYPO3 extension structure (Classes, Configuration, Resources)
+### Monorepo Structure
+Root contains both TYPO3 (PHP) and frontend (Node.js) codebases:
+- Shared deployment configurations
+- Unified version control
+- Independent runtime environments
 
-### Content Flow
-1. Content created in TYPO3 backend
-2. Headless extension transforms to JSON
-3. Next.js fetches via API
-4. React components render content
+### Extension-Based Modularity
+TYPO3 functionality organized as Composer packages:
+- Local packages in `packages/` directory
+- Symlinked to `vendor/pixelcoda/` via Composer path repositories
+- Each extension is self-contained with own dependencies
 
-### Search Architecture
-- Standalone Node.js API (`simple-api.js`)
-- Workspace-based monorepo structure
-- LLM adapter for AI features
-- Widget system for embeddable search
+### Search Platform Workspace Architecture
+`pixelcoda_search` uses npm workspaces:
+- `apps/api` - REST API server
+- `apps/worker` - Background job processor
+- `apps/widgets` - Embeddable search widgets
+- `packages/llm-adapter` - AI/LLM integration layer
+- `standalone-api` - Standalone search API deployment
+
+## Key Relationships
+
+- Frontend fetches content from TYPO3 via API endpoints
+- TYPO3 extensions enhance headless API output
+- Search extension provides separate API for search functionality
+- Frontend editor bridges TYPO3 backend with Next.js frontend
+- GSAP animation extension provides both backend content elements and frontend JavaScript

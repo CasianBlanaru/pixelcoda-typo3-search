@@ -125,8 +125,8 @@ class AnimationSettingsProcessor implements DataProcessorInterface
     ): void {
         $variableName = $cObj->stdWrapValue('as', $processorConfiguration);
         if (is_string($variableName) && $variableName !== '') {
-            $processedData[$variableName] = $completeGsapSettings;
-            $processedData[$variableName . 'Data'] = $structuredGsapSettings;
+            // For headless: return structured data directly
+            $processedData[$variableName] = $structuredGsapSettings;
         } else {
             $processedData['animationSettings'] = $completeGsapSettings;
             $processedData['gsapAnimationSettings'] = $completeGsapSettings;

@@ -2,96 +2,52 @@
 
 ## Code Quality Standards
 
-### PHP Code Standards
-- **PHP Version**: Strict PHP 8.2+ with typed declarations (`declare(strict_types=1)`)
-- **Namespacing**: PSR-4 autoloading with vendor namespace prefix (e.g., `PixelCoda\PixelcodaSearch\Controller\Backend`)
-- **Type Declarations**: Explicit return types and parameter types on all methods
-- **Visibility**: Always specify method visibility (`public`, `protected`, `private`)
-- **Properties**: Use promoted constructor properties with visibility and type hints
-- **Constants**: Use class constants with `private const` for internal values
+### PHP Code Style (TYPO3 Extensions)
+- **Strict Types**: Declare `strict_types=1` at the beginning of every PHP file
+- **Type Declarations**: Use explicit type hints for all method parameters and return types
+- **Namespace Convention**: Follow PSR-4 autoloading with vendor namespace `PixelCoda` or `Pixelcoda`
+- **Class Structure**: One class per file, file name matches class name
+- **Visibility Keywords**: Always declare visibility (public, protected, private) for properties and methods
+- **Constructor Property Promotion**: Use PHP 8.0+ constructor property promotion for dependency injection
 
-### JavaScript/Node.js Standards
-- **Module System**: ES6 modules with `import/export` syntax
-- **Environment**: Node.js >=18.0.0 for backend APIs
-- **File Organization**: Top-level configuration constants at file start
-- **Encoding**: UTF-8 with proper text normalization (NFKD) for internationalization
-- **Async/Await**: Preferred over callbacks or raw promises
+### JavaScript/TypeScript Style
+- **ES Modules**: Use ESM imports (`import`/`export`) instead of CommonJS
+- **Async/Await**: Prefer async/await over Promise chains for readability
+- **Destructuring**: Use destructuring for cleaner code (`const { data } = results`)
+- **Arrow Functions**: Use arrow functions for callbacks and functional operations
+- **Template Literals**: Use template literals for string interpolation
+- **Const/Let**: Never use `var`, prefer `const` over `let` when possible
 
-### React/Next.js Standards
-- **Component Structure**: Server Components by default in App Router
-- **Async Components**: Server components marked with `async` keyword
-- **Props**: Destructured with await for searchParams
-- **Styling**: Inline styles with CSS custom properties (variables)
-- **Imports**: Relative imports for local modules, absolute for external packages
-
-## Structural Conventions
-
-### TYPO3 Extension Structure
-```
-extension_name/
-├── Classes/
-│   ├── Controller/
-│   │   └── Backend/         # Backend module controllers
-│   ├── Command/             # CLI commands
-│   ├── DataProcessing/      # Fluid data processors
-│   ├── Service/             # Business logic services
-│   └── ViewHelpers/         # Fluid ViewHelpers
-├── Configuration/
-│   ├── TCA/                 # Table Configuration Array
-│   ├── TypoScript/          # TypoScript templates
-│   └── Backend/             # Backend module configs
-├── Resources/
-│   ├── Public/              # Public assets
-│   └── Private/             # Templates and partials
-└── ext_*.php                # Extension configuration files
-```
-
-### Next.js Application Structure
-```
-src/
-├── app/                     # App Router pages
-│   └── [route]/
-│       └── page.jsx         # Route component
-├── components/              # Reusable React components
-└── lib/                     # Utilities and configurations
-```
+### File Organization
+- PHP files use `.php` extension with class-based organization
+- React components use `.jsx` extension
+- Configuration files use `.js` (Next.js, Node.js) or `.yaml` (TYPO3)
+- Keep generated files separate (`.next/`, `var/cache/`)
 
 ## Naming Conventions
 
-### PHP Naming
-- **Classes**: PascalCase (e.g., `SearchModuleController`)
+### PHP (TYPO3)
+- **Classes**: PascalCase (e.g., `SearchModuleController`, `GsapAnimatedContent`)
 - **Methods**: camelCase (e.g., `handleRequest`, `getCurrentConfiguration`)
+- **Properties**: camelCase (e.g., `moduleTemplateFactory`, `configurationManager`)
 - **Constants**: UPPER_SNAKE_CASE (e.g., `MODULE_ROUTE`, `MAX_REQUEST_BYTES`)
-- **Variables**: camelCase (e.g., `$configPath`, `$apiUrl`)
-- **Protected Methods**: camelCase with `protected` visibility, often action suffixes (e.g., `indexAction`, `switchModeAction`)
+- **Database Tables**: snake_case (e.g., `tt_content`, `pages`)
 
-### JavaScript/Node.js Naming
+### JavaScript/React
+- **Components**: PascalCase (e.g., `GsapAnimatedContent`, `DevTools`)
+- **Functions**: camelCase (e.g., `generateMetadata`, `loadAndAnimate`)
 - **Variables**: camelCase (e.g., `searchIndex`, `queryTokens`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `PORT`, `API_READ_KEY`, `DATA_DIR`)
-- **Functions**: camelCase (e.g., `tokenize`, `searchDocuments`, `buildFacets`)
-- **Array Variables**: Plural nouns (e.g., `documents`, `results`, `collections`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `PORT`, `API_READ_KEY`)
+- **Props**: camelCase (e.g., `animationSettings`, `searchParams`)
 
-### React Component Naming
-- **Components**: PascalCase (e.g., `SuchePage`, `DevTools`)
-- **Props**: camelCase (e.g., `searchParams`)
-- **Event Handlers**: Prefixed with `handle` or `on` (e.g., `handleSubmit`)
-
-## Documentation Standards
-
-### PHP Documentation
-- **Class DocBlock**: Description of class purpose
-- **Method DocBlock**: Brief description without repetitive parameter/return tags when types are explicit
-- **Inline Comments**: German language used in flash messages and user-facing strings
-
-### Code Comments
-- Minimal comments - prefer self-documenting code
-- Comments used primarily for complex algorithms or business logic explanations
-- User-facing messages in German (this codebase)
-
-## Semantic Patterns
+## Architectural Patterns
 
 ### Dependency Injection (TYPO3)
-Constructor injection pattern with promoted properties:
+- Use constructor injection for all service dependencies
+- Rely on TYPO3's DI container for service instantiation
+- Do not use `GeneralUtility::makeInstance()` for services with DI support
+- Protected properties for injected dependencies
+
 ```php
 public function __construct(
     protected ModuleTemplateFactory $moduleTemplateFactory,
@@ -99,83 +55,84 @@ public function __construct(
 ) {}
 ```
 
+### Component-Based Architecture (React)
+- Server Components by default in Next.js App Router
+- Use `"use client"` directive only when needed (hooks, event handlers)
+- Extract reusable UI into separate components
+- Keep page components focused on data fetching and layout
+
 ### Configuration Management
-- Environment variables with fallback defaults
-- YAML configuration files for structured data
-- Global `$GLOBALS['TYPO3_CONF_VARS']` access pattern in TYPO3
-- Extension configuration: `$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extension_key']`
+- TYPO3 configuration in YAML files (`config.yaml`)
+- Environment-specific settings via `.env.local` files
+- Never hardcode API keys or secrets
+- Use environment variables for configuration (`process.env`, `Environment::getProjectPath()`)
 
-### Error Handling
-**PHP:**
+## Common Implementation Patterns
+
+### Error Handling (PHP)
 ```php
 try {
-    // operation
-    $this->addFlashMessage('Success', 'Title', ContextualFeedbackSeverity::OK);
+    // Operation that might fail
+    $this->updateSiteConfiguration($newMode);
 } catch (Exception $exception) {
-    $this->addFlashMessage('Error: ' . $exception->getMessage(), 'Error', ContextualFeedbackSeverity::ERROR);
+    $this->addFlashMessage(
+        'Error message: ' . $exception->getMessage(),
+        'Error Title',
+        ContextualFeedbackSeverity::ERROR
+    );
 }
 ```
 
-**JavaScript:**
+### Async Data Fetching (Next.js)
 ```javascript
-try {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`API returned ${response.status}`);
-    }
-} catch (e) {
-    error = e.message;
-}
-```
-
-### HTTP Request Handling
-
-**TYPO3 Backend Controllers:**
-```php
-public function handleRequest(ServerRequestInterface $request): ResponseInterface
-{
-    $action = $request->getQueryParams()['action'] ?? 'index';
-    return match ($action) {
-        'switchMode' => $this->switchModeAction($request),
-        default => $this->indexAction($request),
-    };
-}
-```
-
-**Node.js API Server:**
-```javascript
-const server = createServer(async (req, res) => {
-    setCorsHeaders(req, res);
-    const url = new URL(req.url, `http://localhost:${PORT}`);
-    
-    if (path === '/health' && method === 'GET') {
-        sendJson(res, 200, { ok: true });
-    }
+// Server-side data fetching in async page components
+const response = await fetch(url, {
+    headers: { Accept: 'application/json' },
+    cache: 'no-store',
 });
+
+if (!response.ok) {
+    throw new Error(`API returned status ${response.status}`);
+}
+
+const results = await response.json();
 ```
 
-### Data Processing Patterns
-
-**Tokenization and Search:**
+### GSAP Animation Pattern
 ```javascript
-function tokenize(value) {
-    return String(value || '')
-        .toLocaleLowerCase()
-        .normalize('NFKD')
-        .replace(/\p{Diacritic}/gu, '')
-        .split(/[^\p{Letter}\p{Number}]+/u)
-        .filter(Boolean);
-}
+// Dynamic import for client-side only libraries
+const gsapModule = await import('gsap');
+const ScrollTrigger = scrollTriggerModule.default || scrollTriggerModule;
+gsap.registerPlugin(ScrollTrigger);
 
-function scoreDocument(document, queryTokens) {
-    const titleMatches = titleTokens.filter(word => word.includes(token)).length;
-    return score + (titleMatches * 5) + contentMatches;
-}
+// Cleanup pattern for React effects
+const cleanup = () => {
+    if (anim) anim.kill();
+    ScrollTrigger.getAll().forEach(st => st.kill());
+};
+return () => cleanup();
 ```
 
-### Response Formatting
+### TYPO3 Module Template Pattern
+```php
+$moduleTemplate = $this->moduleTemplateFactory->create($request);
+$moduleTemplate->assignMultiple([
+    'config' => $config,
+    'systemStatus' => $systemStatus,
+    // More template variables
+]);
+$moduleTemplate->setTitle('Module Title');
+return $moduleTemplate->renderResponse('Backend/Index');
+```
 
-**JSON:API Standard:**
+## API Design Patterns
+
+### JSON:API Compliance
+- Use JSON:API structure for all API responses
+- Include `data`, `included`, `meta`, and `jsonapi` fields
+- Proper resource types and IDs in response objects
+- Relationship objects for linked data
+
 ```javascript
 function jsonApiResponse(data, included = [], meta = {}) {
     return { 
@@ -187,24 +144,18 @@ function jsonApiResponse(data, included = [], meta = {}) {
 }
 ```
 
-**TYPO3 TCA Array Structure:**
-```php
-'ctrl' => [
-    'label' => 'username',
-    'tstamp' => 'tstamp',
-    'crdate' => 'crdate',
-    'delete' => 'deleted',
-    'enablecolumns' => [
-        'disabled' => 'disable',
-        'starttime' => 'starttime',
-        'endtime' => 'endtime',
-    ],
-],
-```
+### RESTful Routing
+- `GET /v1/search/:project` - Search documents
+- `POST /v1/index/:project/:collection` - Index documents
+- `DELETE /v1/index/:project/:collection` - Delete documents
+- `GET /health` - Health check endpoint
 
 ### Authentication Patterns
+- Bearer token authentication via `Authorization` header
+- API key support via `X-API-Key` header
+- Development mode bypass for easier local testing
+- Separate read and write API keys
 
-**API Key Authentication:**
 ```javascript
 function checkAuth(req, requiredKey) {
     const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
@@ -213,127 +164,135 @@ function checkAuth(req, requiredKey) {
 }
 ```
 
-### CORS Configuration
+## Frequently Used Code Idioms
+
+### Null Coalescing and Optional Chaining
 ```javascript
-function setCorsHeaders(req, res) {
-    const configuredOrigins = process.env.CORS_ALLOWED_ORIGINS.split(',');
-    if (configuredOrigins.includes('*')) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-    }
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-}
-```
+// JavaScript
+const q = searchParams?.q || '';
+const results = searchIndex?.[project]?.[collection] || {};
 
-## Common Idioms
-
-### Safe Navigation / Null Coalescing
-**PHP:**
-```php
-$value = $request->getQueryParams()['action'] ?? 'index';
-$config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['key'] ?? [];
-```
-
-**JavaScript:**
-```javascript
-const config = searchIndex[project]?.[collection]?.[id];
-const title = document.title || 'Default Title';
-```
-
-### Pagination Pattern
-```javascript
-const page = Math.max(1, Number(payload.page) || 1);
-const perPage = Math.max(1, Math.min(Number(payload.per_page) || 10, 100));
-const offset = (Math.min(page, pages) - 1) * perPage;
-const results = ranked.slice(offset, offset + perPage);
+// PHP
+$mode = $config['default_mode'] ?? 'classic';
+$apiUrl = $this->getCurrentConfiguration()['api_url'] ?? '';
 ```
 
 ### Array Filtering and Mapping
 ```javascript
-const ranked = documents
-    .filter(doc => collections.length === 0 || collections.includes(doc.collection))
-    .map(doc => ({ document: doc, score: scoreDocument(doc, queryTokens) }))
-    .filter(result => result.score > 0)
-    .sort((a, b) => b.score - a.score);
+// Filter and map pattern
+const displayedResults = (results?.data || [])
+    .filter((item) => item.attributes?.type === 'page')
+    .map((result) => ({ ...result.attributes }));
 ```
 
-### React Server Component Data Fetching
-```jsx
-export default async function Page({ searchParams }) {
-    const resolvedParams = await searchParams;
-    const q = resolvedParams?.q || '';
-    
-    const response = await fetch(url, { 
-        cache: 'no-store',
-        headers: { Accept: 'application/json' }
-    });
-    
-    const results = await response.json();
-    return <main>{/* render */}</main>;
+### TYPO3 Flash Messages
+```php
+$this->addFlashMessage(
+    'Success message text',
+    'Success Title',
+    ContextualFeedbackSeverity::OK
+);
+```
+
+### Next.js Metadata Generation
+```javascript
+export async function generateMetadata({ searchParams }) {
+    const resolvedSearchParams = await searchParams;
+    const q = resolvedSearchParams?.q || '';
+    return {
+        title: q ? `Results for "${q}"` : 'Search',
+        description: 'Search page description',
+    };
 }
 ```
 
-## Frequently Used Patterns
+## Testing Conventions
 
-### GeneralUtility Static Methods (TYPO3)
+### URL Construction
+- Always use `rtrim()` or `.replace(/\\/$/, '')` to normalize base URLs
+- Use `encodeURIComponent()` for query parameters
+- Build URLs with proper path joining
+
+### Cache Management
+- Clear all TYPO3 caches after configuration changes
+- Ensure runtime directories exist before operations
+- Use CacheManager for TYPO3 cache operations
+
+### State Management
+- React: Use `useRef` for DOM references and persistent values
+- React: Use `useEffect` for side effects and lifecycle operations
+- Server state lives in search params for pagination/filters
+
+## Performance Best Practices
+
+### Next.js
+- Use `cache: 'no-store'` for dynamic search results
+- Server-side rendering by default in App Router
+- Client components only for interactive features
+- Dynamic imports for heavy libraries (GSAP)
+
+### Search Optimization
+- Tokenize and normalize search queries (lowercase, remove diacritics)
+- Score documents by title (5x weight) and content (1x weight)
+- Limit results with pagination (default 10, max 100 per page)
+- Build facets from filtered results for accurate counts
+
+### File Operations
+- Use async file operations (`fs/promises`)
+- Recursive directory creation with `recursive: true`
+- Proper cleanup in recursive directory removal
+
+## Security Practices
+
+### Input Validation
+- Validate and sanitize all user inputs
+- Type-check API payloads before processing
+- Limit request body size (2 MB in search API)
+- Use prepared statements/query builders for database access
+
+### API Security
+- Require API keys in production environments
+- Separate read and write permissions
+- CORS configuration via environment variables
+- Proper error messages without exposing internals
+
+### TYPO3 Security
+- Use TYPO3's authentication services
+- Respect backend user permissions
+- Validate file paths before operations
+- Use TYPO3's security aspects and voters
+
+## Documentation Standards
+
+### Inline Comments
+- PHP: Use PHPDoc blocks for classes and public methods
+- Avoid obvious comments; comment the "why", not the "what"
+- Document complex algorithms and business logic
+- Keep comments up to date with code changes
+
+### README Files
+- Each major component has its own README
+- Include installation, configuration, and usage sections
+- Provide example configurations and code snippets
+- Document environment variables and dependencies
+
+## Common Annotations
+
+### PHP Attributes
 ```php
-GeneralUtility::makeInstance(ClassName::class)
-GeneralUtility::mkdir_deep($directory)
+#[AsController]
+#[AsEventListener]
+declare(strict_types=1);
 ```
 
-### Environment Path Resolution (TYPO3)
-```php
-Environment::getProjectPath()
-Environment::getPublicPath()
-Environment::getVarPath()
-```
-
-### Flash Message System (TYPO3)
-```php
-$flashMessage = GeneralUtility::makeInstance(
-    FlashMessage::class, 
-    $message, 
-    $title, 
-    ContextualFeedbackSeverity::OK
-);
-$messageQueue->addMessage($flashMessage);
-```
-
-### File Operations (Node.js)
+### Next.js Metadata
 ```javascript
-import { readFile, writeFile, mkdir } from 'fs/promises';
-
-await mkdir(DATA_DIR, { recursive: true });
-await writeFile(INDEX_FILE, JSON.stringify(data, null, 2));
-const content = await readFile(FILE_PATH, 'utf8');
+export const metadata = { title: 'Page Title' };
+export async function generateMetadata() { /* ... */ }
 ```
 
-## Best Practices
-
-### Type Safety
-- Always use strict types in PHP with `declare(strict_types=1)`
-- Explicit type hints for parameters and return values
-- Use TypeScript for complex JavaScript projects (workspace packages use it)
-
-### Security
-- API key authentication for all write operations
-- CORS configuration from environment variables
-- SQL injection prevention through parameterized queries (implied by ORM usage)
-- File operation validation and path sanitization
-
-### Performance
-- Pagination with configurable limits (max 100 items)
-- Cache management with explicit flush operations
-- Request body size limits (2MB in API server)
-- Lazy loading of search index on server start
-
-### Maintainability
-- Single Responsibility Principle - methods do one thing
-- Match expressions for routing (PHP 8.0+)
-- Small, focused functions (most functions < 30 lines)
-- Configuration externalized to environment variables
-
-### Internationalization
-- UTF-8 encoding throughout
-- Text normalization (NFKD) for search tokenization
-- Unicode-aware regex patterns (`\p{Letter}`, `\p{Number}`)
-- German language UI strings in this project
+### React Directives
+```javascript
+"use client"; // For client components
+"use server"; // For server actions
+```

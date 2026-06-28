@@ -1,0 +1,41 @@
+# Frontend Editing Headless Configuration
+# Ensures editor assets and markers work with headless JSON output
+
+# Enable frontend editing markers in headless mode
+plugin.tx_pixelcodafeeditor {
+    enabled = 1
+    
+    # Inject markers even in headless JSON responses
+    headless {
+        injectMarkers = 1
+        
+        # Add editor metadata to JSON responses
+        includeMetadata = 1
+    }
+    
+    # Configure editable fields
+    fields {
+        tt_content {
+            header = 1
+            subheader = 1
+            bodytext = 1
+        }
+    }
+}
+
+# Ensure CORS headers for frontend domain
+page.config {
+    additionalHeaders {
+        10.header = Access-Control-Allow-Origin: https://nextjs-front-end-for-typo3-headless-production.up.railway.app
+        10.replace = 1
+        
+        20.header = Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+        20.replace = 1
+        
+        30.header = Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With
+        30.replace = 1
+        
+        40.header = Access-Control-Allow-Credentials: true
+        40.replace = 1
+    }
+}
