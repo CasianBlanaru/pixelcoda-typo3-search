@@ -5,6 +5,7 @@ customConfiguration:
   renderingMode: headless
 dependencies:
   - friendsoftypo3/headless
+  - pixelcoda/fe-editor
 frontendBase: '%env(TYPO3_FRONTEND_BASE)%'
 headless: 1
 languages:

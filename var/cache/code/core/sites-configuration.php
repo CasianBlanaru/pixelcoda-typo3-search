@@ -12,6 +12,7 @@ return array (
     'dependencies' => 
     array (
       0 => 'friendsoftypo3/headless',
+      1 => 'pixelcoda/fe-editor',
     ),
     'frontendBase' => 'https://typo3-inst.localhost/',
     'headless' => 1,
