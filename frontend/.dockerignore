@@ -4,3 +4,5 @@ node_modules
 *.log
 .env.local
 .env*.local
+fe-test
+src/app/fe-test
