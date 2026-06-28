@@ -35,12 +35,19 @@ COPY composer.json composer.lock ./
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+# Install with retry logic for GitHub API rate limits
 RUN composer install \
     --no-dev \
     --no-interaction \
     --no-progress \
     --prefer-dist \
     --optimize-autoloader \
+    || (echo "Retry with source fallback..." && composer install \
+        --no-dev \
+        --no-interaction \
+        --no-progress \
+        --prefer-source \
+        --optimize-autoloader) \
     && test -f vendor/typo3/PackageArtifact.php \
     && test -f vendor/typo3/alias-loader-include.php \
     && cp vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess public/.htaccess
