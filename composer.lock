@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43e9bde12351932531ba2082c164ecda",
+    "content-hash": "de97e8c80394b814bf4fee3dc38be3ba",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1829,7 +1829,7 @@
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "./packages/typo3_fe_editing/packages/pixelcoda_fe_editor",
+                "url": "./packages/pixelcoda_fe_editor",
                 "reference": "5981d267b70ce92a61a4ab18d60edd19e0cc6db7"
             },
             "require": {

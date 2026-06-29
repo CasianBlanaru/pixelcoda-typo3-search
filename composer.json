@@ -45,10 +45,6 @@
         "typo3/cms-webhooks": "^14.3"
     },
     "repositories": {
-        "fe-editor": {
-            "type": "path",
-            "url": "./packages/typo3_fe_editing/packages/pixelcoda_fe_editor"
-        },
         "packages": {
             "type": "path",
             "url": "./packages/*"

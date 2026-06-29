@@ -2,297 +2,226 @@
 
 ## Code Quality Standards
 
-### PHP Code Style (TYPO3 Extensions)
-- **Strict Types**: Declare `strict_types=1` at the beginning of every PHP file
-- **Type Declarations**: Use explicit type hints for all method parameters and return types
-- **Namespace Convention**: Follow PSR-4 autoloading with vendor namespace `PixelCoda` or `Pixelcoda`
-- **Class Structure**: One class per file, file name matches class name
-- **Visibility Keywords**: Always declare visibility (public, protected, private) for properties and methods
-- **Constructor Property Promotion**: Use PHP 8.0+ constructor property promotion for dependency injection
+### PHP Development Patterns
+- **Strict Types**: Always declare `strict_types=1` at file start
+- **Type Declarations**: Full parameter and return type hints required (e.g., `string`, `int`, `ResponseInterface`)
+- **Dependency Injection**: Constructor-based DI with `readonly` promoted properties in PHP 8.2+
+- **PSR Standards**: Follow PSR-12 code style and PSR-4 autoloading conventions
+- **Namespace Declarations**: Vendor\Extension\Layer\Feature structure (e.g., `PixelCoda\PixelcodaSearch\Controller\Backend`)
 
-### JavaScript/TypeScript Style
-- **ES Modules**: Use ESM imports (`import`/`export`) instead of CommonJS
-- **Async/Await**: Prefer async/await over Promise chains for readability
-- **Destructuring**: Use destructuring for cleaner code (`const { data } = results`)
-- **Arrow Functions**: Use arrow functions for callbacks and functional operations
-- **Template Literals**: Use template literals for string interpolation
-- **Const/Let**: Never use `var`, prefer `const` over `let` when possible
+### JavaScript/React Patterns
+- **Client Components**: Mark interactive components with `"use client"` directive
+- **Async Server Components**: Default to async functions for data fetching
+- **Hooks First**: Use functional components with hooks (useState, useEffect, useRef)
+- **Dynamic Imports**: Lazy-load heavy libraries (GSAP) within useEffect
+- **Prop Spreading**: Support `{...props}` for flexible component composition
+
+### Naming Conventions
+- **PHP Classes**: PascalCase with descriptive suffixes (Controller, Repository, Service, ViewHelper)
+- **PHP Methods**: camelCase with action-oriented names (handleRequest, indexAction, switchModeAction)
+- **PHP Constants**: SCREAMING_SNAKE_CASE (MODULE_ROUTE, TYPO3_CONF_VARS)
+- **React Components**: PascalCase function names (GsapAnimatedContent, DevTools)
+- **JavaScript Variables**: camelCase (elementRef, animationConfig, activeType)
+- **File Names**: PascalCase for PHP classes matching class name, camelCase for React components
+
+## Structural Conventions
+
+### TYPO3 Backend Development
+- **Controller Pattern**: Protected methods for actions, public handleRequest as entry point
+- **ModuleTemplate Usage**: Use ModuleTemplateFactory for consistent backend UI
+- **Flash Messages**: ContextualFeedbackSeverity enum for message types (OK, ERROR, WARNING, INFO)
+- **Configuration Access**: Read from `$GLOBALS['TYPO3_CONF_VARS']`, write via ConfigurationManager
+- **URI Building**: UriBuilder for route generation, never hardcoded URLs
+- **Cache Management**: CacheManager for TYPO3 caches, manual cleanup for filesystem caches
+
+### Next.js Frontend Architecture
+- **App Router**: Use `app/` directory structure with page.jsx as route files
+- **Metadata Export**: Export async `generateMetadata` for SEO
+- **Search Parameters**: Always await searchParams before accessing properties
+- **API Integration**: Fetch TYPO3 JSON endpoints with `cache: 'no-store'` for dynamic content
+- **Error Handling**: Try-catch with error state display, never silent failures
+- **URL Building**: Template literals with encodeURIComponent for query parameters
 
 ### File Organization
-- PHP files use `.php` extension with class-based organization
-- React components use `.jsx` extension
-- Configuration files use `.js` (Next.js, Node.js) or `.yaml` (TYPO3)
-- Keep generated files separate (`.next/`, `var/cache/`)
+- **PHP Extensions**: Controller, ViewHelper, Service in `Classes/` directory
+- **Configuration**: YAML for site config, PHP arrays for TCA/extension config
+- **Templates**: Fluid templates in `Resources/Private/Templates/`
+- **Public Assets**: CSS/JS in `Resources/Public/`, auto-published by TYPO3
+- **Frontend Components**: Separate directories for `app/`, `components/`, `lib/`
 
-## Naming Conventions
+## Common Internal API Patterns
 
-### PHP (TYPO3)
-- **Classes**: PascalCase (e.g., `SearchModuleController`, `GsapAnimatedContent`)
-- **Methods**: camelCase (e.g., `handleRequest`, `getCurrentConfiguration`)
-- **Properties**: camelCase (e.g., `moduleTemplateFactory`, `configurationManager`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `MODULE_ROUTE`, `MAX_REQUEST_BYTES`)
-- **Database Tables**: snake_case (e.g., `tt_content`, `pages`)
-
-### JavaScript/React
-- **Components**: PascalCase (e.g., `GsapAnimatedContent`, `DevTools`)
-- **Functions**: camelCase (e.g., `generateMetadata`, `loadAndAnimate`)
-- **Variables**: camelCase (e.g., `searchIndex`, `queryTokens`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `PORT`, `API_READ_KEY`)
-- **Props**: camelCase (e.g., `animationSettings`, `searchParams`)
-
-## Architectural Patterns
-
-### Dependency Injection (TYPO3)
-- Use constructor injection for all service dependencies
-- Rely on TYPO3's DI container for service instantiation
-- Do not use `GeneralUtility::makeInstance()` for services with DI support
-- Protected properties for injected dependencies
-
+### TYPO3 Dependency Injection
 ```php
 public function __construct(
     protected ModuleTemplateFactory $moduleTemplateFactory,
     protected UriBuilder $backendUriBuilder,
+    protected ConfigurationManager $configurationManager,
 ) {}
 ```
-
-### Component-Based Architecture (React)
-- Server Components by default in Next.js App Router
-- Use `"use client"` directive only when needed (hooks, event handlers)
-- Extract reusable UI into separate components
-- Keep page components focused on data fetching and layout
+- Use protected property promotion
+- Prefer interface types when available
+- No manual GeneralUtility::makeInstance in constructors
 
 ### Configuration Management
-- TYPO3 configuration in YAML files (`config.yaml`)
-- Environment-specific settings via `.env.local` files
-- Never hardcode API keys or secrets
-- Use environment variables for configuration (`process.env`, `Environment::getProjectPath()`)
-
-## Common Implementation Patterns
-
-### Error Handling (PHP)
 ```php
-try {
-    // Operation that might fail
-    $this->updateSiteConfiguration($newMode);
-} catch (Exception $exception) {
-    $this->addFlashMessage(
-        'Error message: ' . $exception->getMessage(),
-        'Error Title',
-        ContextualFeedbackSeverity::ERROR
-    );
-}
+// Read configuration
+$config = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['extension_key'];
+
+// Write configuration
+$this->configurationManager->setLocalConfigurationValueByPath(
+    'EXTENSIONS/extension_key/setting',
+    $value
+);
 ```
 
-### Async Data Fetching (Next.js)
-```javascript
-// Server-side data fetching in async page components
-const response = await fetch(url, {
-    headers: { Accept: 'application/json' },
-    cache: 'no-store',
-});
-
-if (!response.ok) {
-    throw new Error(`API returned status ${response.status}`);
-}
-
-const results = await response.json();
-```
-
-### GSAP Animation Pattern
-```javascript
-// Dynamic import for client-side only libraries
-const gsapModule = await import('gsap');
-const ScrollTrigger = scrollTriggerModule.default || scrollTriggerModule;
-gsap.registerPlugin(ScrollTrigger);
-
-// Cleanup pattern for React effects
-const cleanup = () => {
-    if (anim) anim.kill();
-    ScrollTrigger.getAll().forEach(st => st.kill());
-};
-return () => cleanup();
-```
-
-### TYPO3 Module Template Pattern
-```php
-$moduleTemplate = $this->moduleTemplateFactory->create($request);
-$moduleTemplate->assignMultiple([
-    'config' => $config,
-    'systemStatus' => $systemStatus,
-    // More template variables
-]);
-$moduleTemplate->setTitle('Module Title');
-return $moduleTemplate->renderResponse('Backend/Index');
-```
-
-## API Design Patterns
-
-### JSON:API Compliance
-- Use JSON:API structure for all API responses
-- Include `data`, `included`, `meta`, and `jsonapi` fields
-- Proper resource types and IDs in response objects
-- Relationship objects for linked data
-
-```javascript
-function jsonApiResponse(data, included = [], meta = {}) {
-    return { 
-        data, 
-        included, 
-        meta, 
-        jsonapi: { version: '1.0' } 
-    };
-}
-```
-
-### RESTful Routing
-- `GET /v1/search/:project` - Search documents
-- `POST /v1/index/:project/:collection` - Index documents
-- `DELETE /v1/index/:project/:collection` - Delete documents
-- `GET /health` - Health check endpoint
-
-### Authentication Patterns
-- Bearer token authentication via `Authorization` header
-- API key support via `X-API-Key` header
-- Development mode bypass for easier local testing
-- Separate read and write API keys
-
-```javascript
-function checkAuth(req, requiredKey) {
-    const authHeader = req.headers.authorization || req.headers['x-api-key'] || '';
-    const providedKey = authHeader.replace('Bearer ', '').replace('ApiKey ', '');
-    return acceptedKeys.includes(providedKey) || IS_DEVELOPMENT;
-}
-```
-
-## Frequently Used Code Idioms
-
-### Null Coalescing and Optional Chaining
-```javascript
-// JavaScript
-const q = searchParams?.q || '';
-const results = searchIndex?.[project]?.[collection] || {};
-
-// PHP
-$mode = $config['default_mode'] ?? 'classic';
-$apiUrl = $this->getCurrentConfiguration()['api_url'] ?? '';
-```
-
-### Array Filtering and Mapping
-```javascript
-// Filter and map pattern
-const displayedResults = (results?.data || [])
-    .filter((item) => item.attributes?.type === 'page')
-    .map((result) => ({ ...result.attributes }));
-```
-
-### TYPO3 Flash Messages
+### Flash Message Pattern
 ```php
 $this->addFlashMessage(
-    'Success message text',
-    'Success Title',
+    'Message content',
+    'Title',
     ContextualFeedbackSeverity::OK
 );
 ```
 
-### Next.js Metadata Generation
-```javascript
-export async function generateMetadata({ searchParams }) {
-    const resolvedSearchParams = await searchParams;
-    const q = resolvedSearchParams?.q || '';
-    return {
-        title: q ? `Results for "${q}"` : 'Search',
-        description: 'Search page description',
-    };
+### YAML Configuration Access
+```php
+$loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+$writer = GeneralUtility::makeInstance(YamlFileWriter::class);
+$config = $loader->load($path);
+$writer->write($path, $config);
+```
+
+### React Component with Refs
+```jsx
+const elementRef = useRef(null);
+useEffect(() => {
+  const element = elementRef.current;
+  if (!element) return;
+  // operate on element
+}, [dependencies]);
+return <div ref={elementRef}>{children}</div>;
+```
+
+### GSAP Animation Registration
+```jsx
+const gsap = gsapModule.default || gsapModule;
+const ScrollTrigger = scrollTriggerModule.default || scrollTriggerModule;
+gsap.registerPlugin(ScrollTrigger);
+
+const animationConfig = {
+  duration: duration / 1000,
+  scrollTrigger: {
+    trigger: element,
+    toggleActions: 'play none none none',
+  },
+};
+gsap.from(element, { ...animationConfig, opacity: 0, y: 50 });
+```
+
+## Frequently Used Code Idioms
+
+### Environment Path Resolution
+```php
+$path = Environment::getProjectPath() . '/config/sites/main/config.yaml';
+if (!file_exists($path)) {
+    $path = Environment::getPublicPath() . '/../config/sites/main/config.yaml';
 }
 ```
 
-## Testing Conventions
+### Recursive Directory Operations
+```php
+protected function removeDirectory(string $dir): void {
+    $files = array_diff(scandir($dir), ['.', '..']);
+    foreach ($files as $file) {
+        $path = $dir . '/' . $file;
+        is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+    }
+    rmdir($dir);
+}
+```
 
-### URL Construction
-- Always use `rtrim()` or `.replace(/\\/$/, '')` to normalize base URLs
-- Use `encodeURIComponent()` for query parameters
-- Build URLs with proper path joining
+### Match Expression for Routing
+```php
+return match ($action) {
+    'switchMode' => $this->switchModeAction($request),
+    'clearCache' => $this->clearCacheAction($request),
+    default => $this->indexAction($request),
+};
+```
 
-### Cache Management
-- Clear all TYPO3 caches after configuration changes
-- Ensure runtime directories exist before operations
-- Use CacheManager for TYPO3 cache operations
+### Next.js Metadata Generation
+```jsx
+export async function generateMetadata({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  return {
+    title: `Page Title`,
+    description: 'Description',
+  };
+}
+```
 
-### State Management
-- React: Use `useRef` for DOM references and persistent values
-- React: Use `useEffect` for side effects and lifecycle operations
-- Server state lives in search params for pagination/filters
+### Conditional Rendering with Inline Styles
+```jsx
+{totalPages > 1 && (
+  <div style={{ display: 'flex', gap: '0.5rem' }}>
+    {/* pagination UI */}
+  </div>
+)}
+```
 
-## Performance Best Practices
+### Dynamic Import with Fallback
+```jsx
+const gsapModule = await import('gsap');
+const gsap = gsapModule.default || gsapModule;
+```
 
-### Next.js
-- Use `cache: 'no-store'` for dynamic search results
-- Server-side rendering by default in App Router
-- Client components only for interactive features
-- Dynamic imports for heavy libraries (GSAP)
+## Popular Annotations
 
-### Search Optimization
-- Tokenize and normalize search queries (lowercase, remove diacritics)
-- Score documents by title (5x weight) and content (1x weight)
-- Limit results with pagination (default 10, max 100 per page)
-- Build facets from filtered results for accurate counts
+### PHP DocBlock Structure
+```php
+/**
+ * Short description.
+ *
+ * Longer explanation if needed.
+ */
+```
+- No `@param` or `@return` when types are declared
+- Use docblocks only for clarification, not duplication
 
-### File Operations
-- Use async file operations (`fs/promises`)
-- Recursive directory creation with `recursive: true`
-- Proper cleanup in recursive directory removal
+### React JSDoc Patterns
+```jsx
+/**
+ * Component description.
+ * 
+ * @param {Object} props - Component props
+ * @param {ReactNode} props.children - Child elements
+ * @param {Object} props.animationSettings - GSAP configuration
+ */
+```
 
-## Security Practices
+## Testing and Quality Assurance
 
-### Input Validation
-- Validate and sanitize all user inputs
-- Type-check API payloads before processing
-- Limit request body size (2 MB in search API)
-- Use prepared statements/query builders for database access
+### Code Style Requirements
+- PHP: Strict type checking, no mixed returns
+- JavaScript: ESLint-compatible modern syntax
+- Indentation: 4 spaces for PHP, 2 spaces for JavaScript
+- Line length: Prefer 120 characters max, enforce at 255 for PHP inputs
 
-### API Security
-- Require API keys in production environments
-- Separate read and write permissions
-- CORS configuration via environment variables
-- Proper error messages without exposing internals
+### Error Handling Strategy
+- Backend: Try-catch with flash messages, never expose stack traces
+- Frontend: Error state variables, user-friendly messages
+- Logging: Use TYPO3 LogManager for backend, console.warn for frontend development
 
-### TYPO3 Security
-- Use TYPO3's authentication services
-- Respect backend user permissions
-- Validate file paths before operations
-- Use TYPO3's security aspects and voters
+### Performance Considerations
+- Cache API responses with appropriate headers
+- Lazy-load heavy libraries (GSAP, ScrollTrigger)
+- Use `cache: 'no-store'` only when necessary
+- Cleanup GSAP animations in useEffect return functions
+- Batch configuration writes, flush caches once after multiple operations
 
 ## Documentation Standards
-
-### Inline Comments
-- PHP: Use PHPDoc blocks for classes and public methods
-- Avoid obvious comments; comment the "why", not the "what"
-- Document complex algorithms and business logic
-- Keep comments up to date with code changes
-
-### README Files
-- Each major component has its own README
-- Include installation, configuration, and usage sections
-- Provide example configurations and code snippets
-- Document environment variables and dependencies
-
-## Common Annotations
-
-### PHP Attributes
-```php
-#[AsController]
-#[AsEventListener]
-declare(strict_types=1);
-```
-
-### Next.js Metadata
-```javascript
-export const metadata = { title: 'Page Title' };
-export async function generateMetadata() { /* ... */ }
-```
-
-### React Directives
-```javascript
-"use client"; // For client components
-"use server"; // For server actions
-```
+- README.md files in each package describing purpose and usage
+- Inline comments only for complex business logic
+- Method names should be self-documenting
+- Configuration examples in docblocks or separate example files

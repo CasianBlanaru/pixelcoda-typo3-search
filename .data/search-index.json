@@ -1,0 +1,145 @@
+{
+  "typo3": {
+    "pages": {
+      "demo-page-search": {
+        "id": "demo-page-search",
+        "collection": "pages",
+        "title": "Pixelcoda Search Administration",
+        "summary": "Premium TYPO3 Suche mit Autocomplete, Facetten, Pagination, Headless API und KI-gestuetzten Antworten.",
+        "content": "Verwalte Suchindex, Rendering-Modus, API-Verbindung, Headless JSON und TYPO3 Standardausgabe zentral im Backend.",
+        "keywords": "search suche autocomplete facets pagination headless typo3 api ki",
+        "url": "/search-demo",
+        "language": "de",
+        "categories": [
+          "Suche",
+          "Backend",
+          "Headless"
+        ],
+        "type": "page",
+        "date": "2026-06-06",
+        "updated_at": "2026-06-29T12:14:00.529Z"
+      },
+      "demo-page-pagination": {
+        "id": "demo-page-pagination",
+        "collection": "pages",
+        "title": "Pagination und Core Web Vitals",
+        "summary": "Serverseitige Pagination haelt Payloads klein, stabilisiert INP und verbessert die wahrgenommene Geschwindigkeit.",
+        "content": "Pixelcoda Search liefert Seiteninformationen und limitierte Ergebnislisten fuer performante Frontends.",
+        "keywords": "pagination performance lighthouse core web vitals",
+        "url": "/search-pagination",
+        "language": "de",
+        "categories": [
+          "Performance",
+          "SEO"
+        ],
+        "type": "page",
+        "date": "2026-06-03",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      },
+      "demo-page-headless": {
+        "id": "demo-page-headless",
+        "collection": "pages",
+        "title": "Headless JSON Output",
+        "summary": "Stabile JSON API fuer React, Vue, Next.js und klassische TYPO3 Frontends.",
+        "content": "Der Headless-Modus liefert strukturierte Suchdaten ohne das klassische Fluid Rendering zu brechen.",
+        "keywords": "headless json api react vue nextjs typo3",
+        "url": "/headless-api",
+        "language": "de",
+        "categories": [
+          "Headless",
+          "API"
+        ],
+        "type": "page",
+        "date": "2026-06-02",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      },
+      "demo-page-bitv": {
+        "id": "demo-page-bitv",
+        "collection": "pages",
+        "title": "BITV und Accessibility",
+        "summary": "Semantische Suche, sichtbare Fokuszustaende, reduzierte Bewegung und Tastaturbedienung.",
+        "content": "Die Oberflaeche ist auf Accessibility, reduzierte Bewegung und klare Screenreader-Strukturen ausgelegt.",
+        "keywords": "bitv accessibility screenreader tastatur reduced motion",
+        "url": "/bitv-accessibility",
+        "language": "de",
+        "categories": [
+          "Accessibility",
+          "BITV"
+        ],
+        "type": "page",
+        "date": "2026-05-31",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      }
+    },
+    "tt_content": {
+      "demo-content-autocomplete": {
+        "id": "demo-content-autocomplete",
+        "collection": "tt_content",
+        "title": "Autocomplete und Suggestions",
+        "summary": "Schnelle Suchvorschlaege waehrend der Eingabe mit Tastatursteuerung und barrierearmen Listbox-Rollen.",
+        "content": "Autocomplete liefert Treffer aus Seiten und Inhaltselementen. Suggestions helfen Redakteuren und Besuchern, relevante Inhalte schneller zu finden.",
+        "keywords": "autocomplete suggestions suchvorschlaege tastatur accessibility",
+        "url": "/search-autocomplete",
+        "language": "de",
+        "categories": [
+          "UX",
+          "Accessibility"
+        ],
+        "type": "content",
+        "date": "2026-06-05",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      },
+      "demo-content-filters": {
+        "id": "demo-content-filters",
+        "collection": "tt_content",
+        "title": "Faceted Filters fuer TYPO3 Inhalte",
+        "summary": "Filter nach Seiten, Inhaltstypen, Kategorien und Datum fuer praezise Suchergebnisse.",
+        "content": "Faceted Search reduziert Rauschen und macht umfangreiche TYPO3 Websites schneller durchsuchbar.",
+        "keywords": "faceted filters kategorien datum inhaltstyp",
+        "url": "/search-facets-demo",
+        "language": "de",
+        "categories": [
+          "Filter",
+          "UX"
+        ],
+        "type": "content",
+        "date": "2026-06-04",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      },
+      "demo-content-ai": {
+        "id": "demo-content-ai",
+        "collection": "tt_content",
+        "title": "KI-gestuetzte Antworten mit Quellen",
+        "summary": "Antworten werden aus dem Suchindex erzeugt und mit Quellen aus TYPO3 Inhalten belegt.",
+        "content": "Die Ask-Funktion nutzt relevante Passagen aus dem Index und bleibt DSGVO-freundlich konfigurierbar.",
+        "keywords": "ki ai antwort quellen citations dsgvo",
+        "url": "/search-ai-demo",
+        "language": "de",
+        "categories": [
+          "AI",
+          "Privacy"
+        ],
+        "type": "content",
+        "date": "2026-06-01",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      },
+      "demo-content-railway": {
+        "id": "demo-content-railway",
+        "collection": "tt_content",
+        "title": "Railway Demo Deployment",
+        "summary": "TYPO3 Suite mit Search API, GSAP Animation und Frontend Editing in einer Testumgebung.",
+        "content": "Railway startet TYPO3, MySQL-Anbindung, Such-API und Demo-Redakteur automatisch.",
+        "keywords": "railway deployment typo3 demo redakteur",
+        "url": "/railway-demo",
+        "language": "de",
+        "categories": [
+          "Deployment",
+          "Demo"
+        ],
+        "type": "content",
+        "date": "2026-05-30",
+        "updated_at": "2026-06-29T12:14:00.530Z"
+      }
+    }
+  }
+}
