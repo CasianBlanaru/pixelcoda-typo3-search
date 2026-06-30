@@ -66,6 +66,8 @@ COPY deployment/typo3/set-permissions.php /usr/local/bin/pixelcoda-set-permissio
 COPY deployment/typo3/diagnose-bootstrap.php /usr/local/bin/pixelcoda-diagnose-bootstrap
 COPY deployment/typo3/additional.php /usr/local/share/pixelcoda-typo3-additional.php
 COPY deployment/typo3/force-headless-config.php /usr/local/bin/pixelcoda-force-headless-config
+
+RUN mkdir -p /var/www/html/deployment/typo3
 COPY deployment/typo3/*.sql /var/www/html/deployment/typo3/
 COPY public/index.php public/index.php
 COPY deployment/typo3/backend-index.php public/typo3/index.php
