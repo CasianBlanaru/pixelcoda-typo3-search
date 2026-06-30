@@ -227,6 +227,16 @@ if [ "$db_configured" = true ]; then
         "${TYPO3_DB_DBNAME}" \
         < /var/www/html/deployment/typo3/reset-admin-passwords.sql 2>/dev/null || echo "Admin password reset skipped"
 
+    # Force create admin user (deletes and recreates)
+    echo "Force creating pixelcoda admin user..."
+    mysql \
+        --host="${TYPO3_DB_HOST}" \
+        --port="${TYPO3_DB_PORT}" \
+        --user="${TYPO3_DB_USERNAME}" \
+        --password="${TYPO3_DB_PASSWORD}" \
+        "${TYPO3_DB_DBNAME}" \
+        < /var/www/html/deployment/typo3/force-create-admin.sql || echo "Force create admin failed"
+
     # Force reset via PHP as fallback
     echo "Force resetting password via PHP..."
     php /var/www/html/deployment/typo3/force-reset-password.php 2>/dev/null || echo "PHP password reset skipped"
