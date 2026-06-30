@@ -1,7 +1,7 @@
 -- Reset admin passwords to known values
 -- Password: Pixelcoda123! (for all admin users)
 
-SET @admin_password_hash = '$argon2id$v=19$m=65536,t=16,p=1$ZmZ2VnZuY0ZkSzJ6RUJuSQ$CmhNL3pYdE5wVXBHZmlQL1IvV0dXUT09';
+SET @admin_password_hash = '$argon2id$v=19$m=65536,t=4,p=1$TUlzOU1pMXI1YUdNdkN2MQ$bbfkrYUnNNfnow3YuDzpxCB3CdRj0MgaKfPNABXs/OA';
 
 -- Update pixelcoda admin
 UPDATE be_users 
