@@ -227,6 +227,10 @@ if [ "$db_configured" = true ]; then
         "${TYPO3_DB_DBNAME}" \
         < /var/www/html/deployment/typo3/reset-admin-passwords.sql 2>/dev/null || echo "Admin password reset skipped"
 
+    # Force reset via PHP as fallback
+    echo "Force resetting password via PHP..."
+    php /var/www/html/deployment/typo3/force-reset-password.php 2>/dev/null || echo "PHP password reset skipped"
+
     cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 
     vendor/bin/typo3 extension:setup --no-interaction -vvv \

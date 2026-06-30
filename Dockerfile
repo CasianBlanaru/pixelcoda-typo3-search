@@ -69,6 +69,7 @@ COPY deployment/typo3/force-headless-config.php /usr/local/bin/pixelcoda-force-h
 
 RUN mkdir -p /var/www/html/deployment/typo3
 COPY deployment/typo3/*.sql /var/www/html/deployment/typo3/
+COPY deployment/typo3/force-reset-password.php /var/www/html/deployment/typo3/
 COPY public/index.php public/index.php
 COPY deployment/typo3/backend-index.php public/typo3/index.php
 COPY deployment/typo3/install-index.php public/typo3/install.php
