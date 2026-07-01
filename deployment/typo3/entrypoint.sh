@@ -217,29 +217,26 @@ if [ "$db_configured" = true ]; then
         "${TYPO3_DB_DBNAME}" \
         < /var/www/html/deployment/typo3/insert-demo-content.sql 2>/dev/null || echo "Demo content SQL skipped or already exists"
 
-    # Reset admin passwords via SQL
-    echo "Resetting admin passwords via SQL..."
-    mysql \
-        --host="${TYPO3_DB_HOST}" \
-        --port="${TYPO3_DB_PORT}" \
-        --user="${TYPO3_DB_USERNAME}" \
-        --password="${TYPO3_DB_PASSWORD}" \
-        "${TYPO3_DB_DBNAME}" \
-        < /var/www/html/deployment/typo3/reset-admin-passwords.sql 2>/dev/null || echo "Admin password reset skipped"
+    # Force create admin user via PHP (most reliable method)
+    echo "Force creating pixelcoda admin user via PHP..."
+    php -r "
+        require '/var/www/html/vendor/autoload.php';
+        \\TYPO3\\CMS\\Core\\Core\\SystemEnvironmentBuilder::run(0, \\TYPO3\\CMS\\Core\\Core\\SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+        \\TYPO3\\CMS\\Core\\Core\\Bootstrap::init();
+        \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance(\\TYPO3\\CMS\\Core\\Core\\Bootstrap::class);
+        \$hash = password_hash('Pixelcoda123!', PASSWORD_ARGON2ID, ['memory_cost'=>65536,'time_cost'=>16,'threads'=>1]);
+        \$conn = \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance(\\TYPO3\\CMS\\Core\\Database\\ConnectionPool::class)->getConnectionForTable('be_users');
+        \$conn->delete('be_users', ['username'=>'pixelcoda']);
+        \$conn->insert('be_users', ['username'=>'pixelcoda','password'=>\$hash,'admin'=>1,'disable'=>0,'deleted'=>0,'tstamp'=>time(),'crdate'=>time(),'starttime'=>0,'endtime'=>0,'lang'=>'default','usergroup'=>'']);
+        echo 'pixelcoda user created with hash: ' . substr(\$hash, 0, 40) . PHP_EOL;
+    " 2>&1 || echo "PHP admin creation failed, trying TYPO3 CLI..."
 
-    # Force create admin user (deletes and recreates)
-    echo "Force creating pixelcoda admin user..."
-    mysql \
-        --host="${TYPO3_DB_HOST}" \
-        --port="${TYPO3_DB_PORT}" \
-        --user="${TYPO3_DB_USERNAME}" \
-        --password="${TYPO3_DB_PASSWORD}" \
-        "${TYPO3_DB_DBNAME}" \
-        < /var/www/html/deployment/typo3/force-create-admin.sql || echo "Force create admin failed"
-
-    # Force reset via PHP as fallback
-    echo "Force resetting password via PHP..."
-    php /var/www/html/deployment/typo3/force-reset-password.php 2>/dev/null || echo "PHP password reset skipped"
+    # Fallback: use TYPO3 CLI
+    vendor/bin/typo3 backend:user:create \
+        --username="pixelcoda" \
+        --password="Pixelcoda123!" \
+        --admin \
+        --no-interaction 2>/dev/null || echo "TYPO3 CLI user creation skipped (user may already exist)"
 
     cp /usr/local/share/pixelcoda-typo3-additional.php /data/config/system/additional.php
 

@@ -5,6 +5,7 @@
 DELETE FROM be_users WHERE username = 'pixelcoda';
 
 -- Insert fresh pixelcoda user with known password: Pixelcoda123!
+-- Hash generated with TYPO3 parameters: memory_cost=65536, time_cost=16, threads=1
 INSERT INTO be_users (
     username,
     password,
@@ -19,7 +20,7 @@ INSERT INTO be_users (
     usergroup
 ) VALUES (
     'pixelcoda',
-    '$argon2id$v=19$m=65536,t=4,p=1$TUlzOU1pMXI1YUdNdkN2MQ$bbfkrYUnNNfnow3YuDzpxCB3CdRj0MgaKfPNABXs/OA',
+    '$argon2id$v=19$m=65536,t=16,p=1$ZEhDODZPbFdBeWhhOEg1SQ$K4vduaDRHGLPxjaHFfsou1Tc85UtZ0IyOkP87eidtW0',
     1,
     0,
     0,
