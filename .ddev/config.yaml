@@ -21,3 +21,7 @@ nodejs_version: "22"
 #   - name: nextjs
 #     command: "yarn start"
 #     directory: /var/www/html/frontend
+web_extra_daemons:
+  - name: nextjs
+    command: "bash -c 'cd /var/www/html/frontend && corepack enable && corepack prepare yarn@4.12.0 --activate && yarn install --frozen-lockfile && yarn dev'"
+    directory: /var/www/html/frontend

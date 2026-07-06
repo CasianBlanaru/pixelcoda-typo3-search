@@ -66,11 +66,8 @@ COPY deployment/typo3/set-permissions.php /usr/local/bin/pixelcoda-set-permissio
 COPY deployment/typo3/diagnose-bootstrap.php /usr/local/bin/pixelcoda-diagnose-bootstrap
 COPY deployment/typo3/additional.php /usr/local/share/pixelcoda-typo3-additional.php
 COPY deployment/typo3/force-headless-config.php /usr/local/bin/pixelcoda-force-headless-config
-
-RUN mkdir -p /var/www/html/deployment/typo3
-COPY deployment/typo3/*.sql /var/www/html/deployment/typo3/
-COPY deployment/typo3/force-reset-password.php /var/www/html/deployment/typo3/
-RUN ls -la /var/www/html/deployment/typo3/
+COPY deployment/typo3/db_dump.sql.gz /var/www/html/deployment/typo3/db_dump.sql.gz
+COPY deployment/typo3/force-reset-password.php /var/www/html/deployment/typo3/force-reset-password.php
 COPY public/index.php public/index.php
 COPY deployment/typo3/backend-index.php public/typo3/index.php
 COPY deployment/typo3/install-index.php public/typo3/install.php
@@ -81,7 +78,12 @@ COPY deployment/typo3/php-production.ini /usr/local/etc/php/conf.d/zz-pixelcoda-
 COPY simple-api.js index.html package.json /opt/pixelcoda-search-api/
 RUN cd /opt/pixelcoda-search-api && npm install --omit=dev
 
-RUN chmod +x /usr/local/bin/pixelcoda-typo3-entrypoint \
+RUN chmod +x \
+    /usr/local/bin/pixelcoda-typo3-entrypoint \
+    /usr/local/bin/pixelcoda-configure-site \
+    /usr/local/bin/pixelcoda-set-permissions \
+    /usr/local/bin/pixelcoda-diagnose-bootstrap \
+    /usr/local/bin/pixelcoda-force-headless-config \
     && mkdir -p \
         /data \
         /var/www/html/packages/ext \
