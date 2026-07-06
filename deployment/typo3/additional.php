@@ -2,21 +2,31 @@
 
 declare(strict_types=1);
 
-$trustedHosts = array_filter([
+$backendBase = (string)(getenv('TYPO3_BACKEND_BASE') ?: getenv('RAILWAY_PUBLIC_DOMAIN') ?: 'localhost');
+$frontendBase = (string)(getenv('TYPO3_FRONTEND_BASE') ?: '');
+
+// Build trusted hosts from all known domains
+$trustedHostCandidates = array_filter([
     'localhost',
     '127.0.0.1',
     (string)getenv('RAILWAY_PUBLIC_DOMAIN'),
+    parse_url($backendBase, PHP_URL_HOST) ?: '',
+    parse_url($frontendBase, PHP_URL_HOST) ?: '',
 ]);
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = sprintf(
     '^(?:%s)(?::\d+)?$',
     implode('|', array_map(
         static fn(string $host): string => preg_quote($host, '/'),
-        $trustedHosts,
+        array_unique(array_values($trustedHostCandidates)),
     )),
 );
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';
+
+// Allow be_typo_user cookie to be sent cross-site (frontend on different domain)
+$GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] = 'none';
+$GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSecure'] = 1;
 
 $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'] = [
     'charset' => 'utf8mb4',
@@ -60,5 +70,5 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['content_gsap_animation'] = array_repl
     ],
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = 1;
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] = 0;
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '';

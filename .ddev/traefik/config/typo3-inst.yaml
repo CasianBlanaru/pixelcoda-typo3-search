@@ -5,11 +5,19 @@
 
 http:
   routers:
+    typo3-inst-typo3-80-http:
+      entrypoints:
+        - http-80
+      rule: HostRegexp(`^typo3-inst\.localhost$`) && (PathPrefix(`/typo3`) || PathPrefix(`/headless`) || PathPrefix(`/fileadmin`) || PathPrefix(`/typo3conf`) || PathPrefix(`/_assets`) || PathPrefix(`/typo3temp`))
+      priority: 20
+      service: "typo3-inst-web-80"
+      ruleSyntax: v3
+      tls: false
     typo3-inst-frontend-80-http:
       entrypoints:
         - http-80
       rule: HostRegexp(`^typo3-inst\.localhost$`)
-      
+      priority: 10
       service: "typo3-inst-frontend-3000"
       ruleSyntax: v3
       tls: false
@@ -48,14 +56,21 @@ http:
     
     
     
+    typo3-inst-typo3-443-https:
+      entrypoints:
+        - http-443
+      rule: HostRegexp(`^typo3-inst\.localhost$`) && (PathPrefix(`/typo3`) || PathPrefix(`/headless`) || PathPrefix(`/fileadmin`) || PathPrefix(`/typo3conf`) || PathPrefix(`/_assets`) || PathPrefix(`/typo3temp`))
+      priority: 20
+      service: "typo3-inst-web-80"
+      ruleSyntax: v3
+      tls: true
     typo3-inst-frontend-3000-https:
       entrypoints:
         - http-443
       rule: HostRegexp(`^typo3-inst\.localhost$`)
-      
+      priority: 10
       service: "typo3-inst-frontend-3000"
       ruleSyntax: v3
-      
       tls: true
       
     typo3-inst-web-80-https:

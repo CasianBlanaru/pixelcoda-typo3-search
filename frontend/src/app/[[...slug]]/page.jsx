@@ -1,33 +1,28 @@
 import { cookies } from 'next/headers';
-import Renderer, { rendererComponents } from '../../components/Renderer';
+import { HeadlessDevTools } from '@pixelcoda/headless-nextjs';
 import { fetchPageData, fetchInitialData, normalizePageData, normalizePath } from '../../lib/typo3';
+import Renderer from '../../components/Renderer';
 import DevTools from '../../components/DevTools';
+import FrontendEditor from '../../components/FrontendEditor';
 
 export async function generateMetadata({ params, searchParams }) {
   try {
     const resolved = await params;
     const resolvedSearchParams = await searchParams;
     const path = normalizePath(resolved?.slug);
-
     const cookieStore = await cookies();
-    const cookieHeader = cookieStore.toString();
-
-    const page = normalizePageData(await fetchPageData(path, resolvedSearchParams, cookieHeader));
+    const page = normalizePageData(await fetchPageData(path, resolvedSearchParams, cookieStore.toString()));
     return {
       title: page?.seo?.title || page?.meta?.title || page?.title || 'TYPO3 Headless',
       description: page?.meta?.description || page?.meta?.abstract || '',
     };
   } catch {
-    return {
-      title: 'TYPO3 Headless',
-      description: 'Next.js frontend for TYPO3 Headless',
-    };
+    return { title: 'TYPO3 Headless', description: '' };
   }
 }
 
 export default async function Page({ params, searchParams }) {
   let page = null;
-  let initialData = null;
   let error = null;
   const resolved = await params;
   const resolvedSearchParams = await searchParams;
@@ -35,46 +30,36 @@ export default async function Page({ params, searchParams }) {
 
   try {
     const cookieStore = await cookies();
-    const cookieHeader = cookieStore.toString();
-    [page, initialData] = await Promise.all([
-      fetchPageData(path, resolvedSearchParams, cookieHeader).then(normalizePageData),
-      fetchInitialData(cookieHeader),
-    ]);
-  } catch (exception) {
-    error = exception;
-    console.error('TYPO3 API Error:', exception);
+    page = normalizePageData(await fetchPageData(path, resolvedSearchParams, cookieStore.toString()));
+  } catch (e) {
+    error = e;
+    console.error('TYPO3 API Error:', e);
   }
 
-  const navigation = initialData?.navigation || [];
-  const pageTitle = page?.seo?.title || page?.meta?.title || page?.title || 'TYPO3 Headless Frontend';
+  const pageTitle = page?.seo?.title || page?.meta?.title || page?.title || 'TYPO3 Headless';
 
   return (
-    <main>
-      <section className="hero">
-        <div>
-          <p className="eyebrow">PixelCoda Headless Next.js</p>
-          <h1>{pageTitle}</h1>
-          <p>{page?.meta?.subtitle || page?.meta?.abstract || 'Premium Next.js frontend for TYPO3 Headless.'}</p>
-        </div>
-      </section>
-
-      <section className="content-shell">
-        {error ? (
-          <div className="error-box">
-            <h2>TYPO3 API Connection Error</h2>
-            <p><strong>Message:</strong> {error.message}</p>
-            <p><strong>API URL:</strong> {process.env.NEXT_PUBLIC_API_BASE_URL || 'Not configured'}</p>
-            <details>
-              <summary>Debug Info</summary>
-              <pre>{JSON.stringify({ path, error: error.stack }, null, 2)}</pre>
-            </details>
+    <>
+      <main>
+        <section className="hero">
+          <div>
+            <p className="eyebrow">PixelCoda Headless</p>
+            <h1>{pageTitle}</h1>
           </div>
-        ) : (
-          <Renderer page={page} />
-        )}
-      </section>
-
-      <DevTools page={page || { error: error?.message, path, navigation }} />
-    </main>
+        </section>
+        <section className="content-shell">
+          {error ? (
+            <div className="error-box">
+              <h2>TYPO3 API Error</h2>
+              <p>{error.message}</p>
+            </div>
+          ) : (
+            <Renderer page={page} />
+          )}
+        </section>
+      </main>
+      <DevTools page={page || { error: error?.message, path }} />
+      <FrontendEditor />
+    </>
   );
 }
