@@ -9,6 +9,8 @@ $frontendBase = (string)(getenv('TYPO3_FRONTEND_BASE') ?: '');
 $trustedHostCandidates = array_filter([
     'localhost',
     '127.0.0.1',
+    'web.railway.internal',
+    (string)getenv('RAILWAY_PRIVATE_DOMAIN'),
     (string)getenv('RAILWAY_PUBLIC_DOMAIN'),
     parse_url($backendBase, PHP_URL_HOST) ?: '',
     parse_url($frontendBase, PHP_URL_HOST) ?: '',
